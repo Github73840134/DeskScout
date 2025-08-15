@@ -1,0 +1,33 @@
++2025-08-15 18:45:14,711 [0.0] boot INFO: Adding libs and mods folder to path
++2025-08-15 18:45:14,711 [0.0] boot INFO: Starting imports
++2025-08-15 18:45:15,143 [0.43213438987731934] boot DEBUG: Importing the hellscape that is win32more
++2025-08-15 18:45:16,366 [1.6548829078674316] boot INFO: Starting Application, you wont be hearing from me anymore
++2025-08-15 18:45:16,378 [1.6670095920562744] asyncio DEBUG: Using proactor: IocpProactor
++2025-08-15 18:45:16,450 [1.7389225959777832] ui DEBUG: App OnLaunched called
++2025-08-15 18:45:16,450 [1.7389225959777832] ui DEBUG: Loading window.xaml
++2025-08-15 18:45:16,498 [1.7868831157684326] ui DEBUG: Loaded window.xaml
++2025-08-15 18:45:16,498 [1.7868831157684326] ui DEBUG: Aquiring NavigationView
++2025-08-15 18:45:16,498 [1.7868831157684326] ui DEBUG: Setting up NavigationView
++2025-08-15 18:45:16,498 [1.7868831157684326] ui DEBUG: Loading the document
++2025-08-15 18:45:16,498 [1.7868831157684326] ui DEBUG: Content loaded
++2025-08-15 18:45:16,498 [1.7868831157684326] ui INFO: Main frame loaded
++2025-08-15 18:45:16,513 [1.8021986484527588] service INFO: Checking if service is alive
++2025-08-15 18:45:16,515 [1.8042635917663574] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2025-08-15 18:45:16,515 [1.8042635917663574] urllib3.connectionpool DEBUG: http://127.0.0.1:49152 "GET /getStatus HTTP/1.1" 200 42
++2025-08-15 18:45:16,515 [1.8042635917663574] service INFO: Service is alive
++2025-08-15 18:45:16,515 [1.8042635917663574] service DEBUG: Service Respone: {"status": "ok", "login_state": "unknown"}
++2025-08-15 18:45:16,515 [1.8042635917663574] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2025-08-15 18:45:16,529 [1.8199725151062012] urllib3.connectionpool DEBUG: http://127.0.0.1:49152 "POST /settings HTTP/1.1" 200 31
++2025-08-15 18:45:16,583 [1.8715052604675293] ui INFO: Window is active
++2025-08-15 18:45:16,588 [1.876481533050537] app DEBUG: Checking Dark Mode
++2025-08-15 18:45:19,275 [4.563940525054932] service INFO: Authenticating user
++2025-08-15 18:45:19,276 [4.564969539642334] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2025-08-15 18:45:19,281 [4.56956934928894] urllib3.connectionpool DEBUG: http://127.0.0.1:49152 "GET /authenticate HTTP/1.1" 200 19
++2025-08-15 18:45:19,282 [4.570596933364868] app DEBUG: App State=2
++2025-08-15 18:45:19,282 [4.570596933364868] ui DEBUG: Hiding nav panel
++2025-08-15 18:45:19,285 [4.573720932006836] ui DEBUG: Loading sign in page
++2025-08-15 18:45:19,298 [4.586730718612671] ui DEBUG: Sign in page loaded
++2025-08-15 18:45:19,299 [4.588318824768066] ui DEBUG: UI setup complete
++2025-08-15 18:45:19,299 [4.588318824768066] service INFO: Connecting to service
++2025-08-15 18:45:19,301 [4.589947700500488] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2025-08-15 18:45:19,304 [4.592773199081421] urllib3.connectionpool DEBUG: http://127.0.0.1:49152 "POST /settings HTTP/1.1" 200 28

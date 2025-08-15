@@ -1,0 +1,15 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Frame>
+        <StackPanel Orientation="Vertical" Background="LightGray" >
+            <TextBlock Text="You'll need the internet for this." FontSize="36"/>
+            <TextBlock Text="It doesnt't look like you're connected to the internet." FontSize="14" />
+            <StackPanel Orientation="Horizontal"  >
+                <Button Name="Internet.TryAgain" Content="Try Again"/>
+                <Button Name="Internet.GoHome" Content="Go Home" />
+            </StackPanel>
+            
+
+        </StackPanel>
+        
+    </Frame>
+</Page>

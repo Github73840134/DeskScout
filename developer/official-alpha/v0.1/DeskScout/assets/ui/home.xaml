@@ -1,0 +1,17 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Frame>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Home" FontSize="48" />
+            <Border  BorderThickness="1" Height="64" />
+            <TextBlock Text="Your Glucose" FontSize="14"/>
+            <StackPanel Height="120" Orientation="Horizontal" Background="#00D4D4D4" >
+                <TextBlock  Name="reading" Text="---" FontSize="48" VerticalAlignment="Center" />
+                <TextBlock Name="units" Text="mg/dl" FontSize="14" VerticalAlignment="Center" />
+                <Border  BorderThickness="1" Width="10" />
+                <TextBlock FontFamily="Segoe Fluent Icons" FontSize="100" Name="trendarrow" Width="160" VerticalAlignment="Center" />
+            </StackPanel>
+            <TextBlock Name="last_update" Text="Last Synced Reading:" FontSize="14"/>
+            
+        </StackPanel>
+    </Frame>
+</Page>

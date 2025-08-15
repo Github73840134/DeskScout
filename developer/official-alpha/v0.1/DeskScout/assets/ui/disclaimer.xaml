@@ -1,0 +1,16 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" d:DesignWidth="430" d:DesignHeight="932"
+     >
+    <StackPanel Orientation="Vertical" >
+        <TextBlock Text="Disclaimer" FontSize="60"/>
+        <TextBlock Text="This application is an alpha build. Some features may be disabled"/>
+        <TextBlock Text="This application is used to show glucose alerts on your device. You should never make treatment descisions based of the data shown in this application as it may not be accurate." FontSize="14" TextWrapping="Wrap"/>
+        <Button Name="disclaimer.next" Content="I understand" />
+        
+    </StackPanel>
+
+  
+</Page>

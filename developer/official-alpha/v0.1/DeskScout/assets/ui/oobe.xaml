@@ -1,0 +1,19 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+     >
+    <Grid>
+        <Image Name="Background" Stretch="Fill" Source=""/>
+
+        <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+            
+            <TextBlock Text="DeskScout" FontSize="60" TextAlignment="Center" />
+            <TextBlock Text="A simple app to bridge the gap between Dexcom, Windows, and Nighstscout" FontSize="14" TextAlignment="Center"/>
+            <Border BorderThickness="1" Height="16" />
+            <Button Name="oobe.next" Content="Lets Go" HorizontalAlignment="Center" />
+        
+        </StackPanel>
+    </Grid>
+</Page>

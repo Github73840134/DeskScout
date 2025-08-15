@@ -1,0 +1,14 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Frame>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Sign In" FontSize="48" />
+            <Border BorderThickness="1" Height="64" />
+            <TextBlock Text="Dexcom ID:" FontSize="14" Height="24" />
+            <TextBox Text="" Height="32" IsReadOnly="False" Name="Username" />
+            <TextBlock Text="Password:" FontSize="14" Height="24" />
+            <PasswordBox Height="32" Password="" Name="Password" />
+            <Button Name="Complete" Content="Sign In" Height="32" IsEnabled="True" />
+            <TextBlock Visibility="1" Name="Status" Text="An error occured" FontSize="14"/>
+        </StackPanel>
+    </Frame>
+</Page>

@@ -1,0 +1,199 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     >
+    <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+	
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Settings" FontSize="48" />
+        <Border BorderThickness="1" Height="16" />
+        <TextBlock Text="Alarms" FontSize="36"/>
+        <CheckBox Name="settings.enable_alarms" Content="Enable Alarms" FontSize="14" />
+		<Button Name="settings.change_alarm_sounds" Content="Customize alarm sounds"/>
+       <Pivot Title="Alarm Settings">
+			<PivotItem Header="Urgent Low">
+				<StackPanel>
+      				<CheckBox Name="settings.alarms.ul.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Value" />
+						<ComboBox Name="settings.alarms.ul.value" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="55" IsSelected="True" />
+							<ComboBoxItem Content="50" />
+						</ComboBox>
+						<TextBlock Text="mg/dl"/>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Snooze for" />
+						<NumberBox Name="settings.alarms.ul.snooze" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="5" Maximum="30" SmallChange="5" LargeChange="5"/>
+						<TextBlock Text="minutes" />
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+			<PivotItem Header="Urgent Low Soon">
+				<StackPanel>
+      				<CheckBox Name="settings.alarms.uls.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Snooze for" />
+						<NumberBox Name="settings.alarms.uls.snooze" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="30" SmallChange="5" LargeChange="5"/>
+						<TextBlock Text="minutes" />
+					</StackPanel>
+				</StackPanel>
+			</PivotItem>
+			<PivotItem Header="Low">
+				<StackPanel>
+      				<CheckBox Name="settings.alarms.low.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal">
+						<NumberBox Name="settings.alarms.low.value" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="40" Maximum="400" SmallChange="5" LargeChange="10"/>
+						<TextBlock Text="mg/dl" />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Delay 1st alert for" />
+						<NumberBox Name="settings.alarms.low.delay" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="45" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.low.delaymode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Snooze for" />
+						<NumberBox Name="settings.alarms.low.snooze" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="30" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.low.snoozemode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+				</StackPanel>
+			</PivotItem>
+			<PivotItem Header="High">
+				<StackPanel>
+      				<CheckBox Name="settings.alarms.high.enable" Content="Enable" FontSize="14" />
+					
+					<StackPanel Orientation="Horizontal">
+						<NumberBox Name="settings.alarms.high.value" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="40" Maximum="400" SmallChange="5" LargeChange="10"/>
+						<TextBlock Text="mg/dl" />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Delay 1st alert for" />
+						<NumberBox Name="settings.alarms.high.delay" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="45" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.high.delaymode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Snooze for" />
+						<NumberBox Name="settings.alarms.high.snooze" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="30" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.high.snoozemode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+				</StackPanel>
+			</PivotItem>
+			<PivotItem Header="Falling Fast">
+				<StackPanel>
+      				<CheckBox Name="settings.alarms.ff.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Trend:" />
+						<ComboBox Name="settings.alarms.ff.trend" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="One Arrow Down" IsSelected="True" />
+							<ComboBoxItem Content="Two Arrows Down" />
+						</ComboBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<NumberBox Name="settings.alarms.ff.value" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="40" Maximum="400" SmallChange="5" LargeChange="10"/>
+						<TextBlock Text="mg/dl" />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Delay 1st alert for" />
+						<NumberBox Name="settings.alarms.ff.delay" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="45" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.ff.delaymode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Snooze for" />
+						<NumberBox Name="settings.alarms.ff.snooze" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="30" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.ff.snoozemode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+				</StackPanel>
+			</PivotItem>
+			<PivotItem Header="Rising Fast">
+				<StackPanel>
+      				<CheckBox Name="settings.alarms.rf.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Trend:" />
+						<ComboBox Name="settings.alarms.rf.trend" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="One Arrow Down" IsSelected="True" />
+							<ComboBoxItem Content="Two Arrows Down" />
+						</ComboBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<NumberBox Name="settings.alarms.rf.value" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="40" Maximum="400" SmallChange="5" LargeChange="10"/>
+						<TextBlock Text="mg/dl" />
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Delay 1st alert for" />
+						<NumberBox Name="settings.alarms.rf.delay" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="45" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.rf.delaymode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+					<StackPanel Orientation="Horizontal">
+						<TextBlock Text="Snooze for" />
+						<NumberBox Name="settings.alarms.rf.snooze" Width="180" FontSize="13" Value="15" SpinButtonPlacementMode="Inline" Minimum="0" Maximum="30" SmallChange="5" LargeChange="5"/>
+						<ComboBox Name="settings.alarms.rf.snoozemode" Width="120" Padding="6,4" FontSize="13">
+							<ComboBoxItem Content="minutes" IsSelected="True" />
+							<ComboBoxItem Content="hours" />
+						</ComboBox>
+					</StackPanel>
+				</StackPanel>
+			</PivotItem>
+		</Pivot>
+        <Border BorderThickness="1" Height="16" />
+
+		<TextBlock Text="Nightscout Uploading" FontSize="36"/>
+		<StackPanel>
+			<TextBlock Text="WIP" />
+		</StackPanel>
+        <Border BorderThickness="1" Height="16" />
+
+		<Button Name="settings.save" Content="Save Changes"/>
+		<Border BorderThickness="1" Height="16" />
+		<StackPanel Orientation="Horizontal">
+			<TextBlock Padding="6,0" Text="Copyright 2025 Seth Edwards"/>
+			<Button Name="settings.about" Content="About DeskScout"/>
+		</StackPanel>
+		<Button Name="settings.psignout" Content="Sign Out">
+				<Button.Flyout>
+					<Flyout>
+						<StackPanel>
+							<TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to sign out? You will no longer receive alerts." Margin="0,0,0,12" />
+							<Button Name="settings.signout" Content="Continue" />
+						</StackPanel>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+		<Button Name="settings.pcloseapp" Content="Close DeskScout">
+				<Button.Flyout>
+					<Flyout>
+						<StackPanel>
+							<TextBlock TextWrapping="Wrap" Style="{ThemeResource BaseTextBlockStyle}" Text="Are you sure you want to close deskscout? You will no longer receive alerts and data will not be uplaoded to nightscout" Margin="0,0,0,12" />
+							<Button Name="settings.closeapp" Content="Continue" />
+						</StackPanel>
+					</Flyout>
+				</Button.Flyout>
+		</Button>
+    </StackPanel>
+	</ScrollViewer>
+
+  
+</Page>
