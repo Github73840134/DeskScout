@@ -3,9 +3,11 @@
 
 
 # NOTICE
-Deskscout in its current state does not have an updater built in, you will need to manual update your code
+Deskscout in its current state does not have an updater built in, you will need to manually update your code
 
-Make sure you have Microsoft Windows App Runtime 1.7 or later installed on your computer, a copy of the installer can be found under {channel}/{release}/{version}/assets
+# Requirements
+Python 3.10 or later
+Make sure you have Microsoft Windows App Runtime 1.7 or later
 
 # What works
 - Urgent low glucose alerts
@@ -17,12 +19,20 @@ Make sure you have Microsoft Windows App Runtime 1.7 or later installed on your 
 - Display in mmol
 - Version string generation
 
+# Whats new as of 8/17/2025 (Build: 2)
+- Tray icon and quick glucose view added
+- OOBE animation
+- Shutdown from tray
 
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
 
 Or start them separately, the server must be running to start the app
 
+# Join the Discord!
+https://discord.gg/Wf3XsDwsEk
+
 # Submit bugs here
 
 https://docs.google.com/forms/d/e/1FAIpQLSepfS8c89M8kU7EcBwix-KaPQuYyLq6yYlSm7tLQEzrIXlcxQ/viewform?usp=sharing
+

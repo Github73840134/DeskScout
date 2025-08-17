@@ -74,6 +74,8 @@ def serverstatus():
 
 					if serviceConnected:
 						serviceDisconnectedAt = 0
+						bulb.title = "DeskScout\nApplication Offline"
+
 						newToast = Toast()
 						newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
 						newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
@@ -82,6 +84,8 @@ def serverstatus():
 						toaster.show_toast(newToast)
 				else:
 					if time.time()-serviceDisconnectedAt > 10:
+						bulb.title = "DeskScout\nApplication Offline"
+
 						newToast = Toast()
 						newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
 						newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
@@ -104,6 +108,8 @@ def serverstatus():
 				if serviceConnected:
 					serviceDisconnectedAt = 0
 					newToast = Toast()
+					bulb.title = "DeskScout\nApplication Offline"
+
 					newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
 					newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 					PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
@@ -114,6 +120,8 @@ def serverstatus():
 				if time.time()-serviceDisconnectedAt > 10:
 					newToast = Toast()
 					newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
+					bulb.title = "DeskScout\nApplication Offline"
+
 					newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 					PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
 					toaster.clear_toasts()
@@ -155,9 +163,13 @@ def notificationRunner():
 		time.sleep(1)
 		if account and serviceConnected and not serviceOffline:
 			settings = json.load(open("../data/settings.json"))
+			reading = account.get_latest_glucose_reading()
+
+			bulb.title = f"DeskScout\nYour glucose: {reading.value}mg/dl {reading.trend_description}\nLast reading at: {reading.datetime.ctime()}"
 			if settings['enableNotify']:
 				if account:
 					reading = account.get_latest_glucose_reading()
+					
 					#Check for urgent low
 					if settings['notify']['urgentLow']['enabled']:
 						if reading.datetime.time() == last:
@@ -256,6 +268,8 @@ def auth():
 		return json.dumps({"status":"ok"})
 	except:
 		print("NAXC")
+		bulb.title = "DeskScout"
+
 		serviceConnected = False
 
 		account = None
@@ -298,8 +312,11 @@ def getStatus():
 		elif pw == "":
 			loginState = 'unknown'
 			serviceConnected = False
+			bulb.title = "DeskScout"
+
 		else:
 			loginState = False
+			bulb.title = "DeskScout"
 
 	except:
 		pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
@@ -383,6 +400,7 @@ def about():
 		"release":__release__
 		
 	})
+bulb = None
 newToast = Toast()
 newToast.text_fields = ['DeskScout is Starting', 'Glucose alerts should be available soon.']
 newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/generic.wav'))),silent=True)
@@ -391,5 +409,36 @@ toaster.clear_toasts()
 toaster.show_toast(newToast)
 _thread.start_new_thread(serverstatus,())
 _thread.start_new_thread(notificationRunner,())
+def runtime(internal):
+	global bulb
+	bulb = internal
+	internal.visible = True
+	print(internal)
+	run(host='127.0.0.1', port=49152)
+	bulb.stop()
+from PIL import Image
+from pystray import Icon, Menu as menu, MenuItem as item
+state = False
 
-run(host='127.0.0.1', port=49152)
+def shutdown(icon, item):
+	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/shutdown.wav')), None, SND_FILENAME)
+
+	p = psutil.Process(os.getpid())
+	for proc in p.children(recursive=True):
+		proc.kill()
+	p.kill()
+	exit(0)
+def openbackup(icon,item):
+	pass
+
+icon = Icon(
+	'DeskScout',
+	icon=Image.open("../assets/icons/logo/03.png"),
+	menu=menu(
+		item(
+		'Shutdown Deskscout',
+		shutdown)
+	),
+	title="DeskScout"
+	)
+icon.run(runtime)

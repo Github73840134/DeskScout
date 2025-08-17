@@ -462,6 +462,61 @@ class App(XamlApplication):
 		
 		self.documentProvider = self.document
 	def launchOOBE(self):
+		def fadeIn(elapsed,data):
+			print(elapsed)
+			if data['x'] == 0:
+				if data['i'] < 101:
+					data['i'] += data['speed']
+					
+
+					
+					return self.raf.Respond(data)
+				else:
+					data['x'] = 1
+					data['i'] = 0
+					return self.raf.Respond(data)
+			elif data['x'] == 1:
+				if data['i'] < 101:
+					data['i'] += data['speed']
+					img = self.document.Content.as_(FrameworkElement).FindName("Background").as_(Image)
+
+					img.Opacity = (data['i'])*0.01
+					img.UpdateLayout()
+					img.UpdateLayout()
+
+					
+					return self.raf.Respond(data)
+				else:
+					data['x'] = 2
+					data['i'] = 0
+					return self.raf.Respond(data)
+			elif data['x'] == 2:
+				if data['i'] < 101:
+					data['i'] += data['speed']
+					img = self.document.Content.as_(FrameworkElement).FindName("Text").as_(StackPanel)
+
+					img.Opacity = (data['i'])*0.01
+					img.UpdateLayout()
+					img.UpdateLayout()
+
+					
+					return self.raf.Respond(data)
+				else:
+					data['x'] = 3
+					data['i'] = 0
+					return self.raf.Respond(data)
+			elif data['x'] == 3:
+				if data['i'] < 101:
+					data['i'] += data['speed']
+					nextbutton = self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button)
+					nextbutton.add_Click(lambda sender,args: self.showDisclaimer(task))
+
+
+					nextbutton.Opacity = (data['i'])*0.01
+					nextbutton.UpdateLayout()
+					return self.raf.Respond(data)
+				else:
+					return self.raf.Respond(data,True)
 		self.NavView.put_IsPaneVisible(False)
 
 		self.document.Content = XamlReader().Load(open("../assets/ui/oobe.xaml", "r", encoding='utf-8').read())
@@ -476,11 +531,16 @@ class App(XamlApplication):
 		img = self.document.Content.as_(FrameworkElement).FindName("Background").as_(Image)
 		bitmap = Imaging.BitmapImage()
 		bitmap.UriSource = uri
+		
+		img.Loaded += lambda sender,args: self.raf.request_animation_frame(fadeIn,{"i":0,"x":0,"speed":4})
 		img.Source = bitmap
+		
 
 
 		task = lambda: self.setupAuthCheck(lambda: self.doOOBE("alarmsetup"))
 		nextbutton.add_Click(lambda sender,args: self.showDisclaimer(task))
+		nextbutton.Opacity = 0
+
 
 	def doOOBE(self,page="alarmsetup"):
 		def PresetRoot():
@@ -711,12 +771,12 @@ class App(XamlApplication):
 					self.fetchState = 4
 			time.sleep(5)
 		self.fetchState = 0
-	def loadAsync(self,root,function,endUI):
+	def loadAsync(self,root,function,endUI,onFinish=None):
 		def dummy():
 			pass
 		def startLoad():
 			function()
-			self.transitionElementContent(root,endUI,dummy)
+			self.transitionElementContent(root,endUI,dummy if not onFinish else onFinish)
 
 		self.transitionElementContent(root,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),dummy,startLoad)
 	def signOut(self):
@@ -1297,17 +1357,16 @@ class App(XamlApplication):
 
 		def reset(sender,args):
 			import keyring,subprocess
-			keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
-			self.changeSetting("username",'""')
-			self.changeSetting("setup",False)
-			resp = requests.get("http://127.0.0.1:49152/authenticate")
+			def doReset():
+				keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
+				self.changeSetting("username",'""')
+				self.changeSetting("setup",False)
+				resp = requests.get("http://127.0.0.1:49152/authenticate")
+				self.page = "oobe"
+				self.document.Loaded = lambda sender,args: print("LOADCOMPELTE")
 
 			self.NavView.put_IsPaneVisible(False)
-			self.document.Content = XamlReader().Load(open("../assets/ui/oobe.xaml", "r", encoding='utf-8').read())
-			self.page = "oobe"
-			nextbutton = self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button)
-			task = lambda: self.setupAuthCheck(lambda: self.doOOBE("alarmsetup"))
-			nextbutton.add_Click(lambda sender,args: self.showDisclaimer(task))
+			self.loadAsync(self.document,doReset,XamlReader().Load(open("../assets/ui/oobe.xaml", "r", encoding='utf-8').read()),self.launchOOBE)
 		resp = requests.get("http://127.0.0.1:49152/about")
 		serverinfo = json.loads(resp.text)
 		self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/about.xaml", "r", encoding='utf-8').read()),loadContent)

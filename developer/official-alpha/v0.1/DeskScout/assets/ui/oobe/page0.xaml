@@ -12,7 +12,7 @@
             </Frame>
          <Border BorderThickness="1" Height="16" />
 
-            <Button Name="oobe.next" Content="Lets Go" />
+            <Button Name="oobe.next" Content="Next" />
             
         </StackPanel>
     </ScrollViewer>
