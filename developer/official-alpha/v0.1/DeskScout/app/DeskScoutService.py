@@ -162,10 +162,13 @@ def notificationRunner():
 	while True:
 		time.sleep(1)
 		if account and serviceConnected and not serviceOffline:
+			print("NR")
 			settings = json.load(open("../data/settings.json"))
 			reading = account.get_latest_glucose_reading()
+			if not settings["useMGDL"]:
+				reading.value = reading.value/18
 
-			bulb.title = f"DeskScout\nYour glucose: {reading.value}mg/dl {reading.trend_description}\nLast reading at: {reading.datetime.ctime()}"
+			bulb.title = f"DeskScout\nYour glucose: {reading.value}{'mg/dl' if settings['useMGDL'] else 'mmol/L'} {reading.trend_description}\nLast reading at: {reading.datetime.ctime()}"
 			if settings['enableNotify']:
 				if account:
 					reading = account.get_latest_glucose_reading()
@@ -240,12 +243,21 @@ def index():
 @route('/shutdown')
 def index():
 	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/shutdown.wav')), None, SND_FILENAME)
-
 	p = psutil.Process(os.getpid())
 	for proc in p.children(recursive=True):
 		proc.kill()
 	p.kill()
 	exit(0)
+@route('/factoryReset')
+def index():
+	global bulb,account,serviceConnected
+	import shutil
+	shutil.copy("../data/default_settings.json","../data/settings.json")
+	account = None
+	serviceConnected = False
+	bulb.title = "DeskScout"
+	return json.dumps({"status":"ok"})
+
 @route('/authenticate')
 def auth():
 	global account,serviceConnected
@@ -312,11 +324,10 @@ def getStatus():
 		elif pw == "":
 			loginState = 'unknown'
 			serviceConnected = False
-			bulb.title = "DeskScout"
 
 		else:
 			loginState = False
-			bulb.title = "DeskScout"
+
 
 	except:
 		pw = keyring.get_password("com.sedwards.deskscout",settings['username'])

@@ -1,3 +1,4 @@
+__version__ = "0.1.0"
 import os, sys,json,_thread,time,logging
 ast = None
 os.chdir(os.path.dirname(__file__))
@@ -6,7 +7,6 @@ class DeltaTimeFormatter(logging.Formatter):
 		record.delta = time.time()-ast
 		return super().format(record)
 handler = logging.StreamHandler(open("app_boot.log","w+"))
-
 LOGFORMAT = '+%(asctime)s [%(delta)s] %(name)s %(levelname)s: %(message)s'
 fmt = DeltaTimeFormatter(LOGFORMAT)
 handler.setFormatter(fmt)
@@ -465,7 +465,7 @@ class App(XamlApplication):
 		def fadeIn(elapsed,data):
 			print(elapsed)
 			if data['x'] == 0:
-				if data['i'] < 101:
+				if data['i'] < 501:
 					data['i'] += data['speed']
 					
 
@@ -474,15 +474,19 @@ class App(XamlApplication):
 				else:
 					data['x'] = 1
 					data['i'] = 0
+					
+
 					return self.raf.Respond(data)
 			elif data['x'] == 1:
 				if data['i'] < 101:
 					data['i'] += data['speed']
 					img = self.document.Content.as_(FrameworkElement).FindName("Background").as_(Image)
-
 					img.Opacity = (data['i'])*0.01
 					img.UpdateLayout()
+					img = self.document.Content.as_(FrameworkElement).FindName("Loader").as_(StackPanel)
+					img.Opacity = (100-data['i'])*0.01
 					img.UpdateLayout()
+					
 
 					
 					return self.raf.Respond(data)
@@ -493,7 +497,7 @@ class App(XamlApplication):
 			elif data['x'] == 2:
 				if data['i'] < 101:
 					data['i'] += data['speed']
-					img = self.document.Content.as_(FrameworkElement).FindName("Text").as_(StackPanel)
+					img = self.document.Content.as_(FrameworkElement).FindName("Title").as_(TextBlock)
 
 					img.Opacity = (data['i'])*0.01
 					img.UpdateLayout()
@@ -506,6 +510,21 @@ class App(XamlApplication):
 					data['i'] = 0
 					return self.raf.Respond(data)
 			elif data['x'] == 3:
+				if data['i'] < 101:
+					data['i'] += data['speed']
+					img = self.document.Content.as_(FrameworkElement).FindName("Description").as_(TextBlock)
+
+					img.Opacity = (data['i'])*0.01
+					img.UpdateLayout()
+					img.UpdateLayout()
+
+					
+					return self.raf.Respond(data)
+				else:
+					data['x'] = 4
+					data['i'] = 0
+					return self.raf.Respond(data)
+			elif data['x'] == 4:
 				if data['i'] < 101:
 					data['i'] += data['speed']
 					nextbutton = self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button)
@@ -532,7 +551,7 @@ class App(XamlApplication):
 		bitmap = Imaging.BitmapImage()
 		bitmap.UriSource = uri
 		
-		img.Loaded += lambda sender,args: self.raf.request_animation_frame(fadeIn,{"i":0,"x":0,"speed":4})
+		img.Loaded += lambda sender,args: self.raf.request_animation_frame(fadeIn,{"i":0,"x":0,"speed":10})
 		img.Source = bitmap
 		
 
@@ -700,13 +719,21 @@ class App(XamlApplication):
 				glucose = self.document.Content.as_(FrameworkElement).FindName("reading").as_(TextBlock)
 				last = self.document.Content.as_(FrameworkElement).FindName("last_update").as_(TextBlock)
 				trend = self.document.Content.as_(FrameworkElement).FindName("trendarrow").as_(TextBlock)
+				units = self.document.Content.as_(FrameworkElement).FindName("units").as_(TextBlock)
+
 
 				
 				lut = re.findall("\\((.*?)\\)",self.glucose['ST'])[0]
 				if self.lsc != int(lut):
 					ui.info("Change detected, updating display")
 					self.lsc = int(lut)
-					glucose.Text = str(self.glucose['Value'])
+					if self.getSetting("useMGDL"):
+						glucose.Text = str(self.glucose['Value'])
+						units.Text = "mg/dl"
+					else:
+						glucose.Text = str(round(self.glucose['Value']/18,1))
+						units.Text = "mmol/L"
+
 					last.Text = "Last synced reading: "+time.ctime(int(lut)/1000)
 					trends = {
 						"None":"",
@@ -959,6 +986,8 @@ class App(XamlApplication):
 			root = self.document
 		
 		class Settings:
+			class display:
+				units = root.Content.as_(FrameworkElement).FindName("settings.display_mmol").as_(CheckBox)
 			enable_alarms = root.Content.as_(FrameworkElement).FindName("settings.enable_alarms").as_(CheckBox)
 			sounds = root.Content.as_(FrameworkElement).FindName("settings.change_alarm_sounds").as_(Button)
 
@@ -1010,6 +1039,10 @@ class App(XamlApplication):
 
 		# Initiaize the settings view
 
+		# Check units
+		s = self.getSetting("useMGDL")
+		if self.validateSetting(s):
+			Settings.display.units.IsChecked = not s
 		#Alarms On?
 		s = self.getSetting("enableNotify")
 		if self.validateSetting(s):
@@ -1180,6 +1213,8 @@ class App(XamlApplication):
 				Settings.alarms.rf.trend.Text = "Two Arrows Down"
 		def saveAll(sender,args):
 			# General Alarms
+			self.lsc = -1
+			self.changeSetting("useMGDL",not Settings.display.units.IsChecked)
 			self.changeSetting("enableNotify",Settings.enable_alarms.IsChecked)
 			# Urgent Low
 			self.changeSetting("notify/urgentLow/enabled",Settings.alarms.ul.enabled.IsChecked)
@@ -1343,7 +1378,7 @@ class App(XamlApplication):
 		serverinfo = {}
 
 		def loadContent():
-			self.document.Content.as_(FrameworkElement).FindName("about.version").as_(TextBlock).Text = "Version: 0.1.0"
+			self.document.Content.as_(FrameworkElement).FindName("about.version").as_(TextBlock).Text = f"Version: {__version__}"
 			self.document.Content.as_(FrameworkElement).FindName("about.platform").as_(TextBlock).Text = f"Platform: {sys.platform}"
 			self.document.Content.as_(FrameworkElement).FindName("about.reset").as_(Button).add_Click(reset)
 			self.document.Content.as_(FrameworkElement).FindName("about.server_version").as_(TextBlock).Text = f"Version: {serverinfo['version']}"
@@ -1359,11 +1394,8 @@ class App(XamlApplication):
 			import keyring,subprocess
 			def doReset():
 				keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
-				self.changeSetting("username",'""')
-				self.changeSetting("setup",False)
-				resp = requests.get("http://127.0.0.1:49152/authenticate")
+				resp = requests.get("http://127.0.0.1:49152/factoryReset")
 				self.page = "oobe"
-				self.document.Loaded = lambda sender,args: print("LOADCOMPELTE")
 
 			self.NavView.put_IsPaneVisible(False)
 			self.loadAsync(self.document,doReset,XamlReader().Load(open("../assets/ui/oobe.xaml", "r", encoding='utf-8').read()),self.launchOOBE)

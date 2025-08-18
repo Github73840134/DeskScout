@@ -9,6 +9,8 @@
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Settings" FontSize="48" />
         <Border BorderThickness="1" Height="16" />
+		<TextBlock Text="Display" FontSize="36"/>
+		<CheckBox Name="settings.display_mmol" Content="Display glucose in mmol/L" />
         <TextBlock Text="Alarms" FontSize="36"/>
         <CheckBox Name="settings.enable_alarms" Content="Enable Alarms" FontSize="14" />
 		<Button Name="settings.change_alarm_sounds" Content="Customize alarm sounds"/>

@@ -9,9 +9,5 @@ import psutil
 try:
 	resp = requests.get("http://127.0.0.1:49152/",timeout=3)
 except:
-	subprocess.Popen(" DeskScoutService.py")
-	resp = requests.get("http://127.0.0.1:49152/")
-	print(resp.status_code)
-	print("STARTED")
-
+	subprocess.Popen("pyw DeskScoutService.py")
 os.system("pyw DeskScoutApp.py")
