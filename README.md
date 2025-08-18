@@ -7,29 +7,32 @@ Deskscout in its current state does not have an updater built in, you will need 
 
 # Requirements
 Python 3.10 or later
-Make sure you have Microsoft Windows App Runtime 1.7 or later
+Microsoft Windows App Runtime 1.7 or later
 
 # What works
 - Urgent low glucose alerts
 - Low glucose alerts
 - High Glucose alerts
+- Tray Icon
+- Display in mmol/L
 
 # Whats being worked on
-- All other alerts
-- Display in mmol
+- Falling fast, Rising fast, Urgent Low Soon alerts
+- DeskScout system alert customization
 - Version string generation
-
-# Whats new as of 8/17/2025 (Build: 2)
+- Updater
+# Whats new as of 8/18/2025 (Build: 3)
 - Tray icon and quick glucose view added
 - OOBE animation
 - Shutdown from tray
+
 
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
 
 Or start them separately, the server must be running to start the app
 
-# Join the Discord!
+# Join the DeskScout Discord server!
 https://discord.gg/Wf3XsDwsEk
 
 # Submit bugs here
