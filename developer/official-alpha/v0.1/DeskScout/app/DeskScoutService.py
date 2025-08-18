@@ -15,7 +15,7 @@ account = None
 serviceConnected = False
 serviceDisconnectedAt = 0
 __version__ = "1"
-__build__ = 1
+__build__ = 3
 __channel__ = "developer"
 __release__ = "alpha"
 def calculate_slope(data):
@@ -165,10 +165,11 @@ def notificationRunner():
 			print("NR")
 			settings = json.load(open("../data/settings.json"))
 			reading = account.get_latest_glucose_reading()
+			glucose = reading.value
 			if not settings["useMGDL"]:
-				reading.value = reading.value/18
+				glucose = round(glucose/18,1)
 
-			bulb.title = f"DeskScout\nYour glucose: {reading.value}{'mg/dl' if settings['useMGDL'] else 'mmol/L'} {reading.trend_description}\nLast reading at: {reading.datetime.ctime()}"
+			bulb.title = f"DeskScout\nYour glucose: {glucose}{'mg/dl' if settings['useMGDL'] else 'mmol/L'} {reading.trend_description}\nLast reading at: {reading.datetime.ctime()}"
 			if settings['enableNotify']:
 				if account:
 					reading = account.get_latest_glucose_reading()
