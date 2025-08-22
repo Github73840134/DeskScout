@@ -12,16 +12,46 @@ from pathlib import Path
 from win32more.Windows.Win32.Media.Audio import PlaySoundW, SND_FILENAME, SND_ASYNC, SND_PURGE
 from win32more.Windows.Win32.Foundation import PWSTR
 import time
-import requests,_thread
+import requests,_thread,json
+from tkinter import messagebox
+
+
 account = None
 serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "2"
-__build__ = 4
+__build__ = 5
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None
+try:
+	print("Checking if service is already running")
+	resp = requests.get("http://127.0.0.1:49152/about")
+	try:
+		ver = json.loads(resp.text)
+		if ver['build'] < __build__:
+			ans = messagebox.askyesno("DeskScout Service","An older version of service is already running, would you like to stop the old service and start the new one?")
+			if ans:
+				try:
+					requests.get("http://127.0.0.1:49152/shutdown")
+				except:
+					pass
+			else:
+				p = psutil.Process(os.getpid())
+				for proc in p.children(recursive=True):
+					proc.kill()
+				p.kill()
+
+	except:
+		messagebox.showinfo("DeskScout Service","DeskScout service is already running, please stop your current instance before starting a new one")
+		p = psutil.Process(os.getpid())
+		for proc in p.children(recursive=True):
+			proc.kill()
+		p.kill()
+	
+except:
+	pass
 from datetime import datetime, timedelta, timezone
 
 def hours_to_utc_minute_timestamps(hours):
@@ -173,12 +203,19 @@ def notificationRespone(activatedEventArgs):
 		toaster.show_toast(toast)
 		PlaySoundW(PWSTR('../assets/sounds/generic.wav'), None, SND_FILENAME | SND_ASYNC)
 
-
+def remove_duplicates(items):
+	seen = set()
+	unique = []
+	for item in items:
+		if item not in seen:
+			seen.add(item)
+			unique.append(item)
+	return unique
 def recordAccessHandler():
 	lastSync = 0
 	rec = None
 	while True:
-		time.sleep(1)
+		time.sleep(5)
 		if account:
 			print("S",os.path.exists(os.path.abspath("../data/glucose.gdr")))
 			if os.path.exists(os.path.abspath("../data/glucose.gdr")):
@@ -214,6 +251,7 @@ def recordAccessHandler():
 						records = account.get_glucose_readings(1440,288)
 						print("REC COUNT",len(records))
 					records.reverse()
+					records = remove_duplicates(records)
 					for i in records:
 						print("rec",time.ctime(i.datetime.timestamp()/1000))
 						rec.writeRecord(i.datetime.timestamp()*1000,i.value,i.trend)

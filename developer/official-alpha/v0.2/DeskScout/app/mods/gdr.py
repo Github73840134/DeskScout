@@ -165,6 +165,15 @@ class RecordAccess:
 				i = time
 			else:
 				return time
+	def getRecordCount(self):
+		self.file.seek(self.recordEntrypoint)
+		i = 0
+		while True:
+			x = self.file.read(11)
+			if len(x) < 11:
+				return i
+			else:
+				i += 1
 class RecordReader:
 	def __init__(self,path):
 		self.file = open(path,'rb')
@@ -220,7 +229,7 @@ class RecordReader:
 			x = self.file.read(11)
 			if len(x) < 11:
 				return None
-			print("INDEX",i)
+
 			if i == index:
 
 				x = io.BytesIO(x)

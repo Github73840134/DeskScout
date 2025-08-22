@@ -1,10 +1,28 @@
 __version__ = "0.2.0"
-__build__ = 4
+__build__ = 5
 __min_server_build__ = 4
-__max_server_build__ = 4
+__max_server_build__ = 5
+from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging
+
+def error(exception,value,tb):
+	print("error",dir(exception))
+	messagebox.showerror("DeskScout-Fatal Error",f"A fatal error occured\n{value}")
+	exit(0)
+
+
 ast = None
+class ExcepthookHandler(logging.Handler):
+	def emit(self, record):
+		# Only trigger for critical/fatal logs
+		if record.levelno >= logging.FATAL:
+			exc_info = record.exc_info
+			if exc_info:
+				sys.excepthook(*exc_info)
+			else:
+				# No exception tuple in the log
+				pass
 os.chdir(os.path.dirname(__file__))
 # Logger shit
 class DeltaTimeFormatter(logging.Formatter):
@@ -12,14 +30,16 @@ class DeltaTimeFormatter(logging.Formatter):
 		record.delta = time.time()-ast
 		return super().format(record)
 handler = logging.StreamHandler(open("app_boot.log","w+"))
+
 LOGFORMAT = '+%(asctime)s [%(delta)s] %(name)s %(levelname)s: %(message)s'
 fmt = DeltaTimeFormatter(LOGFORMAT)
 handler.setFormatter(fmt)
 logging.basicConfig(
 					format='%(asctime)s [%(delta)s] %(levelname)-9s: %(message)s',
 					datefmt='%Y-%m-%d %H:%M:%S',
-					handlers=[handler],
-					level=logging.DEBUG)
+					handlers=[handler,ExcepthookHandler()],
+					level=logging.INFO)
+sys.excepthook = error
 ast = time.time()
 boot = logging.getLogger("boot")
 app = logging.getLogger("app")
@@ -76,10 +96,17 @@ import ctypes
 from ctypes import wintypes
 import os
 from tkinter import messagebox
+import _thread
+def custom_thread_hook(args):
+	# Log the exception from a thread
+	logger.fatal(f"Uncaught exception in thread {args.thread.name}",
+					exc_info=(args.exc_type, args.exc_value, args.exc_traceback))
+
+	# Still call default handler for full traceback
+	sys.__excepthook__(args.exc_type, args.exc_value, args.exc_traceback)
 
 user32 = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
-
 EnumWindows = user32.EnumWindows
 EnumWindowsProc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
 GetWindowThreadProcessId = user32.GetWindowThreadProcessId
@@ -394,9 +421,9 @@ class App(XamlApplication):
 				resp = requests.get("http://127.0.0.1:49152/getStatus")
 			except Exception as e:
 				# Big OOPS
+				messagebox.showwarning("Cant connect to DeskScout service","Please make sure the service is started before running the app")
 				serviceworker.info("Could not contact service, stopping here",str(e))
-				app.fatal("Startup failed","NO_SERVICE_CONNECTION")
-				exit(0)
+				app.fatal("Startup failed","NO_SERVICE_CONNECTION",exc_info=Exception("NO_SERVICE_CONNECTION"))
 			if not self.getSetting("setup"):
 				self.launchOOBE() # Launch the oobe
 				
@@ -1491,66 +1518,91 @@ class App(XamlApplication):
 				"unable to determine trend",
 				"trend unavailable",
 				]
+	
 			unit = self.getSetting("useMGDL")
 			last = None
-
+			seen = []
 			for x in records:
-				tx = time.localtime(float(x.time/1000))
-				if tx.tm_yday != last:
-					container = StackPanel()
-					container.Orientation = 1
-					border = Border()
-					border.Width = 16
-					header = TextBlock()
-					header.Text = f"{time.strftime("%A, %B %d",tx)}"
-					header.FontSize = 36
-					last = tx.tm_yday
-					border = Border()
-					border.Width = 16
-					container.Children.Append(border)
-					container.Children.Append(header)
-					area.Children.Append(container)
-				container = StackPanel()
-				container.Orientation = 1
-				timestamp = TextBlock()
-				glucose = TextBlock()
-				trend = TextBlock()
-				timestamp.Text = str(time.strftime("%I:%M %p",time.localtime(float(x.time/1000))))
-				if unit == True:
-					glucose.Text = str(x.value)+" mg/dl"
-				else:
-					glucose.Text = str(round(x.value/18,1))+" mmol/L"
+				tx = time.localtime(float(x.time / 1000))
+				
 
+				# Start a new section for each new day
+				if tx.tm_yday != last:
+					day_container = StackPanel()
+					day_container.Orientation = 1
+
+					spacer = Border()
+					spacer.Width = 8
+					day_container.Children.Append(spacer)
+
+					header = TextBlock()
+					header.Text = time.strftime("%A, %B %d", tx)
+					header.FontSize = 36
+
+					spacer = Border()
+					spacer.Width = 16
+					day_container.Children.Append(spacer)
+					day_container.Children.Append(header)
+
+					area.Children.Append(day_container)
+					last = tx.tm_yday
+
+				# Container for the individual record
+				entry_container = StackPanel()
+				entry_container.Orientation = 1
+
+				# Timestamp
+				timestamp = TextBlock()
+				timestamp.Text = time.strftime("%I:%M %p", tx)
+
+				# Glucose reading
+				glucose = TextBlock()
+				glucose.FontSize = 24
+				glucose.Text = f"{x.value} mg/dl" if unit else f"{round(x.value / 18, 1)} mmol/L"
+
+				# Trend info
+				trend = TextBlock()
+				trend.FontSize = 24
 				trend.Text = TREND_ARROWS[x.trendArrow]
+
 				tooltip = ToolTip()
 				tooltip.Content = TREND_DESCRIPTIONS[x.trendArrow]
-
-				# Attach tooltip to TextBlock
 				ToolTipService.SetToolTip(trend, tooltip)
-				border = Border()
-				border.Width = 32
-				container.Children.Append(border)
-				container.Children.Append(timestamp)
-				border = Border()
-				border.Width = 32
-				container.Children.Append(border)
-				container.Children.Append(glucose)
-				border = Border()
-				border.Width = 32
-				container.Children.Append(border)
-				container.Children.Append(trend)
-				area.Children.Append(container)
+
+				# Add spacing and elements
+				for element in (timestamp, glucose, trend):
+					spacer = Border()
+					spacer.Width = 32
+					entry_container.Children.Append(spacer)
+					entry_container.Children.Append(element)
+
+				# Append entry to page
+				area.Children.Append(entry_container)
+
+				# Spacer between records
 				if x != records[-1]:
-					border = Border()
-					border.Height = 8
-					area.Children.Append(border)
+					spacer = Border()
+					spacer.Height = 8
+					area.Children.Append(spacer)
 		def loadData():
+			
 			from mods import gdr
 			rec = gdr.RecordReader(os.path.abspath("../data/glucose.gdr"))
 			i = rec.getRecordCount()
-			
+			rec1 = []
 			for x in range(i):
-				records.append(rec.getRecordByIndex(x))
+				rec1.append(rec.getRecordByIndex(x))
+			seen = []
+			final = []
+			for x in rec1:
+				tx = time.localtime(float(x.time / 1000))
+				if (tx.tm_year,tx.tm_yday,tx.tm_hour,tx.tm_min) in seen:
+					continue
+				else:
+					seen.append((tx.tm_year,tx.tm_yday,tx.tm_hour,tx.tm_min))
+					final.append(x)
+			records.extend(final)
+			records.reverse()
 		records = []
 		self.loadAsync(self.document,loadData,XamlReader().Load(open("../assets/ui/history.xaml", "r", encoding='utf-8').read()),pushData)
 		
