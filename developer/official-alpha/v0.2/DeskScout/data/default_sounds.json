@@ -1,0 +1,13 @@
+{
+	"../assets/sounds/attention.wav":"Attention Required",
+	"../assets/sounds/back_in_range.wav":"Back In Range",
+	"../assets/sounds/connected.wav":"Connected",
+	"../assets/sounds/disclaimer.wav":"Disclaimer",
+	"../assets/sounds/falling_fast.wav":"Falling Fast",
+	"../assets/sounds/rising_fast.wav":"Rising Fast",
+	"../assets/sounds/generic.wav":"Generic Notification",
+	"../assets/sounds/high_glucose.wav":"High Glucose",
+	"../assets/sounds/low_glucose.wav":"Low Glucose",
+	"../assets/sounds/urgent_low_soon.wav":"Urgent Low Soon",
+	"../assets/sounds/urgent_low.wav":"Urgent Low"
+}

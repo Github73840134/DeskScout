@@ -15,17 +15,19 @@ Microsoft Windows App Runtime 1.7 or later
 - High Glucose alerts
 - Tray Icon
 - Display in mmol/L
+- Glucose history page
+
 
 # Whats being worked on
 - Falling fast, Rising fast, Urgent Low Soon alerts
 - DeskScout system alert customization
 - Version string generation
 - Updater
-# Whats new as of 8/18/2025 (Build: 3)
-- Tray icon and quick glucose view added
-- OOBE animation
-- Shutdown from tray
-
+- Deleting glucose history
+# Whats new as of 8/21/2025 (Build: 4)
+- Glucose history view
+- Local glucose data storage
+- App/Service compatibility checks on application start
 
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
