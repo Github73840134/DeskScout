@@ -24,7 +24,7 @@ Microsoft Windows App Runtime 1.7 or later
 - Version string generation
 - Updater
 - Deleting glucose history
-# Whats new as of 8/21/2025 (Build: 4)
+# Whats new as of 8/22/2025 (Build: 5)
 - Glucose history view
 - Local glucose data storage
 - App/Service compatibility checks on application start
