@@ -21,7 +21,7 @@ serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "2"
-__build__ = 5
+__build__ = 6
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None
@@ -192,6 +192,10 @@ nametable = {
 	"fallingFast":"Falling Fast silenced",
 
 }
+def cap(num,_max):
+	if num > _max:
+		return _max
+	return num
 def notificationRespone(activatedEventArgs):
 	resp = activatedEventArgs.arguments.split(".")
 	settings = json.load(open("../data/settings.json"))
@@ -240,7 +244,7 @@ def recordAccessHandler():
 						if x < int(reading.datetime.timestamp()*1000):
 							print("Syncing")
 							if int((int(reading.datetime.timestamp())-(x/1000))/60) != 4:
-								records = account.get_glucose_readings(int((int(reading.datetime.timestamp())-(x/1000))/60),int(int((int(reading.datetime.timestamp())-(x/1000))/60)/5))
+								records = account.get_glucose_readings(cap(int((int(reading.datetime.timestamp())-(x/1000))/60),1140),cap(int(int((int(reading.datetime.timestamp())-(x/1000))/60)/5),288))
 							else:
 								records = account.get_glucose_readings(5,1)
 						else:
