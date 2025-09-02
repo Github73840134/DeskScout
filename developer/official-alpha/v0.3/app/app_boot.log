@@ -1,0 +1,48 @@
++2025-09-02 17:18:14,553 [0.0] boot INFO: Adding libs and mods folder to path
++2025-09-02 17:18:14,553 [0.0] boot INFO: Starting imports
++2025-09-02 17:18:16,099 [1.5457854270935059] boot INFO: Starting Application, you wont be hearing from me anymore
++2025-09-02 17:18:16,260 [1.7068650722503662] ui INFO: Main frame loaded
++2025-09-02 17:18:16,265 [1.711862325668335] service INFO: Checking if service is alive
++2025-09-02 17:18:16,952 [2.3985350131988525] service INFO: Service is alive
++2025-09-02 17:18:16,952 [2.3985350131988525] service INFO: Checking if service version is compatible
++2025-09-02 17:18:18,009 [3.455291509628296] app INFO: Checking login status
++2025-09-02 17:18:18,009 [3.455291509628296] app INFO: Authentication complete
++2025-09-02 17:18:18,009 [3.455291509628296] app INFO: Starting background thread
++2025-09-02 17:18:18,010 [3.4562904834747314] fetch INFO: Fetch task is online
++2025-09-02 17:18:18,010 [3.4562904834747314] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:18,059 [3.5052783489227295] ui INFO: Window is active
++2025-09-02 17:18:19,179 [4.625986337661743] ui INFO: Change detected, updating display
++2025-09-02 17:18:24,057 [9.504108667373657] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:29,880 [15.32654356956482] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:34,442 [19.888685941696167] ui INFO: Change detected, updating display
++2025-09-02 17:18:35,740 [21.18705677986145] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:41,740 [27.187182426452637] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:47,695 [33.14177584648132] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:48,660 [34.106456995010376] ui INFO: Change detected, updating display
++2025-09-02 17:18:52,682 [38.128862380981445] ui INFO: Change detected, updating display
++2025-09-02 17:18:53,604 [39.05061078071594] fetch INFO: Retrieving glucose data
++2025-09-02 17:18:59,612 [45.058672189712524] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:05,515 [50.96190595626831] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:08,970 [54.4165141582489] ui INFO: Change detected, updating display
++2025-09-02 17:19:11,538 [56.9844651222229] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:17,761 [63.20727205276489] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:23,584 [69.03068113327026] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:29,673 [75.11938524246216] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:35,500 [80.9469084739685] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:41,625 [87.07138633728027] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:47,685 [93.13173246383667] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:53,626 [99.07224321365356] fetch INFO: Retrieving glucose data
++2025-09-02 17:19:54,581 [100.02731990814209] ui INFO: Change detected, updating display
++2025-09-02 17:19:59,529 [104.9758939743042] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:05,431 [110.87728714942932] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:11,291 [116.73798108100891] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:17,203 [122.64996314048767] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:23,325 [128.77160477638245] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:29,266 [134.71235251426697] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:35,229 [140.67616844177246] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:41,676 [147.12247967720032] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:47,649 [153.09543228149414] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:53,600 [159.04681086540222] fetch INFO: Retrieving glucose data
++2025-09-02 17:20:59,543 [164.98967218399048] fetch INFO: Retrieving glucose data
++2025-09-02 17:21:05,577 [171.02339959144592] fetch INFO: Retrieving glucose data
++2025-09-02 17:21:11,595 [177.04213094711304] fetch INFO: Retrieving glucose data

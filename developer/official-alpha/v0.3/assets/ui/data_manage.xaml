@@ -1,0 +1,53 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      >
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <Button Name="dm.back" Content="Back"/>
+        <TextBlock Text="Data Management" FontSize="60" />
+        <Border BorderThickness="1" Height="64" >
+        </Border>
+        <TextBlock Text="Glucose History" FontSize="24" />
+        <TextBlock Text="Glucose data stored on your comptuer for faster graph and insight generation." FontSize="14" Height="24" />
+        <TextBlock Name="dm.glucose_usage" Text="Usage: 0.00MB" FontSize="14"/>
+        <Button Content="Delete Glucose History">
+				<Button.Flyout>
+					<Flyout>
+						<StackPanel>
+							<TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="By deleting glucose data, you may impact app performance" TextWrapping="Wrap" Margin="0,0,0,12" />
+							<StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Select a period of time: "/>
+                                <ComboBox Name="dm.delete_glucose.period" Padding="6,4" FontSize="13">
+                                    <ComboBoxItem Content="Past 24 hours" IsSelected="True" />
+                                    <ComboBoxItem Content="Past 48 hours" />
+                                    <ComboBoxItem Content="Past 7 days" />
+                                    <ComboBoxItem Content="Past 2 weeks" />
+                                    <ComboBoxItem Content="Past month" />
+                                    <ComboBoxItem Content="Past 3 months" />
+                                    <ComboBoxItem Content="Past 6 months" />
+                                    <ComboBoxItem Content="Older than a week" />
+                                    <ComboBoxItem Content="Older than two weeks" />
+                                    <ComboBoxItem Content="Older than one month" />
+                                    <ComboBoxItem Content="Older than three months" />
+                                    <ComboBoxItem Content="Older than six months" />
+                                    <ComboBoxItem Content="All time" />
+                                </ComboBox>
+                            </StackPanel>
+                            <Button IsEnabled="False" Name="dm.delete_glucose" Content="Continue" ToolTipService.ToolTip="Feature not avialable"/>
+						</StackPanel>
+					</Flyout>
+				</Button.Flyout>
+			</Button>
+        <TextBlock Text="Application Data" FontSize="24" />
+        <TextBlock Text="These are files used to run DeskScout, this includes your imported sounds, settings, and tokens" FontSize="14" Height="24" />
+        <TextBlock Name="dm.app_usage" Text="Usage: 0.00MB" FontSize="14"/>
+        <Button IsEnabled="False" Content="Backup, transfer, or restore your data" ToolTipService.ToolTip="Feature not avialable" />
+      
+   
+       
+    </StackPanel>
+
+   
+</Page>

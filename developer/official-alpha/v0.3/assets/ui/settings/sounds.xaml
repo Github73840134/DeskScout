@@ -1,0 +1,89 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     >
+    <StackPanel Orientation="Vertical">
+		<Button Name="settings.back" Content="Back"/>
+        <TextBlock Text="Sound Settings" FontSize="48" />
+        <Border BorderThickness="1" Height="16" />
+		<Button Name="settings.manage_sounds" Content="Manage Sounds"/>
+       <Pivot Title="Alarm Sounds">
+			<PivotItem Header="Urgent Low">
+				<StackPanel>
+      				<CheckBox Name="settings.sounds.alarms.ul.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Name="settings.sounds.alarms.ul.name" Text="Loading"/>
+						<Button Click="OpenChangeSoundDialog" Name="settings.sounds.alarms.ul.change" Content="Change"/>
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+			<PivotItem Header="Urgent Low Soon">
+				<StackPanel>
+      				<CheckBox Name="settings.sounds.alarms.uls.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Name="settings.sounds.alarms.uls.name" Text="Loading"/>
+						<Button Click="OpenChangeSoundDialog" Name="settings.sounds.alarms.uls.change" Content="Change"/>
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+			<PivotItem Header="Low">
+				<StackPanel>
+      				<CheckBox Name="settings.sounds.alarms.low.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Name="settings.sounds.alarms.low.name" Text="Loading"/>
+						<Button Click="OpenChangeSoundDialog" Name="settings.sounds.alarms.low.change" Content="Change"/>
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+			<PivotItem Header="High">
+				<StackPanel>
+      				<CheckBox Name="settings.sounds.alarms.high.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Name="settings.sounds.alarms.high.name" Text="Loading"/>
+						<Button Click="OpenChangeSoundDialog" Name="settings.sounds.alarms.high.change" Content="Change"/>
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+			<PivotItem Header="Rising Fast">
+				<StackPanel>
+      				<CheckBox Name="settings.sounds.alarms.rf.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Name="settings.sounds.alarms.rf.name" Text="Loading"/>
+						<Button Click="OpenChangeSoundDialog" Name="settings.sounds.alarms.rf.change" Content="Change"/>
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+			<PivotItem Header="Falling Fast">
+				<StackPanel>
+      				<CheckBox Name="settings.sounds.alarms.ff.enable" Content="Enable" FontSize="14" />
+					<StackPanel Orientation="Horizontal" >
+						<TextBlock Name="settings.sounds.alarms.ff.name" Text="Loading"/>
+						<Button Click="OpenChangeSoundDialog" Name="settings.sounds.alarms.ff.change" Content="Change"/>
+					</StackPanel>
+				</StackPanel>
+				
+			</PivotItem>
+		</Pivot>
+		<Pivot Title="Alert Sounds">
+			<PivotItem Header="Back In Range">
+			</PivotItem>
+			<PivotItem Header="Low Priority Alert">
+			</PivotItem>
+			<PivotItem Header="High Priority Alert">
+			</PivotItem>
+			<PivotItem Header="Service Connected">
+			</PivotItem>
+			<PivotItem Header="Service Disconnected">
+			</PivotItem>
+		</Pivot>
+    </StackPanel>
+
+  
+</Page>

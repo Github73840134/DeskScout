@@ -1,0 +1,18 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Frame>
+            
+        <ScrollViewer>
+        <StackPanel>
+            <TextBlock Text="Glucose History" FontSize="48" />
+            <ComboBox Name="DatePicker" />
+            <TextBlock Text="Overview" FontSize="36"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Name="DailyAverage" Text="" FontSize="24"/>
+                <TextBlock Name="Readings" Text="" FontSize="12"/>
+             </StackPanel>
+            <StackPanel Name="History" Orientation="Vertical">
+            </StackPanel>
+         </StackPanel>
+        </ScrollViewer>
+    </Frame>
+</Page>
