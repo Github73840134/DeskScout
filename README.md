@@ -24,10 +24,11 @@ Microsoft Windows App Runtime 1.7 or later
 - Version string generation
 - Updater
 - Deleting glucose history
-# Whats new as of 8/22/2025 (Build: 5)
-- Glucose history view
-- Local glucose data storage
-- App/Service compatibility checks on application start
+- Nightscout Settings
+# Whats new as of 9/2/2025 (Build: 7)
+- Glucose history view revamp
+- Average daily glucose
+- Glucose highlighing on home screen
 
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
