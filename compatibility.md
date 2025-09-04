@@ -22,4 +22,7 @@ Minimum server build: 4
 Maxmimum server build: 6
 ### App Build 7
 Minimum server build: 7  
-Maxmimum server build: ---
+Maxmimum server build: 8
+### App Build 8
+Minimum server build: 7  
+Maxmimum server build: 8
