@@ -40,7 +40,7 @@ serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "3"
-__build__ = 7
+__build__ = 8
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None

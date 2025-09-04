@@ -1,7 +1,7 @@
 __version__ = "0.3.1"
 __build__ = 8
 __min_server_build__ = 7
-__max_server_build__ = 7
+__max_server_build__ = 8
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging
