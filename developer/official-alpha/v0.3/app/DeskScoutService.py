@@ -172,6 +172,7 @@ def serverstatus():
 					serviceDisconnectedAt = time.time()
 					serviceOffline = False 
 					serviceDisconnectedAt = 0
+					_thread.start_new_thread(attemptConnect,())
 		except:
 			print("ERTS")
 			if not serviceOffline:
@@ -591,12 +592,17 @@ def runtime(internal):
 	bulb = internal
 	internal.visible = True
 	print(internal)
+	_thread.start_new_thread(attemptConnect,())
 	run(host='127.0.0.1', port=49152)
 	bulb.stop()
 from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
 state = False
-
+def attemptConnect():
+	global account,serviceConnected
+	import time
+	time.sleep(5)
+	requests.get("http://127.0.0.1:49152/authenticate")
 def shutdown(icon, item):
 	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/shutdown.wav')), None, SND_FILENAME)
 
@@ -618,4 +624,5 @@ icon = Icon(
 	),
 	title="DeskScout"
 	)
+
 icon.run(runtime)

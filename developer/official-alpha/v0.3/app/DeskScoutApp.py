@@ -1,5 +1,5 @@
-__version__ = "0.3.0"
-__build__ = 7
+__version__ = "0.3.1"
+__build__ = 8
 __min_server_build__ = 7
 __max_server_build__ = 7
 from tkinter import messagebox
@@ -581,15 +581,18 @@ class App(XamlApplication):
 				# Fade in the button
 				if data['i'] < 101:
 					data['i'] += data['speed']
-					nextbutton = self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button) 
-					
-
+					nextbutton = self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button)
+					restore = self.document.Content.as_(FrameworkElement).FindName("oobe.restore").as_(Button)
 
 					nextbutton.Opacity = (data['i'])*0.01
+					restore.Opacity = (data['i'])*0.01
+
 					nextbutton.UpdateLayout() #Update the page layout 
 					return self.raf.Respond(data)
 				else:
 					nextbutton = self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button)
+					restore = self.document.Content.as_(FrameworkElement).FindName("oobe.restore").as_(Button)
+					restore.add_Click(self.restoreButton) # Show disclaimer on button click
 					nextbutton.add_Click(lambda sender,args: self.showDisclaimer(task)) # Show disclaimer on button click
 					return self.raf.Respond(data,True) # Stop this function
 
@@ -612,10 +615,65 @@ class App(XamlApplication):
 		
 
 		task = lambda: self.setupAuthCheck(lambda: self.doOOBE("alarmsetup")) # Do an auth check and continue to alarm setup
-		nextbutton.add_Click(lambda sender,args: self.showDisclaimer(task))
 		nextbutton.Opacity = 0
+	def doRestore(self,path):
+		from zipfile import ZipFile
+		try:
+			zip = ZipFile(path)
+			for i in zip.filelist:
+				if i.filename == ".deskscout":
+					break
+			else:
+				messagebox.showerror("Deskscout","Error restoring settings")
+				self.restoreState = -1
+			for i in zip.filelist:
+				if i.filename.startswith("sounds/"):
+					print(i.filename)
+					if i.filename == "sounds/":
+						continue
+					x = zip.open(i.filename)
+					y = open(f"../assets/sounds/extern/{os.path.basename(i.filename)}",'wb+')
+					y.write(x.read())
+					y.close()
+			for i in zip.filelist:
+				if i.filename == "settings.json":
+					x = zip.open("settings.json")
+					y = open("../data/settings.json",'wb+')
+					y.write(x.read())
+					y.close()
+			for i in zip.filelist:
+				if i.filename == "glucose.gdr":
+					x = zip.open("glucose.gdr")
+					y = open("../data/glucose.gdr",'wb+')
+					y.write(x.read())
+					y.close()
+			self.restoreState = 1
+			
 
 
+		except Exception as e:
+			messagebox.showerror("Deskscout",f"Error restoring settings\n{str(e)}")
+			self.restoreState = -1
+			return
+	
+	def afterRestore(self):
+		if self.restoreState == -1:
+			self.launchOOBE()
+		elif self.restoreState == 1:
+			self.showDisclaimer(lambda: self.setupAuthCheck(self.setupComplete))
+			
+
+
+
+	def restoreButton(self,sender,args):
+		from tkinter import filedialog
+		ans = filedialog.askopenfilename(filetypes=[["Zip Files",[".zip"]]])
+		if not ans:
+			return
+		self.restoreState = 0
+
+		self.loadAsync(self.document,lambda:self.doRestore(ans),XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),self.afterRestore)
+		
 	def doOOBE(self,page="alarmsetup"):
 		def PresetRoot(internal=False):
 			if page == "alarmsetup":
@@ -1526,6 +1584,52 @@ class App(XamlApplication):
 
 		root.Content.as_(FrameworkElement).FindName("settings.about").as_(Button).add_Click(aboutPage)
 		return Settings()
+	def doImportData(self):
+		pass
+	def initDataImportPage(self):
+		pass
+	def initDataBackupPage(self):
+		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
+		glucose = self.document.Content.as_(FrameworkElement).FindName("backup.glucose").as_(CheckBox)
+		settings = self.document.Content.as_(FrameworkElement).FindName("backup.settings").as_(CheckBox)
+		sounds = self.document.Content.as_(FrameworkElement).FindName("backup.sounds").as_(CheckBox)
+		run = self.document.Content.as_(FrameworkElement).FindName("backup.start").as_(Button)
+		def backupData(glucose,settings,sounds,path):
+			try:
+			
+				from zipfile import ZipFile
+				zip = ZipFile(path,'w')
+				zip.open(".deskscout",'w').close()
+				if glucose:
+					file = zip.open('glucose.gdr','w')
+					file.write(open("../data/glucose.gdr",'rb').read())
+					file.close()
+				if settings:
+					file = zip.open('settings.json','w')
+					file.write(open("../data/settings.json",'rb').read())
+					file.close()
+				if sounds:
+					zip.mkdir('sounds')
+					for i in os.listdir("../assets/sounds/extern"):
+						x = open(f"../assets/sounds/extern/{i}",'rb')
+						y = zip.open(f"sounds/{i}",'w')
+						y.write(x.read())
+						y.close()
+				zip.close()
+				messagebox.showinfo("DeskScout","Backup completed successfully")
+			except Exception as e:
+				messagebox.showerror("DeskScout",f"An error occured while backing up:\n{str(e)}")
+
+			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
+		def start(sender,args):
+			from tkinter import filedialog
+			ans = filedialog.asksaveasfilename(filetypes=[["Zip Archive",['.zip']]])
+			if not ans:
+				return
+			self.loadAsync(self.document,lambda a=glucose.IsChecked,b=settings.IsChecked,c=sounds.IsChecked,d=ans:backupData(a,b,c,d),XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
+		run.add_Click(start)
+		back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),lambda: self.initDataManagement()))
+		
 	def initDataManagement(self):
 		# peeved.
 		def cs(v):
@@ -1547,6 +1651,10 @@ class App(XamlApplication):
 			self.document.Content.as_(FrameworkElement).FindName("dm.glucose_usage").as_(TextBlock).Text = f"Usage: {cs(os.stat(os.path.abspath("../data/glucose.gdr")).st_size)}"
 
 			self.document.Content.as_(FrameworkElement).FindName("dm.app_usage").as_(TextBlock).Text = f"Usage: {cs(space)}"
+
+			backup = self.document.Content.as_(FrameworkElement).FindName("dm.backup").as_(Button)
+			backup.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/settings/backup.xaml", "r", encoding='utf-8').read()),self.initDataBackupPage))
+			
 			
 			back = self.document.Content.as_(FrameworkElement).FindName("dm.back").as_(Button)
 			back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),self.initAboutPage))
@@ -1560,7 +1668,7 @@ class App(XamlApplication):
 
 		def loadContent():
 			self.document.Content.as_(FrameworkElement).FindName("about.version").as_(TextBlock).Text = f"Version: {__version__}"
-			self.document.Content.as_(FrameworkElement).FindName("about.build").as_(TextBlock).Text = f"Version: {__build__}"
+			self.document.Content.as_(FrameworkElement).FindName("about.build").as_(TextBlock).Text = f"Build: {__build__}"
 			self.document.Content.as_(FrameworkElement).FindName("about.platform").as_(TextBlock).Text = f"Platform: {sys.platform}"
 			self.document.Content.as_(FrameworkElement).FindName("about.reset").as_(Button).add_Click(reset)
 			self.document.Content.as_(FrameworkElement).FindName("about.server_version").as_(TextBlock).Text = f"Version: {serverinfo['version']}"
@@ -1701,7 +1809,7 @@ class App(XamlApplication):
 			readings = self.document.Content.as_(FrameworkElement).FindName("Readings").as_(TextBlock)
 
 			davg.Text = f"Average: {int(avg/len(records)) if unit else round((avg/len(records))/18,1)}{'mg/dl' if unit else 'mmol/L'}"
-			readings.Text = f"({len(records)} readings)"
+			readings.Text = f"({len(records)} readings / {int((len(records)/288)*100)}%)"
 			date_picker.SelectionChanged += update
 
 		def loadData(date):

@@ -38,6 +38,13 @@ elif sys.argv[1] == "checkForDuplicates":
 		print(i)
 		dups += recs.count(i)-1
 	print("Duplicates found:",dups)
-
+elif sys.argv[1] == "backup":
+	import shutil
+	print("Backing up glucose records")
+	shutil.copy("../data/glucose.gdr",sys.argv[2])
+elif sys.argv[1] == "restore":
+	import shutil
+	print("Importing glucose records")
+	shutil.copy(sys.argv[2],"../data/glucose.gdr")
 
 	

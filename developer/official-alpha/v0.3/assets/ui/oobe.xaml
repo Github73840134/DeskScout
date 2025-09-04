@@ -19,5 +19,7 @@
             <Button Opacity="0" Name="oobe.next" Content="Lets Go" HorizontalAlignment="Center" />
         
         </StackPanel>
+        <Button Name="oobe.restore" Opacity="0" Content="Restore Settings" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+
     </Grid>
 </Page>

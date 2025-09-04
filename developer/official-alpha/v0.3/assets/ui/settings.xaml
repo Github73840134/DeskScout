@@ -167,15 +167,15 @@
 			<CheckBox Name="settings.ns.enable" Content="Enable Nightscout sync"/>
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="URL"/>
-				<TextBox Text="" Height="32" Width="128" IsReadOnly="False" Name="settings.ns.url" />
+				<TextBox Text="" Height="32" Width="500" IsReadOnly="False" Name="settings.ns.url" />
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="Uploader token"/>
-				<TextBox Text="" Height="32" Width="128" IsReadOnly="False" Name="settings.ns.token" />
+				<TextBox Text="" Height="32" Width="500" IsReadOnly="False" Name="settings.ns.token" />
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
-				<TextBlock Text="Sync: "/>
-				<ComboBox Name="settings.ns.period">
+				<TextBlock Text="Sync: " VerticalAlignment="Center"/>
+				<ComboBox Name="settings.ns.period" VerticalAlignment="Center">
 					<ComboBoxItem Content="As soon as possible" IsSelected="True"/>
 					<ComboBoxItem Content="Automatic"/>
 					<ComboBoxItem Content="Every 15 minutes"/>

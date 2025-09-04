@@ -43,7 +43,19 @@
         <TextBlock Text="Application Data" FontSize="24" />
         <TextBlock Text="These are files used to run DeskScout, this includes your imported sounds, settings, and tokens" FontSize="14" Height="24" />
         <TextBlock Name="dm.app_usage" Text="Usage: 0.00MB" FontSize="14"/>
-        <Button IsEnabled="False" Content="Backup, transfer, or restore your data" ToolTipService.ToolTip="Feature not avialable" />
+        <Button Content="Backup, transfer, or restore your data">
+            <Button.Flyout>
+                <Flyout>
+                    <StackPanel>
+                        <TextBlock Text="Select an option"/>
+                        <Button Name="dm.backup" Content="Backup your data"/>
+                        <Border Height="10"/>
+                        <Button Name="dm.import" Content="Import your data"/>
+                    </StackPanel>
+                </Flyout>
+            </Button.Flyout>
+        </Button>
+
       
    
        
