@@ -55,6 +55,13 @@
                 </Flyout>
             </Button.Flyout>
         </Button>
+        <TextBlock Text="Logs" FontSize="24" />
+        <TextBlock Text="This includes network transparency data and application diagnostic data. (No personal data is included,a dn these logs stay on device)." FontSize="14" Height="24" />
+        
+        <TextBlock Name="dm.log_usage" Text="Usage: 0.00MB" FontSize="14"/>
+        <TextBlock Text="This data cannot be deleted by the app while DeskScout is running. The file is located at DeskScout/app/netlogs/service.log and DeskScout/app/app_boot.log" TextWrapping="Wrap"/>
+
+
 
       
    

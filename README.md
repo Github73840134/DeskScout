@@ -16,6 +16,8 @@ Microsoft Windows App Runtime 1.7 or later
 - Tray Icon
 - Display in mmol/L
 - Glucose history page
+- Auto login
+- Data export
 
 
 # Whats being worked on
@@ -25,9 +27,9 @@ Microsoft Windows App Runtime 1.7 or later
 - Updater
 - Deleting glucose history
 - Nightscout Settings
-- Importing data from Settings
-# Whats new as of 9/3/2025 (Build: 8)
 
+# Whats new as of 9/4/2025 (Build: 9)
+- Importing data from Settings
 - Data export and restore
 
 # Running the app

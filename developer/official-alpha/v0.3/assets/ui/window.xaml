@@ -3,15 +3,28 @@
  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  mc:Ignorable="d">
-  <Window.SystemBackdrop>
-    <MicaBackdrop Kind="BaseAlt"/>
-  </Window.SystemBackdrop>
-  <NavigationView x:Name="NavView"
+	<Window.SystemBackdrop>
+		<MicaBackdrop Kind="BaseAlt"/>
+	</Window.SystemBackdrop>
+	<NavigationView x:Name="NavView"
  IsBackButtonVisible="Collapsed">
-    <NavigationView.MenuItems>
-      <NavigationViewItem Tag="App.Home" Content="Home" Icon="Home"/>
-      <NavigationViewItem Tag="App.Historical" Content="History" Icon="Library"/>
-    </NavigationView.MenuItems>
-    <Frame x:Name="ContentFrame"/>
-  </NavigationView>
+		<NavigationView.MenuItems>
+			<NavigationViewItem Tag="App.Home" Content="Home" Icon="Home"/>
+			<NavigationViewItem Tag="App.Historical" Content="History" Icon="Library"/>
+		</NavigationView.MenuItems>
+		<Grid>
+			<Frame x:Name="ContentFrame" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" />
+			<Frame Name="popup" Visibility="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+            <StackPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+					<Grid x:Name="popup.container" MinWidth="200" MinHeight="100" Background="#80000000"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <StackPanel Background="#323232" Opacity="1" HorizontalAlignment="Center" VerticalAlignment="Center" >
+                            <TextBlock Name="popup.title" Text="" FontSize="24"/>
+                            <Frame Name="popup.content"></Frame>
+                        </StackPanel>
+					</Grid>
+					
+				</StackPanel>
+        	</Frame>
+		</Grid>
+	</NavigationView>
 </Window>

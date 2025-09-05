@@ -19,7 +19,7 @@ class DeltaTimeFormatter(logging.Formatter):
 	def format(self, record):
 		record.delta = time.time()-ast
 		return super().format(record)
-handler = logging.StreamHandler(open("netlogs/service.log","w+"))
+handler = logging.StreamHandler(open("netlogs/service.log","w"))
 LOGFORMAT = '+%(asctime)s [%(delta)s] %(name)s %(levelname)s: %(message)s'
 fmt = DeltaTimeFormatter(LOGFORMAT)
 handler.setFormatter(fmt)

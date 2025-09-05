@@ -1,5 +1,5 @@
 __version__ = "0.3.1"
-__build__ = 8
+__build__ = 9
 __min_server_build__ = 7
 __max_server_build__ = 8
 from tkinter import messagebox
@@ -499,12 +499,11 @@ class App(XamlApplication):
 		self._resize_timer = DispatcherTimer()
 		interval = TimeSpan()
 		self.pbts = None
-		interval.Duration = 10000000 # 100ms
+		interval.Duration = 100000 # 100ms
 		self._resize_timer.Interval = interval
 		self._resize_timer.Tick += self.update_Display
 		self._resize_timer.Start()
-		
-		
+	
 		self.documentProvider = self.document
 	def NotImplemented(self,*args):
 		messagebox.showerror("Work in progress","Feature is not implemented")
@@ -512,7 +511,7 @@ class App(XamlApplication):
 		def fadeIn(elapsed,data):
 			print(elapsed)
 			if data['x'] == 0:
-				# Give some time for the 4k image to load
+				# Now Wait...
 				if data['i'] < 501:
 					data['i'] += data['speed']
 					
@@ -528,7 +527,7 @@ class App(XamlApplication):
 
 					return self.raf.Respond(data)
 			elif data['x'] == 1:
-				# Fade out spinner and fade in background
+				# And try to find another mistake
 				if data['i'] < 101:
 					data['i'] += data['speed']
 					img = self.document.Content.as_(FrameworkElement).FindName("Background").as_(Image)
@@ -546,7 +545,7 @@ class App(XamlApplication):
 					data['i'] = 0
 					return self.raf.Respond(data)
 			elif data['x'] == 2:
-				# Fade in the title
+				# If you throw it all away then maybe you can change your mind
 				if data['i'] < 101:
 					data['i'] += data['speed']
 					img = self.document.Content.as_(FrameworkElement).FindName("Title").as_(TextBlock)
@@ -617,6 +616,7 @@ class App(XamlApplication):
 		task = lambda: self.setupAuthCheck(lambda: self.doOOBE("alarmsetup")) # Do an auth check and continue to alarm setup
 		nextbutton.Opacity = 0
 	def doRestore(self,path):
+		
 		from zipfile import ZipFile
 		try:
 			zip = ZipFile(path)
@@ -657,6 +657,7 @@ class App(XamlApplication):
 			return
 	
 	def afterRestore(self):
+		# This code is a bitch, not the slaying kind, unless it slays exiting the program
 		if self.restoreState == -1:
 			self.launchOOBE()
 		elif self.restoreState == 1:
@@ -827,15 +828,18 @@ class App(XamlApplication):
 		import re
 		#print("FS",self.fetchState,self.state)
 		#Check if the user is logged in
+		width,height = self.win.Content.as_(FrameworkElement).ActualWidth,self.win.Content.as_(FrameworkElement).ActualHeight
+		self.win.Content.as_(FrameworkElement).FindName("popup.container").as_(Grid).Height = height
 		if (self.fetchState == 1 or self.fetchState == 2) and self.page != "oobe" and self.state == AppState.RUNNING:
 			self.fetchState = 0 # Set fetch state to dsibaled
 			self.showSignIn(self.goHome) # Go to the sign in page, upon success return tot ht ehome apge
 		elif self.fetchState == 4:
 			# The fetcher could not connect to the service
-			glucose = self.document.Content.as_(FrameworkElement).FindName("reading").as_(TextBlock)
-			last = self.document.Content.as_(FrameworkElement).FindName("last_update").as_(TextBlock)
-			trend = self.document.Content.as_(FrameworkElement).FindName("trendarrow").as_(TextBlock)
-			last.Text = "Not Connected"
+			if self.page == "home":
+				glucose = self.document.Content.as_(FrameworkElement).FindName("reading").as_(TextBlock)
+				last = self.document.Content.as_(FrameworkElement).FindName("last_update").as_(TextBlock)
+				trend = self.document.Content.as_(FrameworkElement).FindName("trendarrow").as_(TextBlock)
+				last.Text = "Not Connected"
 			return
 
 		if self.page == "home" and self.state == AppState.RUNNING:
@@ -1587,8 +1591,105 @@ class App(XamlApplication):
 	def doImportData(self):
 		pass
 	def initDataImportPage(self):
-		pass
+		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
+		glucose = self.document.Content.as_(FrameworkElement).FindName("import.glucose").as_(CheckBox)
+		settings = self.document.Content.as_(FrameworkElement).FindName("import.settings").as_(CheckBox)
+		sounds = self.document.Content.as_(FrameworkElement).FindName("import.sounds").as_(CheckBox)
+		run = self.document.Content.as_(FrameworkElement).FindName("import.start").as_(Button)
+		def backupData(glucose,settings,sounds,path):
+			try:
+				
+				from zipfile import ZipFile
+
+				zip = ZipFile(path)
+				for i in zip.filelist:
+					if i.filename == ".deskscout":
+						
+						break
+
+				else:
+					content = XamlReader().Load(
+						"""
+						<Page
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+	<StackPanel>
+		<TextBlock Text="FIle is not a deskcout backup"/>
+		<Button Name="popup.content.ok" Content="OK"/>
+	</StackPanel>
+</Page>"""
+						)
+					ctx = self.showPopup("Error",content)
+					ctx.as_(FrameworkElement).FindName("popup.content.ok").Click += lambda sender,args: self.hidePopup()
+					return
+				if sounds:
+					for i in zip.filelist:
+						if i.filename.startswith("sounds/"):
+							print(i.filename)
+							if i.filename == "sounds/":
+								continue
+							x = zip.open(i.filename)
+							y = open(f"../assets/sounds/extern/{os.path.basename(i.filename)}",'wb+')
+							y.write(x.read())
+							y.close()
+				if settings:
+					for i in zip.filelist:
+						if i.filename == "settings.json":
+							x = zip.open("settings.json")
+							y = open("../data/settings.json",'wb+')
+							y.write(x.read())
+							y.close()
+				if glucose:
+					for i in zip.filelist:
+						if i.filename == "glucose.gdr":
+							x = zip.open("glucose.gdr")
+							y = open("../data/glucose.gdr",'wb+')
+							y.write(x.read())
+							y.close()
+				content = XamlReader().Load(
+						"""
+						<Page
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+	<StackPanel>
+		<TextBlock Text="Data imported successfully"/>
+		<Button Name="popup.content.ok" Content="OK"/>
+	</StackPanel>
+</Page>"""
+						)
+				ctx = self.showPopup("Success!",content)
+				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+			except Exception as e:
+				content = XamlReader().Load(
+						"""
+						<Page
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+	<StackPanel>
+		<TextBlock Text="Data could not be imported"/>
+		<Button Name="popup.content.ok" Content="OK"/>
+	</StackPanel>
+</Page>"""
+						)
+				ctx = self.showPopup("Error",content)
+				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
+		def start(sender,args):
+			from tkinter import filedialog
+			ans = filedialog.askopenfilename(filetypes=[["Zip Archive",['.zip']]])
+			if not ans:
+				return
+			self.loadAsync(self.document,lambda a=glucose.IsChecked,b=settings.IsChecked,c=sounds.IsChecked,d=ans:backupData(a,b,c,d),XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
+		run.add_Click(start)
+		back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),lambda: self.initDataManagement()))
 	def initDataBackupPage(self):
+		
 		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
 		glucose = self.document.Content.as_(FrameworkElement).FindName("backup.glucose").as_(CheckBox)
 		settings = self.document.Content.as_(FrameworkElement).FindName("backup.settings").as_(CheckBox)
@@ -1616,9 +1717,36 @@ class App(XamlApplication):
 						y.write(x.read())
 						y.close()
 				zip.close()
-				messagebox.showinfo("DeskScout","Backup completed successfully")
+				content = XamlReader().Load(
+						"""
+						<Page
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+	<StackPanel>
+		<TextBlock Text="Data exported successfully"/>
+		<Button Name="popup.content.ok" Content="OK"/>
+	</StackPanel>
+</Page>"""
+						)
+				ctx = self.showPopup("Success!",content)
+				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
 			except Exception as e:
-				messagebox.showerror("DeskScout",f"An error occured while backing up:\n{str(e)}")
+				content = XamlReader().Load(
+						"""
+						<Page
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+	<StackPanel>
+		<TextBlock Text="An error occured while backing up data"/>
+		<Button Name="popup.content.ok" Content="OK"/>
+	</StackPanel>
+</Page>""")
+				ctx = self.showPopup("Backup Failed",content)
+				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
 
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
 		def start(sender,args):
@@ -1643,7 +1771,12 @@ class App(XamlApplication):
 				return str(round(v/1e+9,2))+" GB"
 		def loadContent():
 			space = 0
+			space2 = 0
 			space += os.stat(os.path.abspath("../data/settings.json")).st_size
+			space2 += os.stat(os.path.abspath("netlogs/service.log")).st_size
+			space2 += os.stat(os.path.abspath("app_boot.log")).st_size
+
+
 
 			for root,dirs,files in os.walk(os.path.abspath("../assets/sounds")):
 				for i in files:
@@ -1651,14 +1784,77 @@ class App(XamlApplication):
 			self.document.Content.as_(FrameworkElement).FindName("dm.glucose_usage").as_(TextBlock).Text = f"Usage: {cs(os.stat(os.path.abspath("../data/glucose.gdr")).st_size)}"
 
 			self.document.Content.as_(FrameworkElement).FindName("dm.app_usage").as_(TextBlock).Text = f"Usage: {cs(space)}"
+			self.document.Content.as_(FrameworkElement).FindName("dm.log_usage").as_(TextBlock).Text = f"Usage: {cs(space2)}"
+
 
 			backup = self.document.Content.as_(FrameworkElement).FindName("dm.backup").as_(Button)
 			backup.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/settings/backup.xaml", "r", encoding='utf-8').read()),self.initDataBackupPage))
+
+			dataImport = self.document.Content.as_(FrameworkElement).FindName("dm.import").as_(Button)
+			dataImport.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/settings/import.xaml", "r", encoding='utf-8').read()),self.initDataImportPage))
 			
 			
 			back = self.document.Content.as_(FrameworkElement).FindName("dm.back").as_(Button)
 			back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),self.initAboutPage))
 		self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),loadContent)
+	def initNetworkLogPage(self):
+		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
+		back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),self.initAboutPage))
+		logselect = self.document.Content.as_(FrameworkElement).FindName("logs.logselect").as_(ComboBox)
+		logview = self.document.Content.as_(FrameworkElement).FindName("logs.logdata").as_(TextBox)
+		def onLogChange(sender,args):
+			if sender.as_(ComboBox).SelectedIndex == 0:
+				print("Logs change")
+		logselect.SelectionChanged += onLogChange
+		logview.Text = open('netlogs/service.log').read()
+	def initAppLogPage(self):
+		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
+		back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),self.initAboutPage))
+		logview = self.document.Content.as_(FrameworkElement).FindName("logs.logdata").as_(TextBox)
+		logview.Text = open('app_boot.log').read()
+	def showPopup(self,title,content):
+		popup = self.win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
+		_title = self.win.Content.as_(FrameworkElement).FindName('popup.title').as_(TextBlock)
+		_content = self.win.Content.as_(FrameworkElement).FindName('popup.content').as_(Frame)
+		_content.Content = content
+		
+		_title.Text = title
+		popup.Visibility = Visibility.Visible
+		popup.Opacity = 0
+		def opaci(elapsed,data):
+			if data['i'] != 100:
+				popup = data['s'].win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
+				popup.Opacity = data['i']*0.01
+				data['i'] += 10
+				return self.raf.Respond(data)
+			else:
+				popup = data['s'].win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
+
+				popup.Opacity = 1
+
+				return self.raf.Respond(data,True)
+				
+		self.raf.request_animation_frame(opaci,{'i':0,"s":self})
+		return _content.Content
+	def hidePopup(self):
+		popup = self.win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
+		def opaci(elapsed,data):
+			if data['i'] != 100:
+				popup = data['s'].win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
+				popup.Opacity = (100-data['i'])*0.01
+				data['i'] += 10
+				return self.raf.Respond(data)
+			else:
+				popup = data['s'].win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
+
+				popup.Visibility = Visibility.Collapsed
+
+				return self.raf.Respond(data,True)
+				
+		self.raf.request_animation_frame(opaci,{'i':0,"s":self})
+
+
+
 
 
 	def initAboutPage(self):
@@ -1679,12 +1875,18 @@ class App(XamlApplication):
 
 			self.document.Content.as_(FrameworkElement).FindName("about.server_release").as_(TextBlock).Text = f"Release: {serverinfo['release']}"
 			self.document.Content.as_(FrameworkElement).FindName("about.server_channel").as_(TextBlock).Text = f"Channel: {serverinfo['channel']}"
+			# I want to speak to the manager, the data manager
 			self.document.Content.as_(FrameworkElement).FindName("about.datamanage").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: print(),self.initDataManagement))
+			self.document.Content.as_(FrameworkElement).FindName("about.logs").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/logs/network.xaml", "r", encoding='utf-8').read()),self.initNetworkLogPage))
+			self.document.Content.as_(FrameworkElement).FindName("about.alog").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/logs/app.xaml", "r", encoding='utf-8').read()),self.initAppLogPage))
+
+			
 			back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
 			back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/settings.xaml", "r", encoding='utf-8').read()),self.initSettingsPage))
 		
 
 		def reset(sender,args):
+			# So maybe we could, start all over, start all over again
 			import keyring,subprocess
 			def doReset():
 				keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
@@ -1849,15 +2051,6 @@ class App(XamlApplication):
 		
 		
 		
-
-
-
-
-
-
-			
-		
-		
 	def NavChangeSelect(self,sender,args):
 		# My fingies hurt now
 		if args.SelectedItem:
@@ -1919,4 +2112,4 @@ class App(XamlApplication):
 
 boot.info("Starting Application, you wont be hearing from me anymore")
 XamlApplication.Start(App)
-# I dont like writing comments, i hate doing this, but im doing this for you.
+# I dont like writing comments, i hate doing this, but im doing this for you. 

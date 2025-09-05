@@ -14,7 +14,7 @@
         <CheckBox Name="import.glucose" Content="Glucose History" IsChecked="True"/>
         <CheckBox Name="import.settings" Content="Settings" IsChecked="True"/>
         <CheckBox Name="import.sounds" Content="Sounds" IsChecked="True" />
-        <Button Name="backup.import" Content="Import" />
+        <Button Name="import.start" Content="Import" />
       
    
        
