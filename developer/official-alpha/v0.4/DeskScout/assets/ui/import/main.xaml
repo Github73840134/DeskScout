@@ -1,0 +1,24 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      >
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <TextBlock Text="Transfer your data" FontSize="60" />
+        <Border BorderThickness="1" Height="16" >
+            
+        </Border>
+        <TextBlock Text="To begin:" FontSize="24" />
+        <TextBlock Text="Open Deskscout on your other device,  > Restore" FontSize="18" />
+        <TextBlock Text="Go to Settings > About DeskScout > Backup, Transfer or Restore your data" FontSize="18" />
+        <TextBlock Text="Select Restore from another computer" FontSize="18" />
+        <TextBlock Text="Enter the code shown below:" FontSize="18" />
+        <TextBlock Name="code" Text="------" FontSize="24" />
+        <TextBlock Name="status" Text="Waiting for device..." FontSize="24" />
+        <Button Name="cancel" Content="Cancel"/>
+
+    </StackPanel>
+
+   
+</Page>
