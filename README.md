@@ -27,10 +27,10 @@ Microsoft Windows App Runtime 1.7 or later
 - Updater
 - Deleting glucose history
 - Nightscout Settings
+- Glucose graph
 
-# Whats new as of 9/4/2025 (Build: 9)
-- Importing data from Settings
-- Data export and restore
+# Whats new as of 9/7/2025 (Build: 10)
+- Glucose graph in glucose history tab
 
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
