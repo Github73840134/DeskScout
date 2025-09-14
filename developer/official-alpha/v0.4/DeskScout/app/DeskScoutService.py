@@ -40,7 +40,7 @@ serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "3"
-__build__ = 9
+__build__ = 10
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None
@@ -387,7 +387,36 @@ def notificationRunner():
 									PlaySoundW(PWSTR(settings['notify']['high']['sound']), None, SND_FILENAME)
 						else:
 							silence['high'] = None
-					
+					if settings['notify']['fallingFast']['enabled']:
+						if reading.value >= settings['notify']['fallingFast']['level']:
+							#1,2,6,7
+							if reading.trend_arrow == (6 if settings['notify']['fallingFast']['arrow'] == 'one' else 7) :
+								if silence['fallingFast']:
+									if time.time()-silence['fallingFast'] >= settings['notify']['fallingFast']['silence']:
+										silence['fallingFast'] = None
+								if silence['low'] == None:
+									newToast = Toast(['DeskScout',f"Falling Fast-{reading.value if settings['useMGDL'] else round(reading.value/18,1)} {'mg/dl' if settings['useMGDL'] else 'mmol/L'}",f"Your glucose is falling fast at {'2-3 mg/dl' if settings['notify']['risingFast']['arrow']=="one" else '3+ mg/dl'}"],duration=ToastDuration.Long)
+									newToast.AddAction(ToastButton('OK', 'silence.fallingFast'))
+									newToast.on_activated = notificationRespone
+									toaster.show_toast(newToast)
+									notified['fallingFast'] = True
+									if settings['notify']['fallingFast']['soundOn']:
+										PlaySoundW(PWSTR(settings['notify']['fallingFast']['sound']), None, SND_FILENAME)
+					if settings['notify']['risingFast']['enabled']:
+						if reading.value >= settings['notify']['risingFast']['level']:
+							#1,2,6,7
+							if reading.trend_arrow == (6 if settings['notify']['risingFast']['arrow'] == 'one' else 7) :
+								if silence['risingFast']:
+									if time.time()-silence['risingFast'] >= settings['notify']['risingFast']['silence']:
+										silence['risingFast'] = None
+								if silence['low'] == None:
+									newToast = Toast(['DeskScout',f"Rising Fast-{reading.value if settings['useMGDL'] else round(reading.value/18,1)} {'mg/dl' if settings['useMGDL'] else 'mmol/L'}",f"Your glucose is rising fast at {'2-3 mg/dl' if settings['notify']['risingFast']['arrow']=="one" else '3+ mg/dl'}"],duration=ToastDuration.Long)
+									newToast.AddAction(ToastButton('OK', 'silence.fallingFast'))
+									newToast.on_activated = notificationRespone
+									toaster.show_toast(newToast)
+									notified['fallingFast'] = True
+									if settings['notify']['fallingFast']['soundOn']:
+										PlaySoundW(PWSTR(settings['notify']['fallingFast']['sound']), None, SND_FILENAME)
 					
 		
 
