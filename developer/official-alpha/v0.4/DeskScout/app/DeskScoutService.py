@@ -346,6 +346,7 @@ def notificationRunner():
 								newToast = Toast(['DeskScout',"Urgent Low Glucose",f"Your glucose is {reading.value} mg/dl"],duration=ToastDuration.Long)
 								newToast.AddAction(ToastButton('OK', 'silence.urgentLow'))
 								newToast.on_activated = notificationRespone
+								newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 								toaster.clear_toasts()
 								toaster.show_toast(newToast)
 								notified['urgentLow'] = True
@@ -364,6 +365,7 @@ def notificationRunner():
 								newToast = Toast(['DeskScout',"Low Glucose",f"Your glucose is {reading.value} mg/dl"],duration=ToastDuration.Long)
 								newToast.AddAction(ToastButton('OK', 'silence.low'))
 								newToast.on_activated = notificationRespone
+								newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 								toaster.show_toast(newToast)
 								notified['low'] = True
 								if settings['notify']['low']['soundOn']:
@@ -381,6 +383,7 @@ def notificationRunner():
 								newToast = Toast(['DeskScout',"High Glucose",f"Your glucose is {reading.value} mg/dl"],duration=ToastDuration.Long)
 								newToast.AddAction(ToastButton('OK', 'silence.high'))
 								newToast.on_activated = notificationRespone
+								newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 								toaster.show_toast(newToast)
 								notified['high'] = True
 								if settings['notify']['high']['soundOn']:
@@ -398,6 +401,7 @@ def notificationRunner():
 									newToast = Toast(['DeskScout',f"Falling Fast-{reading.value if settings['useMGDL'] else round(reading.value/18,1)} {'mg/dl' if settings['useMGDL'] else 'mmol/L'}",f"Your glucose is falling fast at {'2-3 mg/dl' if settings['notify']['risingFast']['arrow']=="one" else '3+ mg/dl'}"],duration=ToastDuration.Long)
 									newToast.AddAction(ToastButton('OK', 'silence.fallingFast'))
 									newToast.on_activated = notificationRespone
+									newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 									toaster.show_toast(newToast)
 									notified['fallingFast'] = True
 									if settings['notify']['fallingFast']['soundOn']:
@@ -413,6 +417,7 @@ def notificationRunner():
 									newToast = Toast(['DeskScout',f"Rising Fast-{reading.value if settings['useMGDL'] else round(reading.value/18,1)} {'mg/dl' if settings['useMGDL'] else 'mmol/L'}",f"Your glucose is rising fast at {'2-3 mg/dl' if settings['notify']['risingFast']['arrow']=="one" else '3+ mg/dl'}"],duration=ToastDuration.Long)
 									newToast.AddAction(ToastButton('OK', 'silence.fallingFast'))
 									newToast.on_activated = notificationRespone
+									newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 									toaster.show_toast(newToast)
 									notified['fallingFast'] = True
 									if settings['notify']['fallingFast']['soundOn']:

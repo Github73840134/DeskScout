@@ -124,7 +124,6 @@ def makeGraph(width,height,mintime,maxtime,low,high,history):
 		for i in range(int(width*0.08),int(width),40):
 			draw.rectangle((i,_map(high,40,400,int(height*0.94),int(height*0.05)),i+20,_map(high,40,400,int(height*0.94),int(height*0.05))),(255,200,0))
 	for i in range(mintime,maxtime,3600):
-		print(i)
 		
 		x = _map(i,mintime,maxtime,int(width*0.08),int(width))
 
@@ -132,15 +131,17 @@ def makeGraph(width,height,mintime,maxtime,low,high,history):
 		if x-int(width*0.05) > int(width*0.05):
 		
 			draw.text((x-int(width*0.05),int(height*0.96)),time.strftime("%I%p", time.localtime(i)),(0,0,0))
-	if history[-1][0] <= low:
-		draw.rectangle((int(width*0.082),_map(low,40,400,int(height*0.94),int(height*0.05)),int(width),int(height*0.949)),(255,0,0))
-	elif history[-1][0] >= high:
-		draw.rectangle((int(width*0.082),int(height*0.05),int(width),_map(high,40,400,int(height*0.94),int(height*0.05))),(255,200,0))
+	print(history[-1][0])
+	if low:
+		if history[-1][0] <= low:
+			draw.rectangle((int(width*0.082),_map(low,40,400,int(height*0.94),int(height*0.05)),int(width),int(height*0.949)),(255,0,0))
+	if high:
+		if history[-1][0] >= high:
+			draw.rectangle((int(width*0.082),int(height*0.05),int(width),_map(high,40,400,int(height*0.94),int(height*0.05))),(255,200,0))
 	for i in history:
 		x = _map(i[1],mintime,maxtime,int(width*0.085),int(width*0.98))
 		if i == history[-1]:
 			draw.circle((x,_map(i[0],40,400,int(height*0.94),int(height*0.05))),2,(0,0,0))
-			draw.circle((x+1,_map(i[0],40,400,int(height*0.94),int(height*0.05))+1),1,(255,255,255))
 		else:
 			draw.circle((x,_map(i[0],40,400,int(height*0.94),int(height*0.05))),2,(0,0,0))
 		
@@ -336,7 +337,7 @@ from win32more.Windows.UI.Xaml import DependencyObject
 
 from mods import popbuilder
 
-
+	
 class AppState:
 	STARTING = 0x00
 	RUNNING = 0x01
@@ -2028,11 +2029,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					area.Children.Append(spacer)
 			def update(sender,args):
 				records.clear()
-				
-				print(sender.as_(ComboBox).SelectedIndex)
 				date = dates[sender.as_(ComboBox).SelectedIndex].split('-')
 				dates.clear()
-				print(date)
 				today = datetime.datetime(int(date[2]), int(date[0]), int(date[1]), 0, 0).timestamp()
 				self.loadAsync(self.document,lambda: loadData(int(today)),XamlReader().Load(open("../assets/ui/history.xaml", "r", encoding='utf-8').read()),pushData)
 			davg = self.document.Content.as_(FrameworkElement).FindName("DailyAverage").as_(TextBlock)
@@ -2088,7 +2086,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		records = []
 		now = datetime.datetime.now()
 		today = datetime.datetime(now.year, now.month, now.day, 0, 0).timestamp()
-		print(now.timestamp(),today)
+
 		self.loadAsync(self.document,lambda: loadData(int(today)),XamlReader().Load(open("../assets/ui/history.xaml", "r", encoding='utf-8').read()),pushData)
 		
 		

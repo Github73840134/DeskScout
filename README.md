@@ -29,9 +29,8 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 9/7/2025 (Build: 10)
-- Glucose graph in glucose history tab
-
+# Whats new as of 9/29/2025 (Build: 12)
+- Fixed bug where graph would fail to render if low or high glucose alerts were turned off
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
 

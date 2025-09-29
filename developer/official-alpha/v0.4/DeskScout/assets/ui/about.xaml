@@ -16,7 +16,7 @@
         <TextBlock Name="about.release" Text="Release: alpha" FontSize="14" />
         <TextBlock Name="about.channel" Text="Channel: developer" FontSize="14" />
         <TextBlock Name="about.platform" Text="Platform: win32" FontSize="14" />
-        <TextBlock Text="Date: September 7th, 2025" FontSize="14" />
+        <TextBlock Text="Date: September 29, 2025" FontSize="14" />
         <Border BorderThickness="1" Height="24" />
         <TextBlock Text="Service Info:" FontSize="24" />
         <TextBlock Name="about.server_version" Text="Version: " FontSize="14"/>
@@ -34,7 +34,10 @@
         <TextBlock Text="DO NOT UNDER ANY CIRCUMSTANCE USE THE NUMBERS DISPLAYED IN THIS APPLICATION FOR TREATMENT PURPOSES. THEY ARE FOR REFERENCE ONLY." FontSize="24" TextWrapping="Wrap" />
         <TextBlock Text="DeskScout does not collect or sell any personal information or glucose data, all data is stored on device." FontSize="14" TextWrapping="Wrap" />
         <TextBlock Text="DeskScout is not responsible for injuries or damages caused by improper use of the software" FontSize="14" TextWrapping="Wrap" />
-		<StackPanel Orientation="Horizontal">
+        <Border BorderThickness="1" Height="8" />
+		
+        <TextBlock Text="Special thanks to the diabesties in the r/Diabetes discord server"/>
+        <StackPanel Orientation="Horizontal">
 			<Button Name="about.datamanage" Content="Data Management"/>
 			<Button Name="about.logs" Content="View Network Logs"/>
 			<Button Name="about.alog" Content="View App Log"/>
