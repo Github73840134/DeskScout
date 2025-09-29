@@ -3,8 +3,8 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.4"
-__build__ = 11
-__min_server_build__ = 7
+__build__ = 12
+__min_server_build__ = 7	
 __max_server_build__ = 10
 from tkinter import messagebox
 
