@@ -18,6 +18,8 @@ Microsoft Windows App Runtime 1.7 or later
 - Glucose history page
 - Auto login
 - Data export
+- Falling Fast alert
+- Rising Fast alert
 
 
 # Whats being worked on
@@ -29,8 +31,9 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 9/29/2025 (Build: 12)
-- Fixed bug where graph would fail to render if low or high glucose alerts were turned off
+# Whats new as of 10/06/2025 (Build: 13)
+- History page is now 49% faster 
+- Rising Fast and Falling Fast alerts work
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
 

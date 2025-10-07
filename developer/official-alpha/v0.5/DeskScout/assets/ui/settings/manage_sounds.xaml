@@ -1,0 +1,24 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     >
+	<ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Hidden">
+		<StackPanel Orientation="Vertical">
+			<Button Name="settings.back" Content="Back"/>
+			<TextBlock Text="Your Sounds" FontSize="48" />
+			<Border BorderThickness="1" Height="16" />
+			<StackPanel Orientation="Horizontal">
+				<Button Name="settings.manage_sounds.add" Content="Add a sound"/>
+				<ToggleButton Name="settings.manage_sounds.remove" Content="Remove sound"/>
+			</StackPanel>
+
+				<StackPanel Name="settings.manage_sounds.sounds">
+				</StackPanel>
+			
+		</StackPanel>
+	</ScrollViewer>
+
+  
+</Page>
