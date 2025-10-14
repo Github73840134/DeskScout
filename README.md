@@ -31,9 +31,10 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 10/06/2025 (Build: 13)
-- History page is now 49% faster 
-- Rising Fast and Falling Fast alerts work
+# Whats new as of 10/14/2025 (Build: 14)
+- Issue fixed where when both rising/falling fast and high or low glucose alert conditions were met, An excessive amount of notifications would be sent.
+- Fixed DeskScout.py to properly launch server and app
+- Added splash screen
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
 

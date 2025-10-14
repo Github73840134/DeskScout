@@ -1,3 +1,5 @@
+# DeskScout Service
+# Author: Seth Edwards
 #DeskScout service pulls information from clarity
 import os,sys,json
 os.chdir(os.path.dirname(__file__))
@@ -40,18 +42,18 @@ serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "4"
-__build__ = 11
+__build__ = 12
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None
 try:
-	if sys.argv[-1] == "reboot":
-		try:
-			requests.get("http://127.0.0.1:49152/shutdown")
-		except:
-			pass
+	
+
 	print("Checking if service is already running")
 	resp = requests.get("http://127.0.0.1:49152/about")
+	if len(sys.argv) > 1:
+		if sys.argv[1] == "fromDeskscoutPy":
+			exit(0)
 	try:
 		ver = json.loads(resp.text)
 		if ver['build'] < __build__:
@@ -68,6 +70,7 @@ try:
 				p.kill()
 
 	except:
+
 		messagebox.showinfo("DeskScout Service","DeskScout service is already running, please stop your current instance before starting a new one")
 		p = psutil.Process(os.getpid())
 		for proc in p.children(recursive=True):
@@ -332,6 +335,9 @@ def notificationRunner():
 			except:
 				continue
 			lost = None
+			if not reading:
+				print("No Data Available")
+				continue
 			glucose = reading.value
 			if not settings["useMGDL"]:
 				glucose = round(glucose/18,1)
@@ -343,13 +349,12 @@ def notificationRunner():
 
 					reading = account.get_latest_glucose_reading()
 					#Check for urgent low
+					if reading.datetime.timestamp() == last:
+						continue
+					else:
+						last = reading.datetime.timestamp()
 					if settings['notify']['urgentLow']['enabled']:
-						
-
-						if reading.datetime.timestamp() == last:
-							continue
-						else:
-							last = reading.datetime.time()
+	
 						if reading.value <= settings['notify']['urgentLow']['level']:
 							if silence['urgentLow']:
 								if time.time()-silence['urgentLow'] >= settings['notify']['urgentLow']['silence']:
@@ -389,8 +394,8 @@ def notificationRunner():
 						if reading.value >= settings['notify']['high']['level']:
 							if silence['high']:
 								if time.time()-silence['high'] >= settings['notify']['high']['silence']:
-									silence['low'] = None
-							if silence['low'] == None:
+									silence['high'] = None
+							if silence['high'] == None:
 								newToast = Toast(['DeskScout',"High Glucose",f"Your glucose is {reading.value} mg/dl"],duration=ToastDuration.Long)
 								newToast.AddAction(ToastButton('OK', 'silence.high'))
 								newToast.on_activated = notificationRespone
