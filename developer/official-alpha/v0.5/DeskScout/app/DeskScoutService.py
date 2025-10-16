@@ -42,7 +42,7 @@ serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "4"
-__build__ = 12
+__build__ = 13
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None
@@ -56,8 +56,8 @@ try:
 			exit(0)
 	try:
 		ver = json.loads(resp.text)
-		if ver['build'] < __build__:
-			ans = messagebox.askyesno("DeskScout Service","An older version of service is already running, would you like to stop the old service and start the new one?")
+		if ver['build'] != __build__:
+			ans = messagebox.askyesno("DeskScout Service","An newer/older version of service is already running, would you like to stop the old service and start the new one?")
 			if ans:
 				try:
 					requests.get("http://127.0.0.1:49152/shutdown")
@@ -68,7 +68,12 @@ try:
 				for proc in p.children(recursive=True):
 					proc.kill()
 				p.kill()
-
+		else:
+			messagebox.showinfo("DeskScout Service","DeskScout service is already running, please stop your current instance before starting a new one")
+			p = psutil.Process(os.getpid())
+			for proc in p.children(recursive=True):
+				proc.kill()
+			p.kill()
 	except:
 
 		messagebox.showinfo("DeskScout Service","DeskScout service is already running, please stop your current instance before starting a new one")
@@ -299,9 +304,9 @@ def recordAccessHandler():
 						records = account.get_glucose_readings(1440,288)
 					records.reverse()
 					records = remove_duplicates(records)
-					
 					for i in records:
-						print("rec",time.ctime(i.datetime.timestamp()/1000),i.datetime.strftime('%Y%m%d'))
+						print("rec",time.localtime(i.datetime.timestamp()/1000),i.datetime.strftime('%Y%m%d'))
+						
 						grec.writeRecord(i.datetime.timestamp()*1000,i.value,i.trend)
 						if not (f"{i.datetime.strftime('%Y-%m-%d')}.gdr" in os.listdir("../data/glucose/daily")):
 							rec = gdr.createRecordFile(f"../data/glucose/daily/{i.datetime.strftime('%Y-%m-%d')}.gdr")
@@ -637,7 +642,7 @@ def about():
 	})
 bulb = None
 newToast = Toast()
-newToast.text_fields = ['DeskScout is Starting', 'Glucose alerts should be available soon.']
+newToast.text_fields = ['DeskScout is starting', 'Glucose alerts should be available soon.']
 newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/generic.wav'))),silent=True)
 PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/generic.wav')), None, SND_FILENAME | SND_ASYNC)
 toaster.clear_toasts()

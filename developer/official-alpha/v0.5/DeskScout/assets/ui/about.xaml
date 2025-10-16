@@ -16,7 +16,6 @@
         <TextBlock Name="about.release" Text="Release: alpha" FontSize="14" />
         <TextBlock Name="about.channel" Text="Channel: developer" FontSize="14" />
         <TextBlock Name="about.platform" Text="Platform: win32" FontSize="14" />
-        <TextBlock Text="Date: October 6th, 2025" FontSize="14" />
         <Border BorderThickness="1" Height="24" />
         <TextBlock Text="Service Info:" FontSize="24" />
         <TextBlock Name="about.server_version" Text="Version: " FontSize="14"/>
@@ -52,6 +51,7 @@
 					</Flyout>
 				</Button.Flyout>
 			</Button>
+      <Button Name="about.osl" Content="Open Source Licenses"/>
 		</StackPanel>
 		
     </StackPanel>

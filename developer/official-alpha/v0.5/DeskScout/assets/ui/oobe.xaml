@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
      >
     <Grid>
-        <Image Opacity="0" Name="Background" Stretch="Fill" Source=""/>
+        <Image Opacity="0" Name="Background" Stretch="Fill" Source="../assets/background.png"/>
 
         <StackPanel Opacity="1" Name="Loader" Orientation="Vertical" VerticalAlignment="Center">
            <ProgressRing IsActive="True"/>

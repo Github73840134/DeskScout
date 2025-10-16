@@ -3,9 +3,9 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.5"
-__build__ = 14
+__build__ = 15
 __min_server_build__ = 11	
-__max_server_build__ = 12
+__max_server_build__ = 13
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging
@@ -875,35 +875,61 @@ class App(XamlApplication):
 				for i in self.records:
 					history.append((i.value,int(i.time/1000)))
 				
-				
-				makeGraph(int(width)-20,320,int(self.records[0].time/1000),int(self.records[-1].time/1000),self.getSetting("notify/low/level") if self.getSetting("notify/low/enabled") else None ,self.getSetting("notify/high/level") if self.getSetting("notify/high/enabled") else None,history)
-				img = self.document.Content.as_(FrameworkElement).FindName("Graph").as_(Image)
-				bitmap = Imaging.BitmapImage()
-				print((os.path.abspath(os.path.join(os.getcwd(),'../data','glucose.png'))))
-				bitmap.UriSource = Uri(os.path.abspath(os.path.join(os.getcwd(),'../data','glucose.png')))
-				img.Source = bitmap
-				self.oldwidth = width
+				if self.records:
+					makeGraph(int(width)-20,320,int(self.records[0].time/1000),int(self.records[-1].time/1000),self.getSetting("notify/low/level") if self.getSetting("notify/low/enabled") else None ,self.getSetting("notify/high/level") if self.getSetting("notify/high/enabled") else None,history)
+					img = self.document.Content.as_(FrameworkElement).FindName("Graph").as_(Image)
+					bitmap = Imaging.BitmapImage()
+					print((os.path.abspath(os.path.join(os.getcwd(),'../data','glucose.png'))))
+					bitmap.UriSource = Uri(os.path.abspath(os.path.join(os.getcwd(),'../data','glucose.png')))
+					img.Source = bitmap
+					self.oldwidth = width
 
 
 		if (self.fetchState == 1 or self.fetchState == 2) and self.page != "oobe" and self.state == AppState.RUNNING:
 			self.fetchState = 0 # Set fetch state to dsibaled
 			self.showSignIn(self.goHome) # Go to the sign in page, upon success return tot ht ehome apge
+			ctx = self.showPopup("Account Error",popbuilder.ok("Please check your credentials and try again"))
+			PlaySoundW(PWSTR("../assets/sounds/conflict.wav"), None, SND_FILENAME | SND_ASYNC)
 		elif self.fetchState == 4:
 			# The fetcher could not connect to the service
 			if self.page == "home":
+				if self.popupShown != "ce.serviceOffline":
+					self.popupShown = "ce.serviceOffline"
+					ctx = self.showPopup("Connection Error",popbuilder.ok("The DeskScout service could not connect to Dexcom Share"))
+					PlaySoundW(PWSTR("../assets/sounds/conflict.wav"), None, SND_FILENAME | SND_ASYNC)
+
+					ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+					
 				glucose = self.document.Content.as_(FrameworkElement).FindName("reading").as_(TextBlock)
 				last = self.document.Content.as_(FrameworkElement).FindName("last_update").as_(TextBlock)
 				trend = self.document.Content.as_(FrameworkElement).FindName("trendarrow").as_(TextBlock)
 				last.Text = "Not Connected"
+			return
+		elif self.fetchState == 5:
+			# No glucose data available
 			
+			if self.page == "home":
+				if self.popupShown != "de.noReadings":
+					self.popupShown = "de.noReadings"
+					
+					ctx = self.showPopup("No Glucose Data Available",popbuilder.ok("Check your Dexcom app"))
+					PlaySoundW(PWSTR("../assets/sounds/conflict.wav"), None, SND_FILENAME | SND_ASYNC)
+					ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+				glucose = self.document.Content.as_(FrameworkElement).FindName("reading").as_(TextBlock)
+				last = self.document.Content.as_(FrameworkElement).FindName("last_update").as_(TextBlock)
+				trend = self.document.Content.as_(FrameworkElement).FindName("trendarrow").as_(TextBlock)
+				last.Text = "No Glucose Data"
+				glucose.Text = "-?-"
+				trend.Text = ""
+				
 			return
 		if self.popupShown == "ce.serviceOffline":
 			self.hidePopup()
+
 		if self.page == "home" and self.state == AppState.RUNNING:
 			# Update the home screen
 			if self.glucose:
-				
-
+				print(self.glucose)
 				
 				glucose = self.document.Content.as_(FrameworkElement).FindName("reading").as_(TextBlock)
 				last = self.document.Content.as_(FrameworkElement).FindName("last_update").as_(TextBlock)
@@ -1008,14 +1034,20 @@ class App(XamlApplication):
 					elif status['login_state'] == True:
 						# Get latest glucose reading
 						resp = requests.get("http://127.0.0.1:49152/getLatestReading",timeout=10)
-						data = json.loads(resp.text)
-						if self.fetchState == 4:
-							self.lsc = 0 #Reset the last sync time
-						if data['status'] == "ok":
-							# Store the glucose data
-							self.glucose = data['data']
-							self.fetchState = 3 # Fetch OK, glucose data found
-							self.lastFetch = time.time() # Updated the time of last glucose fetch
+						if resp.text:
+							data = json.loads(resp.text)
+							if self.fetchState == 4:
+								self.lsc = 0 #Reset the last sync time
+							if data['status'] == "ok":
+								# Store the glucose data
+								self.glucose = data['data']
+								self.fetchState = 3 # Fetch OK, glucose data found
+								self.lastFetch = time.time() # Updated the time of last glucose fetch
+						else:
+							self.fetchState = 5
+							
+						
+						
 				except Exception as e:
 					print("Error",e)
 					self.fetchState = 4
@@ -1754,6 +1786,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 </Page>"""
 						)
 				ctx = self.showPopup("Success!",content)
+				PlaySoundW(PWSTR("../assets/sounds/resolve.wav"), None, SND_FILENAME | SND_ASYNC)
+
 				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
 			except Exception as e:
 				content = XamlReader().Load(
@@ -1771,6 +1805,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 						)
 				ctx = self.showPopup("Error",content)
 				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+				PlaySoundW(PWSTR("../assets/sounds/conflict.wav"), None, SND_FILENAME | SND_ASYNC)
+
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
 		def start(sender,args):
 			from tkinter import filedialog
@@ -1824,6 +1860,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 						)
 				ctx = self.showPopup("Success!",content)
 				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+				PlaySoundW(PWSTR("../assets/sounds/resolve.wav"), None, SND_FILENAME | SND_ASYNC)
+
 			except Exception as e:
 				content = XamlReader().Load(
 						"""
@@ -1838,6 +1876,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	</StackPanel>
 </Page>""")
 				ctx = self.showPopup("Backup Failed",content)
+				PlaySoundW(PWSTR("../assets/sounds/conflict.wav"), None, SND_FILENAME | SND_ASYNC)
+
 				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
 
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
@@ -1910,6 +1950,24 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),self.initAboutPage))
 		logview = self.document.Content.as_(FrameworkElement).FindName("logs.logdata").as_(TextBox)
 		logview.Text = open('app_boot.log').read()
+	def initOpenSourceLicensePage(self):
+		osl = json.load(open("../data/osl.json"))
+		box = self.document.Content.as_(FrameworkElement).FindName("osl.main").as_(StackPanel)
+		def loadLicense(n,path):
+			name = self.document.Content.as_(FrameworkElement).FindName("osl.name").as_(TextBlock)
+			lx = self.document.Content.as_(FrameworkElement).FindName("osl.license").as_(TextBox)
+			name.Text = n
+			lx.Text = open(path,'r').read()
+			back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
+			back.add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/osl/main.xaml", "r", encoding='utf-8').read()),self.initOpenSourceLicensePage))
+		for i in osl:
+			button = Button()
+			button.Content = i
+			button.add_Click(lambda sender,args,n=i,p=osl[i]: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/osl/view.xaml",'r',encoding='utf-8').read()),lambda:loadLicense(n,p)))
+			box.Children.Append(button)
+		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
+		back.add_Click(lambda sender,args:self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: print(),self.initAboutPage))
+		
 	def showPopup(self,title,content):
 		popup = self.win.Content.as_(FrameworkElement).FindName('popup').as_(Frame)
 		_title = self.win.Content.as_(FrameworkElement).FindName('popup.title').as_(TextBlock)
@@ -1977,6 +2035,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			self.document.Content.as_(FrameworkElement).FindName("about.datamanage").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: print(),self.initDataManagement))
 			self.document.Content.as_(FrameworkElement).FindName("about.logs").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/logs/network.xaml", "r", encoding='utf-8').read()),self.initNetworkLogPage))
 			self.document.Content.as_(FrameworkElement).FindName("about.alog").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/logs/app.xaml", "r", encoding='utf-8').read()),self.initAppLogPage))
+			self.document.Content.as_(FrameworkElement).FindName("about.osl").as_(Button).add_Click(lambda sender,args: self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/osl/main.xaml", "r", encoding='utf-8').read()),self.initOpenSourceLicensePage))
 
 			
 			back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
@@ -2044,17 +2103,21 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			seen = []
 			date_picker = self.document.Content.as_(FrameworkElement).FindName("DatePicker").as_(ComboBox)
 			i2 = 0
-			print(dates)
+			print(dates,'almanac')
 			for i in dates:
-				tx = time.localtime(float(records[0].time / 1000))
-				
 				item = ComboBoxItem()
 				item.Content = i
-				print(i, f"{tx.tm_mon}-{tx.tm_mday if tx.tm_mday > 10 else str(f'0{tx.tm_mday}')}-{tx.tm_year}" )
-				if f"{tx.tm_mon if tx.tm_mon > 9 else str(f'0{tx.tm_mon}')}-{tx.tm_mday if tx.tm_mday > 10 else str(f'0{tx.tm_mday}')}-{tx.tm_year}" == i:
-					item.IsSelected = True
-
+				try:
+					tx = time.localtime(float(records[0].time / 1000))
+					
+					
+					print(i, f"{tx.tm_mon}-{tx.tm_mday if tx.tm_mday > 10 else str(f'0{tx.tm_mday}')}-{tx.tm_year}" )
+					if f"{tx.tm_mon if tx.tm_mon > 9 else str(f'0{tx.tm_mon}')}-{tx.tm_mday if tx.tm_mday > 10 else str(f'0{tx.tm_mday}')}-{tx.tm_year}" == i:
+						item.IsSelected = True
+				except:
+					pass
 				date_picker.Items.Append(item)
+			gap = False
 			for x in records:
 				tx = time.localtime(float(x.time / 1000))
 				avg += x.value
@@ -2115,10 +2178,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				print("GAP")
 				self.document.Content.as_(FrameworkElement).FindName("GapDisclaimer").as_(InfoBar).IsOpen = True
 
-			if len(records) < 72:
+			if len(records) < 72 and records:
 				self.document.Content.as_(FrameworkElement).FindName("LowDataDisclaimer").as_(InfoBar).IsOpen = True
 				self.document.Content.as_(FrameworkElement).FindName("LowDataDisclaimer").as_(InfoBar).Message = f"You only have {int(len(records)/12)} hours of data. Insights, predictions, and averages will not be correct"
-
+			elif not records:
+				self.document.Content.as_(FrameworkElement).FindName("LowDataDisclaimer").as_(InfoBar).IsOpen = True
+				self.document.Content.as_(FrameworkElement).FindName("LowDataDisclaimer").as_(InfoBar).Message = f"No glucose data was recorded"
 			def update(sender,args):
 				records.clear()
 
@@ -2128,9 +2193,9 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				self.loadAsync(self.document,lambda: loadData(int(today)),XamlReader().Load(open("../assets/ui/history.xaml", "r", encoding='utf-8').read()),pushData)
 			davg = self.document.Content.as_(FrameworkElement).FindName("DailyAverage").as_(TextBlock)
 			readings = self.document.Content.as_(FrameworkElement).FindName("Readings").as_(TextBlock)
-
-			davg.Text = f"Average: {int(avg/len(records)) if unit else round((avg/len(records))/18,1)}{'mg/dl' if unit else 'mmol/L'}"
-			readings.Text = f"({len(seen)} readings / {int((len(seen)/288)*100)}%)"
+			if records:
+				davg.Text = f"Average: {int(avg/len(records)) if unit else round((avg/len(records))/18,1)}{'mg/dl' if unit else 'mmol/L'}"
+				readings.Text = f"({len(seen)} readings / {int((len(seen)/288)*100)}%)"
 			date_picker.SelectionChanged += update
 			history = []
 			records.reverse()
@@ -2140,17 +2205,29 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			for i in records:
 				history.append((i.value,int(i.time/1000)))
 			
-			
-			makeGraph(int(self.win.Content.as_(FrameworkElement).ActualWidth)-20,320,int(records[0].time/1000),int(records[-1].time/1000),self.getSetting("notify/low/level") if self.getSetting("notify/low/enabled") else None ,self.getSetting("notify/high/level") if self.getSetting("notify/high/enabled") else None,history)
-			img = self.document.Content.as_(FrameworkElement).FindName("Graph").as_(Image)
-			bitmap = Imaging.BitmapImage()
-			bitmap.UriSource = Uri(os.path.join(os.getcwd(),'../data','glucose.png'))
-			img.Source = bitmap
+			if records:
+				makeGraph(int(self.win.Content.as_(FrameworkElement).ActualWidth)-20,320,int(records[0].time/1000),int(records[-1].time/1000),self.getSetting("notify/low/level") if self.getSetting("notify/low/enabled") else None ,self.getSetting("notify/high/level") if self.getSetting("notify/high/enabled") else None,history)
+				img = self.document.Content.as_(FrameworkElement).FindName("Graph").as_(Image)
+				bitmap = Imaging.BitmapImage()
+				bitmap.UriSource = Uri(os.path.join(os.getcwd(),'../data','glucose.png'))
+				img.Source = bitmap
 			self.page = "history"
 		def loadData(date):
+			self.page = ""
 			dy = time.strftime("%Y-%m-%d",time.localtime(date))
 			from mods import gdr
-			rec = gdr.RecordReader(os.path.abspath(f"../data/glucose/daily/{dy}.gdr"))
+			# Create the drop down
+			for dx in os.listdir("../data/glucose/daily"):
+				parsed = os.path.splitext(dx)[0].split("-")
+				dates.append("-".join([parsed[1],parsed[2],parsed[0]]))
+			try:
+				rec = gdr.RecordReader(os.path.abspath(f"../data/glucose/daily/{dy}.gdr"))
+			except FileNotFoundError:
+				self.popupShown = "ae.gdr_FNFE"
+				ctx = self.showPopup("Couldn't load data",popbuilder.ok("No data available for the date selected"))
+				PlaySoundW(PWSTR("../assets/sounds/conflict.wav"), None, SND_FILENAME | SND_ASYNC)
+				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+				return
 			i = rec.getRecordCount()
 			seen = []
 			dseen = []
@@ -2164,9 +2241,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 			
 			last = 0
-			for dx in os.listdir("../data/glucose/daily"):
-				parsed = os.path.splitext(dx)[0].split("-")
-				dates.append("-".join([parsed[1],parsed[2],parsed[0]]))
+			
 			records.reverse()
 			dates.reverse()
 		records = []

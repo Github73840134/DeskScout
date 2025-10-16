@@ -31,10 +31,10 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 10/14/2025 (Build: 14)
-- Issue fixed where when both rising/falling fast and high or low glucose alert conditions were met, An excessive amount of notifications would be sent.
-- Fixed DeskScout.py to properly launch server and app
-- Added splash screen
+# Whats new as of 10/16/2025 (Build: 15)
+- Added open source licenses page
+- Added startup messages to the splash screen
+- Fixed a bug where pre-service startup version check would pass if processes version was higher or equal to a running DeskScout service
 # Running the app
 Run app/DeskScout.py to automatically start the server and open the app if the server is not running
 
