@@ -2,8 +2,8 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "0.6"
-__build__ = 16
+__version__ = "0.6.0"
+__build__ = 17
 __min_server_build__ = 14	
 __max_server_build__ = 14
 from tkinter import messagebox
@@ -2175,6 +2175,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		serverinfo = {}
 
 		def loadContent():
+			self.document.Content.as_(FrameworkElement).FindName("about.appversion").as_(TextBlock).Text = f"App Build: {json.load(open("versioninfo.json"))['app']}"
 			self.document.Content.as_(FrameworkElement).FindName("about.version").as_(TextBlock).Text = f"Version: {__version__}"
 			self.document.Content.as_(FrameworkElement).FindName("about.build").as_(TextBlock).Text = f"Build: {__build__}"
 			self.document.Content.as_(FrameworkElement).FindName("about.platform").as_(TextBlock).Text = f"Platform: {sys.platform}"

@@ -10,7 +10,8 @@
         <TextBlock Text="DeskScout" FontSize="60" />
         <TextBlock Text="We are never settling" FontSize="14"/>
         <Border BorderThickness="1" Height="32" />
-        <TextBlock Text="App Info:" FontSize="24" />
+        <TextBlock Name="about.appversion" Text="Version: " FontSize="24"/>
+        <TextBlock Text="Client Info:" FontSize="24" />
         <TextBlock Name="about.version" Text="Version: " FontSize="14"/>
         <TextBlock Name="about.build" Text="Build: " FontSize="14" />
         <TextBlock Name="about.release" Text="Release: alpha" FontSize="14" />
@@ -31,7 +32,7 @@
 
         <Border BorderThickness="1" Height="32" />
         <TextBlock Text="Author: Seth Edwards (Github73840134)" FontSize="16" />
-        <TextBlock Text="DO NOT UNDER ANY CIRCUMSTANCE USE THE NUMBERS DISPLAYED IN THIS APPLICATION FOR TREATMENT PURPOSES. THEY ARE FOR REFERENCE ONLY." FontSize="24" TextWrapping="Wrap" />
+        <TextBlock Text="DO NOT UNDER ANY CIRCUMSTANCE USE THE DATA DISPLAYED IN THIS APPLICATION FOR TREATMENT PURPOSES. THEY ARE FOR REFERENCE ONLY." FontSize="24" TextWrapping="Wrap" />
         <TextBlock Text="DeskScout does not collect or sell any personal information or glucose data, all data is stored on device." FontSize="14" TextWrapping="Wrap" />
         <TextBlock Text="DeskScout is not responsible for injuries or damages caused by improper use of the software" FontSize="14" TextWrapping="Wrap" />
         <Border BorderThickness="1" Height="8" />
