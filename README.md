@@ -3,7 +3,7 @@
 
 
 # NOTICE
-DeskScout in its current state does not have an updater built in, you will need to manually update your code
+# DeskScout now features an updater, you must be on 0.6.0 or later to receive OTA updates.
 
 # Requirements
 Python 3.10 or later
@@ -31,12 +31,10 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 10/16/2025 (Build: 15)
-- Added open source licenses page
-- Added startup messages to the splash screen
-- Fixed a bug where pre-service startup version check would pass if processes version was higher or equal to a running DeskScout service
+# Whats new as of 10/25/2025 (Build: 16)
+- Added OTA updates
 # Running the app
-Run app/DeskScout.py to automatically start the server and open the app if the server is not running
+Run DeskScout.pyw to automatically start the server and open the app if the server is not running
 
 Or start them separately, the server must be running to start the app
 

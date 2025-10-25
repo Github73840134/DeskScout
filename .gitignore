@@ -1,3 +1,4 @@
 *.pyc
 python-3.12.2.amd64/
-__pycache__
+archive/
+__pycache__/

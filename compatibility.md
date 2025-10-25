@@ -47,3 +47,6 @@ Maxmimum server build: 13
 ### App Build 15
 Minimum server build: 11
 Maxmimum server build: 13
+### App Build 16
+Minimum server build: 14
+Maxmimum server build: 14
