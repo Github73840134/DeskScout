@@ -3,9 +3,9 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.6.0"
-__build__ = 17
+__build__ = 18
 __min_server_build__ = 14	
-__max_server_build__ = 14
+__max_server_build__ = 15
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging
@@ -922,7 +922,7 @@ class App(XamlApplication):
 		width,height = self.win.Content.as_(FrameworkElement).ActualWidth,self.win.Content.as_(FrameworkElement).ActualHeight
 		self.win.Content.as_(FrameworkElement).FindName("popup.container").as_(Grid).Height = height
 		if self.page == "update":
-			if time.time()-self.lastUpdateCheck >= 0.1:
+			if time.time()-self.lastUpdateCheck >= 0.25:
 				
 				stat = self.getUpdateStatus()
 				if stat == False:
@@ -1000,7 +1000,7 @@ class App(XamlApplication):
 					self.document.Content.as_(FrameworkElement).FindName("update.preview.progress").as_(ProgressRing).IsIndeterminate = False
 					self.document.Content.as_(FrameworkElement).FindName("update.preview.progress").as_(ProgressRing).Value = stat['progress']
 
-					self.document.Content.as_(FrameworkElement).FindName("update.preview.status").as_(TextBlock).Text = f"Downloading {stat['progress']}% - {cs(os.stat("../data/update.zip").st_size)}"
+					self.document.Content.as_(FrameworkElement).FindName("update.preview.status").as_(TextBlock).Text = f"Downloading {stat['progress']}% - {cs(os.stat("../data/.update.zip").st_size)}"
 					self.document.Content.as_(FrameworkElement).FindName("update.preview.progress").as_(ProgressRing).Visibility = Visibility.Visible
 					self.document.Content.as_(FrameworkElement).FindName("update.preview.status").as_(TextBlock).Visibility = Visibility.Visible
 				self.lastUpdateCheck = time.time()

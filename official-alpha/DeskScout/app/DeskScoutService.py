@@ -42,7 +42,7 @@ serviceConnected = False
 serviceDisconnectedAt = 0
 from mods import gdr
 __version__ = "5"
-__build__ = 14
+__build__ = 15
 __channel__ = "developer"
 __release__ = "alpha"
 rec = None
@@ -496,7 +496,7 @@ def updateDownloadThread():
 			total = len(update)
 			print("TD",total)
 			consumed = 0
-			file = open("../data/update.zip",'wb+')
+			file = open("../data/.update.zip",'wb+')
 			for i in update:
 				#print("Writing",file.tell())
 				updateStatus['status'] = 'download'
@@ -504,6 +504,7 @@ def updateDownloadThread():
 				file.write(int.to_bytes(i))
 				updateStatus['progress'] = int((file.tell()/total)*100)
 			file.close()
+			os.rename("../data/.update.zip","../data/update.zip")
 			updateStatus['status'] = 'ready'
 			updateStatus['result'] = "installReady"
 			print("Download Complete")

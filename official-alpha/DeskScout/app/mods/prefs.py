@@ -44,7 +44,7 @@ class Template:
 	def addKeyToIgnore(self,key):
 		self.actions['la'].append(key)
 def reader(fn,directory="",override=False):
-	pkg = scon.load(open(fn)).data
+	pkg = json.load(open(fn))
 	if override:
 		pkg['header']['type'] = override
 	if pkg['header']['type'] == "init":
@@ -53,12 +53,12 @@ def reader(fn,directory="",override=False):
 		file.close()
 		return True
 	elif pkg["header"]['type'] == "merge":
-		oldpref = json.load(open(pkg['header']['prefname']))
+		oldpref = json.load(open(directory+pkg['header']['prefname']))
 		for i in pkg['actions']['ktd']:
 			oldpref.pop(i)
 		for i in pkg['data']:
 			if i in oldpref and i in pkg['actions']['la']:
 				continue
 			oldpref[i] = pkg['data'][i]
-		json.dump(oldpref,open(pkg['header']['prefname']))
+		json.dump(oldpref,open(directory+pkg['header']['prefname'],'w+'))
 		return True

@@ -31,8 +31,8 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 10/25/2025 (Build: 17)
-- Fixed some minor UI bugs
+# Whats new as of 10/26/2025 (Build: 18)
+- Bug fixes and changes to the update process
 # Running the app
 Run DeskScout.pyw to automatically start the server and open the app if the server is not running
 

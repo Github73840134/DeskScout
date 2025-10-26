@@ -1,6 +1,10 @@
 import zipfile,json
 import os
 import logging,time
+import os, sys
+os.chdir(os.path.dirname(__file__))
+sys.path.append(os.path.join(os.getcwd(), "libs"))
+sys.path.append(os.path.join(os.getcwd(), "mods"))
 class DeltaTimeFormatter(logging.Formatter):
 	def format(self, record):
 		record.delta = time.time()-ast
@@ -16,7 +20,6 @@ logging.basicConfig(
 					level=logging.DEBUG)
 log = logging.getLogger("update")
 ast = time.time()
-os.chdir(os.path.dirname(__file__))
 if not "update.zip" in os.listdir("../data"):
 	log.error("No Update Available")
 	exit(2)
@@ -45,4 +48,18 @@ for i in files:
 	except Exception as e:
 		log.critical(f"Error during copy {files[i]} ({i}): {str(e)}")
 		exit(3)
+log.info("Checking for settings update")
+if "newSettings.pref" in os.listdir("data"):
+	log.info("Updating settings")
+	try:
+		
+		import prefs
+		prefs.reader("data/newSettings.pref","data/")
+		os.remove('data/newSettings.pref')
+		log.info("Settings updated")
+	except Exception as e:
+		log.critical(f"Error during settings update: {str(e)}")
+		exit(3)
+else:
+	log.info("No settings needed to be updated")
 log.info("Update Complete")

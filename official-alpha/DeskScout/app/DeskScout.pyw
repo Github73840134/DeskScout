@@ -130,15 +130,14 @@ class SplashApp(XamlApplication):
 			if resp == 0:
 
 				self.loadState = 4
-				time.sleep(5)
 				os.remove("../data/update.zip")
-				subprocess.Popen("pyw DeskScout.pyw",start_new_session=True)
+				time.sleep(5)
 				return
 			else:
 				from tkinter import messagebox
 				messagebox.showerror("DeskScout","Failed to install update, your install may be corrupted")
 				return
-
+		
 
 		try:
 			resp = requests.get("http://127.0.0.1:49152/",timeout=3)
