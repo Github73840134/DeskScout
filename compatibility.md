@@ -1,7 +1,6 @@
 # DeskScout App/Server compatibility
 
 # `official-alpha` Release
-## Developer Channel
 ### App Build 1
 Minimum server build: 1  
 Maxmimum server build: 6
@@ -56,3 +55,10 @@ Maxmimum server build: 14
 ### App Build 18
 Minimum server build: 14
 Maxmimum server build: 15
+### App Build 19
+Minimum server build: 14
+Maxmimum server build: 15
+# `official-alpha` Release
+### App Build 20
+Minimum server build: 14
+Maxmimum server build: 16

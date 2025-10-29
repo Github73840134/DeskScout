@@ -4,10 +4,11 @@
 
 # NOTICE
 # DeskScout now features an updater, you must be on 0.6.0 or later to receive OTA updates.
+# There is some weird fuckery with build numbers, I will fix it soon
 
 # Requirements
-Python 3.10 or later
-Microsoft Windows App Runtime 1.7 or later
+Python 3.12.2 or later
+Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 
 # What works
 - Urgent low glucose alerts
@@ -31,8 +32,12 @@ Microsoft Windows App Runtime 1.7 or later
 - Nightscout Settings
 - Glucose graph
 
-# Whats new as of 10/26/2025 (Build: 18)
-- Bug fixes and changes to the update process
+# Whats new
+## Build 20
+- Beta Version Released
+- Minor UI changes
+## Build 19
+- Minor UI changes
 # Running the app
 Run DeskScout.pyw to automatically start the server and open the app if the server is not running
 
