@@ -3,9 +3,9 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.6.0"
-__build__ = 19
-__min_server_build__ = 14	
-__max_server_build__ = 16
+__build__ = 1019
+__min_server_build__ = 1016
+__max_server_build__ = 1016
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging
