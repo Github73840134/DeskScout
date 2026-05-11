@@ -41,7 +41,7 @@
 				</Button.Flyout>
 			</Button>
         <TextBlock Text="Application Data" FontSize="24" />
-        <TextBlock Text="These are files used to run DeskScout, this includes your imported sounds, settings, and tokens" FontSize="14" Height="24" />
+        <TextBlock Text="These are files used to run DeskScout, this includes your imported sounds, settings, extensions, and tokens" FontSize="14" Height="24" />
         <TextBlock Name="dm.app_usage" Text="Usage: 0.00MB" FontSize="14"/>
         <Button Content="Backup, transfer, or restore your data">
             <Button.Flyout>

@@ -1,14 +1,12 @@
 # DeskScout Service
 # Author: Seth Edwards
-#DeskScout service pulls information from clarity
+# DeskScout service pulls information from clarity
 import os,sys,json
 os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.getcwd(),'libs'))
 sys.path.append(os.path.join(os.getcwd(),'mods'))
 
 from bottle import route, run, template,request,post
-from pydexcom import Dexcom
-import pydexcom
 import keyring,psutil, subprocess
 from windows_toasts import Toast, ToastAudio, WindowsToaster,InteractableWindowsToaster,ToastDuration
 from pathlib import Path
@@ -17,11 +15,13 @@ from win32more.Windows.Win32.Foundation import PWSTR
 import time
 import requests,_thread,json,logging
 from tkinter import messagebox
+import importlib
+from importlib import util as imputil
 class DeltaTimeFormatter(logging.Formatter):
 	def format(self, record):
 		record.delta = time.time()-ast
 		return super().format(record)
-handler = logging.StreamHandler(open("netlogs/service.log","w"))
+handler = logging.StreamHandler(open(f"logs/service/{time.strftime("%Y-%m-%d-%H%M%S")}.log","w"))
 LOGFORMAT = '+%(asctime)s [%(delta)s] %(name)s %(levelname)s: %(message)s'
 fmt = DeltaTimeFormatter(LOGFORMAT)
 handler.setFormatter(fmt)
@@ -29,46 +29,67 @@ logging.basicConfig(
 					format='%(asctime)s [%(delta)s] %(levelname)-9s: %(message)s',
 					datefmt='%Y-%m-%d %H:%M:%S',
 					handlers=[handler],
-					level=logging.DEBUG)
+					level=logging.INFO)
 ast = time.time()
-class netlog:
+class log:
 	notifier = logging.getLogger("notifier")
 	main = logging.getLogger("main")
+	gdp = logging.getLogger("gdp")
+	serviceChecker = logging.getLogger("serverchecker")
+
+	exts = logging.getLogger("exts")
+	updater = logging.getLogger("updater")
+
 	status = logging.getLogger("status")
 	sync = logging.getLogger("deskscout_sync")
 	nsync = logging.getLogger("nightscout_sync")
+
 account = None
 serviceConnected = False
+serviceOffline = True
 serviceDisconnectedAt = 0
+attemptingConnection = False
+intent = None
 from mods import gdr
-__version__ = "5"
-__build__ = 15
+__version__ = "6"
+__build__ = 16
 __channel__ = "developer"
 __release__ = "alpha"
+class Flags:
+	USE_ALTERNATE_UPDATE_SERVER = False
+
+
 rec = None
 try:
-	
-
+	log.main.info("Checking if service is already running")
 	print("Checking if service is already running")
 	resp = requests.get("http://127.0.0.1:49152/about")
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "fromDeskscoutPy":
+			log.main.warning("Another service instance is currently running while invoked from launcher. We will quietly exit")
 			exit(0)
 	try:
 		ver = json.loads(resp.text)
 		if ver['build'] != __build__:
+			log.main.warning("Another service instance of a different version is currently running")
+
 			ans = messagebox.askyesno("DeskScout Service","An newer/older version of service is already running, would you like to stop the old service and start the new one?")
 			if ans:
+				log.main.info("Stopping old service")
+
 				try:
 					requests.get("http://127.0.0.1:49152/shutdown")
 				except:
 					pass
 			else:
+				log.main.info("Stopping this instance")
+
 				p = psutil.Process(os.getpid())
 				for proc in p.children(recursive=True):
 					proc.kill()
 				p.kill()
 		else:
+			log.main.warning("Another service instance is currently running")
 			messagebox.showinfo("DeskScout Service","DeskScout service is already running, please stop your current instance before starting a new one")
 			p = psutil.Process(os.getpid())
 			for proc in p.children(recursive=True):
@@ -83,7 +104,7 @@ try:
 		p.kill()
 	
 except:
-	pass
+	logging.info("Service not running or is unresponsive")
 from datetime import datetime, timedelta, timezone
 
 def hours_to_utc_minute_timestamps(hours):
@@ -117,6 +138,7 @@ def calculate_slope(data):
 	
 	slope = num / den if den != 0 else 0
 	return slope  # units: mg/dL per minute
+
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
 def urgent_low_soon_alert(glucose_data, threshold=55, horizon=20):
@@ -145,16 +167,59 @@ notified = {
 }
 recordQueue = []
 serviceOffline = True
+GlucoseDataProvider = None
+activeAlert = None
+class SDK:
+	gdp = None
 toaster = InteractableWindowsToaster('DeskScout')
+def sdkResolver(sdk_id):
+	sdkmanifest = json.load(open("../data/sdk.json"))
+	try:
+		return f"../{sdkmanifest[sdk_id]['path']}"
+	except KeyError:
+		return None
+def loadGlucoseDataProvider():
+	global GlucoseDataProvider
+	log.exts.info("Loading glucose data provider")
+	try:
+		settings = json.load(open("../data/settings.json"))
+		if not settings['gdp']:
+			log.exts.warning("No glucose data provider was selected")
 
+			return
+		spec = imputil.spec_from_file_location("GlucoseDataProviderX", f"../data/extensions/{settings['gdp']}/__init__.py")
+		
+		GlucoseDataProviderX = imputil.module_from_spec(spec)
+		# Register the module in sys.modules (optional but good practice)
+		# Execute the module code
+		spec.loader.exec_module(GlucoseDataProviderX)
+		GlucoseDataProvider = GlucoseDataProviderX.__gdp__()
+		GlucoseDataProvider.__manifest__ = json.load(open(f"../data/extensions/{settings['gdp']}/manifest.json"))
+		spec = imputil.spec_from_file_location("GlucoseDataProviderSDK", sdkResolver(GlucoseDataProvider.__manifest__['sdk']))
+		print(sdkResolver(GlucoseDataProvider.__manifest__['sdk']))
+		SDK.gdp = imputil.module_from_spec(spec)
+		# Register the module in sys.modules (optional but good practice)
+		# Execute the module code
+		spec.loader.exec_module(SDK.gdp)
+		log.exts.info("Glucouse data provider load")
+
+	except Exception as e:
+		log.exts.error(f"GDP failed to load {str(e)}")
+		newToast = Toast()
+		newToast.text_fields = ['Issue with Glucose Data Provider', 'Glucose data provider failed to initialize.']
+		newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/generic.wav'))),silent=True)
+		PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
+		toaster.clear_toasts()
+		toaster.show_toast(newToast)
 def serverstatus():
 	global serviceOffline,serviceConnected,serviceDisconnectedAt,account
 	while True:
 		try:
-			netlog.status.info(f"Requesting url: https://share2.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount")
-			resp = requests.get("https://share2.dexcom.com/ShareWebServices/Services/General/AuthenticatePublisherAccount",timeout=5)
-			if resp.status_code != 405:
+			resp = GlucoseDataProvider.getState()
+			log.serviceChecker.info(f"GDP state {resp}")
+			if resp != SDK.gdp.State.SERVICE_ONLINE:
 				if not serviceOffline:
+					log.serviceChecker.warning(f"Service is offline: '{GlucoseDataProvider.__manifest__["serviceName"]}'")
 					serviceOffline = True
 					serviceDisconnectedAt = time.time()
 
@@ -164,32 +229,33 @@ def serverstatus():
 							bulb.title = "DeskScout\nApplication Offline"
 
 						newToast = Toast()
-						newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
+						newToast.text_fields = [f'{GlucoseDataProvider.__manifest__["serviceName"]} Unreachable', 'DeskScout cannot provide alerts']
 						newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 						PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
 						serviceConnected = False
 						toaster.show_toast(newToast)
 				else:
 					if time.time()-serviceDisconnectedAt > 59:
+						log.gdp.warning(f"Service is offline: '{GlucoseDataProvider.__manifest__["serviceName"]}'")
 						if bulb:
 							bulb.title = "DeskScout\nApplication Offline"
 
 						newToast = Toast()
-						newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
+						newToast.text_fields = [f'{GlucoseDataProvider.__manifest__["serviceName"]} Unreachable', 'DeskScout cannot provide alerts']
 						newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 						PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
 						toaster.show_toast(newToast)
 						serviceDisconnectedAt = time.time()
 			else:
 				if serviceOffline:
-					account = None
+					log.serviceChecker.info(f"Service is online: '{GlucoseDataProvider.__manifest__["serviceName"]}'")
 					newToast = Toast()
-					serviceDisconnectedAt = time.time()
 					serviceOffline = False 
 					serviceDisconnectedAt = 0
-					_thread.start_new_thread(attemptConnect,())
-		except:
-			print("ERTS")
+					if not attemptingConnection:
+						_thread.start_new_thread(attemptConnect,())
+		except Exception as e :
+			log.serviceChecker.error(f"Service is offline due to an exception: {str(e)}")
 			if not serviceOffline:
 				serviceOffline = True
 				serviceDisconnectedAt = time.time()
@@ -200,7 +266,8 @@ def serverstatus():
 					if bulb:
 						bulb.title = "DeskScout\nApplication Offline"
 
-					newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
+					newToast.text_fields = [f'{GlucoseDataProvider.__manifest__["serviceName"]} Unreachable', 'DeskScout cannot provide alerts']
+
 					newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 					PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
 					serviceConnected = False
@@ -209,7 +276,8 @@ def serverstatus():
 			else:
 				if time.time()-serviceDisconnectedAt > 59:
 					newToast = Toast()
-					newToast.text_fields = ['Dexcom Share Unreachable', 'DeskScout cannot provide alerts']
+					newToast.text_fields = [f'{GlucoseDataProvider.__manifest__["serviceName"]} Unreachable', 'DeskScout cannot provide alerts']
+
 					if bulb:
 						bulb.title = "DeskScout\nApplication Offline"
 
@@ -219,7 +287,6 @@ def serverstatus():
 					
 					toaster.show_toast(newToast)
 					serviceDisconnectedAt = time.time()
-		time.sleep(1)
 
 nametable = {
 	"urgentLow":"Urgent Low",
@@ -264,65 +331,111 @@ def nightscoutUplodader():
 			ns = nightscout.NightScout()
 			if settings['ns']['delay'] == 0:
 				pass
-
+DEXCOM_TREND_DIRECTIONS: dict[str, int] = {
+    "None": 0,  # unconfirmed
+    "DoubleUp": 1,
+    "SingleUp": 2,
+    "FortyFiveUp": 3,
+    "Flat": 4,
+    "FortyFiveDown": 5,
+    "SingleDown": 6,
+    "DoubleDown": 7,
+    "NotComputable": 8,  # unconfirmed
+    "RateOutOfRange": 9,  # unconfirmed
+}
 def recordAccessHandler():
+	# Nope for now
+	log.sync.info(f"Starting sync thread")
 	lastSync = 0
 	grec = None
+	records = []
+	log.sync.info(f"Sync thread started")
+
 	while True:
-		time.sleep(5)
-		settings = json.load(open("../data/settings.json"))
+		time.sleep(15)
+		log.sync.info("Sync process started")
+		try:
+			settings = json.load(open("../data/settings.json"))
+		except:
+			log.sync.error("Failed to load settings")
+			continue
+		records = []
 
-		if account:
-			if os.path.exists(os.path.abspath("../data/glucose.gdr")):
-				try:
-					if settings['gdrState'] != 1:
-						continue
-					if grec == None:
+		if GlucoseDataProvider:
+			if serviceConnected and not serviceOffline:
+				if os.path.exists(os.path.abspath("../data/glucose.gdr")):
+					try:
+						if settings['gdrState'] != 1:
+							log.sync.warning("Sync process failed, glucose data record not setup")
+
+							continue
+						log.sync.info("Loading large glucose record file")
 						grec = gdr.RecordAccess(os.path.abspath("../data/glucose.gdr"))
-						
-				except Exception as e:
-					grec = None
-					rec = None
-					print("ER",e)
-					time.sleep(5)
-					continue
+							
+					except Exception as e:
+						grec = None
+						rec = None
+						log.sync.error(f"Error while loading large glucose record file {str(e)}")
+						log.sync.warning("Sync process failed")
+						time.sleep(5)
+						continue
 
-				try:
-					x = grec.getLastRecordTime()
-					reading = account.get_latest_glucose_reading()
-					print(x,reading.datetime.timestamp()*1000)
-					if x:
-						if x < int(reading.datetime.timestamp()*1000):
-							print("Syncing")
-							if int((int(reading.datetime.timestamp())-(x/1000))/60) != 4:
-								records = account.get_glucose_readings(cap(int((int(reading.datetime.timestamp())-(x/1000))/60),1140),cap(int(int((int(reading.datetime.timestamp())-(x/1000))/60)/5),288))
+					try:
+						print("Retreiving last record time")
+						x = grec.getLastRecordTime()
+						reading = GlucoseDataProvider.getLatestGlucoseReading()
+						print("LASTRT",x,int(reading.timestamp))
+						if x:
+							if x < int(reading.timestamp):
+								print("Syncing",x,reading.timestamp)
+								log.sync.info("Data available to sync, gathering data")
+								time.sleep(5)
+								records1 = GlucoseDataProvider.getAllReadings()
+								for i in records1:
+									if int(i.timestamp) > x:
+										records.append(i)
+							
 							else:
-								records = account.get_glucose_readings(5,1)
+								log.sync.info("No data available to sync")
+								log.sync.info("Sync process complete")
+								records = []
 						else:
-							print("No Sync needed")
-							records = []
-					else:
-						records = account.get_glucose_readings(1440,288)
-					records.reverse()
-					records = remove_duplicates(records)
-					for i in records:
-						print("rec",time.localtime(i.datetime.timestamp()/1000),i.datetime.strftime('%Y%m%d'))
-						
-						grec.writeRecord(i.datetime.timestamp()*1000,i.value,i.trend)
-						if not (f"{i.datetime.strftime('%Y-%m-%d')}.gdr" in os.listdir("../data/glucose/daily")):
-							rec = gdr.createRecordFile(f"../data/glucose/daily/{i.datetime.strftime('%Y-%m-%d')}.gdr")
-						rec = gdr.RecordAccess(f"../data/glucose/daily/{i.datetime.strftime('%Y-%m-%d')}.gdr")
-						rec.writeRecord(i.datetime.timestamp()*1000,i.value,i.trend)
-						rec.file.close()
+							records1 = GlucoseDataProvider.getAllReadings()
+							for i in records1:
+								if i.timestamp > x:
+									records.append(i)
+						records.reverse()
+						log.sync.info(f"Found {len(records)} data points to sync,writing data")
 
-				except Exception as e:
-					print("Sync failed",e)
+						print("Data Collected, Writing",len(records))
+
+						for i in records:
+							#print(i)
+			
+							#print("rec",time.localtime(i.timestamp),time.strftime('%Y%m%d',time.localtime(i.timestamp)))
+							
+							grec.writeRecord(i.timestamp,i.value,DEXCOM_TREND_DIRECTIONS[i.trend])
+							if not (f"{time.strftime('%Y-%m-%d',time.localtime(i.timestamp/1000))}.gdr" in os.listdir("../data/glucose/daily")):
+								rec = gdr.createRecordFile(f"../data/glucose/daily/{time.strftime('%Y-%m-%d',time.localtime(i.timestamp/1000))}.gdr")
+							rec = gdr.RecordAccess(f"../data/glucose/daily/{time.strftime('%Y-%m-%d',time.localtime(i.timestamp/1000))}.gdr")
+							rec.writeRecord(i.timestamp,i.value,DEXCOM_TREND_DIRECTIONS[i.trend])
+							rec.file.close()
+						log.sync.info("Sync complete")
+
+					except Exception as e:
+						log.sync.error(f"Sync failed with exception {str(e)}")
+
+			else:
+				log.sync.warning("Sync failed, glucose data provider is offline")
 			for i in recordQueue:
 				if i[0] == "delete":
 					ts = hours_to_utc_minute_timestamps(i[1])
 					for i in ts:
 						print("del",rec.deleteRecordByTime(ts))
 					i[2] = True
+		else:
+			log.sync.warning("Sync failed, glucose data provider is not availiable")
+
 
 
 
@@ -353,17 +466,24 @@ def notificationRunner():
 				silence['urgentLow'] = None
 		return False
 	while True:
-		time.sleep(1)
-		if account and serviceConnected and not serviceOffline:
-			settings = json.load(open("../data/settings.json"))
+		time.sleep(10)
+		if GlucoseDataProvider.getAuthStatus() == SDK.gdp.AuthenticationState.AUTHED and serviceConnected and not serviceOffline:
+			log.notifier.info("Checking glucose")
+			try:
+				settings = json.load(open("../data/settings.json"))
+			except:
+				log.notifier.warning("Couldn't load settings,stopped")
+				continue
+
+
 			
 			try:
-				netlog.notifier.info(f"Requesting url {pydexcom.const.DEXCOM_BASE_URL}")
-				reading = account.get_latest_glucose_reading()
+				reading = GlucoseDataProvider.getLatestGlucoseReading()
 			except:
 				continue
 			lost = None
 			if not reading:
+				log.notifier.info("No reading available")
 				print("No Data Available")
 				continue
 			glucose = reading.value
@@ -371,17 +491,16 @@ def notificationRunner():
 				glucose = round(glucose/18,1)
 			
 
-			bulb.title = f"DeskScout\nYour glucose: {glucose}{'mg/dl' if settings['useMGDL'] else 'mmol/L'} {reading.trend_description}\nLast reading at: {reading.datetime.ctime()}"
+			bulb.title = f"DeskScout\nYour glucose: {glucose}{'mg/dl' if settings['useMGDL'] else 'mmol/L'} {reading.trend_description}\nLast reading at: {time.ctime(reading.timestamp/1000)}"
 			if settings['enableNotify']:
-				if account:
-					netlog.notifier.info(f"Requesting url {pydexcom.const.DEXCOM_BASE_URL}")
+				if GlucoseDataProvider.getAuthStatus() == SDK.gdp.AuthenticationState.AUTHED and serviceConnected and not serviceOffline:
 
-					reading = account.get_latest_glucose_reading()
+					reading = GlucoseDataProvider.getLatestGlucoseReading()
 					#Check for urgent low
-					if reading.datetime.timestamp() == last:
+					if reading.timestamp == last:
 						continue
 					else:
-						last = reading.datetime.timestamp()
+						last = reading.timestamp
 					if checkForUrgentLow() == False:
 						if settings['notify']['low']['enabled']:
 							
@@ -420,7 +539,7 @@ def notificationRunner():
 					if settings['notify']['fallingFast']['enabled']:
 						if reading.value >= settings['notify']['fallingFast']['level']:
 							#1,2,6,7
-							if reading.trend_arrow == (6 if settings['notify']['fallingFast']['arrow'] == 'one' else 7) :
+							if DEXCOM_TREND_DIRECTIONS[reading.trend] == (6 if settings['notify']['fallingFast']['arrow'] == 'one' else 7) :
 								if silence['fallingFast']:
 									if time.time()-silence['fallingFast'] >= settings['notify']['fallingFast']['silence']:
 										silence['fallingFast'] = None
@@ -435,7 +554,7 @@ def notificationRunner():
 										PlaySoundW(PWSTR(settings['notify']['fallingFast']['sound']), None, SND_FILENAME)
 					if settings['notify']['risingFast']['enabled']:
 						if reading.value >= settings['notify']['risingFast']['level']:
-							if reading.trend == (2 if settings['notify']['risingFast']['arrow'] == 'one' else 1) :
+							if DEXCOM_TREND_DIRECTIONS[reading.trend] == (2 if settings['notify']['risingFast']['arrow'] == 'one' else 1) :
 								if silence['risingFast']:
 									if time.time()-silence['risingFast'] >= settings['notify']['risingFast']['silence']:
 										silence['risingFast'] = None
@@ -468,7 +587,7 @@ def updateDownloadThread():
 		return
 	myversioninfo = json.load(open('versioninfo.json'))
 	versioninfo = json.loads(resp.text)
-	latest = int(versioninfo['latest'][sys.platform]['official-alpha'])
+	latest = versioninfo['latest'][sys.platform]['official-alpha']
 	if latest == myversioninfo['app']:
 		updateStatus["isUpToDate"] = True
 		updateStatus['result'] = "update_not_needed"
@@ -536,7 +655,7 @@ def updateCheckThread():
 		return
 	myversioninfo = json.load(open('versioninfo.json'))
 	versioninfo = json.loads(resp.text)
-	latest = int(versioninfo['latest'][sys.platform]['official-alpha'])
+	latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['client'])]
 	if latest == myversioninfo['app']:
 		updateStatus["isUpToDate"] = True
 		updateStatus['result'] = "ok"
@@ -568,6 +687,7 @@ def index():
 	return "OK"
 @route('/shutdown')
 def index():
+	log.main.info("Shutdown requested via external")
 	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/shutdown.wav')), None, SND_FILENAME)
 	p = psutil.Process(os.getpid())
 	for proc in p.children(recursive=True):
@@ -581,10 +701,14 @@ def ccus():
 	return "ok"
 @route('/checkForUpdate')
 def runCFU():
+	log.main.info("Update check requested")
+
 	_thread.start_new_thread(updateCheckThread,())
 	return "ok"
 @route('/downloadUpdate')
 def runDU():
+	log.main.info("Update download requested")
+
 	_thread.start_new_thread(updateDownloadThread,())
 	return "ok"
 @route('/getUpdateStatus')
@@ -592,6 +716,8 @@ def getUpdateStatus():
 	return json.dumps(updateStatus)
 @route('/factoryReset')
 def index():
+	log.main.warning("Factory Reset is a Deprecated method")
+
 	global bulb,account,serviceConnected
 	import shutil
 	account = None
@@ -608,27 +734,32 @@ def index():
 
 @route('/authenticate')
 def auth():
-	global account,serviceConnected
+	log.main.info("Authentication requested")
+
+	global account,serviceConnected,serviceOffline
+	
+
 	settings = json.load(open("../data/settings.json"))
 	pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
 	try:
-		netlog.main.info(f"Requesting url:{pydexcom.DEXCOM_AUTHENTICATE_ENDPOINT}")
-		account = Dexcom(username=settings['username'],password=pw)
-		if not serviceConnected:
+		GlucoseDataProvider.login(settings['username'],pw)
+		if GlucoseDataProvider.getAuthStatus() == 0x03:
 			
 			serviceConnected = True
+			serviceOffline = False
 			newToast = Toast()
-			newToast.text_fields = ['Dexcom Share Connected', 'DeskScout is now receiving data and is able to provide alerts.']
+			newToast.text_fields = [f'{GlucoseDataProvider.__manifest__['serviceName']} Connected', 'DeskScout is now receiving data and is able to provide alerts.']
 			newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 			PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/connected.wav')), None, SND_FILENAME | SND_ASYNC)
 			toaster.clear_toasts()
 			
 			toaster.show_toast(newToast)
-		print("LOGIN")
+			log.gdp.info(f"Service is authenticated {GlucoseDataProvider.__manifest__['serviceName']}")
+		log.main.info("Authentication successful")
 		import time
 		return json.dumps({"status":"ok"})
-	except:
-		print("NAXC")
+	except Exception as e:
+		print("NAXC",e)
 		bulb.title = "DeskScout"
 
 		serviceConnected = False
@@ -638,10 +769,9 @@ def auth():
 @route('/getStatus')
 def getStatus():
 	global serviceConnected,serviceDisconnectedAt
-	
 	if serviceOffline and serviceConnected:
 		newToast = Toast()
-		newToast.text_fields = ['Dexcom Share Disconnected', 'DeskScout cannot provide alerts']
+		newToast.text_fields = [f'{GlucoseDataProvider.__manifest__['serviceName']} Disconnected', 'DeskScout cannot provide alerts']
 		newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 		PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
 		serviceConnected = False
@@ -652,7 +782,7 @@ def getStatus():
 		return json.dumps({"status":"ok","login_state":"offline"})
 	if serviceOffline and serviceDisconnectedAt == 0:
 		newToast = Toast()
-		newToast.text_fields = ['Dexcom Share Disconnected', 'DeskScout cannot provide alerts']
+		newToast.text_fields = [f'{GlucoseDataProvider.__manifest__['serviceName']} Disconnected', 'DeskScout cannot provide alerts']
 		newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 		
 		serviceConnected = False
@@ -667,9 +797,8 @@ def getStatus():
 	try:
 		settings = json.load(open("../data/settings.json"))
 		pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
-		netlog.notifier.info(f"Requesting url {pydexcom.const.DEXCOM_AUTHENTICATE_ENDPOINT}")
-		Dexcom(username=settings['username'],password=pw)
-		if isinstance(account,Dexcom):
+		
+		if GlucoseDataProvider.getAuthStatus() == SDK.gdp.AuthenticationState.AUTHED:
 			loginState = True
 		elif pw == "":
 			loginState = 'unknown'
@@ -681,9 +810,7 @@ def getStatus():
 
 	except:
 		pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
-		print("PWW")
 		if pw == "":
-			print("LOGGED IN NO ")
 			loginState = 'unknown'
 			serviceConnected = False
 		else:
@@ -702,7 +829,7 @@ def getStatus():
 def getLReading():
 	global serviceConnected
 	try:
-		data = account.get_latest_glucose_reading()
+		data = GlucoseDataProvider.getLatestGlucoseReading()
 		if data:
 			return json.dumps({"status":"ok","data":data.json})
 	except:
@@ -714,12 +841,40 @@ def getLReading():
 			PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
 		serviceConnected = False
 		return json.dumps({"status":"Error"})
+@route('/setupGDP')
+def initializeGDP():
+	log.main.info("GDP setup requested")
+	GlucoseDataProvider.setup()
+	log.main.info("GDP complete")
 
+	return json.dumps({"status":"ok"})
 @route('/getCurrentReading')
 def getCReading():
-	data = account.get_current_glucose_reading()
+	data = GlucoseDataProvider.getLatestGlucoseReading()
 	if data:
 		return json.dumps({"status":"ok","data":data.json})
+@route('/putIntent',method=["POST"])
+def putIntent():
+	global intent
+	log.main.info("Application intent set")
+
+	intent = request.forms['intent']
+	return json.dumps({"status":"ok"})
+@route('/getIntent')
+def getIntent():
+	global intent
+	
+
+	if intent:
+		ix = intent
+		intent = None
+		log.main.info("Application intent retrieved")
+		return json.dumps({"status":"ok","data":ix})
+	
+	else:
+		return json.dumps({"status":"ok","data":None})
+
+
 @route('/deleteRecords',method=["POST"])
 def deleteRecords(self):
 	data = request.forms
@@ -728,10 +883,38 @@ def deleteRecords(self):
 		while recordQueue[len(recordQueue)][2] == 0:
 			pass
 		return json.dumps({"status":"done"})
+@route("/reloadExts")
+def reloadExtensions():
+	loadGlucoseDataProvider()
+	return json.dumps({"status":"ok","data":{}})
+@route("/initializeGDR")
+def inadgr():
+	log.main.info("Glucose data record initialization requested")
 
+	if not "glucose.gdr" in os.listdir("../data"):
+		gdr.createRecordFile("../data/glucose.gdr")
+		log.main.info("Glucose data record initialized")
+	else:
+		log.main.warning("Glucose data record already exists")
+
+
+
+	return json.dumps({"status":"ok","data":{}})
+@route("/extInfo")
+def getExtInfo():
+	result = []
+	exts = os.listdir("../data/extensions")
+	for ext in exts:
+		if os.path.exists(f"../data/extensions/{ext}/manifest.json"):
+			try:
+				result.append(json.load(open(f"../data/extensions/{ext}/manifest.json")))
+			except:
+				pass
+	return json.dumps({"status":"ok","data":result})
 @route('/settings',method=["POST"])
 def updateSettings():
 	data = request.forms
+	
 	
 	if data['action'] == 'get':
 		settings = json.load(open("../data/settings.json"))
@@ -748,6 +931,7 @@ def updateSettings():
 	if data['action'] == 'set':
 		settings = json.load(open("../data/settings.json"))
 		path = "settings"
+		log.main.info(f"Setting at path {data['path']} requested change")
 		for _ in data['path'].split("/"): path += f'["{_}"]'
 		path += f"= {data['value']}"
 		
@@ -759,6 +943,8 @@ def updateSettings():
 			})
 		except Exception as e:
 			print(e,path)
+			log.main.warning(f"Setting at path {data['path']} failed to change {str(e)}")
+
 			return json.dumps({"status":"Error"})
 @route("/about")
 def about():
@@ -770,14 +956,29 @@ def about():
 		
 	})
 bulb = None
+log.main.info("Starting Service")
 newToast = Toast()
 newToast.text_fields = ['DeskScout is starting', 'Glucose alerts should be available soon.']
 newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/generic.wav'))),silent=True)
 PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/generic.wav')), None, SND_FILENAME | SND_ASYNC)
 toaster.clear_toasts()
 toaster.show_toast(newToast)
+try:
+	log.main.info("Loading the glucose provier")
+	loadGlucoseDataProvider()
+except:
+	newToast = Toast()
+	newToast.text_fields = ['Issue with Glucose Data Provider', 'Glucose data provider failed to initialize.']
+	newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/generic.wav'))),silent=True)
+	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/attention.wav')), None, SND_FILENAME | SND_ASYNC)
+	toaster.clear_toasts()
+	toaster.show_toast(newToast)
+log.main.info("Starting server status checker")
 _thread.start_new_thread(serverstatus,())
+log.main.info("Starting server notification host")
 _thread.start_new_thread(notificationRunner,())
+log.main.info("Starting server recored access handler")
+
 _thread.start_new_thread(recordAccessHandler,())
 
 def runtime(internal):
@@ -785,7 +986,8 @@ def runtime(internal):
 	bulb = internal
 	internal.visible = True
 	print(internal)
-	time.sleep(5)
+	import subprocess
+	subprocess.Popen("py DeskScoutOverlay.py",shell=True)
 	_thread.start_new_thread(attemptConnect,())
 	run(host='127.0.0.1', port=49152)
 	bulb.stop()
@@ -793,10 +995,16 @@ from PIL import Image
 from pystray import Icon, Menu as menu, MenuItem as item
 state = False
 def attemptConnect():
-	global account,serviceConnected
+	global account,serviceConnected,attemptingConnection
+	attemptingConnection = True
 	import time
 	time.sleep(5)
-	requests.get("http://127.0.0.1:49152/authenticate")
+	try:
+		requests.get("http://127.0.0.1:49152/authenticate",timeout=300)
+	except Exception as e:
+		attemptingConnection = False
+		raise e
+
 def shutdown(icon, item):
 	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/shutdown.wav')), None, SND_FILENAME)
 
@@ -813,7 +1021,14 @@ def openbackup(icon,item):
 icon = Icon(
 	'DeskScout',
 	icon=Image.open("../assets/icons/logo/03.png"),
+	
 	menu=menu(
+		item(
+		'Refresh Connections',
+		lambda icon,item:attemptConnect()),
+		item(
+		'Refresh Data Provider',
+		lambda icon,item:loadGlucoseDataProvider()),
 		item(
 		'Shutdown Deskscout',
 		shutdown),

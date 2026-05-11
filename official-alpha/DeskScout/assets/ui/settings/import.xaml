@@ -10,10 +10,8 @@
         <Border BorderThickness="1" Height="16" >
             
         </Border>
-        <TextBlock Text="Select the data you want to import" FontSize="24" />
-        <CheckBox Name="import.glucose" Content="Glucose History" IsChecked="True"/>
-        <CheckBox Name="import.settings" Content="Settings" IsChecked="True"/>
-        <CheckBox Name="import.sounds" Content="Sounds" IsChecked="True" />
+        <TextBlock Text="Before you begin" FontSize="24" />
+        <TextBlock Text="Restoring data from v0.6 or is for Dexcom devices only"/>
         <Button Name="import.start" Content="Import" />
       
    

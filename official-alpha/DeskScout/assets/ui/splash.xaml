@@ -10,7 +10,7 @@
         <Grid>
             <Image Opacity="0" Name="Background" Stretch="Fill" Source="/assets/background.png"/>
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock FontSize="64" Text="DeskScout" Foreground="White" />
+                <TextBlock FontSize="64" Text="DeskScout" />
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <ProgressRing IsActive="True" VerticalAlignment="Center"/>
                     <TextBlock Name="Status" VerticalAlignment="Center" Text="Starting service"/>

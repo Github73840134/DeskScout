@@ -1,9 +1,11 @@
 {
 	"username": "",
+	"gdp":"",
 	"useMGDL":true,
 	"setup": false,
 	"enableNotify": true,
 	"gdrState":0,
+	"overlay":false,
 	"ns":{
 		"enabled":false,
 		"url":"",
@@ -17,8 +19,7 @@
 			"sound": "../assets/sounds/urgent_low.wav",
 			"level": 50,
 			"delay": 0,
-			"silence": 900,
-			"value": 50
+			"silence": 900
 		},
 		"urgentLowSoon": {
 			"enabled": true,
@@ -34,8 +35,7 @@
 			"sound": "../assets/sounds/generic.wav",
 			"level": 85.0,
 			"delay": 0.0,
-			"silence": 900.0,
-			"value": 85.0
+			"silence": 900.0
 		},
 		"high": {
 			"enabled": true,
@@ -43,8 +43,7 @@
 			"sound": "../assets/sounds/high_glucose.wav",
 			"level": 200.0,
 			"delay": 0.0,
-			"silence": 900.0,
-			"value": 55.0
+			"silence": 900.0
 		},
 		"risingFast": {
 			"enabled": true,
@@ -53,8 +52,7 @@
 			"level": 40.0,
 			"arrow": "one",
 			"delay": 0.0,
-			"silence": 240.0,
-			"value": 40.0
+			"silence": 240.0
 		},
 		"fallingFast": {
 			"enabled": true,
@@ -63,8 +61,7 @@
 			"level": 40.0,
 			"arrow": "one",
 			"delay": 0.0,
-			"silence": 900.0,
-			"value": 40.0
+			"silence": 900.0
 		}
 	}
 }

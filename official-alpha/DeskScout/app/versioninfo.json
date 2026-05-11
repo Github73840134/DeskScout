@@ -1,5 +1,6 @@
 {
-	"client":19,
-	"service":15,
-	"app":19
+	"client":20,
+	"service":16,
+	"app":20,
+	"sdk":1
 }

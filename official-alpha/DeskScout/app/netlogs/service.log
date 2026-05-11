@@ -1,0 +1,426 @@
++2026-05-09 16:40:26,725 [0.006521701812744141] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2026-05-09 16:40:29,193 [2.474381446838379] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:29,215 [2.496961832046509] PIL.PngImagePlugin DEBUG: STREAM b'IHDR' 16 13
++2026-05-09 16:40:29,215 [2.496961832046509] PIL.PngImagePlugin DEBUG: STREAM b'pHYs' 41 9
++2026-05-09 16:40:29,215 [2.496961832046509] PIL.PngImagePlugin DEBUG: STREAM b'IDAT' 62 8192
++2026-05-09 16:40:29,267 [2.548544406890869] PIL.Image DEBUG: Importing BlpImagePlugin
++2026-05-09 16:40:29,268 [2.549543857574463] PIL.Image DEBUG: Importing BmpImagePlugin
++2026-05-09 16:40:29,268 [2.549543857574463] PIL.Image DEBUG: Importing BufrStubImagePlugin
++2026-05-09 16:40:29,269 [2.550543785095215] PIL.Image DEBUG: Importing CurImagePlugin
++2026-05-09 16:40:29,269 [2.550543785095215] PIL.Image DEBUG: Importing DcxImagePlugin
++2026-05-09 16:40:29,270 [2.551543712615967] PIL.Image DEBUG: Importing DdsImagePlugin
++2026-05-09 16:40:29,272 [2.5535507202148438] PIL.Image DEBUG: Importing EpsImagePlugin
++2026-05-09 16:40:29,273 [2.5545568466186523] PIL.Image DEBUG: Importing FitsImagePlugin
++2026-05-09 16:40:29,274 [2.5555856227874756] PIL.Image DEBUG: Importing FliImagePlugin
++2026-05-09 16:40:29,274 [2.5555856227874756] PIL.Image DEBUG: Importing FpxImagePlugin
++2026-05-09 16:40:29,275 [2.5571117401123047] PIL.Image DEBUG: Image: failed to import FpxImagePlugin: No module named 'olefile'
++2026-05-09 16:40:29,275 [2.5571117401123047] PIL.Image DEBUG: Importing FtexImagePlugin
++2026-05-09 16:40:29,275 [2.5571117401123047] PIL.Image DEBUG: Importing GbrImagePlugin
++2026-05-09 16:40:29,275 [2.5571117401123047] PIL.Image DEBUG: Importing GifImagePlugin
++2026-05-09 16:40:29,275 [2.5571117401123047] PIL.Image DEBUG: Importing GribStubImagePlugin
++2026-05-09 16:40:29,276 [2.5580825805664062] PIL.Image DEBUG: Importing Hdf5StubImagePlugin
++2026-05-09 16:40:29,276 [2.5580825805664062] PIL.Image DEBUG: Importing IcnsImagePlugin
++2026-05-09 16:40:29,277 [2.559074878692627] PIL.Image DEBUG: Importing IcoImagePlugin
++2026-05-09 16:40:29,278 [2.5600764751434326] PIL.Image DEBUG: Importing ImImagePlugin
++2026-05-09 16:40:29,279 [2.561073064804077] PIL.Image DEBUG: Importing ImtImagePlugin
++2026-05-09 16:40:29,279 [2.561073064804077] PIL.Image DEBUG: Importing IptcImagePlugin
++2026-05-09 16:40:29,279 [2.561073064804077] PIL.Image DEBUG: Importing JpegImagePlugin
++2026-05-09 16:40:29,279 [2.561073064804077] PIL.Image DEBUG: Importing Jpeg2KImagePlugin
++2026-05-09 16:40:29,279 [2.561073064804077] PIL.Image DEBUG: Importing McIdasImagePlugin
++2026-05-09 16:40:29,280 [2.5621278285980225] PIL.Image DEBUG: Importing MicImagePlugin
++2026-05-09 16:40:29,280 [2.5621278285980225] PIL.Image DEBUG: Image: failed to import MicImagePlugin: No module named 'olefile'
++2026-05-09 16:40:29,280 [2.5621278285980225] PIL.Image DEBUG: Importing MpegImagePlugin
++2026-05-09 16:40:29,281 [2.5630736351013184] PIL.Image DEBUG: Importing MpoImagePlugin
++2026-05-09 16:40:29,286 [2.5683674812316895] PIL.Image DEBUG: Importing MspImagePlugin
++2026-05-09 16:40:29,287 [2.5683674812316895] PIL.Image DEBUG: Importing PalmImagePlugin
++2026-05-09 16:40:29,288 [2.5693442821502686] PIL.Image DEBUG: Importing PcdImagePlugin
++2026-05-09 16:40:29,288 [2.5693442821502686] PIL.Image DEBUG: Importing PcxImagePlugin
++2026-05-09 16:40:29,288 [2.5693442821502686] PIL.Image DEBUG: Importing PdfImagePlugin
++2026-05-09 16:40:29,291 [2.572343587875366] PIL.Image DEBUG: Importing PixarImagePlugin
++2026-05-09 16:40:29,291 [2.572343587875366] PIL.Image DEBUG: Importing PngImagePlugin
++2026-05-09 16:40:29,292 [2.573371171951294] PIL.Image DEBUG: Importing PpmImagePlugin
++2026-05-09 16:40:29,292 [2.573371171951294] PIL.Image DEBUG: Importing PsdImagePlugin
++2026-05-09 16:40:29,292 [2.573371171951294] PIL.Image DEBUG: Importing QoiImagePlugin
++2026-05-09 16:40:29,292 [2.573371171951294] PIL.Image DEBUG: Importing SgiImagePlugin
++2026-05-09 16:40:29,293 [2.574359893798828] PIL.Image DEBUG: Importing SpiderImagePlugin
++2026-05-09 16:40:29,293 [2.574359893798828] PIL.Image DEBUG: Importing SunImagePlugin
++2026-05-09 16:40:29,293 [2.574359893798828] PIL.Image DEBUG: Importing TgaImagePlugin
++2026-05-09 16:40:29,294 [2.575371265411377] PIL.Image DEBUG: Importing TiffImagePlugin
++2026-05-09 16:40:29,294 [2.575371265411377] PIL.Image DEBUG: Importing WebPImagePlugin
++2026-05-09 16:40:29,294 [2.5759189128875732] PIL.Image DEBUG: Importing WmfImagePlugin
++2026-05-09 16:40:29,295 [2.576923131942749] PIL.Image DEBUG: Importing XbmImagePlugin
++2026-05-09 16:40:29,296 [2.577922821044922] PIL.Image DEBUG: Importing XpmImagePlugin
++2026-05-09 16:40:29,296 [2.577922821044922] PIL.Image DEBUG: Importing XVThumbImagePlugin
++2026-05-09 16:40:29,512 [2.7934722900390625] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:40:32,833 [6.114445209503174] keyring.backend DEBUG: Loading KWallet
++2026-05-09 16:40:32,836 [6.117437839508057] keyring.backend DEBUG: Loading SecretService
++2026-05-09 16:40:32,838 [6.119445562362671] keyring.backend DEBUG: Loading Windows
++2026-05-09 16:40:32,854 [6.135437726974487] win32ctypes.core.cffi DEBUG: Loaded cffi backend
++2026-05-09 16:40:32,978 [6.26006293296814] keyring.backend DEBUG: Loading chainer
++2026-05-09 16:40:32,980 [6.262065887451172] keyring.backend DEBUG: Loading libsecret
++2026-05-09 16:40:32,982 [6.264064788818359] keyring.backend DEBUG: Loading macOS
++2026-05-09 16:40:32,988 [6.270066976547241] keyring.backend DEBUG: Loading Gnome
++2026-05-09 16:40:32,999 [6.280632495880127] keyring.backend DEBUG: Loading Google
++2026-05-09 16:40:33,003 [6.284632444381714] keyring.backend DEBUG: Loading Windows (alt)
++2026-05-09 16:40:33,007 [6.288630962371826] keyring.backend DEBUG: Loading file
++2026-05-09 16:40:33,011 [6.292632579803467] keyring.backend DEBUG: Loading keyczar
++2026-05-09 16:40:33,011 [6.292632579803467] keyring.backend DEBUG: Loading multi
++2026-05-09 16:40:33,029 [6.310640811920166] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:33,537 [6.818630695343018] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 200 38
++2026-05-09 16:40:33,541 [6.822627305984497] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:34,152 [7.433566331863403] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/LoginPublisherAccountById HTTP/1.1" 200 38
++2026-05-09 16:40:34,517 [7.798645734786987] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2026-05-09 16:40:34,522 [7.8056464195251465] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:35,074 [8.355504274368286] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 200 38
++2026-05-09 16:40:35,077 [8.358527898788452] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:35,687 [8.969115018844604] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/LoginPublisherAccountById HTTP/1.1" 200 38
++2026-05-09 16:40:35,691 [8.972881078720093] urllib3.connectionpool DEBUG: http://127.0.0.1:49152 "GET /authenticate HTTP/1.1" 200 16
++2026-05-09 16:40:35,726 [9.007898330688477] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:35,912 [9.194133043289185] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:36,899 [10.181056499481201] urllib3.connectionpool DEBUG: Starting new HTTP connection (1): 127.0.0.1:49152
++2026-05-09 16:40:36,929 [10.210796117782593] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:37,531 [10.812657833099365] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 200 38
++2026-05-09 16:40:37,534 [10.81565546989441] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:38,145 [11.426827907562256] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/LoginPublisherAccountById HTTP/1.1" 200 38
++2026-05-09 16:40:38,184 [11.466055870056152] urllib3.connectionpool DEBUG: http://127.0.0.1:49152 "GET /authenticate HTTP/1.1" 200 16
++2026-05-09 16:40:38,208 [11.48960828781128] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:38,760 [12.04232120513916] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 200 38
++2026-05-09 16:40:38,763 [12.044325351715088] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:39,196 [12.477243423461914] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:39,254 [12.535888433456421] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/LoginPublisherAccountById HTTP/1.1" 200 38
++2026-05-09 16:40:39,298 [12.57936978340149] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:39,432 [12.713383197784424] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:39,497 [12.778781652450562] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:40,556 [13.837792873382568] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:40,816 [14.09761118888855] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:41,862 [15.14414358139038] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:42,086 [15.367842435836792] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:43,148 [16.42996048927307] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:43,360 [16.641709566116333] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:44,385 [17.668119430541992] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:44,638 [17.919829607009888] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:45,683 [18.964183807373047] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:45,940 [19.22231364250183] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:46,980 [20.261800050735474] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:47,208 [20.48954153060913] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:48,258 [21.539720058441162] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:48,571 [21.852239847183228] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:49,631 [22.913029670715332] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:49,880 [23.161452770233154] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:50,911 [24.19316029548645] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:51,457 [24.739030838012695] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 200 38
++2026-05-09 16:40:51,459 [24.74103021621704] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:52,073 [25.354402780532837] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/General/LoginPublisherAccountById HTTP/1.1" 200 38
++2026-05-09 16:40:53,122 [26.403927326202393] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:53,349 [26.63032364845276] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:54,380 [27.662056922912598] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:54,611 [27.892930030822754] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:55,637 [28.918291807174683] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:55,898 [29.18015170097351] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:56,929 [30.210208892822266] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:57,193 [30.474241256713867] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:58,243 [31.524614810943604] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:58,473 [31.754741430282593] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:59,517 [32.79846429824829] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:59,524 [32.805458068847656] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:40:59,774 [33.055925607681274] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:40:59,824 [33.10584783554077] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:41:00,836 [34.1176495552063] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:01,071 [34.35294198989868] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:02,098 [35.381057024002075] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:02,313 [35.59496712684631] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:03,369 [36.65107488632202] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:03,636 [36.91780471801758] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:04,664 [37.94599628448486] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:04,899 [38.180609941482544] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:05,942 [39.22336745262146] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:06,194 [39.47566533088684] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:07,242 [40.52368903160095] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:07,508 [40.789700746536255] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:08,583 [41.864798069000244] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:08,840 [42.121821880340576] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:09,870 [43.15152883529663] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:10,075 [43.35670757293701] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:11,191 [44.472930669784546] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:11,394 [44.67570519447327] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:12,469 [45.75149321556091] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:12,721 [46.00297689437866] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:13,750 [47.032249212265015] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:13,977 [47.25905680656433] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:15,010 [48.291752576828] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:15,249 [48.530720472335815] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:16,283 [49.56467413902283] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:16,501 [49.782275676727295] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:17,554 [50.835946798324585] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:17,829 [51.11074900627136] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:18,904 [52.186030864715576] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:19,310 [52.59176230430603] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:20,363 [53.644760608673096] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:20,743 [54.0261116027832] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:21,797 [55.079105377197266] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:22,122 [55.404160499572754] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:23,262 [56.543498039245605] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:23,610 [56.89144539833069] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:24,711 [57.992881536483765] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:25,033 [58.31549429893494] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:26,144 [59.42563986778259] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:26,429 [59.711042642593384] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:27,572 [60.85378623008728] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:27,871 [61.15233659744263] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:29,004 [62.285871267318726] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:29,293 [62.574684858322144] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:29,829 [63.11076259613037] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:30,118 [63.39926719665527] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:41:30,427 [63.708874225616455] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:30,880 [64.16121459007263] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:41:31,930 [65.21187448501587] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:32,162 [65.44385027885437] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:33,208 [66.48960995674133] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:33,448 [66.72937607765198] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:34,480 [67.76209473609924] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:34,709 [67.99072456359863] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:35,748 [69.02999925613403] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:35,968 [69.24920845031738] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:37,013 [70.2949333190918] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:37,228 [70.50986909866333] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:38,307 [71.5885398387909] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:38,588 [71.87014365196228] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:39,622 [72.90336632728577] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:39,867 [73.14899921417236] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:40,914 [74.19578647613525] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:41,132 [74.41405010223389] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:42,185 [75.46676754951477] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:42,555 [75.83632230758667] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:43,622 [76.90331029891968] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:43,873 [77.15440654754639] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:44,921 [78.203866481781] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:45,165 [78.44653058052063] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:46,237 [79.51885962486267] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:46,506 [79.78800177574158] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:47,552 [80.83410048484802] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:47,767 [81.04857516288757] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:48,833 [82.11416268348694] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:49,047 [82.32898736000061] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:50,109 [83.39051175117493] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:50,325 [83.60632729530334] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:51,358 [84.639723777771] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:51,604 [84.88604402542114] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:52,634 [85.91608023643494] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:52,885 [86.16699266433716] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:53,938 [87.21943616867065] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:54,233 [87.51424360275269] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:55,305 [88.58656716346741] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:55,525 [88.80648422241211] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:56,561 [89.84264540672302] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:56,776 [90.05729007720947] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:57,838 [91.11950492858887] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:58,095 [91.37624144554138] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:41:59,130 [92.41156220436096] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:41:59,393 [92.67434096336365] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:00,124 [93.40520691871643] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:00,440 [93.72146558761597] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:00,470 [93.75131678581238] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:42:00,690 [93.97152376174927] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:01,739 [95.02063250541687] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:02,000 [95.28120160102844] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:03,034 [96.3155426979065] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:03,240 [96.52158737182617] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:04,277 [97.5591311454773] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:04,493 [97.7748396396637] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:05,530 [98.81305146217346] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:05,763 [99.04463958740234] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:06,796 [100.07815480232239] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:07,055 [100.33695697784424] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:08,090 [101.3721513748169] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:08,564 [101.84591579437256] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:09,602 [102.88346982002258] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:09,846 [103.12722754478455] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:10,919 [104.20077228546143] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:11,128 [104.40975689888] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:12,200 [105.48267865180969] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:12,501 [105.78397917747498] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:13,539 [106.82108402252197] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:13,785 [107.0667359828949] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:14,818 [108.10026836395264] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:15,077 [108.35896015167236] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:16,111 [109.39255857467651] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:16,449 [109.73090171813965] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:17,492 [110.7739634513855] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:17,788 [111.06998133659363] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:18,858 [112.13953924179077] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:19,074 [112.35615158081055] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:20,126 [113.40820741653442] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:20,392 [113.67337918281555] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:21,452 [114.73323726654053] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:21,748 [115.02958416938782] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:22,783 [116.06482243537903] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:23,063 [116.3449969291687] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:24,111 [117.39249396324158] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:24,365 [117.64639163017273] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:25,440 [118.72141027450562] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:25,810 [119.09151363372803] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:26,863 [120.14503240585327] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:27,155 [120.43633389472961] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:28,249 [121.53094220161438] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:28,465 [121.74679732322693] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:29,507 [122.78860330581665] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:29,832 [123.11346101760864] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:30,475 [123.75624108314514] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:30,870 [124.15147542953491] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:30,881 [124.16240906715393] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:42:31,146 [124.42805671691895] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:32,179 [125.46035838127136] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:32,560 [125.84147572517395] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:33,728 [127.01002144813538] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:34,037 [127.31870985031128] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:35,131 [128.41406846046448] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:35,603 [128.88493061065674] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:36,640 [129.92158126831055] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:37,135 [130.4169464111328] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:38,170 [131.45154213905334] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:38,570 [131.85233211517334] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:39,710 [132.9918351173401] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:40,310 [133.59182834625244] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:41,405 [134.6870505809784] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:41,901 [135.18284010887146] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:43,032 [136.31368374824524] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:43,375 [136.65788102149963] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:42:44,485 [137.7676169872284] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:44,768 [138.05001640319824] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:45,839 [139.12061858177185] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:46,091 [139.37295198440552] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:47,124 [140.40572094917297] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:47,409 [140.69097447395325] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:48,446 [141.72801995277405] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:48,659 [141.94080066680908] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:49,712 [142.99419474601746] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:50,007 [143.28818225860596] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:51,058 [144.33920764923096] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:51,340 [144.6220052242279] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:52,374 [145.65601253509521] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:52,602 [145.88388180732727] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:53,694 [146.97616004943848] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:53,930 [147.2113835811615] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:54,964 [148.24592399597168] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:55,212 [148.4936785697937] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:56,257 [149.53836369514465] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:56,513 [149.79468965530396] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:57,551 [150.83289504051208] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:57,840 [151.1226053237915] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:42:58,892 [152.1736650466919] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:42:59,117 [152.3987283706665] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:00,170 [153.45238780975342] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:00,416 [153.69777083396912] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:00,886 [154.16737270355225] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:01,142 [154.42333555221558] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:43:01,447 [154.7287437915802] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:01,676 [154.95812034606934] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:02,727 [156.0098557472229] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:02,954 [156.235356092453] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:04,010 [157.2919237613678] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:04,234 [157.51582884788513] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:05,271 [158.5523419380188] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:05,485 [158.76797246932983] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:06,529 [159.81073188781738] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:06,829 [160.11106538772583] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:07,885 [161.16708636283875] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:08,159 [161.44100284576416] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:09,196 [162.47811818122864] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:09,380 [162.66185522079468] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:10,456 [163.73728013038635] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:10,695 [163.97677206993103] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:11,752 [165.03380274772644] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:11,976 [165.25770831108093] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:13,020 [166.30157446861267] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:13,303 [166.5845069885254] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:14,340 [167.62253594398499] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:14,575 [167.8569576740265] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:15,635 [168.91672706604004] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:15,880 [169.1613690853119] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:16,937 [170.2183735370636] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:17,205 [170.4867458343506] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:18,241 [171.52297472953796] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:18,484 [171.76552653312683] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:19,532 [172.81392621994019] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:19,801 [173.08251190185547] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:20,835 [174.11680579185486] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:21,041 [174.32245135307312] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:22,092 [175.37409496307373] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:22,334 [175.61612367630005] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:23,384 [176.66575026512146] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:23,636 [176.91781663894653] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:24,676 [177.9578309059143] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:24,932 [178.21375679969788] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:25,964 [179.2457423210144] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:26,253 [179.53422784805298] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:27,295 [180.57710909843445] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:27,546 [180.8271839618683] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:28,586 [181.86735916137695] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:28,855 [182.1369571685791] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:29,905 [183.18647360801697] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:30,203 [183.48417687416077] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:31,146 [184.42749118804932] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:31,246 [184.52805852890015] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:31,482 [184.76447129249573] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:43:31,490 [184.77146863937378] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:32,528 [185.80973482131958] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:32,783 [186.064373254776] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:33,818 [187.09942173957825] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:34,039 [187.32081651687622] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:35,083 [188.3644154071808] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:35,328 [188.60917258262634] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:36,374 [189.6564552783966] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:36,619 [189.9004843235016] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:37,681 [190.96412110328674] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:37,924 [191.20538187026978] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:38,955 [192.2365710735321] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:39,183 [192.464905500412] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:40,214 [193.4952666759491] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:40,449 [193.73088312149048] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:41,484 [194.7657687664032] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:41,738 [195.02003002166748] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:42,773 [196.05425548553467] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:42,990 [196.27129292488098] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:44,030 [197.31211137771606] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:44,285 [197.5666823387146] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:43:45,339 [198.62041091918945] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:45,653 [198.93468976020813] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:46,789 [200.07060265541077] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:47,278 [200.55932307243347] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:48,356 [201.6378297805786] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:48,816 [202.0973048210144] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:49,853 [203.13451766967773] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:50,179 [203.46074509620667] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:51,295 [204.57627654075623] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:51,652 [204.93382811546326] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:52,794 [206.0760886669159] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:53,218 [206.5000057220459] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:54,261 [207.5428786277771] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:54,650 [207.93163895606995] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:55,743 [209.0242781639099] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:56,188 [209.46945881843567] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:57,253 [210.53506588935852] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:57,559 [210.84056448936462] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:43:58,684 [211.96527290344238] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:43:59,054 [212.3355996608734] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 200 None
++2026-05-09 16:44:00,125 [213.40683436393738] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:00,339 [213.62059783935547] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:01,399 [214.68131923675537] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:01,489 [214.7703914642334] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:01,664 [214.94598603248596] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:01,770 [215.05207204818726] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176
++2026-05-09 16:44:02,711 [215.99266982078552] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:02,979 [216.26021456718445] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:04,043 [217.32487535476685] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:04,276 [217.55771398544312] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:05,324 [218.6060721874237] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:05,538 [218.819477558136] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:06,570 [219.85172080993652] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:06,838 [220.1201057434082] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:07,869 [221.1503758430481] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:08,099 [221.38076996803284] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:09,127 [222.4087700843811] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:09,386 [222.66776514053345] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "POST /ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues HTTP/1.1" 429 18
++2026-05-09 16:44:10,421 [223.70224523544312] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:31,775 [245.05628323554993] urllib3.connectionpool DEBUG: Starting new HTTPS connection (1): share2.dexcom.com:443
++2026-05-09 16:44:32,110 [245.39130854606628] urllib3.connectionpool DEBUG: https://share2.dexcom.com:443 "GET /ShareWebServices/Services/General/AuthenticatePublisherAccount HTTP/1.1" 405 176

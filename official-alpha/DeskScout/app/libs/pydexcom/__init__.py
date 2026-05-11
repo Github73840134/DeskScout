@@ -205,6 +205,7 @@ class Dexcom:
 
         :param response: `requests.Response` to parse
         """
+        _LOGGER.debug(response.text)
         if response.json():
             _LOGGER.debug("%s", response.json())
             code = response.json().get("Code", None)

@@ -2,9 +2,15 @@ import zipfile,json
 import os
 import logging,time
 import os, sys
+import argparse
 os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
+from mods import PySimpleGUI as sg
+
+parser = argparse.ArgumentParser("update")
+parser.add_argument("-file",default="../data/update.zip",required=False)
+args = parser.parse_args(sys.argv[1:])
 class DeltaTimeFormatter(logging.Formatter):
 	def format(self, record):
 		record.delta = time.time()-ast
@@ -20,13 +26,21 @@ logging.basicConfig(
 					level=logging.DEBUG)
 log = logging.getLogger("update")
 ast = time.time()
-if not "update.zip" in os.listdir("../data"):
+log.info("Checking for update")
+if not os.path.exists(args.file):
 	log.error("No Update Available")
 	exit(2)
 else:
 	log.info("Update found")
+	layout = [
+	[sg.Text("DeskScout")],
+	[sg.Text("Installing Updates",key="status")]
+	]
+	window = sg.Window("DeskScout Installer",layout,finalize=True,no_titlebar=True)
+	window.refresh()
+
 try:
-	zip = zipfile.ZipFile("../data/update.zip")
+	zip = zipfile.ZipFile(args.file)
 except Exception as e:
 	log.critical(f"Failed to open update {str(e)}")
 	exit(3)
@@ -48,14 +62,15 @@ for i in files:
 	except Exception as e:
 		log.critical(f"Error during copy {files[i]} ({i}): {str(e)}")
 		exit(3)
+os.chdir(os.path.dirname(__file__))
 log.info("Checking for settings update")
-if "newSettings.pref" in os.listdir("data"):
+if "newSettings.json" in os.listdir("../data"):
 	log.info("Updating settings")
 	try:
 		
-		import prefs
-		prefs.reader("data/newSettings.pref","data/")
-		os.remove('data/newSettings.pref')
+		from mods import prefs
+		prefs.reader("../data/newSettings.json","../data/")
+		os.remove('../data/newSettings.json')
 		log.info("Settings updated")
 	except Exception as e:
 		log.critical(f"Error during settings update: {str(e)}")

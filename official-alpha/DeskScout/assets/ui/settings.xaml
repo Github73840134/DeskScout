@@ -161,6 +161,25 @@
 			</PivotItem>
 		</Pivot>
         <Border BorderThickness="1" Height="16" />
+		<TextBlock Text="Glucose Overlay - Beta" FontSize="36"/>
+		<StackPanel Orientation="Vertical">
+			<Border Height="14"/>
+			<TextBlock Text="Glucose overlay displays glucose alerts when games or certain full screen applications are open"/>
+			<CheckBox Name="settings.overlay.enable" Content="Enable Overlay"/>
+			<StackPanel>
+				<StackPanel>
+					<TextBlock Text="Detection Settings" FontSize="20"/>
+					<CheckBox Name="settings.overlay.detect.steam" Content="Detect Steam Games"/>
+					<CheckBox Name="settings.overlay.detect.fullscreen" Content="Detect Fullscreen Applications"/>
+				</StackPanel>
+				
+
+			</StackPanel>
+
+				
+
+		</StackPanel>
+        <Border BorderThickness="1" Height="16" />
 
 		<TextBlock Text="Nightscout Uploading" FontSize="36"/>
 		<StackPanel Orientation="Vertical">
@@ -193,6 +212,17 @@
 				<Button Name="settings.ns.sync" Content="Sync Now"/>
 			</StackPanel>
 		</StackPanel>
+		<StackPanel Orientation="Vertical">
+			<TextBlock Text="Glucose Data Provider" FontSize="36"/>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock Name="settings.gdp.name" Text="Loading.."/>
+				<Button Name="settings.gdp.info" Content="Info"/>
+				<Button Name="settings.gdp.edit" Content="Change"/>
+			</StackPanel>
+		</StackPanel>
+		
+
+
 
 
         <Border BorderThickness="1" Height="16" />
@@ -200,7 +230,7 @@
 		<Button Name="settings.save" Content="Save Changes"/>
 		<Border BorderThickness="1" Height="16" />
 		<StackPanel Orientation="Horizontal">
-			<TextBlock Padding="6,0" Text="Copyright 2025 Seth Edwards"/>
+			<TextBlock Padding="6,0" Text="Copyright 2026 Seth Edwards and The OpenDiabetes Collective"/>
 			<Button Name="settings.about" Content="About DeskScout"/>
 		</StackPanel>
 		<Button Name="settings.psignout" Content="Sign Out">

@@ -1,0 +1,8 @@
+{
+	"build":"actions.build",
+	"help":"actions.help",
+
+	"makeTemplate":"actions.makeTemplate",
+	"makeGuidedTemplate":"actions.makeGuidedTemplate"
+
+}

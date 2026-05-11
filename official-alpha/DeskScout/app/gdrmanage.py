@@ -18,9 +18,16 @@ elif sys.argv[1] == "removeDuplicates":
 
 	rlen = records.getRecordCount()
 	recs = []
-	for i in range(rlen):
-		recs.append(records.getRecordByIndex(i))
-	recs = remove_duplicates(recs)
+	recs = []
+	times = []
+	dups = 0
+	for i in range(records.getRecordCount()):
+		if records.getRecordByIndex(i).time in times:
+			print("Duplicate entry with id",i,dups)
+			dups += 1
+		else:
+			times.append(records.getRecordByIndex(i).time)
+			recs.append(records.getRecordByIndex(i))
 	gdr.createRecordFile(os.path.abspath("../data/glucose.gdr"))
 	records = gdr.RecordAccess(os.path.abspath("../data/glucose.gdr"))
 	for i in recs:
@@ -28,15 +35,17 @@ elif sys.argv[1] == "removeDuplicates":
 		records.writeRecord(i.time,i.value,i.trendArrow)
 elif sys.argv[1] == "checkForDuplicates":
 	dups = 0
-	records = gdr.RecordAccess(os.path.abspath("../data/glucose/daily/2025-10-06.gdr"))
+	records = gdr.RecordAccess(os.path.abspath("../data/glucose.gdr"))
 
 	rlen = records.getRecordCount()
 	recs = []
-	for i in range(rlen):
-		recs.append(records.getRecordByIndex(i).time)
-	for i in recs:
-		print(i)
-		dups += recs.count(i)-1
+	times = []
+	for i in range(records.getRecordCount()):
+		if not records.getRecordByIndex(i).time in times:
+			dups += 1
+		else:
+			times.append(records.getRecordByIndex(i).time)
+			recs.append(records.getRecordByIndex(i))
 	print("Duplicates found:",dups)
 elif sys.argv[1] == "backup":
 	import shutil
@@ -71,5 +80,11 @@ elif sys.argv[1] == "list":
 	rec = gdr.RecordReader(sys.argv[2])
 	for i in range(rec.getRecordCount()):
 		print(time.strftime("%m/%d/%Y-%H:%M:%S",time.localtime(rec.getRecordByIndex(i).time/1000)),rec.getRecordByIndex(i).value)
-
-
+elif sys.argv[1] == "rebuild":
+	print("Combining glucose data")
+	gdr.createRecordFile("../data/glucose.gdr")
+	out = gdr.RecordAccess("../data/glucose.gdr")
+	out.file.seek(out.recordEntrypoint)	
+	for i in os.listdir("../data/glucose/daily"):
+		_in = gdr.RecordReader(os.path.abspath(f"../data/glucose/daily/{i}"))
+		out.file.write(_in.getRawDataUnderHeader())

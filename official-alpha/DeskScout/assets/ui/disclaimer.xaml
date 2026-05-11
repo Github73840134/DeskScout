@@ -7,7 +7,9 @@
     <StackPanel Orientation="Vertical" >
         <TextBlock Text="Disclaimer" FontSize="60"/>
         <TextBlock Text="This application is an alpha build. Some features may be disabled"/>
-        <TextBlock Text="This application is used to show glucose alerts on your device. You should never make treatment descisions based of the data shown in this application as it may not be accurate." FontSize="14" TextWrapping="Wrap"/>
+        <TextBlock Text="This application is used to show glucose alerts on your device" FontSize="14" TextWrapping="Wrap"/>
+        <TextBlock Text="You should never make treatment descisions based of the data shown in this application as it may not be accurate." FontSize="18" TextWrapping="Wrap"/>
+        <TextBlock Text="DeskScout is not responsible for any harm phyisical or otherwise caused by missue of this program" FontSize="14" TextWrapping="Wrap"/>
         <Button Name="disclaimer.next" Content="I understand" />
         
     </StackPanel>

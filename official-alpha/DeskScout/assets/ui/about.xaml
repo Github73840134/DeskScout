@@ -8,7 +8,7 @@
     <StackPanel Orientation="Vertical">
         <Button Name="settings.back" Content="Back"/>
         <TextBlock Text="DeskScout" FontSize="60" />
-        <TextBlock Text="We are never settling" FontSize="14"/>
+        <TextBlock Text="Welcome to the future of glucose management" FontSize="14"/>
         <Border BorderThickness="1" Height="32" />
         <TextBlock Name="about.appversion" Text="Version: " FontSize="24"/>
         <TextBlock Text="Client Info:" FontSize="24" />

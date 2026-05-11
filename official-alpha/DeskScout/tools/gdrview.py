@@ -70,7 +70,7 @@ def makeModifiedTree():
 
 		tree.Insert("","record."+str(rec.time/1000),str(rec.time/1000),[date,_time,str(rec.value),str(rec.trendArrow)])
 	return tree
-def removeNearbyEntries()
+def removeNearbyEntries():
 	first = modified.copy()
 		
 window = sg.Window("GDR View Tool",layout)

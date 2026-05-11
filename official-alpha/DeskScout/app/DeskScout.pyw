@@ -1,8 +1,25 @@
 import os, sys
 os.chdir(os.path.dirname(__file__))
-sys.path.append(os.path.join(os.getcwd(), "libs"))
+sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
-import time
+import time,subprocess
+
+if "update.zip" in os.listdir("../data"):
+	try:
+		resp = requests.get("http://127.0.0.1:49152/shutdown",timeout=3)
+	except:
+		pass
+
+	resp = os.system("pyw updater.py")
+	if resp == 0:
+		os.remove("../data/update.zip")
+		subprocess.Popen("pyw DeskScout.pyw",start_new_session=True)
+		exit(0)
+		
+	else:
+		from tkinter import messagebox
+		messagebox.showerror("DeskScout","Failed to install update, your install may be corrupted")
+
 from win32more.Windows.UI.Xaml.Markup import XamlReader
 from win32more.Windows.UI.Xaml.Controls import ContentControl
 from win32more.Windows.UI.Xaml.Hosting import WindowsXamlManager
@@ -29,7 +46,7 @@ from win32more.Microsoft.UI.Xaml.Media.Animation import Storyboard, DoubleAnimat
 from win32more.Windows.UI.Xaml import Duration, DurationHelper
 from win32more.Microsoft.UI.Xaml.Media.Animation import NavigationThemeTransition, TransitionCollection
 from win32more.Windows.Win32.System.Registry import *
-import threading
+import threading,json
 from time import sleep
 
 from win32more.Windows.Win32.UI.WindowsAndMessaging import (
@@ -53,7 +70,18 @@ class SplashApp(XamlApplication):
 		self.xaml_manager = None
 		self.splash_window = None
 		self.main_window = None
-
+	def getSetting(self,path):
+		#Gets setting from path
+		import requests
+		try:
+			#Send a POST request to the settings endpoint
+			resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"get","path":path},timeout=10)
+			data = json.loads(resp.text)
+			if data['status'] == "OK":
+				return data['data']
+			
+		except:
+			return 
 	def OnLaunched(self, args):
 		# Initialize XAML runtime
 
@@ -118,27 +146,6 @@ class SplashApp(XamlApplication):
 		import subprocess
 		import requests
 		import psutil,time
-		if "update.zip" in os.listdir("../data"):
-			self.loadState = 2
-
-			try:
-				resp = requests.get("http://127.0.0.1:49152/shutdown",timeout=3)
-			except:
-				pass
-			self.loadState = 3
-			resp = os.system("pyw updater.py")
-			if resp == 0:
-
-				self.loadState = 4
-				os.remove("../data/update.zip")
-				time.sleep(5)
-				return
-			else:
-				from tkinter import messagebox
-				messagebox.showerror("DeskScout","Failed to install update, your install may be corrupted")
-				return
-		
-
 		try:
 			resp = requests.get("http://127.0.0.1:49152/",timeout=3)
 			subprocess.Popen("pyw DeskScoutApp.py",start_new_session=True)
@@ -152,7 +159,13 @@ class SplashApp(XamlApplication):
 				resp = requests.get("http://127.0.0.1:49152/",timeout=3)
 				self.loadState = 1
 				time.sleep(1)
-				subprocess.Popen("pyw DeskScoutApp.py",start_new_session=True)
+				isSetup = self.getSetting("setup")
+				if isSetup == False:
+
+					subprocess.Popen("pyw DeskScoutSetup.py",start_new_session=True)
+				else:
+					subprocess.Popen("pyw DeskScoutApp.py",start_new_session=True)
+
 				i = 20
 			except:
 				i += 1
@@ -166,7 +179,5 @@ class SplashApp(XamlApplication):
 	def OnResuming(self, args):
 		print("App resuming...")
 
-
-if __name__ == "__main__":
-	XamlApplication.Start(SplashApp)
+XamlApplication.Start(SplashApp)
 

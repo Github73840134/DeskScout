@@ -1,4 +1,3 @@
-import scon
 import json
 class Mode:
 	init = 0
