@@ -22,9 +22,10 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Falling Fast alert
 - Rising Fast alert
 
-
 # Whats being worked on
 - Falling fast, Rising fast, Urgent Low Soon alerts
+- Glucose overlay
+- LibreLink glucose data providers
 - DeskScout system alert customization
 - Version string generation
 - Updater
@@ -34,10 +35,20 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 
 # Whats new
 ## Build 20
-- Beta Version Released
-- Minor UI changes
-## Build 19
-- Minor UI changes
+In this release comes new features.
+
+- Glucose data providers to add support for any CGM 
+- An SDK to interact with the service and app, without touching critical files
+- A new setup flow
+- Glucose alert overlay in games and full screen applications
+- Fixed OTA updates
+- Fixed glucose records
+- Better error logging
+
+As of now, there is no support for LibreLink, but it will be coming in the first official release, this is the definition of a developer release, there are many things that don't work but y'all deserve an update.
+
+# Warning
+Do not attempt to restore glucose data from version 0.6 or below, it will not work, the way the app handles timestamps has changed, and it will break your install. Please try your best to only update your installation via the over the air updates to mitigate corruption of settings if you decide to restore your data. TLDR: Only backup and restore from the version you are running, there are no guarantees that it will work if you do so
 # Running the app
 Run DeskScout.pyw to automatically start the server and open the app if the server is not running
 
