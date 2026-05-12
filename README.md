@@ -34,16 +34,8 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Glucose graph
 
 # Whats new
-## Build 20
-In this release comes new features.
-
-- Glucose data providers to add support for any CGM 
-- An SDK to interact with the service and app, without touching critical files
-- A new setup flow
-- Glucose alert overlay in games and full screen applications
-- Fixed OTA updates
-- Fixed glucose records
-- Better error logging
+## Build 21
+Bug fixes to the initial sign-in process
 
 As of now, there is no support for LibreLink, but it will be coming in the first official release, this is the definition of a developer release, there are many things that don't work but y'all deserve an update.
 
