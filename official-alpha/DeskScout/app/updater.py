@@ -11,6 +11,7 @@ os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
 from mods import PySimpleGUI as sg
+sg.theme('SystemDefault')
 def wait_until_unlocked(path, timeout=30, interval=0.5):
 	start = time.time()
 
@@ -58,11 +59,10 @@ if not os.path.exists(args.file):
 else:
 	log.info("Update found")
 	layout = [
-	[sg.Text("DeskScout")],
 	[sg.Text("Please wait",key="status")],
 	[sg.ProgressBar(0,size=(20,10),key='prog')]
 	]
-	window = sg.Window("DeskScout Installer",layout,finalize=True,no_titlebar=True)
+	window = sg.Window("DeskScout Installer",layout,finalize=True,disable_close=True)
 	window.refresh()
 	for i in range(0,10):
 		time.sleep(1)

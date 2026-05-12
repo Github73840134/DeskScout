@@ -815,9 +815,6 @@ def auth():
 
 	settings = json.load(open("../data/settings.json"))
 	pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
-	if pw == None:
-		log.main.warning("No password set")
-		return json.dumps({"status":"nopass"})
 	try:
 		if GlucoseDataProvider.getAuthStatus() != 0x03:
 			GlucoseDataProvider.login(settings['username'],pw)
@@ -833,7 +830,6 @@ def auth():
 			
 			toaster.show_toast(newToast)
 			log.gdp.info(f"Service is authenticated {GlucoseDataProvider.__manifest__['serviceName']}")
-
 		log.main.info("Authentication successful")
 		import time
 		return json.dumps({"status":"ok"})
@@ -848,7 +844,6 @@ def auth():
 @route('/getStatus')
 def getStatus():
 	global serviceConnected,serviceDisconnectedAt
-
 	if serviceOffline and serviceConnected:
 		newToast = Toast()
 		newToast.text_fields = [f'{GlucoseDataProvider.__manifest__['serviceName']} Disconnected', 'DeskScout cannot provide alerts']

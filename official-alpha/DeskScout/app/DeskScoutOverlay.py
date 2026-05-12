@@ -74,11 +74,14 @@ while True:
 	if getSetting("overlay"):
 		settings = getOverlaySettings()
 		if settings['sources']['steam']:
-			appid = get_running_steam_game()
-			
-			if appid:
-				checkSteamCache(appid)
-			else:
-				print("No Steam game running")
+			try:
+				appid = get_running_steam_game()
+				
+				if appid:
+					checkSteamCache(appid)
+				else:
+					print("No Steam game running")
+			except:
+				pass
 
 	time.sleep(5)
