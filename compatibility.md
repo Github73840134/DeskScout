@@ -55,10 +55,7 @@ Maxmimum server build: 14
 ### App Build 18
 Minimum server build: 14
 Maxmimum server build: 15
-### App Build 19
-Minimum server build: 14
-Maxmimum server build: 15
 # `official-alpha` Release
 ### App Build 20
-Minimum server build: 14
+Minimum server build: 16
 Maxmimum server build: 16

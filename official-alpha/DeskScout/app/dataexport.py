@@ -1,5 +1,5 @@
 print("DeskScout-Do not close this window")
-import os, sys
+import os, sys,subprocess
 builtin_exts = ["gdp_dexshare","gdp_dexshareJP","gdp_dexshareOUS","gdp_librelink"]
 os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.getcwd(), "libs"))
@@ -23,8 +23,10 @@ for i in os.listdir("../assets/sounds/extern"):
 
 # Extensions
 for i in os.listdir("../data/extensions"):
-	res = os.system(f"pyw ../tools/deu build \"{os.path.abspath('../data/extensions/'+i)}\" -output \"{os.path.abspath('../cache')}\"")
-	if res == 0:
+	if i in builtin_exts:
+		continue
+	res = subprocess.run(f"pyw ../tools/deu build \"{os.path.abspath('../data/extensions/'+i)}\" -output \"{os.path.abspath('../cache')}\"")
+	if res.returncode == 0:
 		pkg = zip.open(f"extensions/{i}.dep",'w')
 		file = open(f"../cache/{i}.dep",'rb')
 		pkg.write(file.read())

@@ -680,6 +680,8 @@ class App(XamlApplication):
 				import subprocess
 				subprocess.run(f'pyw dataimport.py "{path}"',shell=True,start_new_session=True)
 				resp = requests.get("http://127.0.0.1:49152/reloadExts") #Get Extensions
+				resp = requests.get("http://127.0.0.1:49152/reloadExts") #Get Extensions
+
 
 				self.restoreState = 1
 				self.afterRestore()

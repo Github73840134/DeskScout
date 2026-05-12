@@ -36,7 +36,7 @@ for i in zip.filelist:
 		y = open(f"../cache/{os.path.basename(i.filename)}",'wb+')
 		y.write(x.read())
 		y.close()
-		os.system(f"py ExtensionTools/install.py localfs -src ../cache/{os.path.basename(i.filename)} -quiet -silent")
+		subprocess.run(f"py ExtensionTools/install.py localfs -src ../cache/{os.path.basename(i.filename)} -quiet -silent")
 		os.remove(f"../cache/{os.path.basename(i.filename)}")
 try:
 	resp = requests.get("http://127.0.0.1:49152/reloadExts") #Get Extensions
@@ -58,7 +58,7 @@ for i in zip.filelist:
 		y = open("../data/glucose.gdr",'wb+')
 		y.write(x.read())
 		y.close()
-		os.system("py gdrmanage.py unpack")
+		subprocess.run("pyw gdrmanage.py unpack")
 		try:
 			changeSetting("gdrState",'1')
 		except:

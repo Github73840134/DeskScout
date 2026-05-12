@@ -8,7 +8,8 @@
         <Button Name="settings.back" Content="Back"/>
         <TextBlock Text="Software Update" FontSize="60" />
         <Border BorderThickness="1" Height="16" />
-		<StackPanel Orientation="Vertical" Name="update.preview">
+		<TextBlock Text="You are up to date" Name="update.ok" Visibility="Collapsed"/>
+		<StackPanel Orientation="Vertical" Name="update.preview" Visibility="Collapsed">
 			<TextBlock Name="update.preview.name" Text="DeskScout" FontSize="40"/>
 			<TextBlock Name="update.preview.size" Text="MB"/>
 			<TextBlock Name="update.preview.build" Text="Build:"/>

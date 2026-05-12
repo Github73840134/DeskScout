@@ -177,6 +177,7 @@ notified = {
 	"risingFast":False,
 	"fallingFast":False,
 }
+serverStatusInit = False
 recordQueue = []
 serviceOffline = True
 GlucoseDataProvider = None
@@ -224,11 +225,11 @@ def loadGlucoseDataProvider():
 		toaster.clear_toasts()
 		toaster.show_toast(newToast)
 def serverstatus():
-	global serviceOffline,serviceConnected,serviceDisconnectedAt,account
+	global serviceOffline,serviceConnected,serviceDisconnectedAt,account,serverStatusInit
 	while True:
 		try:
 			resp = GlucoseDataProvider.getState()
-			log.serviceChecker.info(f"GDP state {resp}")
+			log.serviceChecker.debug(f"GDP state {resp}")
 			if resp != SDK.gdp.State.SERVICE_ONLINE:
 				if not serviceOffline:
 					log.serviceChecker.warning(f"Service is offline: '{GlucoseDataProvider.__manifest__["serviceName"]}'")
@@ -299,6 +300,8 @@ def serverstatus():
 					
 					toaster.show_toast(newToast)
 					serviceDisconnectedAt = time.time()
+		time.sleep(1)
+		serverStatusInit = True
 
 nametable = {
 	"urgentLow":"Urgent Low",
@@ -612,14 +615,14 @@ def updateDownloadThread():
 		updateStatus['result'] = "dc_failed"
 		return
 	try:
-		latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['client'])]
+		latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['app'])]
 	except Exception as e:
 		log.updater.error(f"Failed to check latest version: {str(e)}")
 		updateStatus['status'] = 'ready'
 		updateStatus['result'] = "dc_failed"
 		return
 	try:
-		if latest == myversioninfo['app']:
+		if latest == myversioninfo['client']:
 			updateStatus["isUpToDate"] = True
 			updateStatus['result'] = "update_not_needed"
 			updateStatus['status'] = 'ready'
@@ -695,32 +698,46 @@ def updateDownloadThread():
 
 			
 def updateCheckThread():
+	log.updater.info("Update check requested")
 	if "update.zip" in os.listdir("../data"):
+		log.updater.info("Found install media")
+
 		if updateStatus['status'] == "ready":
+			log.updater.info("Install ready")
+
 			updateStatus['status'] = 'ready'
 			updateStatus['result'] = "installReady"
 			return
 	updateStatus['status'] = "cfu"
 	try:
+		log.updater.info("Checking for update")
+
 		resp = requests.get(f"{UPDATE_URL}/information.json")
-	except:
+	except Exception as e:
 		updateStatus['status'] = 'ready'
 		updateStatus['result'] = "cfu_failed"
+		log.updater.error(f"Checking for update failed with {str(e)}")
+
 		return
 	myversioninfo = json.load(open('versioninfo.json'))
 	versioninfo = json.loads(resp.text)
-	latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['client'])]
+	latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['app'])]
+	log.updater.info(f"Latest version is {latest} current installed {myversioninfo['app']}")
 	if latest == myversioninfo['app']:
 		updateStatus["isUpToDate"] = True
 		updateStatus['result'] = "ok"
 		updateStatus['status'] = 'ready'
 		print("Up to date")
+		log.updater.info("Up to date")
+
+
 	else:
 		if updateStatus['isUpToDate']:
 			newToast = Toast(['DeskScout',"Update Available",f"{versioninfo['build'][sys.platform][str(latest)]['name']} is available"])
 			newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
 			toaster.show_toast(newToast)
-			PlaySoundW(PWSTR(os.path.abspath("../assets/sounds/update_available.wav")), None, SND_FILENAME)
+			PlaySoundW(PWSTR(os.path.abspath("../assets/sounds/update_available.wav")), None, SND_FILENAME | SND_ASYNC)
+		log.updater.info(f"Update available to: {latest}")
 
 		updateStatus["isUpToDate"] = False
 		updateStatus["manifest"] = versioninfo['build'][sys.platform][str(latest)]
@@ -788,6 +805,7 @@ def index():
 
 @route('/authenticate')
 def auth():
+
 	log.main.info("Authentication requested")
 
 	global account,serviceConnected,serviceOffline
@@ -796,7 +814,8 @@ def auth():
 	settings = json.load(open("../data/settings.json"))
 	pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
 	try:
-		GlucoseDataProvider.login(settings['username'],pw)
+		if GlucoseDataProvider.getAuthStatus() != 0x03:
+			GlucoseDataProvider.login(settings['username'],pw)
 		if GlucoseDataProvider.getAuthStatus() == 0x03:
 			
 			serviceConnected = True
@@ -1044,7 +1063,6 @@ def runtime(internal):
 		log.main.info("Starting overlay service")
 
 		subprocess.Popen("py DeskScoutOverlay.py",shell=True)
-	_thread.start_new_thread(attemptConnect,())
 	run(host='127.0.0.1', port=49152)
 	bulb.stop()
 from PIL import Image

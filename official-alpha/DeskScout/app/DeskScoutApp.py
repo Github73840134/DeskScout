@@ -3,12 +3,12 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.7.0"
-__build__ = 19
+__build__ = 20
 __min_server_build__ = 14	
 __max_server_build__ = 16
 from tkinter import messagebox
 
-import os, sys,json,_thread,time,logging
+import os, sys,json,_thread,time,logging,subprocess
 
 def error(exception,value,tb):
 	print("error",dir(exception))
@@ -523,7 +523,7 @@ class App(XamlApplication):
 			ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
 		if "updatemanifest.json" in os.listdir():
 			manifest = json.load(open("updatemanifest.json"))
-			appbuild = json.load(open("versioninfo.json"))['client']
+			appbuild = json.load(open("versioninfo.json"))['app']
 			if manifest['build'] == appbuild:
 				self.page = "updatecomplete"
 				self.NavView.put_IsPaneVisible(False) # Hides the NavPanel making it impossible to leave the page
@@ -874,6 +874,8 @@ class App(XamlApplication):
 				if stat['status'] == "ready":
 					if stat['result'] == "ok":
 						if not stat['isUpToDate']:
+							self.document.Content.as_(FrameworkElement).FindName("update.ok").as_(TextBlock).Visibility = Visibility.Collapsed
+
 							self.document.Content.as_(FrameworkElement).FindName("update.preview.name").as_(TextBlock).Text = stat['manifest']['name']
 							self.document.Content.as_(FrameworkElement).FindName("update.preview.build").as_(TextBlock).Text = f"Build {stat['manifest']['build']}"
 							self.document.Content.as_(FrameworkElement).FindName("update.preview.info").as_(TextBox).Text = stat['manifest']['info']
@@ -888,6 +890,7 @@ class App(XamlApplication):
 							self.document.Content.as_(FrameworkElement).FindName("update.preview").as_(StackPanel).Visibility = Visibility.Visible
 							
 						else:
+							self.document.Content.as_(FrameworkElement).FindName("update.ok").as_(TextBlock).Visibility = Visibility.Visible
 							self.document.Content.as_(FrameworkElement).FindName("update.preview").as_(StackPanel).Visibility = Visibility.Collapsed
 						self.document.Content.as_(FrameworkElement).FindName("update.check").as_(Button).Content = "Check for update"
 						self.document.Content.as_(FrameworkElement).FindName("update.check").as_(Button).IsEnabled = True
@@ -1886,7 +1889,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		
 		run = self.document.Content.as_(FrameworkElement).FindName("import.start").as_(Button)
 		def backupData():
-			os.system("pyw DeskScoutSetup.py restore")
+			subprocess.run("pyw DeskScoutSetup.py restore")
 
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
 		def start(sender,args):
@@ -1899,7 +1902,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
 		run = self.document.Content.as_(FrameworkElement).FindName("backup.start").as_(Button)
 		def backupData(path):
-			os.system(f"pyw dataexport.py \"{path}\"")
+			subprocess.run(f"pyw dataexport.py \"{path}\"")
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
 		def start(sender,args):
 			from tkinter import filedialog

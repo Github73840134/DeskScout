@@ -1,5 +1,5 @@
 # Resets settings, and removes glucose data, and extensions that did come with the application
-import os
+import os,subprocess
 import argparse
 import shutil
 import sys

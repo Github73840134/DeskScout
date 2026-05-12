@@ -13,7 +13,7 @@ class ServerLost(Exception):
 SERVICE_URL = "http://127.0.0.1:49152"
 def getOverlaySettings():
 	return json.load(open('../data/overlay/setup.json'))
-def getSetting(self,path):
+def getSetting(path):
 	#Gets setting from path
 	try:
 		#Send a POST request to the settings endpoint
@@ -72,7 +72,7 @@ def OverlayController():
 	pass
 while True:
 	if getSetting("overlay"):
-		settings = getSettings()
+		settings = getOverlaySettings()
 		if settings['sources']['steam']:
 			appid = get_running_steam_game()
 			
