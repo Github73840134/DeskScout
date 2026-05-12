@@ -57,17 +57,29 @@ __channel__ = "developer"
 __release__ = "alpha"
 class Flags:
 	USE_ALTERNATE_UPDATE_SERVER = False
-
+	DISABLE_OVERLAY = False
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("-fromDeskScoutPy",action="store_true")
+parser.add_argument("-useAltUpdateServer",action="store_true")
+parser.add_argument("-disableOverlay",action="store_true")
+args = parser.parse_args(sys.argv[1:])
+Flags.USE_ALTERNATE_UPDATE_SERVER = args.useAltUpdateServer
+Flags.DISABLE_OVERLAY = args.disableOverlay
 
 rec = None
+if Flags.USE_ALTERNATE_UPDATE_SERVER:
+	UPDATE_URL = json.load(open("../data/url_const.json"))['update.alt_host']
+else:
+	UPDATE_URL = json.load(open("../data/url_const.json"))['update.host']
+
 try:
 	log.main.info("Checking if service is already running")
 	print("Checking if service is already running")
 	resp = requests.get("http://127.0.0.1:49152/about")
-	if len(sys.argv) > 1:
-		if sys.argv[1] == "fromDeskscoutPy":
-			log.main.warning("Another service instance is currently running while invoked from launcher. We will quietly exit")
-			exit(0)
+	if args.fromDeskScoutPy:
+		log.main.warning("Another service instance is currently running while invoked from launcher. We will quietly exit")
+		exit(0)
 	try:
 		ver = json.loads(resp.text)
 		if ver['build'] != __build__:
@@ -576,67 +588,109 @@ updateStatus = {
 	"manifest":None
 }
 def updateDownloadThread():
+	log.updater.info("Update download requested")
 	print("Update Download Thread started")
 	updateStatus['status'] = "dc"
+	log.updater.info("Checking download version")
+
 	print("Checking download version")
 	try:
-		resp = requests.get("https://raw.githubusercontent.com/Github73840134/DeskScout-App-Updates/refs/heads/main/information.json")
-	except:
+		
+		
+		resp = requests.get(f"{UPDATE_URL}/information.json")
+	except Exception as e:
+		log.updater.error(f"Failed to check latest version: {str(e)}")
 		updateStatus['status'] = 'ready'
 		updateStatus['result'] = "dc_failed"
 		return
-	myversioninfo = json.load(open('versioninfo.json'))
-	versioninfo = json.loads(resp.text)
-	latest = versioninfo['latest'][sys.platform]['official-alpha']
-	if latest == myversioninfo['app']:
-		updateStatus["isUpToDate"] = True
-		updateStatus['result'] = "update_not_needed"
+	try:
+		myversioninfo = json.load(open('versioninfo.json'))
+		versioninfo = json.loads(resp.text)
+	except Exception as e:
+		log.updater.error(f"Failed to check latest version: {str(e)}")
 		updateStatus['status'] = 'ready'
-		print("Up to date")
-	else:
-		print("Starting Update")
-		updateStatus["isUpToDate"] = False
-		updateStatus["manifest"] = versioninfo['build'][sys.platform][str(latest)]
-		updateStatus["manifest"]['build'] = latest
-		updateStatus['result'] = "ok"
-		updateStatus['status'] = 'dr'
-		try:
-			from urllib import request
-			resp = requests.get(versioninfo['build'][sys.platform][str(latest)]['url'])
-
-		except:
-			updateStatus['status'] = "ready"
-			updateStatus['result'] = "dr_failed"
-			print("DRQ failed")
-			return
-		try:
-			updateStatus['status'] = 'download'
-			update = bytes(resp.content)
-			total = len(update)
-			print("TD",total)
-			consumed = 0
-			file = open("../data/.update.zip",'wb+')
-			for i in update:
-				#print("Writing",file.tell())
-				updateStatus['status'] = 'download'
-
-				file.write(int.to_bytes(i))
-				updateStatus['progress'] = int((file.tell()/total)*100)
-			file.close()
-			os.rename("../data/.update.zip","../data/update.zip")
+		updateStatus['result'] = "dc_failed"
+		return
+	try:
+		latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['client'])]
+	except Exception as e:
+		log.updater.error(f"Failed to check latest version: {str(e)}")
+		updateStatus['status'] = 'ready'
+		updateStatus['result'] = "dc_failed"
+		return
+	try:
+		if latest == myversioninfo['app']:
+			updateStatus["isUpToDate"] = True
+			updateStatus['result'] = "update_not_needed"
 			updateStatus['status'] = 'ready'
-			updateStatus['result'] = "installReady"
-			print("Download Complete")
-			newToast = Toast(['DeskScout',"Update Downloaded","DeskScout will install updates on next launch."])
-			newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
-			toaster.show_toast(newToast)
-			PlaySoundW(PWSTR(os.path.abspath("../assets/sounds/generic.wav")), None, SND_FILENAME)
-		except Exception as e:
-			updateStatus['status'] = "ready"
-			updateStatus['result'] = "download_failed"
-			print("Download Failed",e)
-			return
+			print("Up to date")
+			log.updater.info("Update not needed")
+		else:
+			print("Preparing update download")
+			log.updater.info(f"Preparing update download")
+			updateStatus["isUpToDate"] = False
+			updateStatus["manifest"] = versioninfo['build'][sys.platform][str(latest)]
+			updateStatus["manifest"]['build'] = latest
+			updateStatus['result'] = "ok"
+			updateStatus['status'] = 'dr'
+			try:
+				log.updater.info("Requesting download")
+				from urllib import request
+				resp = requests.get(versioninfo['build'][sys.platform][str(latest)]['url'])
 
+			except Exception as e:
+				log.updater.error(f"Download request failed: {str(e)}")
+
+				updateStatus['status'] = "ready"
+				updateStatus['result'] = "dr_failed"
+				print("DRQ failed")
+				return
+			try:
+				updateStatus['status'] = 'download'
+				log.updater.info("Downloading update")
+				update = bytes(resp.content)
+				total = len(update)
+				print("TD",total)
+				consumed = 0
+				file = open("../data/.update.zip",'wb+')
+				from itertools import batched
+				import io
+				chunk_size = 8
+
+				# batched yields tuples of integers (the byte values)
+				# so we join them back into bytes objects
+				chunks = [bytes(chunk) for chunk in batched(update, chunk_size)]
+				for i in chunks:
+					#print("Writing",file.tell())
+					#log.updater.info(f"Downloading {file.tell()+1}/{total} bytes")
+					updateStatus['status'] = 'download'
+
+					file.write(i)
+
+					updateStatus['progress'] = int((file.tell()/total)*100)
+				file.close()
+
+				os.rename("../data/.update.zip","../data/update.zip")
+				updateStatus['status'] = 'ready'
+				updateStatus['result'] = "installReady"
+				print("Download Complete")
+				log.updater.info("Download Complete")
+				newToast = Toast(['DeskScout',"Update Downloaded","DeskScout will install updates on next launch."])
+				newToast.audio = ToastAudio(Path(os.path.abspath(os.path.join(os.getcwd(),'../assets/sounds/attention.wav'))),silent=True)
+				toaster.show_toast(newToast)
+				PlaySoundW(PWSTR(os.path.abspath("../assets/sounds/generic.wav")), None, SND_FILENAME)
+			except Exception as e:
+				updateStatus['status'] = "ready"
+				updateStatus['result'] = "download_failed"
+				print("Download Failed",e)
+				log.updater.error(f"Download failed: {str(e)}")
+
+				return
+	except Exception as e:
+		log.updater.error(f"Failed to update: {str(e)}")
+		updateStatus['status'] = 'ready'
+		updateStatus['result'] = "download_failed"
+		return
 
 
 			
@@ -648,7 +702,7 @@ def updateCheckThread():
 			return
 	updateStatus['status'] = "cfu"
 	try:
-		resp = requests.get("https://raw.githubusercontent.com/Github73840134/DeskScout-App-Updates/refs/heads/main/information.json")
+		resp = requests.get(f"{UPDATE_URL}/information.json")
 	except:
 		updateStatus['status'] = 'ready'
 		updateStatus['result'] = "cfu_failed"
@@ -977,8 +1031,7 @@ log.main.info("Starting server status checker")
 _thread.start_new_thread(serverstatus,())
 log.main.info("Starting server notification host")
 _thread.start_new_thread(notificationRunner,())
-log.main.info("Starting server recored access handler")
-
+log.main.info("Starting server record access handler")
 _thread.start_new_thread(recordAccessHandler,())
 
 def runtime(internal):
@@ -987,7 +1040,10 @@ def runtime(internal):
 	internal.visible = True
 	print(internal)
 	import subprocess
-	subprocess.Popen("py DeskScoutOverlay.py",shell=True)
+	if not Flags.DISABLE_OVERLAY:
+		log.main.info("Starting overlay service")
+
+		subprocess.Popen("py DeskScoutOverlay.py",shell=True)
 	_thread.start_new_thread(attemptConnect,())
 	run(host='127.0.0.1', port=49152)
 	bulb.stop()
@@ -996,24 +1052,32 @@ from pystray import Icon, Menu as menu, MenuItem as item
 state = False
 def attemptConnect():
 	global account,serviceConnected,attemptingConnection
+	log.main.info("attemptConnect: Requesting re-authenticaton")
+
 	attemptingConnection = True
 	import time
-	time.sleep(5)
 	try:
 		requests.get("http://127.0.0.1:49152/authenticate",timeout=300)
+		log.main.info("attemptConnect: Request sent")
 	except Exception as e:
 		attemptingConnection = False
+		log.main.warning("attemptConnect: Failed to request authentication")
 		raise e
 
 def shutdown(icon, item):
+	log.main.info("Shutdown invoked via tray icon")
 	PlaySoundW(PWSTR(os.path.join(os.getcwd(),'../assets/sounds/shutdown.wav')), None, SND_FILENAME)
+	log.main.info("Exiting")
 
 	p = psutil.Process(os.getpid())
 	for proc in p.children(recursive=True):
 		proc.kill()
 	p.kill()
 	exit(0)
-
+def restart(icon, item):
+	log.main.info("Restart invoked via tray icon")
+	subprocess.Popen("pyw restart.py",shell=True,start_new_session=True)
+	bulb.visible = False
 
 def openbackup(icon,item):
 	pass
@@ -1029,6 +1093,9 @@ icon = Icon(
 		item(
 		'Refresh Data Provider',
 		lambda icon,item:loadGlucoseDataProvider()),
+		item(
+		'Restart Service',
+		restart),
 		item(
 		'Shutdown Deskscout',
 		shutdown),

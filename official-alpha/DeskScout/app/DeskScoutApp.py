@@ -523,7 +523,7 @@ class App(XamlApplication):
 			ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
 		if "updatemanifest.json" in os.listdir():
 			manifest = json.load(open("updatemanifest.json"))
-			appbuild = json.load(open("versioninfo.json"))['app']
+			appbuild = json.load(open("versioninfo.json"))['client']
 			if manifest['build'] == appbuild:
 				self.page = "updatecomplete"
 				self.NavView.put_IsPaneVisible(False) # Hides the NavPanel making it impossible to leave the page

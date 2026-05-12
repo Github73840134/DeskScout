@@ -10,8 +10,8 @@ if "update.zip" in os.listdir("../data"):
 	except:
 		pass
 
-	resp = os.system("pyw updater.py")
-	if resp == 0:
+	resp = subprocess.run("pyw updater.py")
+	if resp.returncode == 0:
 		os.remove("../data/update.zip")
 		subprocess.Popen("pyw DeskScout.pyw",start_new_session=True)
 		exit(0)
@@ -19,6 +19,7 @@ if "update.zip" in os.listdir("../data"):
 	else:
 		from tkinter import messagebox
 		messagebox.showerror("DeskScout","Failed to install update, your install may be corrupted")
+		exit(0)
 
 from win32more.Windows.UI.Xaml.Markup import XamlReader
 from win32more.Windows.UI.Xaml.Controls import ContentControl
@@ -151,7 +152,7 @@ class SplashApp(XamlApplication):
 			subprocess.Popen("pyw DeskScoutApp.py",start_new_session=True)
 			return
 		except:
-			subprocess.Popen("pyw DeskScoutService.py fromDeskscoutPy",start_new_session=True)
+			subprocess.Popen("pyw DeskScoutService.py -fromDeskScoutPy",start_new_session=True)
 		i = 0
 		while i != 20:
 			try:
