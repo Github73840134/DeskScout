@@ -1,10 +1,10 @@
 # DeskScout Source Code
- An open source alert system for CGMs (Currently only works with dexcom share)
+ An open source alert system for CGMs
 
 
 # NOTICE
-# DeskScout now features an updater, you must be on 0.6.0 or later to receive OTA updates.
-# There is some weird fuckery with build numbers, I will fix it soon
+# DeskScout now features an updater, you must be on 0.7.0 or later to receive OTA updates.
+
 
 # Requirements
 Python 3.12.2 or later
