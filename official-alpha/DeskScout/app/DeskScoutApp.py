@@ -3,7 +3,7 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.7.0"
-__build__ = 20
+__build__ = 21
 __min_server_build__ = 14	
 __max_server_build__ = 16
 from tkinter import messagebox
@@ -370,6 +370,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
+supported_service = ["17"]
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
@@ -416,14 +417,10 @@ class App(XamlApplication):
 				serviceworker.info("Checking if service version is compatible")
 				resp = requests.get("http://127.0.0.1:49152/about") # Get the deskscout service version
 				ver = json.loads(resp.text)
-				if ver['build'] < __min_server_build__:
+				if not ver['build'] in supported_service:
 					serviceworker.warning(f"Service build is {ver['build']} (should be >={__min_server_build__} and <= {__max_server_build__})")
 
-					messagebox.showwarning("Potentially Incompatible Service",f"Your DeskScout server build number is {ver['build']}.\nThe minimum known compatible server build is {__min_server_build__}.\nThe app may not be stable or some features may not work.\nWe recomend updating your service to the minimum compatible version, this information can be found in the DeskScout repo in github (https://github.com/Github73840134/DeskScout/blob/main/compatibility.md). You can do this in settings.\nApp Build Number: {__build__}")
-				elif ver['build'] > __max_server_build__:
-					serviceworker.warning(f"Service build is {ver['build']} (should be >={__min_server_build__} and <= {__max_server_build__})")
-
-					messagebox.showwarning("Potentially Incompatible Service",f"Your DeskScout server build number is {ver['build']}.\nThe maximum known compatible server build is {__max_server_build__},.\nThe app may not be stable or some features may not work.\nWe recomnend changing your service to a known compatible version, this information can be found in the DeskScout repo in github (https://github.com/Github73840134/DeskScout/blob/main/compatibility.md). You can do this in settings.\nApp Build Number: {__build__}")
+					messagebox.showwarning("Potentially Incompatible Service",f"The version of the client may not be compatible with the version of the service you have installed")
 				resp = requests.get("http://127.0.0.1:49152/getStatus")
 			except Exception as e:
 				# Big OOPS
@@ -873,6 +870,18 @@ class App(XamlApplication):
 					return
 				if stat['status'] == "ready":
 					if stat['result'] == "ok":
+						import platform
+						myv = json.load(open('versioninfo.json'))
+						if not platform.release() in stat['vinfo']['osSupport'][sys.platform]['official-alpha']:
+							self.document.Content.as_(FrameworkElement).FindName("update.endoflife").as_(InfoBar).IsOpen = True
+						else:
+							self.document.Content.as_(FrameworkElement).FindName("update.endoflife").as_(InfoBar).IsOpen = False
+						if myv['app'] in stat['vinfo']['deprecated'][sys.platform]['official-alpha']:
+							self.document.Content.as_(FrameworkElement).FindName("update.deprecated").as_(InfoBar).IsOpen = True
+						else:
+							self.document.Content.as_(FrameworkElement).FindName("update.deprecated").as_(InfoBar).IsOpen = False
+
+
 						if not stat['isUpToDate']:
 							self.document.Content.as_(FrameworkElement).FindName("update.ok").as_(TextBlock).Visibility = Visibility.Collapsed
 
@@ -2066,7 +2075,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			self.document.Content.as_(FrameworkElement).FindName("about.platform").as_(TextBlock).Text = f"Platform: {sys.platform}"
 			self.document.Content.as_(FrameworkElement).FindName("about.reset").as_(Button).add_Click(reset)
 			self.document.Content.as_(FrameworkElement).FindName("about.server_version").as_(TextBlock).Text = f"Version: {serverinfo['version']}"
-			if serverinfo['build'] in range(__min_server_build__,__max_server_build__+1):
+			if serverinfo['build'] in supported_service:
 				self.document.Content.as_(FrameworkElement).FindName("about.server_build").as_(TextBlock).Text = f"Build: {serverinfo['build']}"
 			else:
 				self.document.Content.as_(FrameworkElement).FindName("about.server_build").as_(TextBlock).Text = f"Build: {serverinfo['build']} (Potential compatibility issue)"

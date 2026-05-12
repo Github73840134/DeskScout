@@ -34,8 +34,8 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Glucose graph
 
 # Whats new
-## Build 21
-Bug fixes to the initial sign-in process
+## Build 23
+Improvements to the update page for showing incompatibility
 
 As of now, there is no support for LibreLink, but it will be coming in the first official release, this is the definition of a developer release, there are many things that don't work but y'all deserve an update.
 

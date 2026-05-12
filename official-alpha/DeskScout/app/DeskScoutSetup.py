@@ -625,6 +625,12 @@ class App(XamlApplication):
 
 		self.NavView.put_IsPaneVisible(False)
 		self.loadAsync(self.document,loadCGMSupport,XamlReader().Load(open("../assets/ui/oobe/gdpSelect.xaml", "r", encoding='utf-8').read()),displayOptions)
+	def preSetupUpdateCheck(self):
+		def checkForUpdates():
+			resp = requests.get("http://127.0.0.1:49152/checkForUpdate") # Attempt ot authenticate
+
+		self.transitionElementContent(self.document,lambda:pass,XamlReader().Load(open("../assets/ui/oobe/gdpSelect.xaml", "r", encoding='utf-8').read()),) #Transition to the final UI page
+
 	def doRestore(self,path):
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import (
 		GetForegroundWindow,

@@ -52,7 +52,7 @@ attemptingConnection = False
 intent = None
 from mods import gdr
 __version__ = "6"
-__build__ = 16
+__build__ = "17"
 __channel__ = "developer"
 __release__ = "alpha"
 class Flags:
@@ -714,7 +714,7 @@ def updateCheckThread():
 	try:
 		log.updater.info("Checking for update")
 
-		resp = requests.get(f"{UPDATE_URL}/information.json")
+		resp = requests.get(f"{UPDATE_URL}/information.json?time={time.time()}")
 	except Exception as e:
 		updateStatus['status'] = 'ready'
 		updateStatus['result'] = "cfu_failed"
@@ -723,12 +723,14 @@ def updateCheckThread():
 		return
 	myversioninfo = json.load(open('versioninfo.json'))
 	versioninfo = json.loads(resp.text)
+	print(versioninfo)
 	latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['app'])]
 	log.updater.info(f"Latest version is {latest} current installed {myversioninfo['app']}")
 	if latest == myversioninfo['app']:
 		updateStatus["isUpToDate"] = True
 		updateStatus['result'] = "ok"
 		updateStatus['status'] = 'ready'
+		updateStatus['vinfo'] = versioninfo
 		print("Up to date")
 		log.updater.info("Up to date")
 
@@ -748,6 +750,8 @@ def updateCheckThread():
 		json.dump(updateStatus["manifest"],open("updatemanifest.json",'w+'))
 		updateStatus['result'] = "ok"
 		updateStatus['status'] = 'ready'
+		updateStatus['vinfo'] = versioninfo
+
 		print("Update avialable")
 	
 	
