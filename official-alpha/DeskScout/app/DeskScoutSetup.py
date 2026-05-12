@@ -699,7 +699,7 @@ class App(XamlApplication):
 		if self.restoreState == -1:
 			self.launchOOBE()
 		elif self.restoreState == 1:
-			self.showDisclaimer(lambda: self.setupAuthCheck(self.setupComplete))
+			self.showDisclaimer(lambda: self.showSignIn(self.setupComplete))
 		
 			
 

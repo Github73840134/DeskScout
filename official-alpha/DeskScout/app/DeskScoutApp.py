@@ -1113,7 +1113,6 @@ class App(XamlApplication):
 							serviceworker.info("Authentication Successful")
 							if self.fetchState == 4: #If the service was previously offline then:
 								self.lsc = 0 #Reset the last sync reading
-						
 						else:
 							self.fetchState = 2 # Authentication Failed 
 							serviceworker.error("Authentication Failed")
