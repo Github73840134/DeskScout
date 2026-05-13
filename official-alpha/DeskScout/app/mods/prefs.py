@@ -11,7 +11,7 @@ class Template:
 		self.header = {
 			"type":None,
 			"version":None,
-			"fn":None
+			"prefname":None
 		}
 		self.actions = {
 			"ktd":[],
@@ -42,22 +42,105 @@ class Template:
 		self.actions['ktd'].append(key)
 	def addKeyToIgnore(self,key):
 		self.actions['la'].append(key)
-def reader(fn,directory="",override=False):
-	pkg = json.load(open(fn))
-	if override:
-		pkg['header']['type'] = override
-	if pkg['header']['type'] == "init":
-		file = open(directory+pkg['header']['prefname'],"w+")
-		file.write(json.dumps(pkg['data']))
-		file.close()
-		return True
-	elif pkg["header"]['type'] == "merge":
-		oldpref = json.load(open(directory+pkg['header']['prefname']))
-		for i in pkg['actions']['ktd']:
-			oldpref.pop(i)
-		for i in pkg['data']:
-			if i in oldpref and i in pkg['actions']['la']:
-				continue
-			oldpref[i] = pkg['data'][i]
-		json.dump(oldpref,open(directory+pkg['header']['prefname'],'w+'))
-		return True
+import json
+
+
+def path_matches(path, path_list):
+    return path in path_list
+
+
+def delete_nested_key(obj, path):
+    """
+    Deletes a nested key from a dict using a path list.
+    Example:
+        ['a', 'b', 'c']
+    deletes:
+        obj['a']['b']['c']
+    """
+
+    current = obj
+
+    # Traverse to parent
+    for key in path[:-1]:
+        if key not in current or not isinstance(current[key], dict):
+            return
+        current = current[key]
+
+    # Delete final key
+    current.pop(path[-1], None)
+
+
+def merge_dict(old, new, leave_alone_paths, delete_paths, current_path=None):
+    if current_path is None:
+        current_path = []
+
+    for key, value in new.items():
+        path = current_path + [key]
+
+        # Skip keys marked leave-alone
+        if path_matches(path, leave_alone_paths):
+            continue
+
+        # Recursive merge
+        if (
+            isinstance(value, dict)
+            and key in old
+            and isinstance(old[key], dict)
+        ):
+            merge_dict(
+                old[key],
+                value,
+                leave_alone_paths,
+                delete_paths,
+                path
+            )
+        else:
+            old[key] = value
+
+
+def reader(fn, directory="", override=False):
+
+    pkg = json.load(open(fn))
+
+    if override:
+        pkg['header']['type'] = override
+
+    if pkg['header']['type'] == "init":
+
+        with open(directory + pkg['header']['prefname'], "w+") as file:
+            json.dump(pkg['data'], file)
+
+        return True
+
+    elif pkg["header"]['type'] == "merge":
+
+        with open(directory + pkg['header']['prefname']) as f:
+            oldpref = json.load(f)
+
+        # Convert paths
+        leave_alone_paths = [
+            p.split('/')
+            for p in pkg['actions']['la']
+        ]
+
+        delete_paths = [
+            p.split('/')
+            for p in pkg['actions']['ktd']
+        ]
+
+        # Delete nested keys
+        for path in delete_paths:
+            delete_nested_key(oldpref, path)
+
+        # Merge data
+        merge_dict(
+            oldpref,
+            pkg['data'],
+            leave_alone_paths,
+            delete_paths
+        )
+
+        with open(directory + pkg['header']['prefname'], 'w+') as f:
+            json.dump(oldpref, f)
+
+        return True

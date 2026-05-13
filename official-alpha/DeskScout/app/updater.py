@@ -117,19 +117,25 @@ for i in files:
 		log.critical(f"Error during copy {files[i]} ({i}): {str(e)}")
 		exit(3)
 os.chdir(os.path.dirname(__file__))
-log.info("Checking for settings update")
-if "newSettings.json" in os.listdir("../data"):
-	log.info("Updating settings")
-	try:
+log.info("Checking for settings updates")
+if os.listdir("../data/upgradeSettings") != []:
+	window['status'].update("Finishing up...")
+	window['prog'].UpdateBar(0,max=len(os.listdir("../data/upgradeSettings")))
+	x = 0
+	for i in os.listdir("../data/upgradeSettings"):
+		log.info(f"Updating {i}")
+		try:
+			
+			from mods import prefs
+			prefs.reader(f"../data/upgradeSettings/{i}","../data/")
+			os.remove(f"../data/upgradeSettings/{i}")
+			log.info(f"Settings {i} updated")
+			window['prog'].UpdateBar(x+1)
+			x += 1
 		
-		from mods import prefs
-		prefs.reader("../data/newSettings.json","../data/")
-		os.remove('../data/newSettings.json')
-		log.info("Settings updated")
-	
-	except Exception as e:
-		log.critical(f"Error during settings update: {str(e)}")
-		exit(3)
+		except Exception as e:
+			log.critical(f"Error during settings update: {str(e)}")
+			exit(3)
 else:
 	log.info("No settings needed to be updated")
 log.info("Update Complete")
