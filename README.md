@@ -4,7 +4,7 @@
 
 # NOTICE
 # DeskScout now features an updater, you must be on 0.7.0 or later to receive OTA updates.
-
+# Updates are now staged, you may need to update multiple times to get to the latest version
 
 # Requirements
 Python 3.12.2 or later
