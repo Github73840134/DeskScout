@@ -170,9 +170,13 @@
 				<StackPanel>
 					<TextBlock Text="Detection Settings" FontSize="20"/>
 					<CheckBox Name="settings.overlay.detect.steam" Content="Detect Steam Games"/>
+					<CheckBox Name="settings.overlay.detect.process" Content="Detect user added processes"/>
+
 					<CheckBox Name="settings.overlay.detect.fullscreen" Content="Detect Fullscreen Applications"/>
 				</StackPanel>
-				
+				<StackPanel Orientation="Horizontal">
+				<Button Content="Manage user added processes" IsEnabled="False"/>
+				</StackPanel>
 
 			</StackPanel>
 

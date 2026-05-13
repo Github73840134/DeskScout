@@ -9,6 +9,10 @@
         <TextBlock Text="Software Update" FontSize="60" />
         <Border BorderThickness="1" Height="16" />
 		<TextBlock Text="You are up to date" Name="update.ok" Visibility="Collapsed"/>
+        <InfoBar Name="update.deprecated" IsOpen="False" Severity="Informational" Title="Oudated Install" IsClosable="False" Message="This version of DeskScout is no longer supported. You will have to manually install a newer version" />
+        <InfoBar Name="update.endoflife" IsOpen="False" Severity="Informational" Title="End Of Life" IsClosable="False" Message="DeskScout is no longer compatible with current version of your operating system" />
+
+
 		<StackPanel Orientation="Vertical" Name="update.preview" Visibility="Collapsed">
 			<TextBlock Name="update.preview.name" Text="DeskScout" FontSize="40"/>
 			<TextBlock Name="update.preview.size" Text="MB"/>

@@ -3,9 +3,7 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.7.0"
-__build__ = 21
-__min_server_build__ = 14	
-__max_server_build__ = 16
+__build__ = "22"
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -701,59 +699,27 @@ class App(XamlApplication):
 		self.page = "home"
 	def showSignIn(self,onFinish=None):
 		# Starts the sign-in flow
+		from win32more.Windows.Win32.UI.WindowsAndMessaging import (
+		GetForegroundWindow,
+		SetForegroundWindow,
+		FindWindowW,
+		ShowWindow,
+		IsIconic,
+		SW_RESTORE,
+		SW_HIDE,
+		SW_MINIMIZE,
+		SW_SHOW
+		)
 		self.state = AppState.LOGIN #This will stop the fetch stast
-		app.debug(f"App State={self.state}")
-		ui.debug(f"Hiding nav panel")
-		self.NavView.put_IsPaneVisible(False) # navigation flow
-		ui.debug("Loading sign in page")
-		# Page Loading
-		self.document.Content = XamlReader().Load(open("../assets/ui/signin.xaml", "r", encoding='utf-8').read()) #Set the content
-		ui.debug("Sign in page loaded")
-		loginbutton = self.document.Content.as_(FrameworkElement).FindName("Complete").as_(Button)
-		def LoginButtonSelected(sender,args):
-			#Sign in task
-			import keyring
-			
-			loginbutton = self.document.Content.as_(FrameworkElement).FindName("Complete").as_(Button)
-			
-			uname = self.document.Content.as_(FrameworkElement).FindName("Username").as_(TextBox)
-			password = self.document.Content.as_(FrameworkElement).FindName("Password").as_(PasswordBox)
-			status = self.document.Content.as_(FrameworkElement).FindName("Status").as_(TextBlock)
+		ShowWindow(self.hwnd, SW_HIDE)
+		resp = subprocess.run("pyw DeskScoutSetup.py signin")
+		ShowWindow(self.hwnd, SW_SHOW)
+		SetForegroundWindow(self.hwnd)
+		if onFinish:
+			onFinish()
 
-			try:
-				# The actual sign-in bits
-				# Send a post request to the settings endpoint to set the username
-				keyring.set_password("com.sedwards.deskscout",uname.get_Text(),password.get_Password()) # Set the password for this user in the keyring
-				resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"set","path":"username","value":'"'+uname.get_Text()+'"'})
-				resp = requests.get("http://127.0.0.1:49152/authenticate") # Attempt ot authenticate
-				print('login',resp.text)
-				res = json.loads(resp.text)
-				if res['status'] == "ok":
-					# Authentication Successful
-					if onFinish:
-						onFinish()
-				else:
-					# Authentication Failed
-					status.Visibility = 0
-					status.Text = "Authentication Failed"
-			except Exception as e:
-				# Unexpected error
-				status.Visibility = 0 # Make the status visible
-				status.Text = "Authentication Failed"
-		loginbutton.add_Click(LoginButtonSelected)
-		ui.debug("UI setup complete")
-		uname = self.document.Content.as_(FrameworkElement).FindName("Username").as_(TextBox)
+
 		
-		try:
-			serviceworker.info("Connecting to service")
-			resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"get","path":"username"})
-		except:
-			serviceworker.fatal("Couldn't connect to service")
-			app.fatal("App Terminated")
-			exit(0)
-
-		username = json.loads(resp.text)['data']
-		uname.Text = username
 	def showDisclaimer(self,onAccept=None):
 		# Shows the legal disclaimer for deskscout
 		self.NavView.put_IsPaneVisible(False) # Hides the NavPanel making it impossible to leave the page
@@ -1161,7 +1127,13 @@ class App(XamlApplication):
 	def signOut(self):
 		import keyring
 		#Remove password for keyring
-		keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
+		try:
+			keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
+		except:
+			pass
+		requests.get(SERVICE_URL+"/reloadExts")
+		requests.get(SERVICE_URL+"/authenticate")
+
 		#Blank out username
 		self.changeSetting("username",'""')
 		#Start sign in flow
@@ -1420,6 +1392,14 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				test = root.Content.as_(FrameworkElement).FindName("settings.ns.test").as_(Button)
 				sync = root.Content.as_(FrameworkElement).FindName("settings.ns.sync").as_(Button)
 				viewlog = root.Content.as_(FrameworkElement).FindName("settings.ns.viewlog").as_(Button)
+			class overlay:
+				enabled = root.Content.as_(FrameworkElement).FindName("settings.overlay.enable").as_(CheckBox)
+				detect_steam = root.Content.as_(FrameworkElement).FindName("settings.overlay.detect.steam").as_(CheckBox)
+				detect_fullscreen = root.Content.as_(FrameworkElement).FindName("settings.overlay.detect.fullscreen").as_(CheckBox)
+				detect_process = root.Content.as_(FrameworkElement).FindName("settings.overlay.detect.process").as_(CheckBox)
+
+
+
 
 
 
@@ -1553,6 +1533,13 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				"As soon as possible":0,"Automatic":1,"Every 15 minutes":2,"Every hour":3,"Every 3 hours":4
 			}
 			self.changeSetting("ns/delay",ts[Settings.ns.freq.Text])
+			overlaySettings = json.load(open('../data/overlay/setup.json'))
+			self.changeSetting("overlay",Settings.overlay.enabled.IsChecked)
+			overlaySettings['sources']['steam'] = Settings.overlay.detect_steam.IsChecked
+			overlaySettings['sources']['processRecognition'] = Settings.overlay.detect_process.IsChecked
+			overlaySettings['sources']['processRecognition'] = Settings.overlay.detect_fullscreen.IsChecked
+			json.dump(overlaySettings,open('../data/overlay/setup.json','w+'))
+
 			if saver == 'manual':
 				ctx = self.showPopup("Settings saved",popbuilder.ok("Your changes have been saved"))
 				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
@@ -1760,6 +1747,19 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		if self.validateSetting(s):
 			vx = ["As soon as possible","Automatic","Every 15 minutes","Every hour","Every 3 hours"]
 			Settings.ns.freq.Text = vx[s]
+		s = self.getSetting("overlay")
+		if self.validateSetting(s):
+			Settings.overlay.enabled.IsChecked = s
+		Settings.overlay.enabled.Click += lambda sender,args: saveAll('auto')
+		Settings.overlay.detect_steam.Click += lambda sender,args: saveAll('auto')
+		Settings.overlay.detect_process.Click += lambda sender,args: saveAll('auto')
+		Settings.overlay.detect_fullscreen.Click += lambda sender,args: saveAll('auto')
+		overlaySettings = json.load(open('../data/overlay/setup.json'))
+		Settings.overlay.detect_steam.IsChecked = overlaySettings['sources']['steam']
+		Settings.overlay.detect_process.IsChecked = overlaySettings['sources']['processRecognition']
+		Settings.overlay.detect_fullscreen.IsChecked = overlaySettings['sources']['fullscreen']
+
+
 		try:
 			resp = requests.get(SERVICE_URL+"/extInfo")
 			gdp = self.getSetting("gdp")
