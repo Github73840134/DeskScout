@@ -93,6 +93,7 @@ while True:
 		time.sleep(5)
 	if presence:
 		try:
+			presence.clear()
 			presence.close()
 			
 		except:
