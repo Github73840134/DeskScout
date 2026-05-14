@@ -59,7 +59,7 @@ def getIcon():
 	print("trend",resp.text)
 	return str(data['data']).lower()
 
-
+presence = None
 while True:
 	while getSetting("drp"):
 		if presence == None:
@@ -91,3 +91,11 @@ while True:
 			except Exception as e:
 				print("Gen Error",e)
 		time.sleep(5)
+	if presence:
+		try:
+			presence.close()
+			
+		except:
+			pass
+		presence = None
+	time.sleep(5)
