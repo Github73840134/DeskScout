@@ -3,7 +3,7 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.7.0"
-__build__ = "22"
+__build__ = "23"
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -368,7 +368,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["17"]
+supported_service = ["17","18"]
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
@@ -416,7 +416,7 @@ class App(XamlApplication):
 				resp = requests.get("http://127.0.0.1:49152/about") # Get the deskscout service version
 				ver = json.loads(resp.text)
 				if not ver['build'] in supported_service:
-					serviceworker.warning(f"Service build is {ver['build']} (should be >={__min_server_build__} and <= {__max_server_build__})")
+					serviceworker.warning(f"Service build may be incompatible")
 
 					messagebox.showwarning("Potentially Incompatible Service",f"The version of the client may not be compatible with the version of the service you have installed")
 				resp = requests.get("http://127.0.0.1:49152/getStatus")
@@ -1413,6 +1413,9 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				edit = root.Content.as_(FrameworkElement).FindName("settings.gdp.edit").as_(Button)
 
 				name= root.Content.as_(FrameworkElement).FindName("settings.gdp.name").as_(TextBlock)
+			class sharing:
+				discord = root.Content.as_(FrameworkElement).FindName("settings.sharing.discord.rp").as_(CheckBox)
+				
 		
 		def saveAll(saver="manual"):
 			if saver == "manual":
@@ -1539,7 +1542,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			overlaySettings['sources']['processRecognition'] = Settings.overlay.detect_process.IsChecked
 			overlaySettings['sources']['processRecognition'] = Settings.overlay.detect_fullscreen.IsChecked
 			json.dump(overlaySettings,open('../data/overlay/setup.json','w+'))
-
+			self.changeSetting("drp",Settings.sharing.discord.IsChecked)
+			
 			if saver == 'manual':
 				ctx = self.showPopup("Settings saved",popbuilder.ok("Your changes have been saved"))
 				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
@@ -1750,7 +1754,12 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		s = self.getSetting("overlay")
 		if self.validateSetting(s):
 			Settings.overlay.enabled.IsChecked = s
+		s = self.getSetting("drp")
+		if self.validateSetting(s):
+			Settings.sharing.discord.IsChecked = s
 		Settings.overlay.enabled.Click += lambda sender,args: saveAll('auto')
+		Settings.sharing.discord.Click += lambda sender,args: saveAll('auto')
+
 		Settings.overlay.detect_steam.Click += lambda sender,args: saveAll('auto')
 		Settings.overlay.detect_process.Click += lambda sender,args: saveAll('auto')
 		Settings.overlay.detect_fullscreen.Click += lambda sender,args: saveAll('auto')
@@ -1758,6 +1767,15 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		Settings.overlay.detect_steam.IsChecked = overlaySettings['sources']['steam']
 		Settings.overlay.detect_process.IsChecked = overlaySettings['sources']['processRecognition']
 		Settings.overlay.detect_fullscreen.IsChecked = overlaySettings['sources']['fullscreen']
+		uri = Uri.CreateUri(os.path.abspath(os.path.join(os.getcwd(),"../","assets",'drp_example.png')))
+		
+		# Create the SvgImageSource
+
+		# Create ImageBrush and set properties
+		img = self.document.Content.as_(FrameworkElement).FindName("DRPImage").as_(Image)
+		bitmap = Imaging.BitmapImage()
+		bitmap.UriSource = uri
+		img.Source = bitmap
 
 
 		try:

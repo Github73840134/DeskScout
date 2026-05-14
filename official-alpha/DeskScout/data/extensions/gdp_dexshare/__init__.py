@@ -2,6 +2,30 @@ from mods.sdk.gdp import v1 as sdk
 import time,re,json
 from libs import requests
 import requests
+DEXCOM_TREND_DIRECTIONS: dict[str, int] = {
+    "None": 0,  # unconfirmed
+    "DoubleUp": 1,
+    "SingleUp": 2,
+    "FortyFiveUp": 3,
+    "Flat": 4,
+    "FortyFiveDown": 5,
+    "SingleDown": 6,
+    "DoubleDown": 7,
+    "NotComputable": 8,  # unconfirmed
+    "RateOutOfRange": 9,  # unconfirmed
+}
+TREND_DESCRIPTIONS: list[str] = [
+    "",
+    "rising quickly",
+    "rising",
+    "rising slightly",
+    "steady",
+    "falling slightly",
+    "falling",
+    "falling quickly",
+    "unable to determine trend",
+    "trend unavailable",
+]
 class GlucoseDataProvider():
 	__manifest__ = None
 	def __init__(self):
@@ -43,6 +67,7 @@ class GlucoseDataProvider():
 			if time.time()-self.last > 15:
 				try:
 					self._getAllReadings()
+					self.last = time.time()
 				except:
 					pass
 			return self.cache[0]
@@ -79,7 +104,7 @@ class GlucoseDataProvider():
 
 				dummy.value = reading["Value"]
 				dummy.trend = reading["Trend"]
-				dummy.trend_description = "steady"
+				dummy.trend_description = TREND_DESCRIPTIONS[DEXCOM_TREND_DIRECTIONS[reading["Trend"]]]
 				dummy.timestamp = int(match.group("timestamp"))
 				dummy.json = {"Timestamp":dummy.timestamp,"Value":dummy.value,"Trend":dummy.trend,"TrendDescription":dummy.trend_description}
 				rlist.append(dummy)

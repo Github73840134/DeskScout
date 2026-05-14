@@ -179,7 +179,21 @@
 				</StackPanel>
 
 			</StackPanel>
+			<TextBlock Text="Sharing" FontSize="36"/>
+			<StackPanel Orientation="Vertical">
+				<Border Height="14"/>
+				<StackPanel>
+					<TextBlock Text="Discord Rich Presence" FontSize="24"/>
+        			<Image Name="DRPImage" HorizontalAlignment="Left" Source="../assets/drp_example.png"/>
+					<TextBlock Text="Shows your glucose in discord as a status"/>
+					<CheckBox Name="settings.sharing.discord.rp" Content="Enable sharing to Discord"/>
 
+
+
+				</StackPanel>
+				
+
+			</StackPanel>
 				
 
 		</StackPanel>

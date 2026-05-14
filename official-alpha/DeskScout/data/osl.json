@@ -1,5 +1,7 @@
 {
 	"pydexcom":"../data/osl/pydexcom.txt",
 	"requests":"../data/osl/requests.txt",
-	"win32more":"../data/osl/win32more.txt"
+	"win32more":"../data/osl/win32more.txt",
+	"discord-rich-precsence":"../data/osl/discord-rich-presence.txt"
+
 }

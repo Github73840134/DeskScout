@@ -3,6 +3,7 @@
 	"gdp":"",
 	"useMGDL":true,
 	"setup": false,
+	"drp":true,
 	"enableNotify": true,
 	"gdrState":0,
 	"overlay":false,

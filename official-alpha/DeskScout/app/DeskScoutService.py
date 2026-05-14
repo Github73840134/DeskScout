@@ -52,7 +52,7 @@ attemptingConnection = False
 intent = None
 from mods import gdr
 __version__ = "6"
-__build__ = "17"
+__build__ = "18"
 __channel__ = "developer"
 __release__ = "alpha"
 class Flags:
@@ -177,6 +177,7 @@ notified = {
 	"risingFast":False,
 	"fallingFast":False,
 }
+currentAlarmState = None
 serverStatusInit = False
 recordQueue = []
 serviceOffline = True
@@ -455,13 +456,14 @@ def recordAccessHandler():
 
 
 def notificationRunner():
-	global rec
+	global rec,currentAlarmState,settings
 	import re
 	last = None
 	def checkForUrgentLow():
 		if settings['notify']['urgentLow']['enabled']:
 
 			if reading.value <= settings['notify']['urgentLow']['level']:
+				currentAlarmState = "urgentLow"
 				if silence['urgentLow']:
 					if time.time()-silence['urgentLow'] >= settings['notify']['urgentLow']['silence']:
 						silence['urgentLow'] = None
@@ -480,8 +482,11 @@ def notificationRunner():
 			else:
 				silence['urgentLow'] = None
 		return False
+	f = str({})
 	while True:
-		time.sleep(10)
+		time.sleep(5)
+		
+		
 		if not GlucoseDataProvider:
 			continue
 		if GlucoseDataProvider.getAuthStatus() == SDK.gdp.AuthenticationState.AUTHED and serviceConnected and not serviceOffline:
@@ -491,6 +496,9 @@ def notificationRunner():
 			except:
 				log.notifier.warning("Couldn't load settings,stopped")
 				continue
+			if str(settings) != f:
+				f = str(settings)
+				last = 0
 
 
 			
@@ -519,9 +527,13 @@ def notificationRunner():
 					else:
 						last = reading.timestamp
 					if checkForUrgentLow() == False:
+						if reading.value >= settings['notify']['low']['level'] and reading.value <= settings['notify']['high']['level']:
+							currentAlarmState = None
 						if settings['notify']['low']['enabled']:
 							
+							
 							if reading.value <= settings['notify']['low']['level']:
+								currentAlarmState = "low"
 								if silence['low']:
 									if time.time()-silence['low'] >= settings['notify']['low']['silence']:
 										silence['low'] = None
@@ -537,8 +549,10 @@ def notificationRunner():
 							else:
 								silence['low'] = None
 					if settings['notify']['high']['enabled']:
-								
+						
+						
 						if reading.value >= settings['notify']['high']['level']:
+							currentAlarmState = "high"
 							if silence['high']:
 								if time.time()-silence['high'] >= settings['notify']['high']['silence']:
 									silence['high'] = None
@@ -557,6 +571,8 @@ def notificationRunner():
 						if reading.value >= settings['notify']['fallingFast']['level']:
 							#1,2,6,7
 							if DEXCOM_TREND_DIRECTIONS[reading.trend] == (6 if settings['notify']['fallingFast']['arrow'] == 'one' else 7) :
+								currentAlarmState = "fallingFast"
+
 								if silence['fallingFast']:
 									if time.time()-silence['fallingFast'] >= settings['notify']['fallingFast']['silence']:
 										silence['fallingFast'] = None
@@ -572,6 +588,8 @@ def notificationRunner():
 					if settings['notify']['risingFast']['enabled']:
 						if reading.value >= settings['notify']['risingFast']['level']:
 							if DEXCOM_TREND_DIRECTIONS[reading.trend] == (2 if settings['notify']['risingFast']['arrow'] == 'one' else 1) :
+								currentAlarmState = "risingFast"
+								
 								if silence['risingFast']:
 									if time.time()-silence['risingFast'] >= settings['notify']['risingFast']['silence']:
 										silence['risingFast'] = None
@@ -584,7 +602,7 @@ def notificationRunner():
 									notified['fallingFast'] = True
 									if settings['notify']['fallingFast']['soundOn']:
 										PlaySoundW(PWSTR(settings['notify']['risingFast']['sound']), None, SND_FILENAME)
-				
+					
 updateStatus = {
 	"status":"ready",
 	"result":"ok",
@@ -903,6 +921,9 @@ def getStatus():
 		return json.dumps({"status":"ok","login_state":loginState })
 	except:
 		return json.dumps({"status":"ok","login_state":"unknown"})
+@route('/getAlarmStatus')
+def getAlarmStatus():
+	return json.dumps({"status":"ok","data":currentAlarmState})
 
 @route('/getLatestReading')
 def getLReading():
@@ -911,7 +932,8 @@ def getLReading():
 		data = GlucoseDataProvider.getLatestGlucoseReading()
 		if data:
 			return json.dumps({"status":"ok","data":data.json})
-	except:
+	except Exception as e:
+		log.gdp.error(f"Error while getting glucose {str(e)}")
 		if serviceConnected:
 			toaster = WindowsToaster('DeskScout')
 			newToast = Toast()
@@ -1069,6 +1091,8 @@ def runtime(internal):
 		log.main.info("Starting overlay service")
 
 		subprocess.Popen("py DeskScoutOverlay.py",shell=True)
+		subprocess.Popen("py DeskScout-DiscordRichPresence.py",shell=True)
+
 	run(host='127.0.0.1', port=49152)
 	bulb.stop()
 from PIL import Image
