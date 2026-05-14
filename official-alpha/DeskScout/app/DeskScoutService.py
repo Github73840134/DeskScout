@@ -52,7 +52,7 @@ attemptingConnection = False
 intent = None
 from mods import gdr
 __version__ = "6"
-__build__ = "18"
+__build__ = "19"
 __channel__ = "developer"
 __release__ = "alpha"
 class Flags:
@@ -1091,7 +1091,7 @@ def runtime(internal):
 		log.main.info("Starting overlay service")
 
 		subprocess.Popen("py DeskScoutOverlay.py",shell=True)
-		subprocess.Popen("py DeskScout-DiscordRichPresence.py",shell=True)
+		subprocess.Popen("py DeskScoutDiscordRichPresence.py",shell=True)
 
 	run(host='127.0.0.1', port=49152)
 	bulb.stop()

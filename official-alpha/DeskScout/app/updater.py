@@ -99,19 +99,14 @@ for i in files:
 		log.info(f"Copying file {files[i]}")
 		
 		file = zip.open(i,'r')
-		if wait_until_unlocked(files[i]):
-			
-			out = open(files[i],'wb+')
-			actions += 1
-			window['prog'].UpdateBar(actions)
+		
+		out = open(files[i],'wb+')
+		actions += 1
+		window['prog'].UpdateBar(actions)
 
-			out.write(file.read())
-			actions += file.tell()
-			window['prog'].UpdateBar(actions)
-		else:
-			log.critical(f"File failed to unlock {files[i]}")
-			file.read()
-			actions += file.tell()+1
+		out.write(file.read())
+		actions += file.tell()
+		window['prog'].UpdateBar(actions)
 			
 	except Exception as e:
 		log.critical(f"Error during copy {files[i]} ({i}): {str(e)}")

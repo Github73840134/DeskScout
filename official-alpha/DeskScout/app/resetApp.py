@@ -49,7 +49,7 @@ except:
 	pass
 for proc in psutil.process_iter(['pid', 'name','cmdline','exe']):
 	if proc.info['name'] in ["pythonw.exe","python.exe","py","pyw"]:
-		for i in ["DeskScout.pyw","DeskScoutApp.py","DeskScoutOverlay.py","DeskScoutSetup.py","DeskScoutAlertOverlay.py","DeskScout-DiscordRichPresence"]:
+		for i in ["DeskScout.pyw","DeskScoutApp.py","DeskScoutOverlay.py","DeskScoutSetup.py","DeskScoutAlertOverlay.py","DeskScoutDiscordRichPresence.py"]:
 			if i in proc.info['cmdline'][1]:
 				print("Found",i,proc.info)
 				proc.kill()

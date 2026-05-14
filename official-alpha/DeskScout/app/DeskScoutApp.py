@@ -368,7 +368,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["17","18"]
+supported_service = ["17","18","19"]
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
