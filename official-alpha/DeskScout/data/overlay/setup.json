@@ -1,1 +1,1 @@
-{"sources": {"steam": false, "processRecognition": true, "fullscreen": true}, "alerts": ["high", "low", "fall", "rise", "urgentlow"], "blacklist": []}
+{"sources": {"steam": true, "processRecognition": true, "fullscreen": true}, "alerts": ["high", "low", "fall", "rise", "urgentlow"], "blacklist": []}

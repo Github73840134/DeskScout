@@ -200,11 +200,7 @@
         <Border BorderThickness="1" Height="16" />
 
 		<TextBlock Text="Nightscout Uploading" FontSize="36"/>
-		<StackPanel Orientation="Vertical">
-			<Border Height="14"/>
-			<TextBlock Text="Work In Progress"/>
-		</StackPanel>
-		<StackPanel Visibility="Collapsed" Orientation="Vertical">
+		<StackPanel  Orientation="Vertical">
 			<CheckBox Name="settings.ns.enable" Content="Enable Nightscout sync"/>
 			<StackPanel Orientation="Horizontal">
 				<TextBlock Text="URL"/>
@@ -214,7 +210,7 @@
 				<TextBlock Text="Uploader token"/>
 				<TextBox Text="" Height="32" Width="500" IsReadOnly="False" Name="settings.ns.token" />
 			</StackPanel>
-			<StackPanel Orientation="Horizontal">
+			<StackPanel Visibility="Collapsed" Orientation="Horizontal">
 				<TextBlock Text="Sync: " VerticalAlignment="Center"/>
 				<ComboBox Name="settings.ns.period" VerticalAlignment="Center">
 					<ComboBoxItem Content="As soon as possible" IsSelected="True"/>
@@ -226,8 +222,8 @@
 			</StackPanel>
 			<StackPanel Orientation="Horizontal">
 				<Button Name="settings.ns.test" Content="Test Connection"/>
-				<Button Name="settings.ns.viewlog" Content="View Sync Log"/>
-				<Button Name="settings.ns.sync" Content="Sync Now"/>
+				<Button Visibility="Collapsed" Name="settings.ns.viewlog" Content="View Sync Log"/>
+				<Button Visibility="Collapsed" Name="settings.ns.sync" Content="Sync Now"/>
 			</StackPanel>
 		</StackPanel>
 		<StackPanel Orientation="Vertical">

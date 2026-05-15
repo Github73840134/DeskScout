@@ -104,6 +104,7 @@ class GlucoseDataProvider():
 
 				dummy.value = reading["Value"]
 				dummy.trend = reading["Trend"]
+				#print(dummy.trend)
 				dummy.trend_description = TREND_DESCRIPTIONS[DEXCOM_TREND_DIRECTIONS[reading["Trend"]]]
 				dummy.timestamp = int(match.group("timestamp"))
 				dummy.json = {"Timestamp":dummy.timestamp,"Value":dummy.value,"Trend":dummy.trend,"TrendDescription":dummy.trend_description}

@@ -52,7 +52,7 @@ attemptingConnection = False
 intent = None
 from mods import gdr
 __version__ = "6"
-__build__ = "19"
+__build__ = "20"
 __channel__ = "developer"
 __release__ = "alpha"
 class Flags:
@@ -339,14 +339,70 @@ def remove_duplicates(items):
 	return unique
 def nightscoutUplodader():
 	nut = -1
+	last = 0
 	from mods import nightscout
 	while True:
-		settings = json.load(open("../data/settings.json"))
-
+		try:
+			settings = json.load(open("../data/settings.json"))
+		except Exception as e:
+			log.nsync.error(f"Error parsing settings {str(e)}")
+			continue
 		if settings['ns']['enabled']:
-			ns = nightscout.NightScout()
-			if settings['ns']['delay'] == 0:
-				pass
+			log.nsync.info("Starting Nightscout sync")
+			ns = nightscout.NightScout(settings['ns']['url'],settings['ns']['token'])
+			try:
+				ns.connect()
+				log.nsync.info("Nightscout sync started")
+				PlaySoundW(PWSTR("../assets/sounds/ns_sync_started.wav"), None, SND_FILENAME | SND_ASYNC)
+
+			except Exception as e:
+				log.nsync.error(f"Nightscout sync start failed {str(e)}")
+
+			while settings['ns']['enabled']:
+				try:
+					settings = json.load(open("../data/settings.json"))
+				except Exception as e:
+					log.nsync.error(f"Error parsing settings {str(e)}")
+					continue
+				if GlucoseDataProvider.getAuthStatus() == SDK.gdp.AuthenticationState.AUTHED:
+					try:
+						gv = GlucoseDataProvider.getLatestGlucoseReading()
+						if not gv:
+							log.nsync.info("Not glucose data to sync")
+							continue
+						else:
+							log.nsync.info("Glucose data sync starting")
+							last = ns.getLastEntryTime()
+							log.nsync.info(f"{((gv.timestamp // 1000) * 1000)} {last}")
+							if ((gv.timestamp // 1000) * 1000) != last:
+								try:
+									entry = nightscout.Entry(gv.value,int(gv.timestamp/1000),gv.trend)
+									#print(entry.makeNSEntry())
+									ns.uploadEntry(entry)
+									last = gv.timestamp
+									log.nsync.info("Glucose data sync ok")
+
+								except Exception as e:
+									log.nsync.error(f"Error sending glucose data {str(e)}")
+									continue
+							else:
+								log.nsync.info("Not glucose data to sync")
+
+
+					except Exception as e:
+						log.nsync.error(f"Error syncing glucose data {str(e)}")
+						continue
+				time.sleep(5)
+			
+		
+		time.sleep(5)
+		
+						
+				
+
+
+
+				
 DEXCOM_TREND_DIRECTIONS: dict[str, int] = {
     "None": 0,  # unconfirmed
     "DoubleUp": 1,
@@ -1080,7 +1136,8 @@ log.main.info("Starting server notification host")
 _thread.start_new_thread(notificationRunner,())
 log.main.info("Starting server record access handler")
 _thread.start_new_thread(recordAccessHandler,())
-
+log.main.info("Starting nightscout syncer")
+_thread.start_new_thread(nightscoutUplodader,())
 def runtime(internal):
 	global bulb
 	bulb = internal
@@ -1104,6 +1161,7 @@ def attemptConnect():
 
 	attemptingConnection = True
 	import time
+	time.sleep(5)
 	try:
 		requests.get("http://127.0.0.1:49152/authenticate",timeout=300)
 		log.main.info("attemptConnect: Request sent")

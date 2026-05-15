@@ -3,7 +3,7 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.7.0"
-__build__ = "23"
+__build__ = "24"
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -368,7 +368,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["17","18","19"]
+supported_service = ["17","18","19","20"]
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
@@ -929,7 +929,7 @@ class App(XamlApplication):
 					history.append((i.value,int(i.time/1000)))
 				
 				if self.records:
-					makeGraph(int(width)-20,320,int(self.records[0].time/1000),int(self.records[-1].time/1000),self.getSetting("notify/low/level") if self.getSetting("notify/low/enabled") else None ,self.getSetting("notify/high/level") if self.getSetting("notify/high/enabled") else None,history,self.getSetting("useMGDL"))
+					makeGraph(int(width)-20,320,int(self.records[0].time),int(self.records[-1].time),self.getSetting("notify/low/level") if self.getSetting("notify/low/enabled") else None ,self.getSetting("notify/high/level") if self.getSetting("notify/high/enabled") else None,history,self.getSetting("useMGDL"))
 					img = self.document.Content.as_(FrameworkElement).FindName("Graph").as_(Image)
 					bitmap = Imaging.BitmapImage()
 					print((os.path.abspath(os.path.join(os.getcwd(),'../data','glucose.png'))))
@@ -1738,7 +1738,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				Settings.alarms.rf.trend.Text = "One Arrow Down"
 			elif s == "two":
 				Settings.alarms.rf.trend.Text = "Two Arrows Down"
-		s = self.getSetting("ns/enable")
+		s = self.getSetting("ns/enabled")
 		if self.validateSetting(s):
 			Settings.ns.enabled.IsChecked = s
 		s = self.getSetting("ns/url")
@@ -1837,7 +1837,26 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					raise Exception()
 			except:
 				Settings.gdp.name.Text = "Error"
-			
+		def checkNS(sender,args):
+			from mods import nightscout
+			ns = nightscout.NightScout(self.getSetting("ns/url"),self.getSetting("ns/token"))
+			saveAll('auto')
+			try:
+				resp = ns.checkToken()
+				if resp == 2:
+					ctx = self.showPopup("Connection successful",popbuilder.ok("We can connect to your Nightscout instance"))
+					ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+				elif resp == 1:
+					ctx = self.showPopup("Permission error",popbuilder.ok("We can connect to your Nightscout instance, but the token lacks write permissions"))
+					ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+				elif resp == 0:
+					ctx = self.showPopup("Connection unsuccessful",popbuilder.ok("We can't connect to your Nightscout instance"))
+					ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+
+			except Exception as e:
+				ctx = self.showPopup("Oops! We couldn't reach your Nighscout",popbuilder.ok(f"{str(e)}"))
+				ctx.as_(FrameworkElement).FindName("popup.content.ok").as_(Button).Click += lambda sender,args: self.hidePopup()
+
 		Settings.ns.url.Paste += urlFilter
 		Settings.ns.url.TextChanged += urlFilter
 		root.Content.as_(FrameworkElement).FindName("settings.change_alarm_sounds").as_(Button).add_Click(lambda sender,args:soundsPage())
@@ -1850,9 +1869,9 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 
 
-		Settings.ns.test.Click += self.NotImplemented
-		Settings.ns.viewlog.Click += self.NotImplemented
-		Settings.ns.sync.Click += self.NotImplemented
+		Settings.ns.test.Click += checkNS
+		#Settings.ns.viewlog.Click += self.NotImplemented
+		#Settings.ns.sync.Click += self.NotImplemented
 
 
 
