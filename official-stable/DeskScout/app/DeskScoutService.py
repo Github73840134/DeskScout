@@ -9,6 +9,14 @@ try:
 	os.mkdir("../cache")
 except:
 	pass
+try:
+	os.mkdir("logs")
+except:
+	pass
+try:
+	os.mkdir("logs/service")
+except:
+	pass
 from bottle import route, run, template,request,post
 import keyring,psutil, subprocess
 from windows_toasts import Toast, ToastAudio, WindowsToaster,InteractableWindowsToaster,ToastDuration
