@@ -1,1 +1,68 @@
-{"username": "", "gdp": "", "useMGDL": true, "setup": false, "drp": false, "enableNotify": true, "gdrState": 0, "overlay": false, "ns": {"enabled": false, "url": "", "token": "", "delay": 0}, "notify": {"urgentLow": {"enabled": true, "soundOn": true, "sound": "../assets/sounds/urgent_low.wav", "level": 50, "delay": 0, "silence": 900}, "urgentLowSoon": {"enabled": true, "soundOn": true, "sound": "../assets/sounds/urgent_low_soon.wav", "level": 85, "delay": 0, "silence": 900}, "low": {"enabled": true, "soundOn": true, "sound": "../assets/sounds/low_glucose.wav", "level": 85.0, "delay": 0.0, "silence": 900.0}, "high": {"enabled": true, "soundOn": true, "sound": "../assets/sounds/high_glucose.wav", "level": 200.0, "delay": 0.0, "silence": 900.0}, "risingFast": {"enabled": true, "soundOn": true, "sound": "../assets/sounds/rising_fast.wav", "level": 40.0, "arrow": "one", "delay": 0.0, "silence": 240.0}, "fallingFast": {"enabled": true, "soundOn": true, "sound": "../assets/sounds/falling_fast.wav", "level": 40.0, "arrow": "one", "delay": 0.0, "silence": 900.0}}}
+{
+	"username": "",
+	"gdp":"",
+	"useMGDL":true,
+	"setup": false,
+	"drp":false,
+	"enableNotify": true,
+	"gdrState":0,
+	"overlay":false,
+	"ns":{
+		"enabled":false,
+		"url":"",
+		"token":"",
+		"delay":0
+	},
+	"notify": {
+		"urgentLow": {
+			"enabled": true,
+			"soundOn": true,
+			"sound": "../assets/sounds/urgent_low.wav",
+			"level": 50,
+			"delay": 0,
+			"silence": 900
+		},
+		"urgentLowSoon": {
+			"enabled": true,
+			"soundOn": true,
+			"sound": "../assets/sounds/urgent_low_soon.wav",
+			"level": 85,
+			"delay": 0,
+			"silence": 900
+		},
+		"low": {
+			"enabled": true,
+			"soundOn": true,
+			"sound": "../assets/sounds/low_glucose.wav",
+			"level": 85.0,
+			"delay": 0.0,
+			"silence": 900.0
+		},
+		"high": {
+			"enabled": true,
+			"soundOn": true,
+			"sound": "../assets/sounds/high_glucose.wav",
+			"level": 200.0,
+			"delay": 0.0,
+			"silence": 900.0
+		},
+		"risingFast": {
+			"enabled": true,
+			"soundOn": true,
+			"sound": "../assets/sounds/rising_fast.wav",
+			"level": 40.0,
+			"arrow": "one",
+			"delay": 0.0,
+			"silence": 240.0
+		},
+		"fallingFast": {
+			"enabled": true,
+			"soundOn": true,
+			"sound": "../assets/sounds/falling_fast.wav",
+			"level": 40.0,
+			"arrow": "one",
+			"delay": 0.0,
+			"silence": 900.0
+		}
+	}
+}

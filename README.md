@@ -38,8 +38,8 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 Added Nightscout sync support
 ## Beta
 N/A
-## Stable (Build: 31)
-First release
+## Stable (Build: 33)
+Added Discord rich presence
 
 # If you have issues with your connections, right click the tray icon and select Refresh Connections, if that doesn't work click Refresh Data Provider.
 
