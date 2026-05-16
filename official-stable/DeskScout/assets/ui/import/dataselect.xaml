@@ -1,0 +1,24 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      >
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <Button Name="back" Content="Back"/>
+        <TextBlock Text="Backup" FontSize="60" />
+        <Border BorderThickness="1" Height="16" >
+            
+        </Border>
+        <TextBlock Text="Select the data you want to transfer" FontSize="24" />
+        <CheckBox Name="transfer.glucose" Content="Glucose History" IsChecked="True"/>
+        <CheckBox Name="transfer.settings" Content="Settings" IsChecked="True"/>
+        <CheckBox Name="transfer.sounds" Content="Imported Sounds" IsChecked="True" />
+        <Button Name="transfer.start" Content="Start Transfer" />
+      
+   
+       
+    </StackPanel>
+
+   
+</Page>

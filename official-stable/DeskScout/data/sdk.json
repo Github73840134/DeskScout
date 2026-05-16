@@ -1,0 +1,10 @@
+{
+	"sdk.gdp.v1":{
+		"type":"gdp",
+		"path":"app/mods/sdk/gdp/v1.py"
+	},
+	"sdk.api.v1":{
+		"type":"api",
+		"path":"mods/sdk/api/v1/__init__.py"
+	}
+}

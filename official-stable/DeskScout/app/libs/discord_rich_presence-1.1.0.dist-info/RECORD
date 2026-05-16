@@ -1,0 +1,12 @@
+discord_rich_presence-1.1.0.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+discord_rich_presence-1.1.0.dist-info/LICENSE,sha256=bGK2rBW6wyn3D6uuf3Hxd8greIjs90nPyVfplCj_KY4,1069
+discord_rich_presence-1.1.0.dist-info/METADATA,sha256=FeCWgk_k-FHCrbENe9GpuwNiino4pNbbBLFXb98ZJdA,3267
+discord_rich_presence-1.1.0.dist-info/RECORD,,
+discord_rich_presence-1.1.0.dist-info/REQUESTED,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+discord_rich_presence-1.1.0.dist-info/WHEEL,sha256=AtBG6SXL3KF_v0NxLf0ehyVOh0cold-JbJYXNGorC6Q,92
+discord_rich_presence-1.1.0.dist-info/top_level.txt,sha256=LhRGXA6G2kIv2inuqbAw1iaAHumaTBYozFj5gHLDVww,10
+discordrp/__init__.py,sha256=Jl6LpdzA1eqMjAqg8zuGO5MekL2wG4duTvjqI8gU6tA,384
+discordrp/__pycache__/__init__.cpython-312.pyc,,
+discordrp/__pycache__/presence.cpython-312.pyc,,
+discordrp/presence.py,sha256=uPc7ghh2vb1S4kmnXW4FYaVN4fUPHuPkukubmca02y8,6818
+discordrp/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0

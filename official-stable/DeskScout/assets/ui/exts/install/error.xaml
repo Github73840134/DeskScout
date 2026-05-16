@@ -1,0 +1,15 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Frame>
+        <StackPanel Orientation="Vertical">
+            <TextBlock Name="error.title" FontSize="24" Text="Extension could not be installed"/>
+            <TextBlock Name="error.description" TextWrapping="Wrap" Text="An error occured while installing this extension"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Name="error.retry" Content="Retry"/>
+                <Button Name="error.ok" Content="OK"/>
+            </StackPanel>
+          
+        </StackPanel>
+       
+        
+    </Frame>
+</Page>

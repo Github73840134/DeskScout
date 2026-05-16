@@ -1,0 +1,12 @@
+{
+	"name":"LibreLink",
+	"type":"gdp",
+	"serviceName":"LibreLink",
+	"author":"Seth Edwards",
+	"url":"https://github.com/Github73840134/DeskScout-Store",
+	"version":"2026.1.26",
+	"logo":null,
+	"id":"com.sedwards.deskscout.gdp.librelink",
+	"uuid":"gdp_librelink",
+	"short":"Glucose data provider for LibreLink compatible CGMs"
+}

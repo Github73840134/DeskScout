@@ -1,0 +1,28 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+
+    <Frame>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="20" Height="20" Name="install.icon"/>
+		     <TextBlock FontSize="24" Text="Extension Name" Name="install.name"/>
+            </StackPanel>
+            
+           <StackPanel Margin="25,0,0,0">
+                <TextBlock Margin="0,0,0,0" FontSize="14" Text="Author:" Name="install.author"/>
+                <TextBlock Margin="0,0,0,0" FontSize="14" Text="Type:" Name="install.type"/>
+                <TextBlock Margin="0,0,0,0" FontSize="14" Text="Version:" Name="install.version"/>
+                <TextBox IsReadOnly="True" Background="Transparent" BorderBrush="Transparent" Margin="0,0,0,0" FontSize="14" Text="Hello world" Name="install.description"/>
+                
+           </StackPanel>
+           <Border Height="20"/>
+           <StackPanel Name="install.pbox" Visibility="Collapsed" Orientation="Vertical">
+            <ProgressBar Name="install.progress" IsIndeterminate="True" Maximum="100" Value="50"/>
+            <TextBlock Name="install.status" Text="Installing" />
+            </StackPanel>
+            <Button Name="install.install" HorizontalAlignment="Right" Content="Install"/>
+          
+        </StackPanel>
+       
+        
+    </Frame>
+</Page>

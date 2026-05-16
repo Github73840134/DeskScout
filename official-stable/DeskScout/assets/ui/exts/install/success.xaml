@@ -1,0 +1,12 @@
+<Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <Frame>
+        <StackPanel Orientation="Vertical">
+            <TextBlock FontSize="24" Text="Extension installed"/>
+            <TextBlock Text="This extension is ready to use"/>
+            <Button Name="install.ok" HorizontalAlignment="Right" Content="OK"/>
+          
+        </StackPanel>
+       
+        
+    </Frame>
+</Page>

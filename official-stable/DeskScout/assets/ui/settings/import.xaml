@@ -1,0 +1,22 @@
+<Page 
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      >
+    <StackPanel Orientation="Vertical" VerticalAlignment="Top">
+        <Button Name="settings.back" Content="Back"/>
+        <TextBlock Text="Backup" FontSize="60" />
+        <Border BorderThickness="1" Height="16" >
+            
+        </Border>
+        <TextBlock Text="Before you begin" FontSize="24" />
+        <TextBlock Text="Restoring data from v0.6 or is for Dexcom devices only"/>
+        <Button Name="import.start" Content="Import" />
+      
+   
+       
+    </StackPanel>
+
+   
+</Page>
