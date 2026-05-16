@@ -3,7 +3,7 @@
 	"gdp":"",
 	"useMGDL":true,
 	"setup": false,
-	"drp":true,
+	"drp":false,
 	"enableNotify": true,
 	"gdrState":0,
 	"overlay":false,
@@ -33,7 +33,7 @@
 		"low": {
 			"enabled": true,
 			"soundOn": true,
-			"sound": "../assets/sounds/generic.wav",
+			"sound": "../assets/sounds/low_glucose.wav",
 			"level": 85.0,
 			"delay": 0.0,
 			"silence": 900.0

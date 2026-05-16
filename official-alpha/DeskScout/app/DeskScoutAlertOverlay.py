@@ -28,7 +28,7 @@ from win32more.Microsoft.UI.Xaml.Media.Animation import Storyboard, DoubleAnimat
 from win32more.Windows.UI.Xaml import Duration, DurationHelper
 from win32more.Microsoft.UI.Xaml.Media.Animation import NavigationThemeTransition, TransitionCollection
 from win32more.Windows.Win32.System.Registry import *
-import threading,json
+import threading,json,requests
 from time import sleep
 from win32more.Windows.Win32.UI.WindowsAndMessaging import (
 	GetWindowLongW, SetWindowLongW,
@@ -37,7 +37,31 @@ from win32more.Windows.Win32.UI.WindowsAndMessaging import (
 	WS_OVERLAPPEDWINDOW, WS_CAPTION, WS_THICKFRAME, WS_SYSMENU, WS_MINIMIZEBOX, WS_MAXIMIZEBOX
 )
 from win32more.Windows.Win32.Foundation import HWND
-
+SERVICE_URL = "http://127.0.0.1:49152"
+DEXCOM_TREND_DIRECTIONS: dict[str, int] = {
+    "None": 0,  # unconfirmed
+    "DoubleUp": 1,
+    "SingleUp": 2,
+    "FortyFiveUp": 3,
+    "Flat": 4,
+    "FortyFiveDown": 5,
+    "SingleDown": 6,
+    "DoubleDown": 7,
+    "NotComputable": 8,  # unconfirmed
+    "RateOutOfRange": 9,  # unconfirmed
+}
+TREND_DESCRIPTIONS: list[str] = [
+    "",
+    "rising fast",
+    "rising fast",
+    "rising slightly",
+    "steady",
+    "falling slightly",
+    "falling fast",
+    "falling fast",
+    "unknown",
+    "unknown",
+]
 def remove_titlebar(hwnd: HWND):
 	"""Removes title bar and window borders using Win32 style flags."""
 	style = GetWindowLongW(hwnd, GWL_STYLE)
@@ -64,20 +88,43 @@ class SplashApp(XamlApplication):
 			return 
 	def OnLaunched(self, args):
 		# Initialize XAML runtime
-
+		import time
 		# Load splash screen XAML
 		xaml = open("../assets/ui/alertoverlay.xaml", encoding="utf-8").read()
 		self.splash_window = XamlReader.Load(xaml).as_(Window)
 		loadcheck = self.splash_window.Content.as_(FrameworkElement).FindName("page").as_(Frame)
+		resp = requests.get(SERVICE_URL+"/getAlarmStatus")
+		data = json.loads(resp.text)
+		dk = {
+			"None":"",
+			"urgentLow":"Urgent Low: ",
+			"low":"Low Glucose: ",
+			"high":"High Glucose: ",
+			"risingFast":"",
+			"fallingFast":"",
+		}
+		if data['data'] != None:
+			cas = data["data"]
+			resp = requests.get(SERVICE_URL+"/getLatestReading")
+			data = json.loads(resp.text)
+			if data['status'] == "ok":
+				self.splash_window.Content.as_(FrameworkElement).FindName("TrendName").as_(TextBlock).Text = dk[cas]+TREND_DESCRIPTIONS[DEXCOM_TREND_DIRECTIONS[data['data']['Trend']]].upper()
+				if self.getSetting("useMGDL"):
+					self.splash_window.Content.as_(FrameworkElement).FindName("Value").as_(TextBlock).Text = f"{data['data']['Value']} mg/dl"
+				else:
+					self.splash_window.Content.as_(FrameworkElement).FindName("Value").as_(TextBlock).Text = f"{data['data']['Value']} mmol/L"
+				self.splash_window.Content.as_(FrameworkElement).FindName("Time").as_(TextBlock).Text = time.strftime("%I:%M%p")
+				
+
 		self.splash_window.SystemBackdrop = MicaBackdrop()
 		loadcheck.add_Loaded(self._load_main_app)
 		hwnd = self.splash_window.AppWindow.Id.Value
 		self.hwnd = hwnd
 		remove_titlebar(hwnd)
 		self._set_window_properties(hwnd)
-		
+		self.splash_window.Title = "OverlayWindow"
 		self.splash_window.Activate()
-
+		
 
 		# Start background thread to simulate loading
 		self.launched = False
@@ -96,7 +143,7 @@ class SplashApp(XamlApplication):
 		# Example: center on screen
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import GetSystemMetrics
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import SM_CXSCREEN, SM_CYSCREEN
-		from win32more.Windows.Win32.UI.WindowsAndMessaging import HWND_NOTOPMOST,SWP_NOMOVE,SWP_NOSIZE,SWP_SHOWWINDOW
+		from win32more.Windows.Win32.UI.WindowsAndMessaging import HWND_TOPMOST,SWP_NOMOVE,SWP_NOSIZE,SWP_SHOWWINDOW
 
 		screen_w = GetSystemMetrics(SM_CXSCREEN)
 		screen_h = GetSystemMetrics(SM_CYSCREEN)
@@ -106,21 +153,47 @@ class SplashApp(XamlApplication):
 		MoveWindow(hwnd, x, 0, win_w, win_h, True)
 		SetWindowPos(
 			hwnd,
-			HWND_NOTOPMOST,
+			HWND_TOPMOST,
 			0,
 			0,
 			0,
 			0,
 			SWP_NOMOVE | SWP_NOSIZE |SWP_SHOWWINDOW)
-
 		
 
+		# 255 = opaque
+
+		
+	def make_topmost(self):
+		from win32more.Windows.Win32.Foundation import HWND
+		from win32more.Windows.Win32.System.WinRT import IInspectable
+		from win32more.Windows.Win32.UI.WindowsAndMessaging import HWND_TOPMOST,SWP_NOMOVE,SWP_NOSIZE,SWP_SHOWWINDOW,FindWindowW,ShowWindow,SetForegroundWindow,BringWindowToTop,SW_SHOW,SetWindowPos
+		from win32more.Microsoft.UI.Windowing import OverlappedPresenter
+		presenter = OverlappedPresenter.Create()
+		presenter = self.splash_window.AppWindow.Presenter
+		presenter.IsAlwaysOnTop = True
+		presenter.IsResizable = False
+		presenter.IsMinimizable = False
+		presenter.IsMaximizable = False
+		hwnd = FindWindowW(None, "OverlayWindow")
+		self.hwnd = hwnd
+
+
+		SetWindowPos(
+			hwnd,
+			HWND_TOPMOST,
+			0, 0, 0, 0,
+			SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW
+		)
+		
 	def _load_main_app(self,sender,args):
 		
 		self.timer = DispatcherTimer()
-		self.timer.Interval = TimeSpan(50000000)  # 100ms
+		self.timer.Interval = TimeSpan(100000000)  # 100ms
 		self.timer.Tick += lambda s, e: self.closetime()
 		self.timer.Start()
+		self.make_topmost()
+
 	def closetime(self):
 		print("Closed")
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import (

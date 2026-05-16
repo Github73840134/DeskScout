@@ -34,8 +34,12 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Glucose graph
 
 # Whats new
-## Build 30
-Added Nightscout sync support
+## Alpha (Build: 31)
+Final alpha build before first beta
+## Beta
+N/A
+## Stable
+N/A
 
 As of now, there is no support for LibreLink, but it will be coming in the first official release, this is the definition of a developer release, there are many things that don't work but y'all deserve an update.
 

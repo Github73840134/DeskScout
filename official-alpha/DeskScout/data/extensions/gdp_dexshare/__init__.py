@@ -38,7 +38,7 @@ class GlucoseDataProvider():
 		self.cache = []
 		self.state = None
 	def setup(self):
-		pass
+		print("Setup Requested")
 	def login(self,username,password):
 		# Username and password both need to be a string
 		print("Share requesting authorization")

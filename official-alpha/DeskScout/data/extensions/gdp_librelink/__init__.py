@@ -1,12 +1,10 @@
 from mods.sdk.gdp import v1 as sdk
+from . import PySimpleGUI as sg
 class GlucoseDataProvider():
 	def __init__(self):
-		import tkinter.messagebox
-		tkinter.messagebox.showinfo("LibreLink Extension","The extension does not work yet")
-	
+		pass
 	def setup(self):
-		import tkinter.messagebox
-		tkinter.messagebox.showinfo("LibreLink Extension","The extension does not work yet")
+		sg.Popup("B","C")
 	def login(self,username,password):
 		# Username and password both need to be a string
 		pass
@@ -15,10 +13,10 @@ class GlucoseDataProvider():
 		return sdk.AuthenticationState.UNAUTHED
 	def getLatestGlucoseReading(self):
 		# Return a GlucoseReading object
-		return GlucoseReading()
+		return sdk.GlucoseReading()
 	def getState(self):
 		pass
 	def getAllReadings(self):
 		# Return multiple GlucoseReading objects
-		return [GlucoseReading(),GlucoseReading(),GlucoseReading()]
+		return [sdk.GlucoseReading(),sdk.GlucoseReading(),sdk.GlucoseReading()]
 __gdp__ = GlucoseDataProvider

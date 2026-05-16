@@ -51,7 +51,7 @@ def checkSteamCache(appid):
 			print("Game",cache[f'steam_{appid}'],"Added")
 		except:
 			pass
-
+lastreading = 0
 		
 STEAM_KEY = r"Software\Valve\Steam"
 def get_running_steam_game():
@@ -69,7 +69,19 @@ def get_running_steam_game():
 	except FileNotFoundError:
 		return None
 def OverlayController():
-	pass
+	global lastreading
+	# Trigger the overlay if an alarmState is present
+	resp = requests.get(SERVICE_URL+"/getAlarmStatus")
+	data = json.loads(resp.text)
+	if data['data'] != None:
+		resp = requests.get(SERVICE_URL+"/getLatestReading")
+		data = json.loads(resp.text)
+		if data['status'] == "ok":
+			import subprocess
+			if data['data']['Timestamp']/1000 != lastreading:
+				lastreading = data['data']["Timestamp"]/1000
+				subprocess.run("pyw DeskScoutAlertOverlay.py")
+
 while True:
 	if getSetting("overlay"):
 		settings = getOverlaySettings()
@@ -78,10 +90,23 @@ while True:
 				appid = get_running_steam_game()
 				
 				if appid:
-					checkSteamCache(appid)
+					try:
+						checkSteamCache(appid)
+					except:
+						pass
+					print("ALERTING")
+					OverlayController()
 				else:
+					lastreading = 0
 					print("No Steam game running")
 			except:
 				pass
+		else:
+			lastreading = 0
+
+	else:
+		lastreading = 0
+
+
 
 	time.sleep(5)

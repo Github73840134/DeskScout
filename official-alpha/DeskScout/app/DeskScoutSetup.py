@@ -342,8 +342,16 @@ from win32more.Windows.UI.Xaml.Media import VisualTreeHelper
 from win32more.Windows.UI.Xaml import DependencyObject
 
 from mods import popbuilder
-
-	
+from win32more.Windows.Win32.UI.WindowsAndMessaging import (
+		GetForegroundWindow,
+		SetForegroundWindow,
+		FindWindowW,
+		ShowWindow,
+		IsIconic,
+		SW_RESTORE,
+		SW_SHOW,
+		SW_HIDE
+		)
 class AppState:
 	STARTING = 0x00
 	RUNNING = 0x01
@@ -430,14 +438,7 @@ class App(XamlApplication):
 		current_pid = os.getpid()
 		hwnd = get_hwnds_by_pid(current_pid)[0]
 		self.hwnd = hwnd
-		from win32more.Windows.Win32.UI.WindowsAndMessaging import (
-		GetForegroundWindow,
-		SetForegroundWindow,
-		FindWindowW,
-		ShowWindow,
-		IsIconic,
-		SW_RESTORE,
-		)
+		
 		if IsIconic(hwnd):
 			ShowWindow(hwnd, SW_RESTORE)
 			# Bring to front
@@ -592,10 +593,9 @@ class App(XamlApplication):
 			resp = requests.get("http://127.0.0.1:49152/reloadExts") #Get Extensions
 
 			if self.loadFlags == 1:
-				requests.get(SERVICE_URL+"/setupGDP")
-				self.showSignIn(self.exitSetup)
+				self.showSignIn(lambda: self.gdpSetup(self.exitSetup))
 			else:
-				self.showSignIn(self.setupComplete)
+				self.showSignIn(lambda: self.gdpSetup(self.setupComplete))
 		def displayOptions():
 			for i in gdpExts:
 				option = Button()
@@ -739,6 +739,15 @@ class App(XamlApplication):
 			self.document.Content.as_(FrameworkElement).FindName("frame").as_(Frame).Content = XamlReader().Load(open("../assets/ui/settings.xaml", "r", encoding='utf-8').read()) #Set the frame content
 			self.document.Loaded += lambda sender,args: PresetRoot() # Runs after page load to hide elements
 			self.document.Content.as_(FrameworkElement).FindName("oobe.next").as_(Button).add_Click(lambda sender,args: self.setupComplete()) #Bind oobe.next click event to setupComplete	
+	def gdpSetup(self,onFinish=None):
+		ShowWindow(self.hwnd, SW_HIDE)
+		try:
+			requests.get(SERVICE_URL+"/setupGDP")
+		except:
+			pass
+		ShowWindow(self.hwnd, SW_SHOW)
+		if onFinish: onFinish()
+
 	def welcome(self):
 		self.goHome()
 		self.page = "home"

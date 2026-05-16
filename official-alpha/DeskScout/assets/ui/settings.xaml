@@ -161,8 +161,9 @@
 			</PivotItem>
 		</Pivot>
         <Border BorderThickness="1" Height="16" />
-		<TextBlock Text="Glucose Overlay - Beta" FontSize="36"/>
-		<StackPanel Orientation="Vertical">
+		
+		<StackPanel Visibility="Collapsed" Orientation="Vertical">
+			<TextBlock Text="Glucose Overlay - Beta" FontSize="36"/>
 			<Border Height="14"/>
 			<TextBlock Text="Glucose overlay displays glucose alerts when games or certain full screen applications are open"/>
 			<CheckBox Name="settings.overlay.enable" Content="Enable Overlay"/>

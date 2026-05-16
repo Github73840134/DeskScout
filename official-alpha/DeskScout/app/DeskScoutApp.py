@@ -3,7 +3,7 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "0.7.0"
-__build__ = "24"
+__build__ = "25"
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -368,7 +368,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["17","18","19","20"]
+supported_service = ["17","18","19","20","21"]
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
@@ -1823,7 +1823,21 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		def extInfoPage():
 			self.transitionElementContent(root,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: print(),self.initExtensionInfoPage)
 		def editGDP():
-			os.system("pyw DeskScoutSetup.py setGDP")
+			from win32more.Windows.Win32.UI.WindowsAndMessaging import (
+			GetForegroundWindow,
+			SetForegroundWindow,
+			FindWindowW,
+			ShowWindow,
+			IsIconic,
+			SW_RESTORE,
+			SW_HIDE,
+			SW_MINIMIZE,
+			SW_SHOW
+			)
+			ShowWindow(self.hwnd, SW_HIDE)
+			resp = subprocess.run("pyw DeskScoutSetup.py setGDP")
+			ShowWindow(self.hwnd, SW_SHOW)
+			SetForegroundWindow(self.hwnd)
 			try:
 				resp = requests.get(SERVICE_URL+"/extInfo")
 				gdp = self.getSetting("gdp")
