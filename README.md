@@ -34,14 +34,16 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Glucose graph
 
 # Whats new
-## Alpha (Build: 31)
-Final alpha build before first beta
+## Alpha (Build: 30)
+Added Nightscout sync support
 ## Beta
 N/A
-## Stable
-N/A
+## Stable (Build: 31)
+First release
 
-As of now, there is no support for LibreLink, but it will be coming in the first official release, this is the definition of a developer release, there are many things that don't work but y'all deserve an update.
+# If you have issues with your connections, right click the tray icon and select Refresh Connections, if that doesn't work click Refresh Data Provider.
+
+# As of now, there is no support for LibreLink, but it will be coming in the first official release, this is the definition of a developer release, there are many things that don't work but y'all deserve an update.
 
 # Warning
 Do not attempt to restore glucose data from version 0.6 or below, it will not work, the way the app handles timestamps has changed, and it will break your install. Please try your best to only update your installation via the over the air updates to mitigate corruption of settings if you decide to restore your data. TLDR: Only backup and restore from the version you are running, there are no guarantees that it will work if you do so
