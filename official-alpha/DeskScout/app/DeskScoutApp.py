@@ -2,8 +2,9 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "1.1.1"
-__build__ = "27"
+__version__ = "1.2"
+__build__ = "29"
+supported_service = ["22","23","24","25"]
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -372,7 +373,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["22","23"]
+
 vinfo = json.load(open('versioninfo.json'))
 if vinfo['release'] in ["stable","beta"]:
 	USERKEY = f"com.sedwards.deskscout-{vinfo['release']}"
@@ -507,6 +508,9 @@ class App(XamlApplication):
 		current_pid = os.getpid()
 		hwnd = get_hwnds_by_pid(current_pid)[0]
 		self.hwnd = hwnd
+
+		#resp = requests.get("http://127.0.0.1:49152/authenticate")
+
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import SendMessageW, WM_SETICON, ICON_SMALL, ICON_BIG
 		# Set the window icon
 		SendMessageW(hwnd, WM_SETICON, ICON_SMALL, hicon)
@@ -1352,6 +1356,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			root = self.document
 		
 		class Settings:
+			class general:
+				autostart = root.Content.as_(FrameworkElement).FindName("settings.autostart").as_(CheckBox)
 			class display:
 				units = root.Content.as_(FrameworkElement).FindName("settings.display_mmol").as_(CheckBox)
 			enable_alarms = root.Content.as_(FrameworkElement).FindName("settings.enable_alarms").as_(CheckBox)
@@ -1435,6 +1441,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 			# General Alarms
 			self.lsc = -1
+			self.changeSetting("autostart",not Settings.general.autostart.IsChecked)
 			self.changeSetting("useMGDL",not Settings.display.units.IsChecked)
 			self.changeSetting("enableNotify",Settings.enable_alarms.IsChecked)
 			# Urgent Low
@@ -1564,6 +1571,9 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		# Initiaize the settings view
 
 		# Check units
+		s = self.getSetting("autostart")
+		if self.validateSetting(s):
+			Settings.general.autostart.IsChecked = s
 		s = self.getSetting("useMGDL")
 		if self.validateSetting(s):
 			Settings.display.units.IsChecked = not s
@@ -1771,6 +1781,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			Settings.sharing.discord.IsChecked = s
 		Settings.overlay.enabled.Click += lambda sender,args: saveAll('auto')
 		Settings.sharing.discord.Click += lambda sender,args: saveAll('auto')
+		Settings.general.autostart.Click += lambda sender,args: saveAll('auto')
+
 
 		Settings.overlay.detect_steam.Click += lambda sender,args: saveAll('auto')
 		Settings.overlay.detect_process.Click += lambda sender,args: saveAll('auto')

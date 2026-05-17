@@ -62,8 +62,8 @@ serviceDisconnectedAt = 0
 attemptingConnection = False
 intent = None
 from mods import gdr
-__version__ = "7"
-__build__ = "23"
+__version__ = "8"
+__build__ = "25"
 __channel__ = "developer"
 __release__ = "stable"
 vinfo = json.load(open('versioninfo.json'))
@@ -77,6 +77,27 @@ class Flags:
 	USE_ALTERNATE_UPDATE_SERVER = False
 	DISABLE_OVERLAY = False
 import argparse
+import winreg
+import sys
+
+APP_NAME = "DeskScout Service"
+
+python_exe = os.path.join(os.path.dirname(sys.executable),"pythonw.exe")
+script_path = os.path.join(os.path.dirname(__file__),"autostart.py")
+
+command = f'"{python_exe}" "{script_path}"'
+
+key = winreg.OpenKey(
+    winreg.HKEY_CURRENT_USER,
+    r"Software\Microsoft\Windows\CurrentVersion\Run",
+    0,
+    winreg.KEY_SET_VALUE
+)
+
+winreg.SetValueEx(key, APP_NAME, 0, winreg.REG_SZ, command)
+winreg.CloseKey(key)
+
+print("Startup enabled")
 parser = argparse.ArgumentParser()
 parser.add_argument("-fromDeskScoutPy",action="store_true")
 parser.add_argument("-useAltUpdateServer",action="store_true")
@@ -1175,7 +1196,7 @@ def attemptConnect():
 
 	attemptingConnection = True
 	import time
-	time.sleep(5)
+	time.sleep(10)
 	try:
 		requests.get("http://127.0.0.1:49152/authenticate",timeout=300)
 		log.main.info("attemptConnect: Request sent")
@@ -1201,12 +1222,63 @@ def restart(icon, item):
 
 def openbackup(icon,item):
 	pass
+import ctypes
+from ctypes import wintypes
+user32 = ctypes.windll.user32
+kernel32 = ctypes.windll.kernel32
+EnumWindows = user32.EnumWindows
+EnumWindowsProc = ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+GetWindowThreadProcessId = user32.GetWindowThreadProcessId
+IsWindowVisible = user32.IsWindowVisible
 
+def get_hwnds_by_pid(pid):
+	hwnds = []
+
+	@EnumWindowsProc
+	def foreach_window(hwnd, lParam):
+		if IsWindowVisible(hwnd):
+			lpdw_process_id = wintypes.DWORD()
+			GetWindowThreadProcessId(hwnd, ctypes.byref(lpdw_process_id))
+			if lpdw_process_id.value == pid:
+				hwnds.append(hwnd)
+		return True
+
+	EnumWindows(foreach_window, 0)
+	return hwnds
+def openDeskScout(icon,item):
+	isOpen = None
+	for proc in psutil.process_iter(['pid', 'name','cmdline','exe']):
+		if proc.info['name'] in ["pythonw.exe","python.exe","py","pyw"]:
+			for i in ["DeskScoutApp.py"]:
+				if i in proc.info['cmdline'][1]:
+					isOpen = proc.pid
+	if isOpen != None:
+		print("App is open")
+		hwnd = get_hwnds_by_pid(isOpen)[0]
+		from win32more.Windows.Win32.UI.WindowsAndMessaging import (
+		GetForegroundWindow,
+		SetForegroundWindow,
+		FindWindowW,
+		ShowWindow,
+		IsIconic,
+		SW_RESTORE,
+		)
+		ShowWindow(hwnd, SW_RESTORE)
+		# Bring to front
+		SetForegroundWindow(hwnd)
+	else:
+		subprocess.Popen("pyw DeskScoutApp.py",shell=True,start_new_session=True)
+
+				
+					
 icon = Icon(
 	'DeskScout',
 	icon=Image.open("../assets/icons/logo/03.png"),
 	
 	menu=menu(
+		item(
+		'Open DeskScout',
+		openDeskScout,default=True),
 		item(
 		'Refresh Connections',
 		lambda icon,item:attemptConnect()),
@@ -1220,7 +1292,8 @@ icon = Icon(
 		'Shutdown Deskscout',
 		shutdown),
 	),
-	title="DeskScout"
+	title="DeskScout",
+
 	)
 
 icon.run(runtime)

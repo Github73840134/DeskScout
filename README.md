@@ -34,8 +34,8 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Glucose graph
 
 # Whats new
-## Alpha (Build: 35)
-Bug fixes
+## Alpha (Build: 37)
+Added autostart feature
 ## Beta
 N/A
 ## Stable (Build: 36)

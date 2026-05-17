@@ -8,6 +8,13 @@
 	
     <StackPanel Orientation="Vertical">
         <TextBlock Text="Settings" FontSize="48" />
+		<TextBlock Text="Be sure to click Save Changes when you're finished"/>
+        <Border BorderThickness="1" Height="16" />
+		<TextBlock Text="General" FontSize="36"/>
+		<CheckBox Name="settings.autostart" Content="Start DeskScout on login" />
+		<TextBlock Text="The app will most likely be denoted as pythonw.exe in the Startup tasks"/>
+		<TextBlock Text="If you want to disable auto start use the checkbox above."/>
+		<TextBlock Text="Disabling autostart from Task Manager will make autostart not work even if enabled in DeskScout settings."/>
         <Border BorderThickness="1" Height="16" />
 		<TextBlock Text="Display" FontSize="36"/>
 		<CheckBox Name="settings.display_mmol" Content="Display glucose in mmol/L" />
