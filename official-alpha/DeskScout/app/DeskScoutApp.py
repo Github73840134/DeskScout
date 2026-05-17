@@ -1132,7 +1132,7 @@ class App(XamlApplication):
 		import keyring
 		#Remove password for keyring
 		try:
-			keyring.delete_password("com.sedwards.deskscout-stable",self.getSetting("username"))
+			keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
 		except:
 			pass
 		requests.get(SERVICE_URL+"/reloadExts")

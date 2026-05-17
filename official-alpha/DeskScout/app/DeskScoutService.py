@@ -903,7 +903,7 @@ def auth():
 	
 
 	settings = json.load(open("../data/settings.json"))
-	pw = keyring.get_password("com.sedwards.deskscout-stable",settings['username'])
+	pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
 	try:
 		if GlucoseDataProvider.getAuthStatus() != 0x03:
 			GlucoseDataProvider.login(settings['username'],pw)

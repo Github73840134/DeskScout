@@ -61,7 +61,7 @@ if not args.retainSettings:
 	import json,keyring
 	settings = json.load(open('../data/settings.json'))
 	try:
-		keyring.delete_password("com.sedwards.deskscout-stable",settings['username'])
+		keyring.delete_password("com.sedwards.deskscout",settings['username'])
 	except:
 		pass
 	file = open("../data/settings.json","wb+")
