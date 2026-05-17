@@ -2,13 +2,20 @@
 import os,subprocess
 import argparse
 import shutil
-import sys
+import sys,json
 from tkinter import messagebox
 os.chdir(os.path.dirname(__file__))
 try:
 	os.mkdir("../cache")
 except:
 	pass
+vinfo = json.load(open('versioninfo.json'))
+if vinfo['release'] in ["stable","beta"]:
+	USERKEY = f"com.sedwards.deskscout-{vinfo['release']}"
+else:
+	USERKEY = f"com.sedwards.deskscout"
+__release__ = vinfo['release']
+del(vinfo)
 sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
 import PySimpleGUI as sg
@@ -61,7 +68,7 @@ if not args.retainSettings:
 	import json,keyring
 	settings = json.load(open('../data/settings.json'))
 	try:
-		keyring.delete_password("com.sedwards.deskscout",settings['username'])
+		keyring.delete_password(USERKEY,settings['username'])
 	except:
 		pass
 	file = open("../data/settings.json","wb+")

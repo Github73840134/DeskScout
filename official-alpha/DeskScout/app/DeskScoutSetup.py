@@ -99,6 +99,13 @@ import os
 from tkinter import messagebox
 import _thread
 from PIL import Image as PImage,ImageDraw
+vinfo = json.load(open('versioninfo.json'))
+if vinfo['release'] in ["stable","beta"]:
+	USERKEY = f"com.sedwards.deskscout-{vinfo['release']}"
+else:
+	USERKEY = f"com.sedwards.deskscout"
+__release__ = vinfo['release']
+del(vinfo)
 def makeGraph(width,height,mintime,maxtime,low,high,history):
 
 	def _map(x, in_min, in_max, out_min, out_max):
@@ -833,7 +840,7 @@ class App(XamlApplication):
 			try:
 				# The actual sign-in bits
 				# Send a post request to the settings endpoint to set the username
-				keyring.set_password("com.sedwards.deskscout",uname.get_Text(),password.get_Password()) # Set the password for this user in the keyring
+				keyring.set_password(USERKEY,uname.get_Text(),password.get_Password()) # Set the password for this user in the keyring
 				resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"set","path":"username","value":'"'+uname.get_Text()+'"'})
 				resp = requests.get("http://127.0.0.1:49152/authenticate") # Attempt ot authenticate
 				print('login',resp.text)
@@ -1225,7 +1232,7 @@ class App(XamlApplication):
 	def signOut(self):
 		import keyring
 		#Remove password for keyring
-		keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
+		keyring.delete_password(USERKEY,self.getSetting("username"))
 		#Blank out username
 		self.changeSetting("username",'""')
 		#Start sign in flow
