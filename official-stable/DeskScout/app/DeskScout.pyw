@@ -2,7 +2,7 @@ import os, sys
 os.chdir(os.path.dirname(__file__))
 sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
-import time,subprocess
+import time,subprocess,requests
 try:
 	os.mkdir("../cache")
 except:

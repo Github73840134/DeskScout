@@ -2,8 +2,9 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "1.1"
-__build__ = "26"
+__version__ = "1.1.1"
+__build__ = "28"
+supported_service = ["24"]
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -372,7 +373,15 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["22"]
+
+vinfo = json.load(open('versioninfo.json'))
+if vinfo['release'] in ["stable","beta"]:
+	USERKEY = f"com.sedwards.deskscout-{vinfo['release']}"
+else:
+	USERKEY = f"com.sedwards.deskscout"
+__release__ = vinfo['release']
+del(vinfo)
+
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
@@ -1132,7 +1141,7 @@ class App(XamlApplication):
 		import keyring
 		#Remove password for keyring
 		try:
-			keyring.delete_password("com.sedwards.deskscout-stable",self.getSetting("username"))
+			keyring.delete_password(USERKEY,self.getSetting("username"))
 		except:
 			pass
 		requests.get(SERVICE_URL+"/reloadExts")
@@ -2127,6 +2136,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			self.document.Content.as_(FrameworkElement).FindName("about.appversion").as_(TextBlock).Text = f"App Build: {json.load(open("versioninfo.json"))['app']}"
 			self.document.Content.as_(FrameworkElement).FindName("about.version").as_(TextBlock).Text = f"Version: {__version__}"
 			self.document.Content.as_(FrameworkElement).FindName("about.build").as_(TextBlock).Text = f"Build: {__build__}"
+			self.document.Content.as_(FrameworkElement).FindName("about.release").as_(TextBlock).Text = f"Release: {__release__}"
+			
 			self.document.Content.as_(FrameworkElement).FindName("about.platform").as_(TextBlock).Text = f"Platform: {sys.platform}"
 			self.document.Content.as_(FrameworkElement).FindName("about.reset").as_(Button).add_Click(reset)
 			self.document.Content.as_(FrameworkElement).FindName("about.server_version").as_(TextBlock).Text = f"Version: {serverinfo['version']}"

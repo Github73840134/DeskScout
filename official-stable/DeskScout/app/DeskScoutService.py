@@ -63,9 +63,16 @@ attemptingConnection = False
 intent = None
 from mods import gdr
 __version__ = "7"
-__build__ = "22"
+__build__ = "24"
 __channel__ = "developer"
 __release__ = "stable"
+vinfo = json.load(open('versioninfo.json'))
+if vinfo['release'] in ["stable","beta"]:
+	USERKEY = f"com.sedwards.deskscout-{vinfo['release']}"
+else:
+	USERKEY = f"com.sedwards.deskscout"
+__release__ = vinfo['release']
+del(vinfo)
 class Flags:
 	USE_ALTERNATE_UPDATE_SERVER = False
 	DISABLE_OVERLAY = False
@@ -702,7 +709,7 @@ def updateDownloadThread():
 		updateStatus['result'] = "dc_failed"
 		return
 	try:
-		latest = versioninfo['upgradeLock'][sys.platform]['official-stable'][str(myversioninfo['app'])]
+		latest = versioninfo['upgradeLock'][sys.platform][f'official-{__release__}'][str(myversioninfo['app'])]
 	except Exception as e:
 		log.updater.error(f"Failed to check latest version: {str(e)}")
 		updateStatus['status'] = 'ready'
@@ -809,7 +816,7 @@ def updateCheckThread():
 	myversioninfo = json.load(open('versioninfo.json'))
 	versioninfo = json.loads(resp.text)
 	print(versioninfo)
-	latest = versioninfo['upgradeLock'][sys.platform]['official-stable'][str(myversioninfo['app'])]
+	latest = versioninfo['upgradeLock'][sys.platform][f'official-{__release__}'][str(myversioninfo['app'])]
 	log.updater.info(f"Latest version is {latest} current installed {myversioninfo['app']}")
 	if latest == myversioninfo['app']:
 		updateStatus["isUpToDate"] = True
@@ -903,7 +910,7 @@ def auth():
 	
 
 	settings = json.load(open("../data/settings.json"))
-	pw = keyring.get_password("com.sedwards.deskscout-stable",settings['username'])
+	pw = keyring.get_password(USERKEY,settings['username'])
 	try:
 		if GlucoseDataProvider.getAuthStatus() != 0x03:
 			GlucoseDataProvider.login(settings['username'],pw)
@@ -960,7 +967,7 @@ def getStatus():
 
 	try:
 		settings = json.load(open("../data/settings.json"))
-		pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
+		pw = keyring.get_password(USERKEY,settings['username'])
 		
 		if GlucoseDataProvider.getAuthStatus() == SDK.gdp.AuthenticationState.AUTHED:
 			loginState = True
@@ -973,7 +980,7 @@ def getStatus():
 
 
 	except:
-		pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
+		pw = keyring.get_password(USERKEY,settings['username'])
 		if pw == "":
 			loginState = 'unknown'
 			serviceConnected = False

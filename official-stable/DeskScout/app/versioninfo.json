@@ -1,6 +1,7 @@
 {
-	"app":"33",
-	"client":"26",
-	"service":"22",
-	"sdk":"1"
+	"app":"36",
+	"client":"28",
+	"service":"24",
+	"sdk":"1",
+	"release":"stable"
 }
