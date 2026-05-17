@@ -34,8 +34,8 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 - Glucose graph
 
 # Whats new
-## Alpha (Build: 30)
-Added Nightscout sync support
+## Alpha (Build: 34)
+Added Discord rich presence and fixed import feature
 ## Beta
 N/A
 ## Stable (Build: 33)

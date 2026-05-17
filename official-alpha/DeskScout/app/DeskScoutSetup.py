@@ -833,7 +833,7 @@ class App(XamlApplication):
 			try:
 				# The actual sign-in bits
 				# Send a post request to the settings endpoint to set the username
-				keyring.set_password("com.sedwards.deskscout",uname.get_Text(),password.get_Password()) # Set the password for this user in the keyring
+				keyring.set_password("com.sedwards.deskscout-stable",uname.get_Text(),password.get_Password()) # Set the password for this user in the keyring
 				resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"set","path":"username","value":'"'+uname.get_Text()+'"'})
 				resp = requests.get("http://127.0.0.1:49152/authenticate") # Attempt ot authenticate
 				print('login',resp.text)
@@ -1225,7 +1225,7 @@ class App(XamlApplication):
 	def signOut(self):
 		import keyring
 		#Remove password for keyring
-		keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
+		keyring.delete_password("com.sedwards.deskscout-stable",self.getSetting("username"))
 		#Blank out username
 		self.changeSetting("username",'""')
 		#Start sign in flow

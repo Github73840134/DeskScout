@@ -5,6 +5,10 @@ import shutil
 import sys
 from tkinter import messagebox
 os.chdir(os.path.dirname(__file__))
+try:
+	os.mkdir("../cache")
+except:
+	pass
 sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
 import PySimpleGUI as sg
@@ -53,13 +57,11 @@ for proc in psutil.process_iter(['pid', 'name','cmdline','exe']):
 			if i in proc.info['cmdline'][1]:
 				print("Found",i,proc.info)
 				proc.kill()
-
-				
 if not args.retainSettings:
 	import json,keyring
 	settings = json.load(open('../data/settings.json'))
 	try:
-		keyring.delete_password("com.sedwards.deskscout",settings['username'])
+		keyring.delete_password("com.sedwards.deskscout-stable",settings['username'])
 	except:
 		pass
 	file = open("../data/settings.json","wb+")
@@ -99,3 +101,4 @@ if not args.retainSounds:
 if args.autostart:
 	import subprocess
 	subprocess.Popen("pyw DeskScout.pyw",shell=True,start_new_session=True)
+exit(0)

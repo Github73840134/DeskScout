@@ -2,8 +2,8 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "0.7.0"
-__build__ = "25"
+__version__ = "1.1.1"
+__build__ = "26"
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -53,6 +53,10 @@ ui = logging.getLogger("ui")
 boot.info("Adding libs and mods folder to path")
 sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
+try:
+	os.mkdir("../cache")
+except:
+	pass
 boot.info("Starting imports")
 import requests
 boot.debug("Importing the hellscape that is win32more")
@@ -368,7 +372,7 @@ def calculate_slope(data):
 	return slope  # units: mg/dL per minute
 def predict_glucose(current_value, slope, minutes_ahead=20):
 	return current_value + slope * minutes_ahead
-supported_service = ["17","18","19","20","21"]
+supported_service = ["22"]
 class App(XamlApplication):
 	
 	def OnLaunched(self, args):
@@ -838,11 +842,11 @@ class App(XamlApplication):
 					if stat['result'] == "ok":
 						import platform
 						myv = json.load(open('versioninfo.json'))
-						if not platform.release() in stat['vinfo']['osSupport'][sys.platform]['official-alpha']:
+						if not platform.release() in stat['vinfo']['osSupport'][sys.platform]['official-stable']:
 							self.document.Content.as_(FrameworkElement).FindName("update.endoflife").as_(InfoBar).IsOpen = True
 						else:
 							self.document.Content.as_(FrameworkElement).FindName("update.endoflife").as_(InfoBar).IsOpen = False
-						if myv['app'] in stat['vinfo']['deprecated'][sys.platform]['official-alpha']:
+						if myv['app'] in stat['vinfo']['deprecated'][sys.platform]['official-stable']:
 							self.document.Content.as_(FrameworkElement).FindName("update.deprecated").as_(InfoBar).IsOpen = True
 						else:
 							self.document.Content.as_(FrameworkElement).FindName("update.deprecated").as_(InfoBar).IsOpen = False
@@ -1128,7 +1132,7 @@ class App(XamlApplication):
 		import keyring
 		#Remove password for keyring
 		try:
-			keyring.delete_password("com.sedwards.deskscout",self.getSetting("username"))
+			keyring.delete_password("com.sedwards.deskscout-stable",self.getSetting("username"))
 		except:
 			pass
 		requests.get(SERVICE_URL+"/reloadExts")

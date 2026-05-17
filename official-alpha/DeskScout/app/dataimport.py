@@ -8,17 +8,31 @@ os.chdir(os.path.dirname(__file__))
 import requests
 path = sys.argv[1]
 def changeSetting(path,value):
-		# Changes a setting at path to value
-		try:
-			#Send a POST request to the settings endpoint
-			resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"set","path":path,"value":value})
-			data = json.loads(resp.text)
-			if data['status'] == "ok":
-				return True
-			else:
-				return False
-		except:
+	# Changes a setting at path to value
+	try:
+		#Send a POST request to the settings endpoint
+		resp = requests.post("http://127.0.0.1:49152/settings",data={"action":"set","path":path,"value":value})
+		data = json.loads(resp.text)
+		if data['status'] == "ok":
+			return True
+		else:
 			return False
+	except:
+		return False
+def merge_dicts(destination, source):
+	for key, value in source.items():
+		if (
+			key in destination
+			and isinstance(destination[key], dict)
+			and isinstance(value, dict)
+		):
+			# Recursively merge nested dictionaries
+			merge_dicts(destination[key], value)
+		else:
+			# Only add key if it doesn't already exist
+			destination.setdefault(key, value)
+
+	return destination
 zip = zipfile.ZipFile(path)
 for i in zip.filelist:
 	if i.filename.startswith("sounds/"):
@@ -44,9 +58,9 @@ except:
 	pass
 for i in zip.filelist:
 	if i.filename == "settings.json":
-		x = zip.open("settings.json")
+		x = merge_dicts(json.load(zip.open("settings.json")),json.load(open("../data/settings.json",'r')))
 		y = open("../data/settings.json",'wb+')
-		y.write(x.read())
+		y.write(json.dumps(x).encode())
 		y.close()
 for i in zip.filelist:
 	if i.filename == "glucose.gdr":

@@ -3,7 +3,10 @@ os.chdir(os.path.dirname(__file__))
 sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
 import time,subprocess
-
+try:
+	os.mkdir("../cache")
+except:
+	pass
 if "update.zip" in os.listdir("../data"):
 	try:
 		resp = requests.get("http://127.0.0.1:49152/shutdown",timeout=3)

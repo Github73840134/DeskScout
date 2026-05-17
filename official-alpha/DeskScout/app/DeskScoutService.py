@@ -5,7 +5,18 @@ import os,sys,json
 os.chdir(os.path.dirname(__file__))
 sys.path.append(os.path.join(os.getcwd(),'libs'))
 sys.path.append(os.path.join(os.getcwd(),'mods'))
-
+try:
+	os.mkdir("../cache")
+except:
+	pass
+try:
+	os.mkdir("logs")
+except:
+	pass
+try:
+	os.mkdir("logs/service")
+except:
+	pass
 from bottle import route, run, template,request,post
 import keyring,psutil, subprocess
 from windows_toasts import Toast, ToastAudio, WindowsToaster,InteractableWindowsToaster,ToastDuration
@@ -51,10 +62,10 @@ serviceDisconnectedAt = 0
 attemptingConnection = False
 intent = None
 from mods import gdr
-__version__ = "6"
-__build__ = "21"
+__version__ = "7"
+__build__ = "22"
 __channel__ = "developer"
-__release__ = "alpha"
+__release__ = "stable"
 class Flags:
 	USE_ALTERNATE_UPDATE_SERVER = False
 	DISABLE_OVERLAY = False
@@ -691,7 +702,7 @@ def updateDownloadThread():
 		updateStatus['result'] = "dc_failed"
 		return
 	try:
-		latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['app'])]
+		latest = versioninfo['upgradeLock'][sys.platform]['official-stable'][str(myversioninfo['app'])]
 	except Exception as e:
 		log.updater.error(f"Failed to check latest version: {str(e)}")
 		updateStatus['status'] = 'ready'
@@ -798,7 +809,7 @@ def updateCheckThread():
 	myversioninfo = json.load(open('versioninfo.json'))
 	versioninfo = json.loads(resp.text)
 	print(versioninfo)
-	latest = versioninfo['upgradeLock'][sys.platform]['official-alpha'][str(myversioninfo['app'])]
+	latest = versioninfo['upgradeLock'][sys.platform]['official-stable'][str(myversioninfo['app'])]
 	log.updater.info(f"Latest version is {latest} current installed {myversioninfo['app']}")
 	if latest == myversioninfo['app']:
 		updateStatus["isUpToDate"] = True
@@ -892,7 +903,7 @@ def auth():
 	
 
 	settings = json.load(open("../data/settings.json"))
-	pw = keyring.get_password("com.sedwards.deskscout",settings['username'])
+	pw = keyring.get_password("com.sedwards.deskscout-stable",settings['username'])
 	try:
 		if GlucoseDataProvider.getAuthStatus() != 0x03:
 			GlucoseDataProvider.login(settings['username'],pw)
@@ -1142,13 +1153,8 @@ def runtime(internal):
 	global bulb
 	bulb = internal
 	internal.visible = True
-	print(internal)
-	import subprocess
-	if not Flags.DISABLE_OVERLAY:
-		pass
-		#log.main.info("Starting overlay service")
 
-		#subprocess.Popen("py DeskScoutOverlay.py",shell=True)
+	import subprocess
 	subprocess.Popen("py DeskScoutDiscordRichPresence.py",shell=True)
 
 	run(host='127.0.0.1', port=49152)
