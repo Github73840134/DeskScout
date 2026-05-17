@@ -38,8 +38,8 @@ Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
 Bug fixes
 ## Beta
 N/A
-## Stable (Build: 33)
-Added Discord rich presence
+## Stable (Build: 36)
+Bug fixes
 
 # If you have issues with your connections, right click the tray icon and select Refresh Connections, if that doesn't work click Refresh Data Provider.
 
