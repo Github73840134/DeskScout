@@ -41,7 +41,7 @@
 
         <StackPanel Orientation="Horizontal">
 			<Button Name="about.datamanage" Content="Data Management"/>
-			<Button Name="about.logs" Content="View Network Logs"/>
+			<Button Visibility="Collapsed" Name="about.logs" Content="View Network Logs"/>
 			<Button Name="about.alog" Content="View App Log"/>
 
 			<Button Content="Reset">

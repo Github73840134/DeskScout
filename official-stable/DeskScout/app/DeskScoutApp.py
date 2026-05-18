@@ -2015,7 +2015,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			space2 = 0
 			space3 = 0
 			space += os.stat(os.path.abspath("../data/settings.json")).st_size
-			space2 += os.stat(os.path.abspath("netlogs/service.log")).st_size
+			space2 += 0
 			space2 += os.stat(os.path.abspath("app_boot.log")).st_size
 			for root,dirs,files in os.walk("../data/glucose"):
 				print(root,dirs,files)
