@@ -2,7 +2,7 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "1.1.1"
+__version__ = "1.1.2"
 __build__ = "28"
 supported_service = ["24"]
 from tkinter import messagebox
