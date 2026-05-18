@@ -1,7 +1,7 @@
 import zipfile,json
 import os
 import logging,time
-import os, sys
+import os, sys,shutil
 import argparse
 import sys
 import time
@@ -78,11 +78,32 @@ except Exception as e:
 	log.critical(f"Failed to open update {str(e)}")
 	exit(3)
 dirs = zip.open("dirs.txt").read().decode().split("\n")
+dtd = zip.open("dtd.txt").read().decode().split("\n")
+ftd = zip.open("ftd.txt").read().decode().split("\n")
+
 files = json.load(zip.open("files.txt"))
 ta = int(zip.open("ta").read().decode())
 actions = 0
 window['prog'].UpdateBar(0,max=ta)
 os.chdir(os.path.dirname(os.path.dirname(__file__)))
+for i in ftd:
+	try:
+		log.info(f"Deleting file {i}")
+		os.remove(i)
+		actions += 1
+		window['prog'].UpdateBar(actions)
+	except:
+		#print("Directory already found")
+		pass
+for i in dtd:
+	try:
+		log.info(f"Deleting Directory {i}")
+		shutil.rmtree(i)
+		actions += 1
+		window['prog'].UpdateBar(actions)
+	except:
+		#print("Directory already found")
+		pass
 for i in dirs:
 	try:
 		log.info(f"Making Directory {i}")
@@ -94,7 +115,7 @@ for i in dirs:
 		pass
 for i in files:
 	try:
-		log.info(f"Waiting for file unlock {files[i]}")
+		#log.info(f"Waiting for file unlock {files[i]}")
 			
 		log.info(f"Copying file {files[i]}")
 		
