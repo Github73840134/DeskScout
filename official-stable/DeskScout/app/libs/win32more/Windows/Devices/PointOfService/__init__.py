@@ -1,58 +1,56 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Devices.PointOfService
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.Graphics.Imaging
 import win32more.Windows.Storage
 import win32more.Windows.Storage.Streams
-import win32more.Windows.Win32.System.WinRT
 class BarcodeScanner(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScanner
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScanner'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> hstr: ...
     @winrt_mixinmethod
     def get_Capabilities(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> win32more.Windows.Devices.PointOfService.BarcodeScannerCapabilities: ...
     @winrt_mixinmethod
     def ClaimScannerAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedBarcodeScanner]: ...
     @winrt_mixinmethod
-    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
     def GetSupportedSymbologiesAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Foundation.Collections.IVectorView[UInt32]]: ...
     @winrt_mixinmethod
     def IsSymbologySupportedAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, barcodeSymbology: UInt32) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def RetrieveStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
+    def RetrieveStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
     @winrt_mixinmethod
-    def GetSupportedProfiles(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
+    def GetSupportedProfiles(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
     @winrt_mixinmethod
-    def IsProfileSupported(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, profile: WinRT_String) -> Boolean: ...
+    def IsProfileSupported(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, profile: hstr) -> Boolean: ...
     @winrt_mixinmethod
     def add_StatusUpdated(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.BarcodeScanner, win32more.Windows.Devices.PointOfService.BarcodeScannerStatusUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_StatusUpdated(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def get_VideoDeviceId(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner2) -> WinRT_String: ...
+    def get_VideoDeviceId(self: win32more.Windows.Devices.PointOfService.IBarcodeScanner2) -> hstr: ...
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_classmethod
-    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
     @winrt_classmethod
     def GetDefaultAsync(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.BarcodeScanner]: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.BarcodeScanner]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.BarcodeScanner]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatics) -> hstr: ...
     Capabilities = property(get_Capabilities, None)
     DeviceId = property(get_DeviceId, None)
     VideoDeviceId = property(get_VideoDeviceId, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class BarcodeScannerCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScannerCapabilities
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScannerCapabilities'
     @winrt_mixinmethod
@@ -74,14 +72,14 @@ class BarcodeScannerCapabilities(ComPtr):
     IsVideoPreviewSupported = property(get_IsVideoPreviewSupported, None)
     PowerReportingType = property(get_PowerReportingType, None)
 class BarcodeScannerDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScannerDataReceivedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScannerDataReceivedEventArgs'
     @winrt_mixinmethod
     def get_Report(self: win32more.Windows.Devices.PointOfService.IBarcodeScannerDataReceivedEventArgs) -> win32more.Windows.Devices.PointOfService.BarcodeScannerReport: ...
     Report = property(get_Report, None)
 class BarcodeScannerErrorOccurredEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScannerErrorOccurredEventArgs
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScannerErrorOccurredEventArgs'
     @winrt_mixinmethod
@@ -94,14 +92,14 @@ class BarcodeScannerErrorOccurredEventArgs(ComPtr):
     IsRetriable = property(get_IsRetriable, None)
     PartialInputData = property(get_PartialInputData, None)
 class BarcodeScannerImagePreviewReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScannerImagePreviewReceivedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScannerImagePreviewReceivedEventArgs'
     @winrt_mixinmethod
     def get_Preview(self: win32more.Windows.Devices.PointOfService.IBarcodeScannerImagePreviewReceivedEventArgs) -> win32more.Windows.Storage.Streams.IRandomAccessStreamWithContentType: ...
     Preview = property(get_Preview, None)
 class BarcodeScannerReport(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScannerReport
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScannerReport'
     def __init__(self, *args, **kwargs):
@@ -123,13 +121,14 @@ class BarcodeScannerReport(ComPtr):
     ScanDataLabel = property(get_ScanDataLabel, None)
     ScanDataType = property(get_ScanDataType, None)
 class BarcodeScannerStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.BarcodeScannerStatus'
     Online = 0
     Off = 1
     Offline = 2
     OffOrOffline = 3
     Extended = 4
 class BarcodeScannerStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeScannerStatusUpdatedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.BarcodeScannerStatusUpdatedEventArgs'
     @winrt_mixinmethod
@@ -141,7 +140,7 @@ class BarcodeScannerStatusUpdatedEventArgs(ComPtr):
 class _BarcodeSymbologies_Meta_(ComPtr.__class__):
     pass
 class BarcodeSymbologies(ComPtr, metaclass=_BarcodeSymbologies_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.BarcodeSymbologies'
     @winrt_classmethod
     def get_Gs1DWCode(cls: win32more.Windows.Devices.PointOfService.IBarcodeSymbologiesStatics2) -> UInt32: ...
@@ -332,7 +331,7 @@ class BarcodeSymbologies(ComPtr, metaclass=_BarcodeSymbologies_Meta_):
     @winrt_classmethod
     def get_ExtendedBase(cls: win32more.Windows.Devices.PointOfService.IBarcodeSymbologiesStatics) -> UInt32: ...
     @winrt_classmethod
-    def GetName(cls: win32more.Windows.Devices.PointOfService.IBarcodeSymbologiesStatics, scanDataType: UInt32) -> WinRT_String: ...
+    def GetName(cls: win32more.Windows.Devices.PointOfService.IBarcodeSymbologiesStatics, scanDataType: UInt32) -> hstr: ...
     _BarcodeSymbologies_Meta_.AusPost = property(get_AusPost, None)
     _BarcodeSymbologies_Meta_.Aztec = property(get_Aztec, None)
     _BarcodeSymbologies_Meta_.CanPost = property(get_CanPost, None)
@@ -428,7 +427,7 @@ class BarcodeSymbologies(ComPtr, metaclass=_BarcodeSymbologies_Meta_):
     _BarcodeSymbologies_Meta_.UsPlanet = property(get_UsPlanet, None)
     _BarcodeSymbologies_Meta_.UsPostNet = property(get_UsPostNet, None)
 class BarcodeSymbologyAttributes(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IBarcodeSymbologyAttributes
     _classid_ = 'Windows.Devices.PointOfService.BarcodeSymbologyAttributes'
     @winrt_mixinmethod
@@ -466,16 +465,17 @@ class BarcodeSymbologyAttributes(ComPtr):
     IsCheckDigitValidationSupported = property(get_IsCheckDigitValidationSupported, None)
     IsDecodeLengthSupported = property(get_IsDecodeLengthSupported, None)
 class BarcodeSymbologyDecodeLengthKind(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.BarcodeSymbologyDecodeLengthKind'
     AnyLength = 0
     Discrete = 1
     Range = 2
 class CashDrawer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawer
     _classid_ = 'Windows.Devices.PointOfService.CashDrawer'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.ICashDrawer) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.ICashDrawer) -> hstr: ...
     @winrt_mixinmethod
     def get_Capabilities(self: win32more.Windows.Devices.PointOfService.ICashDrawer) -> win32more.Windows.Devices.PointOfService.CashDrawerCapabilities: ...
     @winrt_mixinmethod
@@ -487,9 +487,9 @@ class CashDrawer(ComPtr):
     @winrt_mixinmethod
     def ClaimDrawerAsync(self: win32more.Windows.Devices.PointOfService.ICashDrawer) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer]: ...
     @winrt_mixinmethod
-    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.ICashDrawer, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.ICashDrawer, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
-    def GetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.ICashDrawer, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def GetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.ICashDrawer, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
     def add_StatusUpdated(self: win32more.Windows.Devices.PointOfService.ICashDrawer, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawer, win32more.Windows.Devices.PointOfService.CashDrawerStatusUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -497,21 +497,21 @@ class CashDrawer(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_classmethod
-    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
     @winrt_classmethod
     def GetDefaultAsync(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.CashDrawer]: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.CashDrawer]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.CashDrawer]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.ICashDrawerStatics) -> hstr: ...
     Capabilities = property(get_Capabilities, None)
     DeviceId = property(get_DeviceId, None)
     DrawerEventSource = property(get_DrawerEventSource, None)
     IsDrawerOpen = property(get_IsDrawerOpen, None)
     Status = property(get_Status, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class CashDrawerCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerCapabilities
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerCapabilities'
     @winrt_mixinmethod
@@ -533,7 +533,7 @@ class CashDrawerCapabilities(ComPtr):
     IsStatusReportingSupported = property(get_IsStatusReportingSupported, None)
     PowerReportingType = property(get_PowerReportingType, None)
 class CashDrawerCloseAlarm(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerCloseAlarm
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerCloseAlarm'
     @winrt_mixinmethod
@@ -553,7 +553,7 @@ class CashDrawerCloseAlarm(ComPtr):
     @winrt_mixinmethod
     def get_BeepDelay(self: win32more.Windows.Devices.PointOfService.ICashDrawerCloseAlarm) -> win32more.Windows.Foundation.TimeSpan: ...
     @winrt_mixinmethod
-    def add_AlarmTimeoutExpired(self: win32more.Windows.Devices.PointOfService.ICashDrawerCloseAlarm, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawerCloseAlarm, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AlarmTimeoutExpired(self: win32more.Windows.Devices.PointOfService.ICashDrawerCloseAlarm, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawerCloseAlarm, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_AlarmTimeoutExpired(self: win32more.Windows.Devices.PointOfService.ICashDrawerCloseAlarm, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -562,16 +562,16 @@ class CashDrawerCloseAlarm(ComPtr):
     BeepDelay = property(get_BeepDelay, put_BeepDelay)
     BeepDuration = property(get_BeepDuration, put_BeepDuration)
     BeepFrequency = property(get_BeepFrequency, put_BeepFrequency)
-    AlarmTimeoutExpired = event()
+    AlarmTimeoutExpired = event(add_AlarmTimeoutExpired, remove_AlarmTimeoutExpired)
 class CashDrawerClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerEventSourceEventArgs
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerClosedEventArgs'
     @winrt_mixinmethod
     def get_CashDrawer(self: win32more.Windows.Devices.PointOfService.ICashDrawerEventSourceEventArgs) -> win32more.Windows.Devices.PointOfService.CashDrawer: ...
     CashDrawer = property(get_CashDrawer, None)
 class CashDrawerEventSource(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerEventSource
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerEventSource'
     @winrt_mixinmethod
@@ -582,17 +582,17 @@ class CashDrawerEventSource(ComPtr):
     def add_DrawerOpened(self: win32more.Windows.Devices.PointOfService.ICashDrawerEventSource, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawerEventSource, win32more.Windows.Devices.PointOfService.CashDrawerOpenedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_DrawerOpened(self: win32more.Windows.Devices.PointOfService.ICashDrawerEventSource, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    DrawerClosed = event()
-    DrawerOpened = event()
+    DrawerClosed = event(add_DrawerClosed, remove_DrawerClosed)
+    DrawerOpened = event(add_DrawerOpened, remove_DrawerOpened)
 class CashDrawerOpenedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerEventSourceEventArgs
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerOpenedEventArgs'
     @winrt_mixinmethod
     def get_CashDrawer(self: win32more.Windows.Devices.PointOfService.ICashDrawerEventSourceEventArgs) -> win32more.Windows.Devices.PointOfService.CashDrawer: ...
     CashDrawer = property(get_CashDrawer, None)
 class CashDrawerStatus(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerStatus
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerStatus'
     @winrt_mixinmethod
@@ -602,25 +602,26 @@ class CashDrawerStatus(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     StatusKind = property(get_StatusKind, None)
 class CashDrawerStatusKind(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.CashDrawerStatusKind'
     Online = 0
     Off = 1
     Offline = 2
     OffOrOffline = 3
     Extended = 4
 class CashDrawerStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ICashDrawerStatusUpdatedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.CashDrawerStatusUpdatedEventArgs'
     @winrt_mixinmethod
     def get_Status(self: win32more.Windows.Devices.PointOfService.ICashDrawerStatusUpdatedEventArgs) -> win32more.Windows.Devices.PointOfService.CashDrawerStatus: ...
     Status = property(get_Status, None)
 class ClaimedBarcodeScanner(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner
     _classid_ = 'Windows.Devices.PointOfService.ClaimedBarcodeScanner'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner) -> hstr: ...
     @winrt_mixinmethod
     def get_IsEnabled(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner) -> Boolean: ...
     @winrt_mixinmethod
@@ -640,11 +641,11 @@ class ClaimedBarcodeScanner(ComPtr):
     @winrt_mixinmethod
     def SetActiveSymbologiesAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, symbologies: win32more.Windows.Foundation.Collections.IIterable[UInt32]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def SetActiveProfileAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, profile: WinRT_String) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SetActiveProfileAsync(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, profile: hstr) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
     def add_DataReceived(self: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScanner, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedBarcodeScanner, win32more.Windows.Devices.PointOfService.BarcodeScannerDataReceivedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -696,24 +697,24 @@ class ClaimedBarcodeScanner(ComPtr):
     IsDisabledOnDataReceived = property(get_IsDisabledOnDataReceived, put_IsDisabledOnDataReceived)
     IsEnabled = property(get_IsEnabled, None)
     IsVideoPreviewShownOnEnable = property(get_IsVideoPreviewShownOnEnable, put_IsVideoPreviewShownOnEnable)
-    DataReceived = event()
-    TriggerPressed = event()
-    TriggerReleased = event()
-    ReleaseDeviceRequested = event()
-    ImagePreviewReceived = event()
-    ErrorOccurred = event()
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
+    DataReceived = event(add_DataReceived, remove_DataReceived)
+    ErrorOccurred = event(add_ErrorOccurred, remove_ErrorOccurred)
+    ImagePreviewReceived = event(add_ImagePreviewReceived, remove_ImagePreviewReceived)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
+    TriggerPressed = event(add_TriggerPressed, remove_TriggerPressed)
+    TriggerReleased = event(add_TriggerReleased, remove_TriggerReleased)
 class ClaimedBarcodeScannerClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedBarcodeScannerClosedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.ClaimedBarcodeScannerClosedEventArgs'
 class ClaimedCashDrawer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer
     _classid_ = 'Windows.Devices.PointOfService.ClaimedCashDrawer'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer) -> hstr: ...
     @winrt_mixinmethod
     def get_IsEnabled(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer) -> Boolean: ...
     @winrt_mixinmethod
@@ -729,11 +730,11 @@ class ClaimedCashDrawer(ComPtr):
     @winrt_mixinmethod
     def RetainDeviceAsync(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def add_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedCashDrawer, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -746,14 +747,14 @@ class ClaimedCashDrawer(ComPtr):
     DeviceId = property(get_DeviceId, None)
     IsDrawerOpen = property(get_IsDrawerOpen, None)
     IsEnabled = property(get_IsEnabled, None)
-    ReleaseDeviceRequested = event()
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
 class ClaimedCashDrawerClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedCashDrawerClosedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.ClaimedCashDrawerClosedEventArgs'
 class ClaimedJournalPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedJournalPrinter
     _classid_ = 'Windows.Devices.PointOfService.ClaimedJournalPrinter'
     @winrt_mixinmethod
@@ -795,7 +796,7 @@ class ClaimedJournalPrinter(ComPtr):
     @winrt_mixinmethod
     def get_IsReadyToPrint(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation) -> Boolean: ...
     @winrt_mixinmethod
-    def ValidateData(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation, data: WinRT_String) -> Boolean: ...
+    def ValidateData(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation, data: hstr) -> Boolean: ...
     CharactersPerLine = property(get_CharactersPerLine, put_CharactersPerLine)
     ColorCartridge = property(get_ColorCartridge, put_ColorCartridge)
     IsCartridgeEmpty = property(get_IsCartridgeEmpty, None)
@@ -810,36 +811,36 @@ class ClaimedJournalPrinter(ComPtr):
     LineSpacing = property(get_LineSpacing, put_LineSpacing)
     LineWidth = property(get_LineWidth, None)
 class ClaimedLineDisplay(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay
     _classid_ = 'Windows.Devices.PointOfService.ClaimedLineDisplay'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> hstr: ...
     @winrt_mixinmethod
     def get_Capabilities(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> win32more.Windows.Devices.PointOfService.LineDisplayCapabilities: ...
     @winrt_mixinmethod
-    def get_PhysicalDeviceName(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> WinRT_String: ...
+    def get_PhysicalDeviceName(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_PhysicalDeviceDescription(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> WinRT_String: ...
+    def get_PhysicalDeviceDescription(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_DeviceControlDescription(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> WinRT_String: ...
+    def get_DeviceControlDescription(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_DeviceControlVersion(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> WinRT_String: ...
+    def get_DeviceControlVersion(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_DeviceServiceVersion(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> WinRT_String: ...
+    def get_DeviceServiceVersion(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> hstr: ...
     @winrt_mixinmethod
     def get_DefaultWindow(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> win32more.Windows.Devices.PointOfService.LineDisplayWindow: ...
     @winrt_mixinmethod
     def RetainDevice(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay) -> Void: ...
     @winrt_mixinmethod
-    def add_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def GetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay2, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def GetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay2, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
-    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay2, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay2, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
     def CheckPowerStatusAsync(self: win32more.Windows.Devices.PointOfService.IClaimedLineDisplay2) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplayPowerStatus]: ...
     @winrt_mixinmethod
@@ -877,11 +878,11 @@ class ClaimedLineDisplay(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayStatics) -> hstr: ...
     @winrt_classmethod
-    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayStatics, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayStatics, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
     Capabilities = property(get_Capabilities, None)
     CustomGlyphs = property(get_CustomGlyphs, None)
     DefaultWindow = property(get_DefaultWindow, None)
@@ -894,20 +895,20 @@ class ClaimedLineDisplay(ComPtr):
     PhysicalDeviceName = property(get_PhysicalDeviceName, None)
     SupportedCharacterSets = property(get_SupportedCharacterSets, None)
     SupportedScreenSizesInCharacters = property(get_SupportedScreenSizesInCharacters, None)
-    ReleaseDeviceRequested = event()
-    StatusUpdated = event()
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class ClaimedLineDisplayClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedLineDisplayClosedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.ClaimedLineDisplayClosedEventArgs'
 class ClaimedMagneticStripeReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader
     _classid_ = 'Windows.Devices.PointOfService.ClaimedMagneticStripeReader'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader) -> hstr: ...
     @winrt_mixinmethod
     def get_IsEnabled(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader) -> Boolean: ...
     @winrt_mixinmethod
@@ -947,11 +948,11 @@ class ClaimedMagneticStripeReader(ComPtr):
     @winrt_mixinmethod
     def DeAuthenticateDeviceAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, responseToken: PassArray[Byte]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def UpdateKeyAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, key: WinRT_String, keyName: WinRT_String) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def UpdateKeyAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, key: hstr, keyName: hstr) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
     def add_BankCardDataReceived(self: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReader, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedMagneticStripeReader, win32more.Windows.Devices.PointOfService.MagneticStripeReaderBankCardDataReceivedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -986,23 +987,23 @@ class ClaimedMagneticStripeReader(ComPtr):
     IsEnabled = property(get_IsEnabled, None)
     IsTransmitSentinelsEnabled = property(get_IsTransmitSentinelsEnabled, put_IsTransmitSentinelsEnabled)
     TracksToRead = property(get_TracksToRead, put_TracksToRead)
-    BankCardDataReceived = event()
-    AamvaCardDataReceived = event()
-    VendorSpecificDataReceived = event()
-    ReleaseDeviceRequested = event()
-    ErrorOccurred = event()
-    Closed = event()
+    AamvaCardDataReceived = event(add_AamvaCardDataReceived, remove_AamvaCardDataReceived)
+    BankCardDataReceived = event(add_BankCardDataReceived, remove_BankCardDataReceived)
+    Closed = event(add_Closed, remove_Closed)
+    ErrorOccurred = event(add_ErrorOccurred, remove_ErrorOccurred)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
+    VendorSpecificDataReceived = event(add_VendorSpecificDataReceived, remove_VendorSpecificDataReceived)
 class ClaimedMagneticStripeReaderClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedMagneticStripeReaderClosedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.ClaimedMagneticStripeReaderClosedEventArgs'
 class ClaimedPosPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter
     _classid_ = 'Windows.Devices.PointOfService.ClaimedPosPrinter'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter) -> hstr: ...
     @winrt_mixinmethod
     def get_IsEnabled(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter) -> Boolean: ...
     @winrt_mixinmethod
@@ -1032,9 +1033,9 @@ class ClaimedPosPrinter(ComPtr):
     @winrt_mixinmethod
     def RetainDeviceAsync(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def ResetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def UpdateStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
     def add_ReleaseDeviceRequested(self: win32more.Windows.Devices.PointOfService.IClaimedPosPrinter, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedPosPrinter, win32more.Windows.Devices.PointOfService.PosPrinterReleaseDeviceRequestedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -1054,14 +1055,14 @@ class ClaimedPosPrinter(ComPtr):
     MapMode = property(get_MapMode, put_MapMode)
     Receipt = property(get_Receipt, None)
     Slip = property(get_Slip, None)
-    ReleaseDeviceRequested = event()
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
 class ClaimedPosPrinterClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedPosPrinterClosedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.ClaimedPosPrinterClosedEventArgs'
 class ClaimedReceiptPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedReceiptPrinter
     _classid_ = 'Windows.Devices.PointOfService.ClaimedReceiptPrinter'
     @winrt_mixinmethod
@@ -1113,7 +1114,7 @@ class ClaimedReceiptPrinter(ComPtr):
     @winrt_mixinmethod
     def get_IsReadyToPrint(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation) -> Boolean: ...
     @winrt_mixinmethod
-    def ValidateData(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation, data: WinRT_String) -> Boolean: ...
+    def ValidateData(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation, data: hstr) -> Boolean: ...
     CharactersPerLine = property(get_CharactersPerLine, put_CharactersPerLine)
     ColorCartridge = property(get_ColorCartridge, put_ColorCartridge)
     IsCartridgeEmpty = property(get_IsCartridgeEmpty, None)
@@ -1133,7 +1134,7 @@ class ClaimedReceiptPrinter(ComPtr):
     SidewaysMaxChars = property(get_SidewaysMaxChars, None)
     SidewaysMaxLines = property(get_SidewaysMaxLines, None)
 class ClaimedSlipPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IClaimedSlipPrinter
     _classid_ = 'Windows.Devices.PointOfService.ClaimedSlipPrinter'
     @winrt_mixinmethod
@@ -1199,7 +1200,7 @@ class ClaimedSlipPrinter(ComPtr):
     @winrt_mixinmethod
     def get_IsReadyToPrint(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation) -> Boolean: ...
     @winrt_mixinmethod
-    def ValidateData(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation, data: WinRT_String) -> Boolean: ...
+    def ValidateData(self: win32more.Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation, data: hstr) -> Boolean: ...
     CharactersPerLine = property(get_CharactersPerLine, put_CharactersPerLine)
     ColorCartridge = property(get_ColorCartridge, put_ColorCartridge)
     IsCartridgeEmpty = property(get_IsCartridgeEmpty, None)
@@ -1221,43 +1222,43 @@ class ClaimedSlipPrinter(ComPtr):
     SidewaysMaxChars = property(get_SidewaysMaxChars, None)
     SidewaysMaxLines = property(get_SidewaysMaxLines, None)
 class IBarcodeScanner(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScanner'
     _iid_ = Guid('{bea33e06-b264-4f03-a9c1-45b20f01134f}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Capabilities(self) -> win32more.Windows.Devices.PointOfService.BarcodeScannerCapabilities: ...
     @winrt_commethod(8)
     def ClaimScannerAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedBarcodeScanner]: ...
     @winrt_commethod(9)
-    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(10)
     def GetSupportedSymbologiesAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Foundation.Collections.IVectorView[UInt32]]: ...
     @winrt_commethod(11)
     def IsSymbologySupportedAsync(self, barcodeSymbology: UInt32) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(12)
-    def RetrieveStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
+    def RetrieveStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
     @winrt_commethod(13)
-    def GetSupportedProfiles(self) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
+    def GetSupportedProfiles(self) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
     @winrt_commethod(14)
-    def IsProfileSupported(self, profile: WinRT_String) -> Boolean: ...
+    def IsProfileSupported(self, profile: hstr) -> Boolean: ...
     @winrt_commethod(15)
     def add_StatusUpdated(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.BarcodeScanner, win32more.Windows.Devices.PointOfService.BarcodeScannerStatusUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_StatusUpdated(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Capabilities = property(get_Capabilities, None)
     DeviceId = property(get_DeviceId, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class IBarcodeScanner2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScanner2'
     _iid_ = Guid('{89215167-8cee-436d-89ab-8dfb43bb4286}')
     @winrt_commethod(6)
-    def get_VideoDeviceId(self) -> WinRT_String: ...
+    def get_VideoDeviceId(self) -> hstr: ...
     VideoDeviceId = property(get_VideoDeviceId, None)
 class IBarcodeScannerCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerCapabilities'
     _iid_ = Guid('{c60691e4-f2c8-4420-a307-b12ef6622857}')
     @winrt_commethod(6)
@@ -1273,28 +1274,28 @@ class IBarcodeScannerCapabilities(ComPtr):
     IsStatisticsUpdatingSupported = property(get_IsStatisticsUpdatingSupported, None)
     PowerReportingType = property(get_PowerReportingType, None)
 class IBarcodeScannerCapabilities1(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerCapabilities1'
     _iid_ = Guid('{8e5ab3e9-0e2c-472f-a1cc-ee8054b6a684}')
     @winrt_commethod(6)
     def get_IsSoftwareTriggerSupported(self) -> Boolean: ...
     IsSoftwareTriggerSupported = property(get_IsSoftwareTriggerSupported, None)
 class IBarcodeScannerCapabilities2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerCapabilities2'
     _iid_ = Guid('{f211cfec-e1a1-4ea8-9abc-92b1596270ab}')
     @winrt_commethod(6)
     def get_IsVideoPreviewSupported(self) -> Boolean: ...
     IsVideoPreviewSupported = property(get_IsVideoPreviewSupported, None)
 class IBarcodeScannerDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerDataReceivedEventArgs'
     _iid_ = Guid('{4234a7e2-ed97-467d-ad2b-01e44313a929}')
     @winrt_commethod(6)
     def get_Report(self) -> win32more.Windows.Devices.PointOfService.BarcodeScannerReport: ...
     Report = property(get_Report, None)
 class IBarcodeScannerErrorOccurredEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerErrorOccurredEventArgs'
     _iid_ = Guid('{2cd2602f-cf3a-4002-a75a-c5ec468f0a20}')
     @winrt_commethod(6)
@@ -1307,14 +1308,14 @@ class IBarcodeScannerErrorOccurredEventArgs(ComPtr):
     IsRetriable = property(get_IsRetriable, None)
     PartialInputData = property(get_PartialInputData, None)
 class IBarcodeScannerImagePreviewReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerImagePreviewReceivedEventArgs'
     _iid_ = Guid('{f3b7de85-6e8b-434e-9f58-06ef26bc4baf}')
     @winrt_commethod(6)
     def get_Preview(self) -> win32more.Windows.Storage.Streams.IRandomAccessStreamWithContentType: ...
     Preview = property(get_Preview, None)
 class IBarcodeScannerReport(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerReport'
     _iid_ = Guid('{5ce4d8b0-a489-4b96-86c4-f0bf8a37753d}')
     @winrt_commethod(6)
@@ -1327,29 +1328,29 @@ class IBarcodeScannerReport(ComPtr):
     ScanDataLabel = property(get_ScanDataLabel, None)
     ScanDataType = property(get_ScanDataType, None)
 class IBarcodeScannerReportFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerReportFactory'
     _iid_ = Guid('{a2547326-2013-457c-8963-49c15dca78ce}')
     @winrt_commethod(6)
     def CreateInstance(self, scanDataType: UInt32, scanData: win32more.Windows.Storage.Streams.IBuffer, scanDataLabel: win32more.Windows.Storage.Streams.IBuffer) -> win32more.Windows.Devices.PointOfService.BarcodeScannerReport: ...
 class IBarcodeScannerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerStatics'
     _iid_ = Guid('{5d115f6f-da49-41e8-8c8c-f0cb62a9c4fc}')
     @winrt_commethod(6)
     def GetDefaultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.BarcodeScanner]: ...
     @winrt_commethod(7)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.BarcodeScanner]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.BarcodeScanner]: ...
     @winrt_commethod(8)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
 class IBarcodeScannerStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerStatics2'
     _iid_ = Guid('{b8652473-a36f-4007-b1d0-279ebe92a656}')
     @winrt_commethod(6)
-    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
 class IBarcodeScannerStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeScannerStatusUpdatedEventArgs'
     _iid_ = Guid('{355d8586-9c43-462b-a91a-816dc97f452c}')
     @winrt_commethod(6)
@@ -1359,7 +1360,7 @@ class IBarcodeScannerStatusUpdatedEventArgs(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     Status = property(get_Status, None)
 class IBarcodeSymbologiesStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeSymbologiesStatics'
     _iid_ = Guid('{ca8549bb-06d2-43f4-a44b-c620679fd8d0}')
     @winrt_commethod(6)
@@ -1549,7 +1550,7 @@ class IBarcodeSymbologiesStatics(ComPtr):
     @winrt_commethod(98)
     def get_ExtendedBase(self) -> UInt32: ...
     @winrt_commethod(99)
-    def GetName(self, scanDataType: UInt32) -> WinRT_String: ...
+    def GetName(self, scanDataType: UInt32) -> hstr: ...
     AusPost = property(get_AusPost, None)
     Aztec = property(get_Aztec, None)
     CanPost = property(get_CanPost, None)
@@ -1644,14 +1645,14 @@ class IBarcodeSymbologiesStatics(ComPtr):
     UsPlanet = property(get_UsPlanet, None)
     UsPostNet = property(get_UsPostNet, None)
 class IBarcodeSymbologiesStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeSymbologiesStatics2'
     _iid_ = Guid('{8b7518f4-99d0-40bf-9424-b91d6dd4c6e0}')
     @winrt_commethod(6)
     def get_Gs1DWCode(self) -> UInt32: ...
     Gs1DWCode = property(get_Gs1DWCode, None)
 class IBarcodeSymbologyAttributes(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IBarcodeSymbologyAttributes'
     _iid_ = Guid('{66413a78-ab7a-4ada-8ece-936014b2ead7}')
     @winrt_commethod(6)
@@ -1689,11 +1690,11 @@ class IBarcodeSymbologyAttributes(ComPtr):
     IsCheckDigitValidationSupported = property(get_IsCheckDigitValidationSupported, None)
     IsDecodeLengthSupported = property(get_IsDecodeLengthSupported, None)
 class ICashDrawer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawer'
     _iid_ = Guid('{9f88f5c8-de54-4aee-a890-920bcbfe30fc}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Capabilities(self) -> win32more.Windows.Devices.PointOfService.CashDrawerCapabilities: ...
     @winrt_commethod(8)
@@ -1705,9 +1706,9 @@ class ICashDrawer(ComPtr):
     @winrt_commethod(11)
     def ClaimDrawerAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer]: ...
     @winrt_commethod(12)
-    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(13)
-    def GetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def GetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(14)
     def add_StatusUpdated(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawer, win32more.Windows.Devices.PointOfService.CashDrawerStatusUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
@@ -1717,9 +1718,9 @@ class ICashDrawer(ComPtr):
     DrawerEventSource = property(get_DrawerEventSource, None)
     IsDrawerOpen = property(get_IsDrawerOpen, None)
     Status = property(get_Status, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class ICashDrawerCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerCapabilities'
     _iid_ = Guid('{0bc6de0b-e8e7-4b1f-b1d1-3e501ad08247}')
     @winrt_commethod(6)
@@ -1741,7 +1742,7 @@ class ICashDrawerCapabilities(ComPtr):
     IsStatusReportingSupported = property(get_IsStatusReportingSupported, None)
     PowerReportingType = property(get_PowerReportingType, None)
 class ICashDrawerCloseAlarm(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerCloseAlarm'
     _iid_ = Guid('{6bf88cc7-6f63-430e-ab3b-95d75ffbe87f}')
     @winrt_commethod(6)
@@ -1761,7 +1762,7 @@ class ICashDrawerCloseAlarm(ComPtr):
     @winrt_commethod(13)
     def get_BeepDelay(self) -> win32more.Windows.Foundation.TimeSpan: ...
     @winrt_commethod(14)
-    def add_AlarmTimeoutExpired(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawerCloseAlarm, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AlarmTimeoutExpired(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawerCloseAlarm, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_AlarmTimeoutExpired(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
@@ -1770,9 +1771,9 @@ class ICashDrawerCloseAlarm(ComPtr):
     BeepDelay = property(get_BeepDelay, put_BeepDelay)
     BeepDuration = property(get_BeepDuration, put_BeepDuration)
     BeepFrequency = property(get_BeepFrequency, put_BeepFrequency)
-    AlarmTimeoutExpired = event()
+    AlarmTimeoutExpired = event(add_AlarmTimeoutExpired, remove_AlarmTimeoutExpired)
 class ICashDrawerEventSource(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerEventSource'
     _iid_ = Guid('{e006e46c-f2f9-442f-8dd6-06c10a4227ba}')
     @winrt_commethod(6)
@@ -1783,33 +1784,33 @@ class ICashDrawerEventSource(ComPtr):
     def add_DrawerOpened(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.CashDrawerEventSource, win32more.Windows.Devices.PointOfService.CashDrawerOpenedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(9)
     def remove_DrawerOpened(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    DrawerClosed = event()
-    DrawerOpened = event()
+    DrawerClosed = event(add_DrawerClosed, remove_DrawerClosed)
+    DrawerOpened = event(add_DrawerOpened, remove_DrawerOpened)
 class ICashDrawerEventSourceEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerEventSourceEventArgs'
     _iid_ = Guid('{69cb3bc1-147f-421c-9c23-090123bb786c}')
     @winrt_commethod(6)
     def get_CashDrawer(self) -> win32more.Windows.Devices.PointOfService.CashDrawer: ...
     CashDrawer = property(get_CashDrawer, None)
 class ICashDrawerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerStatics'
     _iid_ = Guid('{dfa0955a-d437-4fff-b547-dda969a4f883}')
     @winrt_commethod(6)
     def GetDefaultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.CashDrawer]: ...
     @winrt_commethod(7)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.CashDrawer]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.CashDrawer]: ...
     @winrt_commethod(8)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
 class ICashDrawerStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerStatics2'
     _iid_ = Guid('{3e818121-8c42-40e8-9c0e-40297048104c}')
     @winrt_commethod(6)
-    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
 class ICashDrawerStatus(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerStatus'
     _iid_ = Guid('{6bbd78bf-dca1-4e06-99eb-5af6a5aec108}')
     @winrt_commethod(6)
@@ -1819,18 +1820,18 @@ class ICashDrawerStatus(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     StatusKind = property(get_StatusKind, None)
 class ICashDrawerStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICashDrawerStatusUpdatedEventArgs'
     _iid_ = Guid('{30aae98a-0d70-459c-9553-87e124c52488}')
     @winrt_commethod(6)
     def get_Status(self) -> win32more.Windows.Devices.PointOfService.CashDrawerStatus: ...
     Status = property(get_Status, None)
 class IClaimedBarcodeScanner(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedBarcodeScanner'
     _iid_ = Guid('{4a63b49c-8fa4-4332-bb26-945d11d81e0f}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_IsEnabled(self) -> Boolean: ...
     @winrt_commethod(8)
@@ -1850,11 +1851,11 @@ class IClaimedBarcodeScanner(ComPtr):
     @winrt_commethod(15)
     def SetActiveSymbologiesAsync(self, symbologies: win32more.Windows.Foundation.Collections.IIterable[UInt32]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(16)
-    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(17)
-    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(18)
-    def SetActiveProfileAsync(self, profile: WinRT_String) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SetActiveProfileAsync(self, profile: hstr) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(19)
     def add_DataReceived(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedBarcodeScanner, win32more.Windows.Devices.PointOfService.BarcodeScannerDataReceivedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(20)
@@ -1883,14 +1884,14 @@ class IClaimedBarcodeScanner(ComPtr):
     IsDecodeDataEnabled = property(get_IsDecodeDataEnabled, put_IsDecodeDataEnabled)
     IsDisabledOnDataReceived = property(get_IsDisabledOnDataReceived, put_IsDisabledOnDataReceived)
     IsEnabled = property(get_IsEnabled, None)
-    DataReceived = event()
-    TriggerPressed = event()
-    TriggerReleased = event()
-    ReleaseDeviceRequested = event()
-    ImagePreviewReceived = event()
-    ErrorOccurred = event()
+    DataReceived = event(add_DataReceived, remove_DataReceived)
+    ErrorOccurred = event(add_ErrorOccurred, remove_ErrorOccurred)
+    ImagePreviewReceived = event(add_ImagePreviewReceived, remove_ImagePreviewReceived)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
+    TriggerPressed = event(add_TriggerPressed, remove_TriggerPressed)
+    TriggerReleased = event(add_TriggerReleased, remove_TriggerReleased)
 class IClaimedBarcodeScanner1(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedBarcodeScanner1'
     _iid_ = Guid('{f61aad0c-8551-42b4-998c-970c20210a22}')
     @winrt_commethod(6)
@@ -1898,7 +1899,7 @@ class IClaimedBarcodeScanner1(ComPtr):
     @winrt_commethod(7)
     def StopSoftwareTriggerAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
 class IClaimedBarcodeScanner2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedBarcodeScanner2'
     _iid_ = Guid('{e3b59e8c-2d8b-4f70-8af3-3448bedd5fe2}')
     @winrt_commethod(6)
@@ -1906,7 +1907,7 @@ class IClaimedBarcodeScanner2(ComPtr):
     @winrt_commethod(7)
     def SetSymbologyAttributesAsync(self, barcodeSymbology: UInt32, attributes: win32more.Windows.Devices.PointOfService.BarcodeSymbologyAttributes) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
 class IClaimedBarcodeScanner3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedBarcodeScanner3'
     _iid_ = Guid('{e6ceb430-712e-45fc-8b86-cd55f5aef79d}')
     @winrt_commethod(6)
@@ -1919,24 +1920,24 @@ class IClaimedBarcodeScanner3(ComPtr):
     def get_IsVideoPreviewShownOnEnable(self) -> Boolean: ...
     IsVideoPreviewShownOnEnable = property(get_IsVideoPreviewShownOnEnable, put_IsVideoPreviewShownOnEnable)
 class IClaimedBarcodeScanner4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedBarcodeScanner4'
     _iid_ = Guid('{5d501f97-376a-41a8-a230-2f37c1949dde}')
     @winrt_commethod(6)
     def add_Closed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedBarcodeScanner, win32more.Windows.Devices.PointOfService.ClaimedBarcodeScannerClosedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_Closed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
 class IClaimedBarcodeScannerClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedBarcodeScannerClosedEventArgs'
     _iid_ = Guid('{cf7d5489-a22c-4c65-a901-88d77d833954}')
 class IClaimedCashDrawer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedCashDrawer'
     _iid_ = Guid('{ca3f99af-abb8-42c1-8a84-5c66512f5a75}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_IsEnabled(self) -> Boolean: ...
     @winrt_commethod(8)
@@ -1952,61 +1953,61 @@ class IClaimedCashDrawer(ComPtr):
     @winrt_commethod(13)
     def RetainDeviceAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(14)
-    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(15)
-    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(16)
-    def add_ReleaseDeviceRequested(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ReleaseDeviceRequested(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
     def remove_ReleaseDeviceRequested(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     CloseAlarm = property(get_CloseAlarm, None)
     DeviceId = property(get_DeviceId, None)
     IsDrawerOpen = property(get_IsDrawerOpen, None)
     IsEnabled = property(get_IsEnabled, None)
-    ReleaseDeviceRequested = event()
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
 class IClaimedCashDrawer2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedCashDrawer2'
     _iid_ = Guid('{9cbab5a2-de42-4d5b-b0c1-9b57a2ba89c3}')
     @winrt_commethod(6)
     def add_Closed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedCashDrawer, win32more.Windows.Devices.PointOfService.ClaimedCashDrawerClosedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_Closed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
 class IClaimedCashDrawerClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedCashDrawerClosedEventArgs'
     _iid_ = Guid('{cc573f33-3f34-4c5c-baae-deadf16cd7fa}')
 class IClaimedJournalPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedJournalPrinter'
     _iid_ = Guid('{67ea0630-517d-487f-9fdf-d2e0a0a264a5}')
     @winrt_commethod(6)
     def CreateJob(self) -> win32more.Windows.Devices.PointOfService.JournalPrintJob: ...
 class IClaimedLineDisplay(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedLineDisplay'
     _iid_ = Guid('{120ac970-9a75-4acf-aae7-09972bcf8794}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Capabilities(self) -> win32more.Windows.Devices.PointOfService.LineDisplayCapabilities: ...
     @winrt_commethod(8)
-    def get_PhysicalDeviceName(self) -> WinRT_String: ...
+    def get_PhysicalDeviceName(self) -> hstr: ...
     @winrt_commethod(9)
-    def get_PhysicalDeviceDescription(self) -> WinRT_String: ...
+    def get_PhysicalDeviceDescription(self) -> hstr: ...
     @winrt_commethod(10)
-    def get_DeviceControlDescription(self) -> WinRT_String: ...
+    def get_DeviceControlDescription(self) -> hstr: ...
     @winrt_commethod(11)
-    def get_DeviceControlVersion(self) -> WinRT_String: ...
+    def get_DeviceControlVersion(self) -> hstr: ...
     @winrt_commethod(12)
-    def get_DeviceServiceVersion(self) -> WinRT_String: ...
+    def get_DeviceServiceVersion(self) -> hstr: ...
     @winrt_commethod(13)
     def get_DefaultWindow(self) -> win32more.Windows.Devices.PointOfService.LineDisplayWindow: ...
     @winrt_commethod(14)
     def RetainDevice(self) -> Void: ...
     @winrt_commethod(15)
-    def add_ReleaseDeviceRequested(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ReleaseDeviceRequested(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_ReleaseDeviceRequested(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Capabilities = property(get_Capabilities, None)
@@ -2017,15 +2018,15 @@ class IClaimedLineDisplay(ComPtr):
     DeviceServiceVersion = property(get_DeviceServiceVersion, None)
     PhysicalDeviceDescription = property(get_PhysicalDeviceDescription, None)
     PhysicalDeviceName = property(get_PhysicalDeviceName, None)
-    ReleaseDeviceRequested = event()
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
 class IClaimedLineDisplay2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedLineDisplay2'
     _iid_ = Guid('{a31c75ed-41f5-4e76-a074-795e47a46e97}')
     @winrt_commethod(6)
-    def GetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def GetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(7)
-    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(8)
     def CheckPowerStatusAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplayPowerStatus]: ...
     @winrt_commethod(9)
@@ -2060,36 +2061,36 @@ class IClaimedLineDisplay2(ComPtr):
     MaxBitmapSizeInPixels = property(get_MaxBitmapSizeInPixels, None)
     SupportedCharacterSets = property(get_SupportedCharacterSets, None)
     SupportedScreenSizesInCharacters = property(get_SupportedScreenSizesInCharacters, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class IClaimedLineDisplay3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedLineDisplay3'
     _iid_ = Guid('{642ecd92-e9d4-4ecc-af75-329c274cd18f}')
     @winrt_commethod(6)
     def add_Closed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay, win32more.Windows.Devices.PointOfService.ClaimedLineDisplayClosedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_Closed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
 class IClaimedLineDisplayClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedLineDisplayClosedEventArgs'
     _iid_ = Guid('{f915f364-d3d5-4f10-b511-90939edfacd8}')
 class IClaimedLineDisplayStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedLineDisplayStatics'
     _iid_ = Guid('{78ca98fb-8b6b-4973-86f0-3e570c351825}')
     @winrt_commethod(6)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay]: ...
     @winrt_commethod(7)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
     @winrt_commethod(8)
-    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
 class IClaimedMagneticStripeReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedMagneticStripeReader'
     _iid_ = Guid('{475ca8f3-9417-48bc-b9d7-4163a7844c02}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_IsEnabled(self) -> Boolean: ...
     @winrt_commethod(8)
@@ -2129,11 +2130,11 @@ class IClaimedMagneticStripeReader(ComPtr):
     @winrt_commethod(25)
     def DeAuthenticateDeviceAsync(self, responseToken: PassArray[Byte]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(26)
-    def UpdateKeyAsync(self, key: WinRT_String, keyName: WinRT_String) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def UpdateKeyAsync(self, key: hstr, keyName: hstr) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(27)
-    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(28)
-    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(29)
     def add_BankCardDataReceived(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedMagneticStripeReader, win32more.Windows.Devices.PointOfService.MagneticStripeReaderBankCardDataReceivedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(30)
@@ -2162,30 +2163,30 @@ class IClaimedMagneticStripeReader(ComPtr):
     IsEnabled = property(get_IsEnabled, None)
     IsTransmitSentinelsEnabled = property(get_IsTransmitSentinelsEnabled, put_IsTransmitSentinelsEnabled)
     TracksToRead = property(get_TracksToRead, put_TracksToRead)
-    BankCardDataReceived = event()
-    AamvaCardDataReceived = event()
-    VendorSpecificDataReceived = event()
-    ReleaseDeviceRequested = event()
-    ErrorOccurred = event()
+    AamvaCardDataReceived = event(add_AamvaCardDataReceived, remove_AamvaCardDataReceived)
+    BankCardDataReceived = event(add_BankCardDataReceived, remove_BankCardDataReceived)
+    ErrorOccurred = event(add_ErrorOccurred, remove_ErrorOccurred)
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
+    VendorSpecificDataReceived = event(add_VendorSpecificDataReceived, remove_VendorSpecificDataReceived)
 class IClaimedMagneticStripeReader2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedMagneticStripeReader2'
     _iid_ = Guid('{236fafdf-e2dc-4d7d-9c78-060df2bf2928}')
     @winrt_commethod(6)
     def add_Closed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedMagneticStripeReader, win32more.Windows.Devices.PointOfService.ClaimedMagneticStripeReaderClosedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_Closed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
 class IClaimedMagneticStripeReaderClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedMagneticStripeReaderClosedEventArgs'
     _iid_ = Guid('{14ada93a-adcd-4c80-acda-c3eaed2647e1}')
 class IClaimedPosPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedPosPrinter'
     _iid_ = Guid('{6d64ce0c-e03e-4b14-a38e-c28c34b86353}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_IsEnabled(self) -> Boolean: ...
     @winrt_commethod(8)
@@ -2215,9 +2216,9 @@ class IClaimedPosPrinter(ComPtr):
     @winrt_commethod(20)
     def RetainDeviceAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(21)
-    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def ResetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(22)
-    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[WinRT_String, WinRT_String]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def UpdateStatisticsAsync(self, statistics: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Foundation.Collections.IKeyValuePair[hstr, hstr]]) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(23)
     def add_ReleaseDeviceRequested(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedPosPrinter, win32more.Windows.Devices.PointOfService.PosPrinterReleaseDeviceRequestedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(24)
@@ -2231,22 +2232,22 @@ class IClaimedPosPrinter(ComPtr):
     MapMode = property(get_MapMode, put_MapMode)
     Receipt = property(get_Receipt, None)
     Slip = property(get_Slip, None)
-    ReleaseDeviceRequested = event()
+    ReleaseDeviceRequested = event(add_ReleaseDeviceRequested, remove_ReleaseDeviceRequested)
 class IClaimedPosPrinter2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedPosPrinter2'
     _iid_ = Guid('{5bf7a3d5-5198-437a-82df-589993fa77e1}')
     @winrt_commethod(6)
     def add_Closed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.ClaimedPosPrinter, win32more.Windows.Devices.PointOfService.ClaimedPosPrinterClosedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_Closed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Closed = event()
+    Closed = event(add_Closed, remove_Closed)
 class IClaimedPosPrinterClosedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedPosPrinterClosedEventArgs'
     _iid_ = Guid('{e2b7a27b-4d40-471d-92ed-63375b18c788}')
 class IClaimedReceiptPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedReceiptPrinter'
     _iid_ = Guid('{9ad27a74-dd61-4ee2-9837-5b5d72d538b9}')
     @winrt_commethod(6)
@@ -2267,7 +2268,7 @@ class IClaimedReceiptPrinter(ComPtr):
     SidewaysMaxChars = property(get_SidewaysMaxChars, None)
     SidewaysMaxLines = property(get_SidewaysMaxLines, None)
 class IClaimedSlipPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IClaimedSlipPrinter'
     _iid_ = Guid('{bd5deff2-af90-4e8a-b77b-e3ae9ca63a7f}')
     @winrt_commethod(6)
@@ -2304,7 +2305,7 @@ class IClaimedSlipPrinter(ComPtr):
     SidewaysMaxChars = property(get_SidewaysMaxChars, None)
     SidewaysMaxLines = property(get_SidewaysMaxLines, None)
 class ICommonClaimedPosPrinterStation(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICommonClaimedPosPrinterStation'
     _iid_ = Guid('{b7eb66a8-fe8a-4cfb-8b42-e35b280cb27c}')
     @winrt_commethod(6)
@@ -2344,7 +2345,7 @@ class ICommonClaimedPosPrinterStation(ComPtr):
     @winrt_commethod(23)
     def get_IsReadyToPrint(self) -> Boolean: ...
     @winrt_commethod(24)
-    def ValidateData(self, data: WinRT_String) -> Boolean: ...
+    def ValidateData(self, data: hstr) -> Boolean: ...
     CharactersPerLine = property(get_CharactersPerLine, put_CharactersPerLine)
     ColorCartridge = property(get_ColorCartridge, put_ColorCartridge)
     IsCartridgeEmpty = property(get_IsCartridgeEmpty, None)
@@ -2359,7 +2360,7 @@ class ICommonClaimedPosPrinterStation(ComPtr):
     LineSpacing = property(get_LineSpacing, put_LineSpacing)
     LineWidth = property(get_LineWidth, None)
 class ICommonPosPrintStationCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICommonPosPrintStationCapabilities'
     _iid_ = Guid('{de5b52ca-e02e-40e9-9e5e-1b488e6aacfc}')
     @winrt_commethod(6)
@@ -2402,7 +2403,7 @@ class ICommonPosPrintStationCapabilities(ComPtr):
     IsUnderlineSupported = property(get_IsUnderlineSupported, None)
     SupportedCharactersPerLine = property(get_SupportedCharactersPerLine, None)
 class ICommonReceiptSlipCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ICommonReceiptSlipCapabilities'
     _iid_ = Guid('{09286b8b-9873-4d05-bfbe-4727a6038f69}')
     @winrt_commethod(6)
@@ -2433,21 +2434,21 @@ class ICommonReceiptSlipCapabilities(ComPtr):
     SupportedBarcodeRotations = property(get_SupportedBarcodeRotations, None)
     SupportedBitmapRotations = property(get_SupportedBitmapRotations, None)
 class IJournalPrintJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IJournalPrintJob'
     _iid_ = Guid('{9f4f2864-f3f0-55d0-8c39-74cc91783eed}')
     @winrt_commethod(6)
-    def Print(self, data: WinRT_String, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
+    def Print(self, data: hstr, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
     @winrt_commethod(7)
     def FeedPaperByLine(self, lineCount: Int32) -> Void: ...
     @winrt_commethod(8)
     def FeedPaperByMapModeUnit(self, distance: Int32) -> Void: ...
 class IJournalPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IJournalPrinterCapabilities'
     _iid_ = Guid('{3b5ccc43-e047-4463-bb58-17b5ba1d8056}')
 class IJournalPrinterCapabilities2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IJournalPrinterCapabilities2'
     _iid_ = Guid('{03b0b645-33b8-533b-baaa-a4389283ab0a}')
     @winrt_commethod(6)
@@ -2469,23 +2470,23 @@ class IJournalPrinterCapabilities2(ComPtr):
     IsSubscriptSupported = property(get_IsSubscriptSupported, None)
     IsSuperscriptSupported = property(get_IsSuperscriptSupported, None)
 class ILineDisplay(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplay'
     _iid_ = Guid('{24f5df4e-3c99-44e2-b73f-e51be3637a8c}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Capabilities(self) -> win32more.Windows.Devices.PointOfService.LineDisplayCapabilities: ...
     @winrt_commethod(8)
-    def get_PhysicalDeviceName(self) -> WinRT_String: ...
+    def get_PhysicalDeviceName(self) -> hstr: ...
     @winrt_commethod(9)
-    def get_PhysicalDeviceDescription(self) -> WinRT_String: ...
+    def get_PhysicalDeviceDescription(self) -> hstr: ...
     @winrt_commethod(10)
-    def get_DeviceControlDescription(self) -> WinRT_String: ...
+    def get_DeviceControlDescription(self) -> hstr: ...
     @winrt_commethod(11)
-    def get_DeviceControlVersion(self) -> WinRT_String: ...
+    def get_DeviceControlVersion(self) -> hstr: ...
     @winrt_commethod(12)
-    def get_DeviceServiceVersion(self) -> WinRT_String: ...
+    def get_DeviceServiceVersion(self) -> hstr: ...
     @winrt_commethod(13)
     def ClaimAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay]: ...
     Capabilities = property(get_Capabilities, None)
@@ -2496,13 +2497,13 @@ class ILineDisplay(ComPtr):
     PhysicalDeviceDescription = property(get_PhysicalDeviceDescription, None)
     PhysicalDeviceName = property(get_PhysicalDeviceName, None)
 class ILineDisplay2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplay2'
     _iid_ = Guid('{c296a628-ef44-40f3-bd1c-b04c6a5cdc7d}')
     @winrt_commethod(6)
     def CheckPowerStatusAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplayPowerStatus]: ...
 class ILineDisplayAttributes(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayAttributes'
     _iid_ = Guid('{c17de99c-229a-4c14-a6f1-b4e4b1fead92}')
     @winrt_commethod(6)
@@ -2541,7 +2542,7 @@ class ILineDisplayAttributes(ComPtr):
     IsPowerNotifyEnabled = property(get_IsPowerNotifyEnabled, put_IsPowerNotifyEnabled)
     ScreenSizeInCharacters = property(get_ScreenSizeInCharacters, put_ScreenSizeInCharacters)
 class ILineDisplayCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayCapabilities'
     _iid_ = Guid('{5a15b5d1-8dc5-4b9c-9172-303e47b70c55}')
     @winrt_commethod(6)
@@ -2599,7 +2600,7 @@ class ILineDisplayCapabilities(ComPtr):
     SupportedDescriptors = property(get_SupportedDescriptors, None)
     SupportedWindows = property(get_SupportedWindows, None)
 class ILineDisplayCursor(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayCursor'
     _iid_ = Guid('{ecdffc45-754a-4e3b-ab2b-151181085605}')
     @winrt_commethod(6)
@@ -2628,7 +2629,7 @@ class ILineDisplayCursor(ComPtr):
     IsReverseSupported = property(get_IsReverseSupported, None)
     IsUnderlineSupported = property(get_IsUnderlineSupported, None)
 class ILineDisplayCursorAttributes(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayCursorAttributes'
     _iid_ = Guid('{4e2d54fe-4ffd-4190-aae1-ce285f20c896}')
     @winrt_commethod(6)
@@ -2652,7 +2653,7 @@ class ILineDisplayCursorAttributes(ComPtr):
     IsBlinkEnabled = property(get_IsBlinkEnabled, put_IsBlinkEnabled)
     Position = property(get_Position, put_Position)
 class ILineDisplayCustomGlyphs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayCustomGlyphs'
     _iid_ = Guid('{2257f63c-f263-44f1-a1a0-e750a6a0ec54}')
     @winrt_commethod(6)
@@ -2664,7 +2665,7 @@ class ILineDisplayCustomGlyphs(ComPtr):
     SizeInPixels = property(get_SizeInPixels, None)
     SupportedGlyphCodes = property(get_SupportedGlyphCodes, None)
 class ILineDisplayMarquee(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayMarquee'
     _iid_ = Guid('{a3d33e3e-f46a-4b7a-bc21-53eb3b57f8b4}')
     @winrt_commethod(6)
@@ -2687,55 +2688,55 @@ class ILineDisplayMarquee(ComPtr):
     RepeatWaitInterval = property(get_RepeatWaitInterval, put_RepeatWaitInterval)
     ScrollWaitInterval = property(get_ScrollWaitInterval, put_ScrollWaitInterval)
 class ILineDisplayStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayStatics'
     _iid_ = Guid('{022dc0b6-11b0-4690-9547-0b39c5af2114}')
     @winrt_commethod(6)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplay]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplay]: ...
     @winrt_commethod(7)
     def GetDefaultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplay]: ...
     @winrt_commethod(8)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
     @winrt_commethod(9)
-    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
 class ILineDisplayStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayStatics2'
     _iid_ = Guid('{600c3f1c-77ab-4968-a7de-c02ff169f2cc}')
     @winrt_commethod(6)
     def get_StatisticsCategorySelector(self) -> win32more.Windows.Devices.PointOfService.LineDisplayStatisticsCategorySelector: ...
     StatisticsCategorySelector = property(get_StatisticsCategorySelector, None)
 class ILineDisplayStatisticsCategorySelector(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector'
     _iid_ = Guid('{b521c46b-9274-4d24-94f3-b6017b832444}')
     @winrt_commethod(6)
-    def get_AllStatistics(self) -> WinRT_String: ...
+    def get_AllStatistics(self) -> hstr: ...
     @winrt_commethod(7)
-    def get_UnifiedPosStatistics(self) -> WinRT_String: ...
+    def get_UnifiedPosStatistics(self) -> hstr: ...
     @winrt_commethod(8)
-    def get_ManufacturerStatistics(self) -> WinRT_String: ...
+    def get_ManufacturerStatistics(self) -> hstr: ...
     AllStatistics = property(get_AllStatistics, None)
     ManufacturerStatistics = property(get_ManufacturerStatistics, None)
     UnifiedPosStatistics = property(get_UnifiedPosStatistics, None)
 class ILineDisplayStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayStatusUpdatedEventArgs'
     _iid_ = Guid('{ddd57c1a-86fb-4eba-93d1-6f5eda52b752}')
     @winrt_commethod(6)
     def get_Status(self) -> win32more.Windows.Devices.PointOfService.LineDisplayPowerStatus: ...
     Status = property(get_Status, None)
 class ILineDisplayStoredBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayStoredBitmap'
     _iid_ = Guid('{f621515b-d81e-43ba-bf1b-bcfa3c785ba0}')
     @winrt_commethod(6)
-    def get_EscapeSequence(self) -> WinRT_String: ...
+    def get_EscapeSequence(self) -> hstr: ...
     @winrt_commethod(7)
     def TryDeleteAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     EscapeSequence = property(get_EscapeSequence, None)
 class ILineDisplayWindow(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayWindow'
     _iid_ = Guid('{d21feef4-2364-4be5-bee1-851680af4964}')
     @winrt_commethod(6)
@@ -2747,11 +2748,11 @@ class ILineDisplayWindow(ComPtr):
     @winrt_commethod(9)
     def TryRefreshAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(10)
-    def TryDisplayTextAsync(self, text: WinRT_String, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def TryDisplayTextAsync(self, text: hstr, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(11)
-    def TryDisplayTextAtPositionAsync(self, text: WinRT_String, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute, startPosition: win32more.Windows.Foundation.Point) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def TryDisplayTextAtPositionAsync(self, text: hstr, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute, startPosition: win32more.Windows.Foundation.Point) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(12)
-    def TryDisplayTextNormalAsync(self, text: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def TryDisplayTextNormalAsync(self, text: hstr) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(13)
     def TryScrollTextAsync(self, direction: win32more.Windows.Devices.PointOfService.LineDisplayScrollDirection, numberOfColumnsOrRows: UInt32) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(14)
@@ -2759,7 +2760,7 @@ class ILineDisplayWindow(ComPtr):
     InterCharacterWaitInterval = property(get_InterCharacterWaitInterval, put_InterCharacterWaitInterval)
     SizeInCharacters = property(get_SizeInCharacters, None)
 class ILineDisplayWindow2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ILineDisplayWindow2'
     _iid_ = Guid('{a95ce2e6-bdd8-4365-8e11-de94de8dff02}')
     @winrt_commethod(6)
@@ -2783,11 +2784,11 @@ class ILineDisplayWindow2(ComPtr):
     Cursor = property(get_Cursor, None)
     Marquee = property(get_Marquee, None)
 class IMagneticStripeReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReader'
     _iid_ = Guid('{1a92b015-47c3-468a-9333-0c6517574883}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Capabilities(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderCapabilities: ...
     @winrt_commethod(8)
@@ -2795,11 +2796,11 @@ class IMagneticStripeReader(ComPtr):
     @winrt_commethod(9)
     def get_DeviceAuthenticationProtocol(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderAuthenticationProtocol: ...
     @winrt_commethod(10)
-    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(11)
     def ClaimReaderAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedMagneticStripeReader]: ...
     @winrt_commethod(12)
-    def RetrieveStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
+    def RetrieveStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
     @winrt_commethod(13)
     def GetErrorReportingType(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderErrorReportingType: ...
     @winrt_commethod(14)
@@ -2810,49 +2811,49 @@ class IMagneticStripeReader(ComPtr):
     DeviceAuthenticationProtocol = property(get_DeviceAuthenticationProtocol, None)
     DeviceId = property(get_DeviceId, None)
     SupportedCardTypes = property(get_SupportedCardTypes, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class IMagneticStripeReaderAamvaCardDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs'
     _iid_ = Guid('{0a4bbd51-c316-4910-87f3-7a62ba862d31}')
     @winrt_commethod(6)
     def get_Report(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderReport: ...
     @winrt_commethod(7)
-    def get_LicenseNumber(self) -> WinRT_String: ...
+    def get_LicenseNumber(self) -> hstr: ...
     @winrt_commethod(8)
-    def get_ExpirationDate(self) -> WinRT_String: ...
+    def get_ExpirationDate(self) -> hstr: ...
     @winrt_commethod(9)
-    def get_Restrictions(self) -> WinRT_String: ...
+    def get_Restrictions(self) -> hstr: ...
     @winrt_commethod(10)
-    def get_Class(self) -> WinRT_String: ...
+    def get_Class(self) -> hstr: ...
     @winrt_commethod(11)
-    def get_Endorsements(self) -> WinRT_String: ...
+    def get_Endorsements(self) -> hstr: ...
     @winrt_commethod(12)
-    def get_BirthDate(self) -> WinRT_String: ...
+    def get_BirthDate(self) -> hstr: ...
     @winrt_commethod(13)
-    def get_FirstName(self) -> WinRT_String: ...
+    def get_FirstName(self) -> hstr: ...
     @winrt_commethod(14)
-    def get_Surname(self) -> WinRT_String: ...
+    def get_Surname(self) -> hstr: ...
     @winrt_commethod(15)
-    def get_Suffix(self) -> WinRT_String: ...
+    def get_Suffix(self) -> hstr: ...
     @winrt_commethod(16)
-    def get_Gender(self) -> WinRT_String: ...
+    def get_Gender(self) -> hstr: ...
     @winrt_commethod(17)
-    def get_HairColor(self) -> WinRT_String: ...
+    def get_HairColor(self) -> hstr: ...
     @winrt_commethod(18)
-    def get_EyeColor(self) -> WinRT_String: ...
+    def get_EyeColor(self) -> hstr: ...
     @winrt_commethod(19)
-    def get_Height(self) -> WinRT_String: ...
+    def get_Height(self) -> hstr: ...
     @winrt_commethod(20)
-    def get_Weight(self) -> WinRT_String: ...
+    def get_Weight(self) -> hstr: ...
     @winrt_commethod(21)
-    def get_Address(self) -> WinRT_String: ...
+    def get_Address(self) -> hstr: ...
     @winrt_commethod(22)
-    def get_City(self) -> WinRT_String: ...
+    def get_City(self) -> hstr: ...
     @winrt_commethod(23)
-    def get_State(self) -> WinRT_String: ...
+    def get_State(self) -> hstr: ...
     @winrt_commethod(24)
-    def get_PostalCode(self) -> WinRT_String: ...
+    def get_PostalCode(self) -> hstr: ...
     Address = property(get_Address, None)
     BirthDate = property(get_BirthDate, None)
     City = property(get_City, None)
@@ -2873,27 +2874,27 @@ class IMagneticStripeReaderAamvaCardDataReceivedEventArgs(ComPtr):
     Surname = property(get_Surname, None)
     Weight = property(get_Weight, None)
 class IMagneticStripeReaderBankCardDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs'
     _iid_ = Guid('{2e958823-a31a-4763-882c-23725e39b08e}')
     @winrt_commethod(6)
     def get_Report(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderReport: ...
     @winrt_commethod(7)
-    def get_AccountNumber(self) -> WinRT_String: ...
+    def get_AccountNumber(self) -> hstr: ...
     @winrt_commethod(8)
-    def get_ExpirationDate(self) -> WinRT_String: ...
+    def get_ExpirationDate(self) -> hstr: ...
     @winrt_commethod(9)
-    def get_ServiceCode(self) -> WinRT_String: ...
+    def get_ServiceCode(self) -> hstr: ...
     @winrt_commethod(10)
-    def get_Title(self) -> WinRT_String: ...
+    def get_Title(self) -> hstr: ...
     @winrt_commethod(11)
-    def get_FirstName(self) -> WinRT_String: ...
+    def get_FirstName(self) -> hstr: ...
     @winrt_commethod(12)
-    def get_MiddleInitial(self) -> WinRT_String: ...
+    def get_MiddleInitial(self) -> hstr: ...
     @winrt_commethod(13)
-    def get_Surname(self) -> WinRT_String: ...
+    def get_Surname(self) -> hstr: ...
     @winrt_commethod(14)
-    def get_Suffix(self) -> WinRT_String: ...
+    def get_Suffix(self) -> hstr: ...
     AccountNumber = property(get_AccountNumber, None)
     ExpirationDate = property(get_ExpirationDate, None)
     FirstName = property(get_FirstName, None)
@@ -2904,11 +2905,11 @@ class IMagneticStripeReaderBankCardDataReceivedEventArgs(ComPtr):
     Surname = property(get_Surname, None)
     Title = property(get_Title, None)
 class IMagneticStripeReaderCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderCapabilities'
     _iid_ = Guid('{7128809c-c440-44a2-a467-469175d02896}')
     @winrt_commethod(6)
-    def get_CardAuthentication(self) -> WinRT_String: ...
+    def get_CardAuthentication(self) -> hstr: ...
     @winrt_commethod(7)
     def get_SupportedEncryptionAlgorithms(self) -> UInt32: ...
     @winrt_commethod(8)
@@ -2941,7 +2942,7 @@ class IMagneticStripeReaderCapabilities(ComPtr):
     PowerReportingType = property(get_PowerReportingType, None)
     SupportedEncryptionAlgorithms = property(get_SupportedEncryptionAlgorithms, None)
 class IMagneticStripeReaderCardTypesStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderCardTypesStatics'
     _iid_ = Guid('{528f2c5d-2986-474f-8454-7ccd05928d5f}')
     @winrt_commethod(6)
@@ -2957,20 +2958,20 @@ class IMagneticStripeReaderCardTypesStatics(ComPtr):
     ExtendedBase = property(get_ExtendedBase, None)
     Unknown = property(get_Unknown, None)
 class IMagneticStripeReaderEncryptionAlgorithmsStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderEncryptionAlgorithmsStatics'
     _iid_ = Guid('{53b57350-c3db-4754-9c00-41392374a109}')
     @winrt_commethod(6)
-    def get_None_(self) -> UInt32: ...
+    def get_None(self) -> UInt32: ...
     @winrt_commethod(7)
     def get_TripleDesDukpt(self) -> UInt32: ...
     @winrt_commethod(8)
     def get_ExtendedBase(self) -> UInt32: ...
     ExtendedBase = property(get_ExtendedBase, None)
-    None_ = property(get_None_, None)
+    None_ = property(get_None, None)
     TripleDesDukpt = property(get_TripleDesDukpt, None)
 class IMagneticStripeReaderErrorOccurredEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderErrorOccurredEventArgs'
     _iid_ = Guid('{1fedf95d-2c84-41ad-b778-f2356a789ab1}')
     @winrt_commethod(6)
@@ -2992,7 +2993,7 @@ class IMagneticStripeReaderErrorOccurredEventArgs(ComPtr):
     Track3Status = property(get_Track3Status, None)
     Track4Status = property(get_Track4Status, None)
 class IMagneticStripeReaderReport(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderReport'
     _iid_ = Guid('{6a5b6047-99b0-4188-bef1-eddf79f78fe6}')
     @winrt_commethod(6)
@@ -3006,7 +3007,7 @@ class IMagneticStripeReaderReport(ComPtr):
     @winrt_commethod(10)
     def get_Track4(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderTrackData: ...
     @winrt_commethod(11)
-    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
+    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
     @winrt_commethod(12)
     def get_CardAuthenticationData(self) -> win32more.Windows.Storage.Streams.IBuffer: ...
     @winrt_commethod(13)
@@ -3023,23 +3024,23 @@ class IMagneticStripeReaderReport(ComPtr):
     Track3 = property(get_Track3, None)
     Track4 = property(get_Track4, None)
 class IMagneticStripeReaderStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderStatics'
     _iid_ = Guid('{c45fab4a-efd7-4760-a5ce-15b0e47e94eb}')
     @winrt_commethod(6)
     def GetDefaultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.MagneticStripeReader]: ...
     @winrt_commethod(7)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.MagneticStripeReader]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.MagneticStripeReader]: ...
     @winrt_commethod(8)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
 class IMagneticStripeReaderStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderStatics2'
     _iid_ = Guid('{8cadc362-d667-48fa-86bc-f5ae1189262b}')
     @winrt_commethod(6)
-    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
 class IMagneticStripeReaderStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderStatusUpdatedEventArgs'
     _iid_ = Guid('{09cc6bb0-3262-401d-9e8a-e80d6358906b}')
     @winrt_commethod(6)
@@ -3049,7 +3050,7 @@ class IMagneticStripeReaderStatusUpdatedEventArgs(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     Status = property(get_Status, None)
 class IMagneticStripeReaderTrackData(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderTrackData'
     _iid_ = Guid('{104cf671-4a9d-446e-abc5-20402307ba36}')
     @winrt_commethod(6)
@@ -3062,32 +3063,32 @@ class IMagneticStripeReaderTrackData(ComPtr):
     DiscretionaryData = property(get_DiscretionaryData, None)
     EncryptedData = property(get_EncryptedData, None)
 class IMagneticStripeReaderVendorSpecificCardDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IMagneticStripeReaderVendorSpecificCardDataReceivedEventArgs'
     _iid_ = Guid('{af0a5514-59cc-4a60-99e8-99a53dace5aa}')
     @winrt_commethod(6)
     def get_Report(self) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderReport: ...
     Report = property(get_Report, None)
 class IPosPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinter'
     _iid_ = Guid('{2a03c10e-9a19-4a01-994f-12dfad6adcbf}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Capabilities(self) -> win32more.Windows.Devices.PointOfService.PosPrinterCapabilities: ...
     @winrt_commethod(8)
     def get_SupportedCharacterSets(self) -> win32more.Windows.Foundation.Collections.IVectorView[UInt32]: ...
     @winrt_commethod(9)
-    def get_SupportedTypeFaces(self) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
+    def get_SupportedTypeFaces(self) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
     @winrt_commethod(10)
     def get_Status(self) -> win32more.Windows.Devices.PointOfService.PosPrinterStatus: ...
     @winrt_commethod(11)
     def ClaimPrinterAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedPosPrinter]: ...
     @winrt_commethod(12)
-    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(13)
-    def GetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def GetStatisticsAsync(self, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_commethod(14)
     def add_StatusUpdated(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.PosPrinter, win32more.Windows.Devices.PointOfService.PosPrinterStatusUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
@@ -3097,18 +3098,18 @@ class IPosPrinter(ComPtr):
     Status = property(get_Status, None)
     SupportedCharacterSets = property(get_SupportedCharacterSets, None)
     SupportedTypeFaces = property(get_SupportedTypeFaces, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class IPosPrinter2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinter2'
     _iid_ = Guid('{248475e8-8b98-5517-8e48-760e86f68987}')
     @winrt_commethod(6)
     def get_SupportedBarcodeSymbologies(self) -> win32more.Windows.Foundation.Collections.IVectorView[UInt32]: ...
     @winrt_commethod(7)
-    def GetFontProperty(self, typeface: WinRT_String) -> win32more.Windows.Devices.PointOfService.PosPrinterFontProperty: ...
+    def GetFontProperty(self, typeface: hstr) -> win32more.Windows.Devices.PointOfService.PosPrinterFontProperty: ...
     SupportedBarcodeSymbologies = property(get_SupportedBarcodeSymbologies, None)
 class IPosPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterCapabilities'
     _iid_ = Guid('{cde95721-4380-4985-adc5-39db30cd93bc}')
     @winrt_commethod(6)
@@ -3142,7 +3143,7 @@ class IPosPrinterCapabilities(ComPtr):
     Receipt = property(get_Receipt, None)
     Slip = property(get_Slip, None)
 class IPosPrinterCharacterSetIdsStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterCharacterSetIdsStatics'
     _iid_ = Guid('{5c709eff-709a-4fe7-b215-06a748a38b39}')
     @winrt_commethod(6)
@@ -3155,11 +3156,11 @@ class IPosPrinterCharacterSetIdsStatics(ComPtr):
     Ascii = property(get_Ascii, None)
     Utf16LE = property(get_Utf16LE, None)
 class IPosPrinterFontProperty(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterFontProperty'
     _iid_ = Guid('{a7f4e93a-f8ac-5f04-84d2-29b16d8a633c}')
     @winrt_commethod(6)
-    def get_TypeFace(self) -> WinRT_String: ...
+    def get_TypeFace(self) -> hstr: ...
     @winrt_commethod(7)
     def get_IsScalableToAnySize(self) -> Boolean: ...
     @winrt_commethod(8)
@@ -3168,25 +3169,25 @@ class IPosPrinterFontProperty(ComPtr):
     IsScalableToAnySize = property(get_IsScalableToAnySize, None)
     TypeFace = property(get_TypeFace, None)
 class IPosPrinterJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterJob'
     _iid_ = Guid('{9a94005c-0615-4591-a58f-30f87edfe2e4}')
     @winrt_commethod(6)
-    def Print(self, data: WinRT_String) -> Void: ...
+    def Print(self, data: hstr) -> Void: ...
     @winrt_commethod(7)
-    def PrintLine(self, data: WinRT_String) -> Void: ...
+    def PrintLine(self, data: hstr) -> Void: ...
     @winrt_commethod(8)
     def PrintNewline(self) -> Void: ...
     @winrt_commethod(9)
     def ExecuteAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
 class IPosPrinterPrintOptions(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterPrintOptions'
     _iid_ = Guid('{0a2e16fd-1d02-5a58-9d59-bfcde76fde86}')
     @winrt_commethod(6)
-    def get_TypeFace(self) -> WinRT_String: ...
+    def get_TypeFace(self) -> hstr: ...
     @winrt_commethod(7)
-    def put_TypeFace(self, value: WinRT_String) -> Void: ...
+    def put_TypeFace(self, value: hstr) -> Void: ...
     @winrt_commethod(8)
     def get_CharacterHeight(self) -> UInt32: ...
     @winrt_commethod(9)
@@ -3249,27 +3250,27 @@ class IPosPrinterPrintOptions(ComPtr):
     TypeFace = property(get_TypeFace, put_TypeFace)
     Underline = property(get_Underline, put_Underline)
 class IPosPrinterReleaseDeviceRequestedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterReleaseDeviceRequestedEventArgs'
     _iid_ = Guid('{2bcba359-1cef-40b2-9ecb-f927f856ae3c}')
 class IPosPrinterStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterStatics'
     _iid_ = Guid('{8ce0d4ea-132f-4cdf-a64a-2d0d7c96a85b}')
     @winrt_commethod(6)
     def GetDefaultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.PosPrinter]: ...
     @winrt_commethod(7)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.PosPrinter]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.PosPrinter]: ...
     @winrt_commethod(8)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
 class IPosPrinterStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterStatics2'
     _iid_ = Guid('{eecd2c1c-b0d0-42e7-b137-b89b16244d41}')
     @winrt_commethod(6)
-    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(self, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
 class IPosPrinterStatus(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterStatus'
     _iid_ = Guid('{d1f0c730-da40-4328-bf76-5156fa33b747}')
     @winrt_commethod(6)
@@ -3279,14 +3280,14 @@ class IPosPrinterStatus(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     StatusKind = property(get_StatusKind, None)
 class IPosPrinterStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IPosPrinterStatusUpdatedEventArgs'
     _iid_ = Guid('{2edb87df-13a6-428d-ba81-b0e7c3e5a3cd}')
     @winrt_commethod(6)
     def get_Status(self) -> win32more.Windows.Devices.PointOfService.PosPrinterStatus: ...
     Status = property(get_Status, None)
 class IReceiptOrSlipJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IReceiptOrSlipJob'
     _iid_ = Guid('{532199be-c8c3-4dc2-89e9-5c4a37b34ddc}')
     @winrt_commethod(6)
@@ -3306,11 +3307,11 @@ class IReceiptOrSlipJob(ComPtr):
     @winrt_commethod(13)
     def PrintSavedBitmap(self, bitmapNumber: UInt32) -> Void: ...
     @winrt_commethod(14)
-    def DrawRuledLine(self, positionList: WinRT_String, lineDirection: win32more.Windows.Devices.PointOfService.PosPrinterLineDirection, lineWidth: UInt32, lineStyle: win32more.Windows.Devices.PointOfService.PosPrinterLineStyle, lineColor: UInt32) -> Void: ...
+    def DrawRuledLine(self, positionList: hstr, lineDirection: win32more.Windows.Devices.PointOfService.PosPrinterLineDirection, lineWidth: UInt32, lineStyle: win32more.Windows.Devices.PointOfService.PosPrinterLineStyle, lineColor: UInt32) -> Void: ...
     @winrt_commethod(15)
-    def PrintBarcode(self, data: WinRT_String, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
+    def PrintBarcode(self, data: hstr, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
     @winrt_commethod(16)
-    def PrintBarcodeCustomAlign(self, data: WinRT_String, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignmentDistance: UInt32) -> Void: ...
+    def PrintBarcodeCustomAlign(self, data: hstr, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignmentDistance: UInt32) -> Void: ...
     @winrt_commethod(17)
     def PrintBitmap(self, bitmap: win32more.Windows.Graphics.Imaging.BitmapFrame, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
     @winrt_commethod(18)
@@ -3320,7 +3321,7 @@ class IReceiptOrSlipJob(ComPtr):
     @winrt_commethod(20)
     def PrintBitmapCustomWidthCustomAlign(self, bitmap: win32more.Windows.Graphics.Imaging.BitmapFrame, alignmentDistance: UInt32, width: UInt32) -> Void: ...
 class IReceiptPrintJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IReceiptPrintJob'
     _iid_ = Guid('{aa96066e-acad-4b79-9d0f-c0cfc08dc77b}')
     @winrt_commethod(6)
@@ -3330,19 +3331,19 @@ class IReceiptPrintJob(ComPtr):
     @winrt_commethod(8)
     def CutPaperDefault(self) -> Void: ...
 class IReceiptPrintJob2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IReceiptPrintJob2'
     _iid_ = Guid('{0cbc12e3-9e29-5179-bcd8-1811d3b9a10e}')
     @winrt_commethod(6)
     def StampPaper(self) -> Void: ...
     @winrt_commethod(7)
-    def Print(self, data: WinRT_String, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
+    def Print(self, data: hstr, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
     @winrt_commethod(8)
     def FeedPaperByLine(self, lineCount: Int32) -> Void: ...
     @winrt_commethod(9)
     def FeedPaperByMapModeUnit(self, distance: Int32) -> Void: ...
 class IReceiptPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IReceiptPrinterCapabilities'
     _iid_ = Guid('{b8f0b58f-51a8-43fc-9bd5-8de272a6415b}')
     @winrt_commethod(6)
@@ -3355,7 +3356,7 @@ class IReceiptPrinterCapabilities(ComPtr):
     IsStampSupported = property(get_IsStampSupported, None)
     MarkFeedCapabilities = property(get_MarkFeedCapabilities, None)
 class IReceiptPrinterCapabilities2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IReceiptPrinterCapabilities2'
     _iid_ = Guid('{20030638-8a2c-55ac-9a7b-7576d8869e99}')
     @winrt_commethod(6)
@@ -3377,17 +3378,17 @@ class IReceiptPrinterCapabilities2(ComPtr):
     IsSubscriptSupported = property(get_IsSubscriptSupported, None)
     IsSuperscriptSupported = property(get_IsSuperscriptSupported, None)
 class ISlipPrintJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ISlipPrintJob'
     _iid_ = Guid('{5d88f95d-6131-5a4b-b7d5-8ef2da7b4165}')
     @winrt_commethod(6)
-    def Print(self, data: WinRT_String, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
+    def Print(self, data: hstr, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
     @winrt_commethod(7)
     def FeedPaperByLine(self, lineCount: Int32) -> Void: ...
     @winrt_commethod(8)
     def FeedPaperByMapModeUnit(self, distance: Int32) -> Void: ...
 class ISlipPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ISlipPrinterCapabilities'
     _iid_ = Guid('{99b16399-488c-4157-8ac2-9f57f708d3db}')
     @winrt_commethod(6)
@@ -3397,7 +3398,7 @@ class ISlipPrinterCapabilities(ComPtr):
     IsBothSidesPrintingSupported = property(get_IsBothSidesPrintingSupported, None)
     IsFullLengthSupported = property(get_IsFullLengthSupported, None)
 class ISlipPrinterCapabilities2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.ISlipPrinterCapabilities2'
     _iid_ = Guid('{6ff89671-2d1a-5000-87c2-b0851bfdf07e}')
     @winrt_commethod(6)
@@ -3419,11 +3420,11 @@ class ISlipPrinterCapabilities2(ComPtr):
     IsSubscriptSupported = property(get_IsSubscriptSupported, None)
     IsSuperscriptSupported = property(get_IsSuperscriptSupported, None)
 class IUnifiedPosErrorData(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IUnifiedPosErrorData'
     _iid_ = Guid('{2b998c3a-555c-4889-8ed8-c599bb3a712a}')
     @winrt_commethod(6)
-    def get_Message(self) -> WinRT_String: ...
+    def get_Message(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Severity(self) -> win32more.Windows.Devices.PointOfService.UnifiedPosErrorSeverity: ...
     @winrt_commethod(8)
@@ -3435,33 +3436,33 @@ class IUnifiedPosErrorData(ComPtr):
     Reason = property(get_Reason, None)
     Severity = property(get_Severity, None)
 class IUnifiedPosErrorDataFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.IUnifiedPosErrorDataFactory'
     _iid_ = Guid('{4b982551-1ffe-451b-a368-63e0ce465f5a}')
     @winrt_commethod(6)
-    def CreateInstance(self, message: WinRT_String, severity: win32more.Windows.Devices.PointOfService.UnifiedPosErrorSeverity, reason: win32more.Windows.Devices.PointOfService.UnifiedPosErrorReason, extendedReason: UInt32) -> win32more.Windows.Devices.PointOfService.UnifiedPosErrorData: ...
+    def CreateInstance(self, message: hstr, severity: win32more.Windows.Devices.PointOfService.UnifiedPosErrorSeverity, reason: win32more.Windows.Devices.PointOfService.UnifiedPosErrorReason, extendedReason: UInt32) -> win32more.Windows.Devices.PointOfService.UnifiedPosErrorData: ...
 class JournalPrintJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterJob
     _classid_ = 'Windows.Devices.PointOfService.JournalPrintJob'
     @winrt_overload
     @winrt_mixinmethod
-    def Print(self: win32more.Windows.Devices.PointOfService.IJournalPrintJob, data: WinRT_String, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
+    def Print(self: win32more.Windows.Devices.PointOfService.IJournalPrintJob, data: hstr, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
     @winrt_mixinmethod
     def FeedPaperByLine(self: win32more.Windows.Devices.PointOfService.IJournalPrintJob, lineCount: Int32) -> Void: ...
     @winrt_mixinmethod
     def FeedPaperByMapModeUnit(self: win32more.Windows.Devices.PointOfService.IJournalPrintJob, distance: Int32) -> Void: ...
     @Print.register
     @winrt_mixinmethod
-    def Print(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: WinRT_String) -> Void: ...
+    def Print(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: hstr) -> Void: ...
     @winrt_mixinmethod
-    def PrintLine(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: WinRT_String) -> Void: ...
+    def PrintLine(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: hstr) -> Void: ...
     @winrt_mixinmethod
     def PrintNewline(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob) -> Void: ...
     @winrt_mixinmethod
     def ExecuteAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
 class JournalPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IJournalPrinterCapabilities
     _classid_ = 'Windows.Devices.PointOfService.JournalPrinterCapabilities'
     @winrt_mixinmethod
@@ -3524,24 +3525,24 @@ class JournalPrinterCapabilities(ComPtr):
 class _LineDisplay_Meta_(ComPtr.__class__):
     pass
 class LineDisplay(ComPtr, metaclass=_LineDisplay_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplay
     _classid_ = 'Windows.Devices.PointOfService.LineDisplay'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> hstr: ...
     @winrt_mixinmethod
     def get_Capabilities(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> win32more.Windows.Devices.PointOfService.LineDisplayCapabilities: ...
     @winrt_mixinmethod
-    def get_PhysicalDeviceName(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> WinRT_String: ...
+    def get_PhysicalDeviceName(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_PhysicalDeviceDescription(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> WinRT_String: ...
+    def get_PhysicalDeviceDescription(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_DeviceControlDescription(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> WinRT_String: ...
+    def get_DeviceControlDescription(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_DeviceControlVersion(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> WinRT_String: ...
+    def get_DeviceControlVersion(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> hstr: ...
     @winrt_mixinmethod
-    def get_DeviceServiceVersion(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> WinRT_String: ...
+    def get_DeviceServiceVersion(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> hstr: ...
     @winrt_mixinmethod
     def ClaimAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplay) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedLineDisplay]: ...
     @winrt_mixinmethod
@@ -3551,13 +3552,13 @@ class LineDisplay(ComPtr, metaclass=_LineDisplay_Meta_):
     @winrt_classmethod
     def get_StatisticsCategorySelector(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics2) -> win32more.Windows.Devices.PointOfService.LineDisplayStatisticsCategorySelector: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplay]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplay]: ...
     @winrt_classmethod
     def GetDefaultAsync(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.LineDisplay]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics) -> hstr: ...
     @winrt_classmethod
-    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.ILineDisplayStatics, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
     Capabilities = property(get_Capabilities, None)
     DeviceControlDescription = property(get_DeviceControlDescription, None)
     DeviceControlVersion = property(get_DeviceControlVersion, None)
@@ -3567,7 +3568,7 @@ class LineDisplay(ComPtr, metaclass=_LineDisplay_Meta_):
     PhysicalDeviceName = property(get_PhysicalDeviceName, None)
     _LineDisplay_Meta_.StatisticsCategorySelector = property(get_StatisticsCategorySelector, None)
 class LineDisplayAttributes(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayAttributes
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayAttributes'
     @winrt_mixinmethod
@@ -3606,7 +3607,7 @@ class LineDisplayAttributes(ComPtr):
     IsPowerNotifyEnabled = property(get_IsPowerNotifyEnabled, put_IsPowerNotifyEnabled)
     ScreenSizeInCharacters = property(get_ScreenSizeInCharacters, put_ScreenSizeInCharacters)
 class LineDisplayCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayCapabilities
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayCapabilities'
     @winrt_mixinmethod
@@ -3664,7 +3665,7 @@ class LineDisplayCapabilities(ComPtr):
     SupportedDescriptors = property(get_SupportedDescriptors, None)
     SupportedWindows = property(get_SupportedWindows, None)
 class LineDisplayCursor(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayCursor
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayCursor'
     @winrt_mixinmethod
@@ -3693,7 +3694,7 @@ class LineDisplayCursor(ComPtr):
     IsReverseSupported = property(get_IsReverseSupported, None)
     IsUnderlineSupported = property(get_IsUnderlineSupported, None)
 class LineDisplayCursorAttributes(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayCursorAttributes
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayCursorAttributes'
     @winrt_mixinmethod
@@ -3717,6 +3718,7 @@ class LineDisplayCursorAttributes(ComPtr):
     IsBlinkEnabled = property(get_IsBlinkEnabled, put_IsBlinkEnabled)
     Position = property(get_Position, put_Position)
 class LineDisplayCursorType(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayCursorType'
     None_ = 0
     Block = 1
     HalfBlock = 2
@@ -3724,7 +3726,7 @@ class LineDisplayCursorType(Enum, Int32):
     Reverse = 4
     Other = 5
 class LineDisplayCustomGlyphs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayCustomGlyphs
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayCustomGlyphs'
     @winrt_mixinmethod
@@ -3736,15 +3738,17 @@ class LineDisplayCustomGlyphs(ComPtr):
     SizeInPixels = property(get_SizeInPixels, None)
     SupportedGlyphCodes = property(get_SupportedGlyphCodes, None)
 class LineDisplayDescriptorState(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayDescriptorState'
     Off = 0
     On = 1
     Blink = 2
 class LineDisplayHorizontalAlignment(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayHorizontalAlignment'
     Left = 0
     Center = 1
     Right = 2
 class LineDisplayMarquee(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayMarquee
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayMarquee'
     @winrt_mixinmethod
@@ -3767,64 +3771,70 @@ class LineDisplayMarquee(ComPtr):
     RepeatWaitInterval = property(get_RepeatWaitInterval, put_RepeatWaitInterval)
     ScrollWaitInterval = property(get_ScrollWaitInterval, put_ScrollWaitInterval)
 class LineDisplayMarqueeFormat(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayMarqueeFormat'
     None_ = 0
     Walk = 1
     Place = 2
 class LineDisplayPowerStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayPowerStatus'
     Unknown = 0
     Online = 1
     Off = 2
     Offline = 3
     OffOrOffline = 4
 class LineDisplayScrollDirection(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayScrollDirection'
     Up = 0
     Down = 1
     Left = 2
     Right = 3
 class LineDisplayStatisticsCategorySelector(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayStatisticsCategorySelector'
     @winrt_mixinmethod
-    def get_AllStatistics(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector) -> WinRT_String: ...
+    def get_AllStatistics(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector) -> hstr: ...
     @winrt_mixinmethod
-    def get_UnifiedPosStatistics(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector) -> WinRT_String: ...
+    def get_UnifiedPosStatistics(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector) -> hstr: ...
     @winrt_mixinmethod
-    def get_ManufacturerStatistics(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector) -> WinRT_String: ...
+    def get_ManufacturerStatistics(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatisticsCategorySelector) -> hstr: ...
     AllStatistics = property(get_AllStatistics, None)
     ManufacturerStatistics = property(get_ManufacturerStatistics, None)
     UnifiedPosStatistics = property(get_UnifiedPosStatistics, None)
 class LineDisplayStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayStatusUpdatedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayStatusUpdatedEventArgs'
     @winrt_mixinmethod
     def get_Status(self: win32more.Windows.Devices.PointOfService.ILineDisplayStatusUpdatedEventArgs) -> win32more.Windows.Devices.PointOfService.LineDisplayPowerStatus: ...
     Status = property(get_Status, None)
 class LineDisplayStoredBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayStoredBitmap
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayStoredBitmap'
     @winrt_mixinmethod
-    def get_EscapeSequence(self: win32more.Windows.Devices.PointOfService.ILineDisplayStoredBitmap) -> WinRT_String: ...
+    def get_EscapeSequence(self: win32more.Windows.Devices.PointOfService.ILineDisplayStoredBitmap) -> hstr: ...
     @winrt_mixinmethod
     def TryDeleteAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayStoredBitmap) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     EscapeSequence = property(get_EscapeSequence, None)
 class LineDisplayTextAttribute(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayTextAttribute'
     Normal = 0
     Blink = 1
     Reverse = 2
     ReverseBlink = 3
 class LineDisplayTextAttributeGranularity(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayTextAttributeGranularity'
     NotSupported = 0
     EntireDisplay = 1
     PerCharacter = 2
 class LineDisplayVerticalAlignment(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.LineDisplayVerticalAlignment'
     Top = 0
     Center = 1
     Bottom = 2
 class LineDisplayWindow(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.ILineDisplayWindow
     _classid_ = 'Windows.Devices.PointOfService.LineDisplayWindow'
@@ -3837,11 +3847,11 @@ class LineDisplayWindow(ComPtr):
     @winrt_mixinmethod
     def TryRefreshAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def TryDisplayTextAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, text: WinRT_String, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def TryDisplayTextAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, text: hstr, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def TryDisplayTextAtPositionAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, text: WinRT_String, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute, startPosition: win32more.Windows.Foundation.Point) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def TryDisplayTextAtPositionAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, text: hstr, displayAttribute: win32more.Windows.Devices.PointOfService.LineDisplayTextAttribute, startPosition: win32more.Windows.Foundation.Point) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def TryDisplayTextNormalAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, text: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def TryDisplayTextNormalAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, text: hstr) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
     def TryScrollTextAsync(self: win32more.Windows.Devices.PointOfService.ILineDisplayWindow, direction: win32more.Windows.Devices.PointOfService.LineDisplayScrollDirection, numberOfColumnsOrRows: UInt32) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
@@ -3871,12 +3881,12 @@ class LineDisplayWindow(ComPtr):
     Marquee = property(get_Marquee, None)
     SizeInCharacters = property(get_SizeInCharacters, None)
 class MagneticStripeReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReader
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReader'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader) -> hstr: ...
     @winrt_mixinmethod
     def get_Capabilities(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderCapabilities: ...
     @winrt_mixinmethod
@@ -3884,11 +3894,11 @@ class MagneticStripeReader(ComPtr):
     @winrt_mixinmethod
     def get_DeviceAuthenticationProtocol(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderAuthenticationProtocol: ...
     @winrt_mixinmethod
-    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
     def ClaimReaderAsync(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedMagneticStripeReader]: ...
     @winrt_mixinmethod
-    def RetrieveStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
+    def RetrieveStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
     @winrt_mixinmethod
     def GetErrorReportingType(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReader) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderErrorReportingType: ...
     @winrt_mixinmethod
@@ -3898,60 +3908,60 @@ class MagneticStripeReader(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_classmethod
-    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
     @winrt_classmethod
     def GetDefaultAsync(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.MagneticStripeReader]: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.MagneticStripeReader]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.MagneticStripeReader]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatics) -> hstr: ...
     Capabilities = property(get_Capabilities, None)
     DeviceAuthenticationProtocol = property(get_DeviceAuthenticationProtocol, None)
     DeviceId = property(get_DeviceId, None)
     SupportedCardTypes = property(get_SupportedCardTypes, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class MagneticStripeReaderAamvaCardDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderAamvaCardDataReceivedEventArgs'
     @winrt_mixinmethod
     def get_Report(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderReport: ...
     @winrt_mixinmethod
-    def get_LicenseNumber(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_LicenseNumber(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_ExpirationDate(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_ExpirationDate(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Restrictions(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Restrictions(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Class(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Class(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Endorsements(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Endorsements(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_BirthDate(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_BirthDate(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_FirstName(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_FirstName(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Surname(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Surname(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Suffix(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Suffix(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Gender(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Gender(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_HairColor(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_HairColor(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_EyeColor(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_EyeColor(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Height(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Height(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Weight(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Weight(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Address(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Address(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_City(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_City(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_State(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_State(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_PostalCode(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_PostalCode(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderAamvaCardDataReceivedEventArgs) -> hstr: ...
     Address = property(get_Address, None)
     BirthDate = property(get_BirthDate, None)
     City = property(get_City, None)
@@ -3972,34 +3982,36 @@ class MagneticStripeReaderAamvaCardDataReceivedEventArgs(ComPtr):
     Surname = property(get_Surname, None)
     Weight = property(get_Weight, None)
 class MagneticStripeReaderAuthenticationLevel(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.MagneticStripeReaderAuthenticationLevel'
     NotSupported = 0
     Optional = 1
     Required = 2
 class MagneticStripeReaderAuthenticationProtocol(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.MagneticStripeReaderAuthenticationProtocol'
     None_ = 0
     ChallengeResponse = 1
 class MagneticStripeReaderBankCardDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderBankCardDataReceivedEventArgs'
     @winrt_mixinmethod
     def get_Report(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderReport: ...
     @winrt_mixinmethod
-    def get_AccountNumber(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_AccountNumber(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_ExpirationDate(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_ExpirationDate(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_ServiceCode(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_ServiceCode(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Title(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Title(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_FirstName(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_FirstName(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_MiddleInitial(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_MiddleInitial(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Surname(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Surname(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     @winrt_mixinmethod
-    def get_Suffix(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> WinRT_String: ...
+    def get_Suffix(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderBankCardDataReceivedEventArgs) -> hstr: ...
     AccountNumber = property(get_AccountNumber, None)
     ExpirationDate = property(get_ExpirationDate, None)
     FirstName = property(get_FirstName, None)
@@ -4010,11 +4022,11 @@ class MagneticStripeReaderBankCardDataReceivedEventArgs(ComPtr):
     Surname = property(get_Surname, None)
     Title = property(get_Title, None)
 class MagneticStripeReaderCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderCapabilities
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderCapabilities'
     @winrt_mixinmethod
-    def get_CardAuthentication(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderCapabilities) -> WinRT_String: ...
+    def get_CardAuthentication(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderCapabilities) -> hstr: ...
     @winrt_mixinmethod
     def get_SupportedEncryptionAlgorithms(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderCapabilities) -> UInt32: ...
     @winrt_mixinmethod
@@ -4049,7 +4061,7 @@ class MagneticStripeReaderCapabilities(ComPtr):
 class _MagneticStripeReaderCardTypes_Meta_(ComPtr.__class__):
     pass
 class MagneticStripeReaderCardTypes(ComPtr, metaclass=_MagneticStripeReaderCardTypes_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderCardTypes'
     @winrt_classmethod
     def get_Unknown(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderCardTypesStatics) -> UInt32: ...
@@ -4066,19 +4078,19 @@ class MagneticStripeReaderCardTypes(ComPtr, metaclass=_MagneticStripeReaderCardT
 class _MagneticStripeReaderEncryptionAlgorithms_Meta_(ComPtr.__class__):
     pass
 class MagneticStripeReaderEncryptionAlgorithms(ComPtr, metaclass=_MagneticStripeReaderEncryptionAlgorithms_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderEncryptionAlgorithms'
     @winrt_classmethod
-    def get_None_(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderEncryptionAlgorithmsStatics) -> UInt32: ...
+    def get_None(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderEncryptionAlgorithmsStatics) -> UInt32: ...
     @winrt_classmethod
     def get_TripleDesDukpt(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderEncryptionAlgorithmsStatics) -> UInt32: ...
     @winrt_classmethod
     def get_ExtendedBase(cls: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderEncryptionAlgorithmsStatics) -> UInt32: ...
     _MagneticStripeReaderEncryptionAlgorithms_Meta_.ExtendedBase = property(get_ExtendedBase, None)
-    _MagneticStripeReaderEncryptionAlgorithms_Meta_.None_ = property(get_None_, None)
+    _MagneticStripeReaderEncryptionAlgorithms_Meta_.None_ = property(get_None, None)
     _MagneticStripeReaderEncryptionAlgorithms_Meta_.TripleDesDukpt = property(get_TripleDesDukpt, None)
 class MagneticStripeReaderErrorOccurredEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderErrorOccurredEventArgs
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderErrorOccurredEventArgs'
     @winrt_mixinmethod
@@ -4100,10 +4112,11 @@ class MagneticStripeReaderErrorOccurredEventArgs(ComPtr):
     Track3Status = property(get_Track3Status, None)
     Track4Status = property(get_Track4Status, None)
 class MagneticStripeReaderErrorReportingType(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.MagneticStripeReaderErrorReportingType'
     CardLevel = 0
     TrackLevel = 1
 class MagneticStripeReaderReport(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderReport
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderReport'
     @winrt_mixinmethod
@@ -4117,7 +4130,7 @@ class MagneticStripeReaderReport(ComPtr):
     @winrt_mixinmethod
     def get_Track4(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderReport) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderTrackData: ...
     @winrt_mixinmethod
-    def get_Properties(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderReport) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
+    def get_Properties(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderReport) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
     @winrt_mixinmethod
     def get_CardAuthenticationData(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderReport) -> win32more.Windows.Storage.Streams.IBuffer: ...
     @winrt_mixinmethod
@@ -4134,11 +4147,12 @@ class MagneticStripeReaderReport(ComPtr):
     Track3 = property(get_Track3, None)
     Track4 = property(get_Track4, None)
 class MagneticStripeReaderStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.MagneticStripeReaderStatus'
     Unauthenticated = 0
     Authenticated = 1
     Extended = 2
 class MagneticStripeReaderStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderStatusUpdatedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderStatusUpdatedEventArgs'
     @winrt_mixinmethod
@@ -4148,7 +4162,7 @@ class MagneticStripeReaderStatusUpdatedEventArgs(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     Status = property(get_Status, None)
 class MagneticStripeReaderTrackData(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderTrackData
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderTrackData'
     @winrt_mixinmethod
@@ -4161,6 +4175,7 @@ class MagneticStripeReaderTrackData(ComPtr):
     DiscretionaryData = property(get_DiscretionaryData, None)
     EncryptedData = property(get_EncryptedData, None)
 class MagneticStripeReaderTrackErrorType(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.MagneticStripeReaderTrackErrorType'
     None_ = 0
     StartSentinelError = 1
     EndSentinelError = 2
@@ -4168,44 +4183,46 @@ class MagneticStripeReaderTrackErrorType(Enum, Int32):
     LrcError = 4
     Unknown = -1
 class MagneticStripeReaderTrackIds(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.MagneticStripeReaderTrackIds'
     None_ = 0
     Track1 = 1
     Track2 = 2
     Track3 = 4
     Track4 = 8
 class MagneticStripeReaderVendorSpecificCardDataReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderVendorSpecificCardDataReceivedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.MagneticStripeReaderVendorSpecificCardDataReceivedEventArgs'
     @winrt_mixinmethod
     def get_Report(self: win32more.Windows.Devices.PointOfService.IMagneticStripeReaderVendorSpecificCardDataReceivedEventArgs) -> win32more.Windows.Devices.PointOfService.MagneticStripeReaderReport: ...
     Report = property(get_Report, None)
 class PosConnectionTypes(Enum, UInt32):
+    _name_ = 'Windows.Devices.PointOfService.PosConnectionTypes'
     Local = 1
     IP = 2
     Bluetooth = 4
     All = 4294967295
 class PosPrinter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinter
     _classid_ = 'Windows.Devices.PointOfService.PosPrinter'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> hstr: ...
     @winrt_mixinmethod
     def get_Capabilities(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> win32more.Windows.Devices.PointOfService.PosPrinterCapabilities: ...
     @winrt_mixinmethod
     def get_SupportedCharacterSets(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> win32more.Windows.Foundation.Collections.IVectorView[UInt32]: ...
     @winrt_mixinmethod
-    def get_SupportedTypeFaces(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
+    def get_SupportedTypeFaces(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
     @winrt_mixinmethod
     def get_Status(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> win32more.Windows.Devices.PointOfService.PosPrinterStatus: ...
     @winrt_mixinmethod
     def ClaimPrinterAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinter) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.ClaimedPosPrinter]: ...
     @winrt_mixinmethod
-    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinter, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def CheckHealthAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinter, level: win32more.Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
-    def GetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinter, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[WinRT_String]) -> win32more.Windows.Foundation.IAsyncOperation[WinRT_String]: ...
+    def GetStatisticsAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinter, statisticsCategories: win32more.Windows.Foundation.Collections.IIterable[hstr]) -> win32more.Windows.Foundation.IAsyncOperation[hstr]: ...
     @winrt_mixinmethod
     def add_StatusUpdated(self: win32more.Windows.Devices.PointOfService.IPosPrinter, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.PointOfService.PosPrinter, win32more.Windows.Devices.PointOfService.PosPrinterStatusUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -4213,34 +4230,36 @@ class PosPrinter(ComPtr):
     @winrt_mixinmethod
     def get_SupportedBarcodeSymbologies(self: win32more.Windows.Devices.PointOfService.IPosPrinter2) -> win32more.Windows.Foundation.Collections.IVectorView[UInt32]: ...
     @winrt_mixinmethod
-    def GetFontProperty(self: win32more.Windows.Devices.PointOfService.IPosPrinter2, typeface: WinRT_String) -> win32more.Windows.Devices.PointOfService.PosPrinterFontProperty: ...
+    def GetFontProperty(self: win32more.Windows.Devices.PointOfService.IPosPrinter2, typeface: hstr) -> win32more.Windows.Devices.PointOfService.PosPrinterFontProperty: ...
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_classmethod
-    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> WinRT_String: ...
+    def GetDeviceSelectorWithConnectionTypes(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics2, connectionTypes: win32more.Windows.Devices.PointOfService.PosConnectionTypes) -> hstr: ...
     @winrt_classmethod
     def GetDefaultAsync(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.PosPrinter]: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.PosPrinter]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.PointOfService.PosPrinter]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.PointOfService.IPosPrinterStatics) -> hstr: ...
     Capabilities = property(get_Capabilities, None)
     DeviceId = property(get_DeviceId, None)
     Status = property(get_Status, None)
     SupportedBarcodeSymbologies = property(get_SupportedBarcodeSymbologies, None)
     SupportedCharacterSets = property(get_SupportedCharacterSets, None)
     SupportedTypeFaces = property(get_SupportedTypeFaces, None)
-    StatusUpdated = event()
+    StatusUpdated = event(add_StatusUpdated, remove_StatusUpdated)
 class PosPrinterAlignment(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterAlignment'
     Left = 0
     Center = 1
     Right = 2
 class PosPrinterBarcodeTextPosition(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition'
     None_ = 0
     Above = 1
     Below = 2
 class PosPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterCapabilities
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterCapabilities'
     @winrt_mixinmethod
@@ -4274,6 +4293,7 @@ class PosPrinterCapabilities(ComPtr):
     Receipt = property(get_Receipt, None)
     Slip = property(get_Slip, None)
 class PosPrinterCartridgeSensors(Enum, UInt32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterCartridgeSensors'
     None_ = 0
     Removed = 1
     Empty = 2
@@ -4282,7 +4302,7 @@ class PosPrinterCartridgeSensors(Enum, UInt32):
 class _PosPrinterCharacterSetIds_Meta_(ComPtr.__class__):
     pass
 class PosPrinterCharacterSetIds(ComPtr, metaclass=_PosPrinterCharacterSetIds_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterCharacterSetIds'
     @winrt_classmethod
     def get_Utf16LE(cls: win32more.Windows.Devices.PointOfService.IPosPrinterCharacterSetIdsStatics) -> UInt32: ...
@@ -4294,6 +4314,7 @@ class PosPrinterCharacterSetIds(ComPtr, metaclass=_PosPrinterCharacterSetIds_Met
     _PosPrinterCharacterSetIds_Meta_.Ascii = property(get_Ascii, None)
     _PosPrinterCharacterSetIds_Meta_.Utf16LE = property(get_Utf16LE, None)
 class PosPrinterColorCapabilities(Enum, UInt32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterColorCapabilities'
     None_ = 0
     Primary = 1
     Custom1 = 2
@@ -4307,6 +4328,7 @@ class PosPrinterColorCapabilities(Enum, UInt32):
     Yellow = 512
     Full = 1024
 class PosPrinterColorCartridge(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterColorCartridge'
     Unknown = 0
     Primary = 1
     Custom1 = 2
@@ -4319,11 +4341,11 @@ class PosPrinterColorCartridge(Enum, Int32):
     Magenta = 9
     Yellow = 10
 class PosPrinterFontProperty(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterFontProperty
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterFontProperty'
     @winrt_mixinmethod
-    def get_TypeFace(self: win32more.Windows.Devices.PointOfService.IPosPrinterFontProperty) -> WinRT_String: ...
+    def get_TypeFace(self: win32more.Windows.Devices.PointOfService.IPosPrinterFontProperty) -> hstr: ...
     @winrt_mixinmethod
     def get_IsScalableToAnySize(self: win32more.Windows.Devices.PointOfService.IPosPrinterFontProperty) -> Boolean: ...
     @winrt_mixinmethod
@@ -4332,31 +4354,36 @@ class PosPrinterFontProperty(ComPtr):
     IsScalableToAnySize = property(get_IsScalableToAnySize, None)
     TypeFace = property(get_TypeFace, None)
 class PosPrinterLineDirection(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterLineDirection'
     Horizontal = 0
     Vertical = 1
 class PosPrinterLineStyle(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterLineStyle'
     SingleSolid = 0
     DoubleSolid = 1
     Broken = 2
     Chain = 3
 class PosPrinterMapMode(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterMapMode'
     Dots = 0
     Twips = 1
     English = 2
     Metric = 3
 class PosPrinterMarkFeedCapabilities(Enum, UInt32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterMarkFeedCapabilities'
     None_ = 0
     ToTakeUp = 1
     ToCutter = 2
     ToCurrentTopOfForm = 4
     ToNextTopOfForm = 8
 class PosPrinterMarkFeedKind(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterMarkFeedKind'
     ToTakeUp = 0
     ToCutter = 1
     ToCurrentTopOfForm = 2
     ToNextTopOfForm = 3
 class PosPrinterPrintOptions(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterPrintOptions
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterPrintOptions'
     def __init__(self, *args, **kwargs):
@@ -4369,9 +4396,9 @@ class PosPrinterPrintOptions(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions: ...
     @winrt_mixinmethod
-    def get_TypeFace(self: win32more.Windows.Devices.PointOfService.IPosPrinterPrintOptions) -> WinRT_String: ...
+    def get_TypeFace(self: win32more.Windows.Devices.PointOfService.IPosPrinterPrintOptions) -> hstr: ...
     @winrt_mixinmethod
-    def put_TypeFace(self: win32more.Windows.Devices.PointOfService.IPosPrinterPrintOptions, value: WinRT_String) -> Void: ...
+    def put_TypeFace(self: win32more.Windows.Devices.PointOfService.IPosPrinterPrintOptions, value: hstr) -> Void: ...
     @winrt_mixinmethod
     def get_CharacterHeight(self: win32more.Windows.Devices.PointOfService.IPosPrinterPrintOptions) -> UInt32: ...
     @winrt_mixinmethod
@@ -4434,24 +4461,27 @@ class PosPrinterPrintOptions(ComPtr):
     TypeFace = property(get_TypeFace, put_TypeFace)
     Underline = property(get_Underline, put_Underline)
 class PosPrinterPrintSide(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterPrintSide'
     Unknown = 0
     Side1 = 1
     Side2 = 2
 class PosPrinterReleaseDeviceRequestedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterReleaseDeviceRequestedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterReleaseDeviceRequestedEventArgs'
 class PosPrinterRotation(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterRotation'
     Normal = 0
     Right90 = 1
     Left90 = 2
     Rotate180 = 3
 class PosPrinterRuledLineCapabilities(Enum, UInt32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterRuledLineCapabilities'
     None_ = 0
     Horizontal = 1
     Vertical = 2
 class PosPrinterStatus(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterStatus
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterStatus'
     @winrt_mixinmethod
@@ -4461,20 +4491,21 @@ class PosPrinterStatus(ComPtr):
     ExtendedStatus = property(get_ExtendedStatus, None)
     StatusKind = property(get_StatusKind, None)
 class PosPrinterStatusKind(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.PosPrinterStatusKind'
     Online = 0
     Off = 1
     Offline = 2
     OffOrOffline = 3
     Extended = 4
 class PosPrinterStatusUpdatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IPosPrinterStatusUpdatedEventArgs
     _classid_ = 'Windows.Devices.PointOfService.PosPrinterStatusUpdatedEventArgs'
     @winrt_mixinmethod
     def get_Status(self: win32more.Windows.Devices.PointOfService.IPosPrinterStatusUpdatedEventArgs) -> win32more.Windows.Devices.PointOfService.PosPrinterStatus: ...
     Status = property(get_Status, None)
 class ReceiptPrintJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IReceiptPrintJob
     _classid_ = 'Windows.Devices.PointOfService.ReceiptPrintJob'
     @winrt_mixinmethod
@@ -4487,7 +4518,7 @@ class ReceiptPrintJob(ComPtr):
     def StampPaper(self: win32more.Windows.Devices.PointOfService.IReceiptPrintJob2) -> Void: ...
     @winrt_overload
     @winrt_mixinmethod
-    def Print(self: win32more.Windows.Devices.PointOfService.IReceiptPrintJob2, data: WinRT_String, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
+    def Print(self: win32more.Windows.Devices.PointOfService.IReceiptPrintJob2, data: hstr, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
     @winrt_mixinmethod
     def FeedPaperByLine(self: win32more.Windows.Devices.PointOfService.IReceiptPrintJob2, lineCount: Int32) -> Void: ...
     @winrt_mixinmethod
@@ -4509,11 +4540,11 @@ class ReceiptPrintJob(ComPtr):
     @winrt_mixinmethod
     def PrintSavedBitmap(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, bitmapNumber: UInt32) -> Void: ...
     @winrt_mixinmethod
-    def DrawRuledLine(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, positionList: WinRT_String, lineDirection: win32more.Windows.Devices.PointOfService.PosPrinterLineDirection, lineWidth: UInt32, lineStyle: win32more.Windows.Devices.PointOfService.PosPrinterLineStyle, lineColor: UInt32) -> Void: ...
+    def DrawRuledLine(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, positionList: hstr, lineDirection: win32more.Windows.Devices.PointOfService.PosPrinterLineDirection, lineWidth: UInt32, lineStyle: win32more.Windows.Devices.PointOfService.PosPrinterLineStyle, lineColor: UInt32) -> Void: ...
     @winrt_mixinmethod
-    def PrintBarcode(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: WinRT_String, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
+    def PrintBarcode(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: hstr, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
     @winrt_mixinmethod
-    def PrintBarcodeCustomAlign(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: WinRT_String, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignmentDistance: UInt32) -> Void: ...
+    def PrintBarcodeCustomAlign(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: hstr, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignmentDistance: UInt32) -> Void: ...
     @winrt_mixinmethod
     def PrintBitmap(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, bitmap: win32more.Windows.Graphics.Imaging.BitmapFrame, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
     @winrt_mixinmethod
@@ -4524,15 +4555,15 @@ class ReceiptPrintJob(ComPtr):
     def PrintBitmapCustomWidthCustomAlign(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, bitmap: win32more.Windows.Graphics.Imaging.BitmapFrame, alignmentDistance: UInt32, width: UInt32) -> Void: ...
     @Print.register
     @winrt_mixinmethod
-    def Print(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: WinRT_String) -> Void: ...
+    def Print(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: hstr) -> Void: ...
     @winrt_mixinmethod
-    def PrintLine(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: WinRT_String) -> Void: ...
+    def PrintLine(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: hstr) -> Void: ...
     @winrt_mixinmethod
     def PrintNewline(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob) -> Void: ...
     @winrt_mixinmethod
     def ExecuteAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
 class ReceiptPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IReceiptPrinterCapabilities
     _classid_ = 'Windows.Devices.PointOfService.ReceiptPrinterCapabilities'
     @winrt_mixinmethod
@@ -4629,15 +4660,16 @@ class ReceiptPrinterCapabilities(ComPtr):
     SupportedBitmapRotations = property(get_SupportedBitmapRotations, None)
     SupportedCharactersPerLine = property(get_SupportedCharactersPerLine, None)
 class SizeUInt32(Structure):
+    _name_ = 'Windows.Devices.PointOfService.SizeUInt32'
     Width: UInt32
     Height: UInt32
 class SlipPrintJob(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob
     _classid_ = 'Windows.Devices.PointOfService.SlipPrintJob'
     @winrt_overload
     @winrt_mixinmethod
-    def Print(self: win32more.Windows.Devices.PointOfService.ISlipPrintJob, data: WinRT_String, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
+    def Print(self: win32more.Windows.Devices.PointOfService.ISlipPrintJob, data: hstr, printOptions: win32more.Windows.Devices.PointOfService.PosPrinterPrintOptions) -> Void: ...
     @winrt_mixinmethod
     def FeedPaperByLine(self: win32more.Windows.Devices.PointOfService.ISlipPrintJob, lineCount: Int32) -> Void: ...
     @winrt_mixinmethod
@@ -4659,11 +4691,11 @@ class SlipPrintJob(ComPtr):
     @winrt_mixinmethod
     def PrintSavedBitmap(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, bitmapNumber: UInt32) -> Void: ...
     @winrt_mixinmethod
-    def DrawRuledLine(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, positionList: WinRT_String, lineDirection: win32more.Windows.Devices.PointOfService.PosPrinterLineDirection, lineWidth: UInt32, lineStyle: win32more.Windows.Devices.PointOfService.PosPrinterLineStyle, lineColor: UInt32) -> Void: ...
+    def DrawRuledLine(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, positionList: hstr, lineDirection: win32more.Windows.Devices.PointOfService.PosPrinterLineDirection, lineWidth: UInt32, lineStyle: win32more.Windows.Devices.PointOfService.PosPrinterLineStyle, lineColor: UInt32) -> Void: ...
     @winrt_mixinmethod
-    def PrintBarcode(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: WinRT_String, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
+    def PrintBarcode(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: hstr, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
     @winrt_mixinmethod
-    def PrintBarcodeCustomAlign(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: WinRT_String, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignmentDistance: UInt32) -> Void: ...
+    def PrintBarcodeCustomAlign(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, data: hstr, symbology: UInt32, height: UInt32, width: UInt32, textPosition: win32more.Windows.Devices.PointOfService.PosPrinterBarcodeTextPosition, alignmentDistance: UInt32) -> Void: ...
     @winrt_mixinmethod
     def PrintBitmap(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, bitmap: win32more.Windows.Graphics.Imaging.BitmapFrame, alignment: win32more.Windows.Devices.PointOfService.PosPrinterAlignment) -> Void: ...
     @winrt_mixinmethod
@@ -4674,15 +4706,15 @@ class SlipPrintJob(ComPtr):
     def PrintBitmapCustomWidthCustomAlign(self: win32more.Windows.Devices.PointOfService.IReceiptOrSlipJob, bitmap: win32more.Windows.Graphics.Imaging.BitmapFrame, alignmentDistance: UInt32, width: UInt32) -> Void: ...
     @Print.register
     @winrt_mixinmethod
-    def Print(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: WinRT_String) -> Void: ...
+    def Print(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: hstr) -> Void: ...
     @winrt_mixinmethod
-    def PrintLine(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: WinRT_String) -> Void: ...
+    def PrintLine(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob, data: hstr) -> Void: ...
     @winrt_mixinmethod
     def PrintNewline(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob) -> Void: ...
     @winrt_mixinmethod
     def ExecuteAsync(self: win32more.Windows.Devices.PointOfService.IPosPrinterJob) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
 class SlipPrinterCapabilities(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.ISlipPrinterCapabilities
     _classid_ = 'Windows.Devices.PointOfService.SlipPrinterCapabilities'
     @winrt_mixinmethod
@@ -4776,7 +4808,7 @@ class SlipPrinterCapabilities(ComPtr):
     SupportedBitmapRotations = property(get_SupportedBitmapRotations, None)
     SupportedCharactersPerLine = property(get_SupportedCharactersPerLine, None)
 class UnifiedPosErrorData(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.PointOfService.IUnifiedPosErrorData
     _classid_ = 'Windows.Devices.PointOfService.UnifiedPosErrorData'
     def __init__(self, *args, **kwargs):
@@ -4787,9 +4819,9 @@ class UnifiedPosErrorData(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateInstance(cls: win32more.Windows.Devices.PointOfService.IUnifiedPosErrorDataFactory, message: WinRT_String, severity: win32more.Windows.Devices.PointOfService.UnifiedPosErrorSeverity, reason: win32more.Windows.Devices.PointOfService.UnifiedPosErrorReason, extendedReason: UInt32) -> win32more.Windows.Devices.PointOfService.UnifiedPosErrorData: ...
+    def CreateInstance(cls: win32more.Windows.Devices.PointOfService.IUnifiedPosErrorDataFactory, message: hstr, severity: win32more.Windows.Devices.PointOfService.UnifiedPosErrorSeverity, reason: win32more.Windows.Devices.PointOfService.UnifiedPosErrorReason, extendedReason: UInt32) -> win32more.Windows.Devices.PointOfService.UnifiedPosErrorData: ...
     @winrt_mixinmethod
-    def get_Message(self: win32more.Windows.Devices.PointOfService.IUnifiedPosErrorData) -> WinRT_String: ...
+    def get_Message(self: win32more.Windows.Devices.PointOfService.IUnifiedPosErrorData) -> hstr: ...
     @winrt_mixinmethod
     def get_Severity(self: win32more.Windows.Devices.PointOfService.IUnifiedPosErrorData) -> win32more.Windows.Devices.PointOfService.UnifiedPosErrorSeverity: ...
     @winrt_mixinmethod
@@ -4801,6 +4833,7 @@ class UnifiedPosErrorData(ComPtr):
     Reason = property(get_Reason, None)
     Severity = property(get_Severity, None)
 class UnifiedPosErrorReason(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.UnifiedPosErrorReason'
     UnknownErrorReason = 0
     NoService = 1
     Disabled = 2
@@ -4813,6 +4846,7 @@ class UnifiedPosErrorReason(Enum, Int32):
     Busy = 9
     Extended = 10
 class UnifiedPosErrorSeverity(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.UnifiedPosErrorSeverity'
     UnknownErrorSeverity = 0
     Warning = 1
     Recoverable = 2
@@ -4820,11 +4854,13 @@ class UnifiedPosErrorSeverity(Enum, Int32):
     AssistanceRequired = 4
     Fatal = 5
 class UnifiedPosHealthCheckLevel(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.UnifiedPosHealthCheckLevel'
     UnknownHealthCheckLevel = 0
     POSInternal = 1
     External = 2
     Interactive = 3
 class UnifiedPosPowerReportingType(Enum, Int32):
+    _name_ = 'Windows.Devices.PointOfService.UnifiedPosPowerReportingType'
     UnknownPowerReportingType = 0
     Standard = 1
     Advanced = 2

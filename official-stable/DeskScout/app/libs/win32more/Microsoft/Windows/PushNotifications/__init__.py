@@ -1,12 +1,10 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Microsoft.Windows.PushNotifications
 import win32more.Windows.ApplicationModel.Background
 import win32more.Windows.Foundation
-import win32more.Windows.Win32.System.WinRT
 class IPushNotificationChannel(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Windows.PushNotifications.IPushNotificationChannel'
     _iid_ = Guid('{da28bbcb-7695-5d38-af82-f30b72fef1f6}')
     @winrt_commethod(6)
@@ -18,7 +16,7 @@ class IPushNotificationChannel(ComPtr):
     ExpirationTime = property(get_ExpirationTime, None)
     Uri = property(get_Uri, None)
 class IPushNotificationCreateChannelResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Windows.PushNotifications.IPushNotificationCreateChannelResult'
     _iid_ = Guid('{4df3717f-5d33-56e9-b381-1b350c95722e}')
     @winrt_commethod(6)
@@ -31,7 +29,7 @@ class IPushNotificationCreateChannelResult(ComPtr):
     ExtendedError = property(get_ExtendedError, None)
     Status = property(get_Status, None)
 class IPushNotificationManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Windows.PushNotifications.IPushNotificationManager'
     _iid_ = Guid('{902f4aba-ff63-5dfe-a88f-15cc6bed55ff}')
     @winrt_commethod(6)
@@ -46,9 +44,9 @@ class IPushNotificationManager(ComPtr):
     def add_PushReceived(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.Windows.PushNotifications.PushNotificationManager, win32more.Microsoft.Windows.PushNotifications.PushNotificationReceivedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_PushReceived(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    PushReceived = event()
+    PushReceived = event(add_PushReceived, remove_PushReceived)
 class IPushNotificationManagerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Windows.PushNotifications.IPushNotificationManagerStatics'
     _iid_ = Guid('{71329470-1b55-58dc-a00c-68c26f2d8bd9}')
     @winrt_commethod(6)
@@ -57,7 +55,7 @@ class IPushNotificationManagerStatics(ComPtr):
     def get_Default(self) -> win32more.Microsoft.Windows.PushNotifications.PushNotificationManager: ...
     Default = property(get_Default, None)
 class IPushNotificationReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Windows.PushNotifications.IPushNotificationReceivedEventArgs'
     _iid_ = Guid('{fbd4ec53-bb83-5495-8777-d3cf13e4299c}')
     @winrt_commethod(6)
@@ -69,9 +67,9 @@ class IPushNotificationReceivedEventArgs(ComPtr):
     @winrt_commethod(9)
     def remove_Canceled(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Payload = property(get_Payload, None)
-    Canceled = event()
+    Canceled = event(add_Canceled, remove_Canceled)
 class PushNotificationChannel(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Microsoft.Windows.PushNotifications.IPushNotificationChannel
     _classid_ = 'Microsoft.Windows.PushNotifications.PushNotificationChannel'
     @winrt_mixinmethod
@@ -83,12 +81,13 @@ class PushNotificationChannel(ComPtr):
     ExpirationTime = property(get_ExpirationTime, None)
     Uri = property(get_Uri, None)
 class PushNotificationChannelStatus(Enum, Int32):
+    _name_ = 'Microsoft.Windows.PushNotifications.PushNotificationChannelStatus'
     InProgress = 0
     InProgressRetry = 1
     CompletedSuccess = 2
     CompletedFailure = 3
 class PushNotificationCreateChannelResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Microsoft.Windows.PushNotifications.IPushNotificationCreateChannelResult
     _classid_ = 'Microsoft.Windows.PushNotifications.PushNotificationCreateChannelResult'
     @winrt_mixinmethod
@@ -101,13 +100,14 @@ class PushNotificationCreateChannelResult(ComPtr):
     ExtendedError = property(get_ExtendedError, None)
     Status = property(get_Status, None)
 class PushNotificationCreateChannelStatus(Structure):
+    _name_ = 'Microsoft.Windows.PushNotifications.PushNotificationCreateChannelStatus'
     status: win32more.Microsoft.Windows.PushNotifications.PushNotificationChannelStatus
     extendedError: win32more.Windows.Foundation.HResult
     retryCount: UInt32
 class _PushNotificationManager_Meta_(ComPtr.__class__):
     pass
 class PushNotificationManager(ComPtr, metaclass=_PushNotificationManager_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Microsoft.Windows.PushNotifications.IPushNotificationManager
     _classid_ = 'Microsoft.Windows.PushNotifications.PushNotificationManager'
     @winrt_mixinmethod
@@ -127,9 +127,9 @@ class PushNotificationManager(ComPtr, metaclass=_PushNotificationManager_Meta_):
     @winrt_classmethod
     def get_Default(cls: win32more.Microsoft.Windows.PushNotifications.IPushNotificationManagerStatics) -> win32more.Microsoft.Windows.PushNotifications.PushNotificationManager: ...
     _PushNotificationManager_Meta_.Default = property(get_Default, None)
-    PushReceived = event()
+    PushReceived = event(add_PushReceived, remove_PushReceived)
 class PushNotificationReceivedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Microsoft.Windows.PushNotifications.IPushNotificationReceivedEventArgs
     _classid_ = 'Microsoft.Windows.PushNotifications.PushNotificationReceivedEventArgs'
     @winrt_mixinmethod
@@ -141,7 +141,7 @@ class PushNotificationReceivedEventArgs(ComPtr):
     @winrt_mixinmethod
     def remove_Canceled(self: win32more.Microsoft.Windows.PushNotifications.IPushNotificationReceivedEventArgs, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Payload = property(get_Payload, None)
-    Canceled = event()
+    Canceled = event(add_Canceled, remove_Canceled)
 PushNotificationsContract: UInt32 = 65536
 
 

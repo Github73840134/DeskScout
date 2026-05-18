@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Security.Authentication.Identity
@@ -52,6 +52,7 @@ ASC_REQ_PROXY_BINDINGS: win32more.Windows.Win32.Security.Authentication.Identity
 ASC_REQ_ALLOW_MISSING_BINDINGS: win32more.Windows.Win32.Security.Authentication.Identity.ASC_REQ_FLAGS = 268435456
 ASC_REQ_HIGH_FLAGS = UInt64
 ASC_REQ_MESSAGES: win32more.Windows.Win32.Security.Authentication.Identity.ASC_REQ_HIGH_FLAGS = 4294967296
+ASC_REQ_EXPLICIT_SESSION: win32more.Windows.Win32.Security.Authentication.Identity.ASC_REQ_HIGH_FLAGS = 68719476736
 class AUDIT_POLICY_INFORMATION(Structure):
     AuditSubCategoryGuid: Guid
     AuditingInformation: UInt32
@@ -132,6 +133,8 @@ SECBUFFER_FLAGS: UInt32 = 27
 SECBUFFER_TRAFFIC_SECRETS: UInt32 = 28
 SECBUFFER_CERTIFICATE_REQUEST_CONTEXT: UInt32 = 29
 SECBUFFER_CHANNEL_BINDINGS_RESULT: UInt32 = 30
+SECBUFFER_APP_SESSION_STATE: UInt32 = 31
+SECBUFFER_SESSION_TICKET: UInt32 = 32
 SECBUFFER_ATTRMASK: UInt32 = 4026531840
 SECBUFFER_READONLY: UInt32 = 2147483648
 SECBUFFER_READONLY_WITH_CHECKSUM: UInt32 = 268435456
@@ -153,6 +156,7 @@ SECPKG_CRED_DEFAULT: UInt32 = 4
 SECPKG_CRED_RESERVED: UInt32 = 4026531840
 SECPKG_CRED_AUTOLOGON_RESTRICTED: UInt32 = 16
 SECPKG_CRED_PROCESS_POLICY_ONLY: UInt32 = 32
+SECPKG_CRED_KERB_ANCHOR_DS_VERSION: UInt32 = 64
 ISC_RET_DELEGATE: UInt32 = 1
 ISC_RET_MUTUAL_AUTH: UInt32 = 2
 ISC_RET_REPLAY_DETECT: UInt32 = 4
@@ -183,6 +187,8 @@ ISC_RET_CONFIDENTIALITY_ONLY: UInt32 = 1073741824
 ISC_RET_MESSAGES: UInt64 = 4294967296
 ISC_RET_DEFERRED_CRED_VALIDATION: UInt64 = 8589934592
 ISC_RET_NO_POST_HANDSHAKE_AUTH: UInt64 = 17179869184
+ISC_RET_REUSE_SESSION_TICKETS: UInt64 = 34359738368
+ISC_RET_EXPLICIT_SESSION: UInt64 = 68719476736
 ASC_RET_DELEGATE: UInt32 = 1
 ASC_RET_MUTUAL_AUTH: UInt32 = 2
 ASC_RET_REPLAY_DETECT: UInt32 = 4
@@ -208,13 +214,21 @@ ASC_RET_FRAGMENT_ONLY: UInt32 = 8388608
 ASC_RET_NO_TOKEN: UInt32 = 16777216
 ASC_RET_NO_ADDITIONAL_TOKEN: UInt32 = 33554432
 ASC_RET_MESSAGES: UInt64 = 4294967296
+ASC_RET_REUSE_SESSION_TICKETS: UInt64 = 34359738368
+ASC_RET_EXPLICIT_SESSION: UInt64 = 68719476736
 SECPKG_CRED_ATTR_NAMES: UInt32 = 1
 SECPKG_CRED_ATTR_SSI_PROVIDER: UInt32 = 2
 SECPKG_CRED_ATTR_KDC_PROXY_SETTINGS: UInt32 = 3
+SECPKG_CRED_ATTR_KDC_NETWORK_SETTINGS: UInt32 = 3
 SECPKG_CRED_ATTR_CERT: UInt32 = 4
 SECPKG_CRED_ATTR_PAC_BYPASS: UInt32 = 5
 KDC_PROXY_SETTINGS_V1: UInt32 = 1
+KDC_NETWORK_SETTINGS_V2: UInt32 = 2
 KDC_PROXY_SETTINGS_FLAGS_FORCEPROXY: UInt32 = 1
+KDC_NETWORK_SETTINGS_FLAGS_FORCEPROXY: UInt32 = 1
+KDC_NETWORK_SETTINGS_FLAGS_CONFIGURE_PROXY: UInt32 = 2147483648
+KDC_NETWORK_SETTINGS_FLAGS_CONFIGURE_DISCOVERY: UInt32 = 1073741824
+KDC_NETWORK_DISCOVERY_FLAGS_DS13_REQUIRED: UInt32 = 2147483648
 SECPKG_ATTR_PROTO_INFO: UInt32 = 7
 SECPKG_ATTR_USER_FLAGS: UInt32 = 11
 SECPKG_ATTR_USE_VALIDATED: UInt32 = 15
@@ -356,6 +370,7 @@ POLICY_AUDIT_LOG_ADMIN: Int32 = 512
 POLICY_SERVER_ADMIN: Int32 = 1024
 POLICY_LOOKUP_NAMES: Int32 = 2048
 POLICY_NOTIFICATION: Int32 = 4096
+POLICY_MODE_COUNT: UInt32 = 11
 LSA_LOOKUP_ISOLATED_AS_LOCAL: UInt32 = 2147483648
 LSA_LOOKUP_DISALLOW_CONNECTED_ACCOUNT_INTERNET_SID: UInt32 = 2147483648
 LSA_LOOKUP_PREFER_INTERNET_NAMES: UInt32 = 1073741824
@@ -442,6 +457,11 @@ NEGOTIATE_MAX_PREFIX: UInt32 = 32
 NEGOTIATE_ALLOW_NTLM: UInt32 = 268435456
 NEGOTIATE_NEG_NTLM: UInt32 = 536870912
 MAX_USER_RECORDS: UInt32 = 1000
+versionbyte: UInt32 = 1
+versionbyte_length: UInt32 = 1
+LSAD_AES_256_ALG: String = 'AEAD-AES-256-CBC-HMAC-SHA512'
+LSAD_AES256_ENC_KEY_STRING: String = 'Microsoft LSAD encryption key AEAD-AES-256-CBC-HMAC-SHA512 16'
+LSAD_AES256_MAC_KEY_STRING: String = 'Microsoft LSAD MAC key AEAD-AES-256-CBC-HMAC-SHA512 16'
 Audit_System_SecurityStateChange: Guid = Guid('{0cce9210-69ae-11d9-bed3-505054503030}')
 Audit_System_SecuritySubsystemExtension: Guid = Guid('{0cce9211-69ae-11d9-bed3-505054503030}')
 Audit_System_Integrity: Guid = Guid('{0cce9212-69ae-11d9-bed3-505054503030}')
@@ -501,6 +521,7 @@ Audit_Logon_Claims: Guid = Guid('{0cce9247-69ae-11d9-bed3-505054503030}')
 Audit_DetailedTracking_PnpActivity: Guid = Guid('{0cce9248-69ae-11d9-bed3-505054503030}')
 Audit_Logon_Groups: Guid = Guid('{0cce9249-69ae-11d9-bed3-505054503030}')
 Audit_DetailedTracking_TokenRightAdjusted: Guid = Guid('{0cce924a-69ae-11d9-bed3-505054503030}')
+Audit_Logon_AccessRights: Guid = Guid('{0cce924b-69ae-11d9-bed3-505054503030}')
 Audit_System: Guid = Guid('{69979848-797a-11d9-bed3-505054503030}')
 Audit_Logon: Guid = Guid('{69979849-797a-11d9-bed3-505054503030}')
 Audit_ObjectAccess: Guid = Guid('{6997984a-797a-11d9-bed3-505054503030}')
@@ -577,6 +598,8 @@ KERBEROS_VERSION: UInt32 = 5
 KERBEROS_REVISION: UInt32 = 6
 KERB_ETYPE_AES128_CTS_HMAC_SHA1_96: UInt32 = 17
 KERB_ETYPE_AES256_CTS_HMAC_SHA1_96: UInt32 = 18
+KERB_ETYPE_AES128_CTS_HMAC_SHA256: UInt32 = 19
+KERB_ETYPE_AES256_CTS_HMAC_SHA384: UInt32 = 20
 KERB_ETYPE_RC4_PLAIN2: Int32 = -129
 KERB_ETYPE_RC4_LM: Int32 = -130
 KERB_ETYPE_RC4_SHA: Int32 = -131
@@ -696,6 +719,7 @@ KERB_SETPASS_USE_CREDHANDLE: UInt32 = 2
 KERB_DECRYPT_FLAG_DEFAULT_KEY: UInt32 = 1
 KERB_REFRESH_SCCRED_RELEASE: UInt32 = 0
 KERB_REFRESH_SCCRED_GETTGT: UInt32 = 1
+KERB_REQUEST_CRED_LOCAL_ACCOUNT: UInt32 = 8
 KERB_TRANSFER_CRED_WITH_TICKETS: UInt32 = 1
 KERB_TRANSFER_CRED_CLEANUP_CREDENTIALS: UInt32 = 2
 KERB_QUERY_DOMAIN_EXTENDED_POLICIES_RESPONSE_FLAG_DAC_DISABLED: UInt32 = 1
@@ -766,6 +790,7 @@ PRIMARY_CRED_INTERACTIVE_FIDO_LOGON: UInt32 = 1048576
 PRIMARY_CRED_ARSO_LOGON: UInt32 = 2097152
 PRIMARY_CRED_SUPPLEMENTAL: UInt32 = 4194304
 PRIMARY_CRED_FOR_PASSWORD_CHANGE: UInt32 = 8388608
+PRIMARY_CRED_LOCAL_USER: UInt32 = 16777216
 PRIMARY_CRED_LOGON_PACKAGE_SHIFT: UInt32 = 24
 PRIMARY_CRED_PACKAGE_MASK: UInt32 = 4278190080
 SECPKG_PRIMARY_CRED_EX_FLAGS_EX_DELEGATION_TOKEN: UInt32 = 1
@@ -866,6 +891,8 @@ SCH_CRED_VERSION: UInt32 = 2
 SCH_CRED_V3: UInt32 = 3
 SCHANNEL_CRED_VERSION: UInt32 = 4
 SCH_CREDENTIALS_VERSION: UInt32 = 5
+SCHANNEL_RSA_PSS_PADDING_ALGORITHM: String = 'SCH_RSA_PSS_PAD'
+SCHANNEL_RSA_PKCS_PADDING_ALGORITHM: String = 'SCH_RSA_PKCS_PAD'
 TLS_PARAMS_OPTIONAL: UInt32 = 1
 SCH_CRED_MAX_SUPPORTED_PARAMETERS: UInt32 = 16
 SCH_CRED_MAX_SUPPORTED_ALPN_IDS: UInt32 = 16
@@ -1036,10 +1063,14 @@ USER_TRUSTED_TO_AUTHENTICATE_FOR_DELEGATION: UInt32 = 262144
 USER_NO_AUTH_DATA_REQUIRED: UInt32 = 524288
 USER_PARTIAL_SECRETS_ACCOUNT: UInt32 = 1048576
 USER_USE_AES_KEYS: UInt32 = 2097152
+USER_SHADOW_ACCOUNT: UInt32 = 4194304
 SAM_DAYS_PER_WEEK: UInt32 = 7
 USER_ALL_PARAMETERS: UInt32 = 2097152
 CLEAR_BLOCK_LENGTH: UInt32 = 8
 CYPHER_BLOCK_LENGTH: UInt32 = 8
+NETLOGON_TARGET_INFO_TYPE_NTLM: UInt32 = 1
+NETLOGON_TARGET_INFO_TYPE_KERBEROS: UInt32 = 2
+MSV1_0_KERBEROS_LOGON: UInt32 = 4
 MSV1_0_VALIDATION_LOGOFF_TIME: UInt32 = 1
 MSV1_0_VALIDATION_KICKOFF_TIME: UInt32 = 2
 MSV1_0_VALIDATION_LOGON_SERVER: UInt32 = 4
@@ -1317,6 +1348,12 @@ SL_E_LICENSE_NOT_BOUND: win32more.Windows.Win32.Foundation.HRESULT = -1073418112
 SL_E_VL_AD_AO_NOT_FOUND: win32more.Windows.Win32.Foundation.HRESULT = -1073418111
 SL_E_VL_AD_AO_NAME_TOO_LONG: win32more.Windows.Win32.Foundation.HRESULT = -1073418110
 SL_E_VL_AD_SCHEMA_VERSION_NOT_SUPPORTED: win32more.Windows.Win32.Foundation.HRESULT = -1073418109
+SL_E_SLP_MSOA_BAD_FORMAT: win32more.Windows.Win32.Foundation.HRESULT = -1073418096
+SL_E_SLP_MSOA_BAD_DATA_HEADER: win32more.Windows.Win32.Foundation.HRESULT = -1073418095
+SL_E_SLP_MSOA_INVALID_DATA_LENGTH: win32more.Windows.Win32.Foundation.HRESULT = -1073418094
+SL_E_SLP_MSOA_INVALID_PRODUCT_KEY: win32more.Windows.Win32.Foundation.HRESULT = -1073418093
+SL_E_INCOMPLETE_OR_OLD_DISM_BINARIES: win32more.Windows.Win32.Foundation.HRESULT = -1073418092
+SL_E_SLP_MSOA_PRODUCT_KEY_MISMATCH: win32more.Windows.Win32.Foundation.HRESULT = -1073418091
 SL_E_NOT_GENUINE: win32more.Windows.Win32.Foundation.HRESULT = -1073417728
 SL_E_EDITION_MISMATCHED: win32more.Windows.Win32.Foundation.HRESULT = -1073417712
 SL_E_HWID_CHANGED: win32more.Windows.Win32.Foundation.HRESULT = -1073417711
@@ -1686,6 +1723,12 @@ SetCredentialsAttributes = UnicodeAlias('SetCredentialsAttributesW')
 def SetCredentialsAttributesA(phCredential: POINTER(win32more.Windows.Win32.Security.Credentials.SecHandle), ulAttribute: UInt32, pBuffer: VoidPtr, cbBuffer: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('SECUR32.dll')
 def FreeContextBuffer(pvContextBuffer: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('SspiCli.dll')
+def SecAllocateAndSetIPAddress(lpIpAddress: POINTER(Byte), cchIpAddress: UInt32, FreeCallContext: POINTER(Int32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('SspiCli.dll')
+def SecAllocateAndSetCallTarget(lpIpAddress: POINTER(Byte), cchIpAddress: UInt32, TargetName: win32more.Windows.Win32.Foundation.PWSTR, FreeCallContext: POINTER(Int32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('SspiCli.dll')
+def SecFreeCallContext() -> Void: ...
 @winfunctype('SECUR32.dll')
 def MakeSignature(phContext: POINTER(win32more.Windows.Win32.Security.Credentials.SecHandle), fQOP: UInt32, pMessage: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.SecBufferDesc), MessageSeqNo: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('SECUR32.dll')
@@ -2088,6 +2131,8 @@ ISC_REQ_HIGH_FLAGS = UInt64
 ISC_REQ_MESSAGES: win32more.Windows.Win32.Security.Authentication.Identity.ISC_REQ_HIGH_FLAGS = 4294967296
 ISC_REQ_DEFERRED_CRED_VALIDATION: win32more.Windows.Win32.Security.Authentication.Identity.ISC_REQ_HIGH_FLAGS = 8589934592
 ISC_REQ_NO_POST_HANDSHAKE_AUTH: win32more.Windows.Win32.Security.Authentication.Identity.ISC_REQ_HIGH_FLAGS = 17179869184
+ISC_REQ_REUSE_SESSION_TICKETS: win32more.Windows.Win32.Security.Authentication.Identity.ISC_REQ_HIGH_FLAGS = 34359738368
+ISC_REQ_EXPLICIT_SESSION: win32more.Windows.Win32.Security.Authentication.Identity.ISC_REQ_HIGH_FLAGS = 68719476736
 class KDC_PROXY_CACHE_ENTRY_DATA(Structure):
     SinceLastUsed: UInt64
     DomainName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
@@ -2122,7 +2167,7 @@ class KERB_ADD_CREDENTIALS_REQUEST(Structure):
 class KERB_ADD_CREDENTIALS_REQUEST_EX(Structure):
     Credentials: win32more.Windows.Win32.Security.Authentication.Identity.KERB_ADD_CREDENTIALS_REQUEST
     PrincipalNameCount: UInt32
-    PrincipalNames: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING * 1
+    PrincipalNames: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING]
 class KERB_AUTH_DATA(Structure):
     Type: UInt32
     Length: UInt32
@@ -2162,6 +2207,9 @@ class KERB_CERTIFICATE_S4U_LOGON(Structure):
 class KERB_CERTIFICATE_UNLOCK_LOGON(Structure):
     Logon: win32more.Windows.Win32.Security.Authentication.Identity.KERB_CERTIFICATE_LOGON
     LogonId: win32more.Windows.Win32.Foundation.LUID
+class KERB_CHANGEMACHINEPASSWORD_REQUEST(Structure):
+    MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
+    ForcePasswordChange: win32more.Windows.Win32.Foundation.BOOLEAN
 class KERB_CHANGEPASSWORD_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     DomainName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
@@ -2173,23 +2221,23 @@ class KERB_CLEANUP_MACHINE_PKINIT_CREDS_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     LogonId: win32more.Windows.Win32.Foundation.LUID
 class KERB_CLOUD_KERBEROS_DEBUG_DATA(Structure):
-    EnabledByPolicy: Annotated[UInt32, 1]
-    AsRepCallbackPresent: Annotated[UInt32, 1]
-    AsRepCallbackUsed: Annotated[UInt32, 1]
-    CloudReferralTgtAvailable: Annotated[UInt32, 1]
-    SpnOracleConfigured: Annotated[UInt32, 1]
-    KdcProxyPresent: Annotated[UInt32, 1]
-    PublicKeyCredsPresent: Annotated[UInt32, 1]
-    PasswordKeysPresent: Annotated[UInt32, 1]
-    PasswordPresent: Annotated[UInt32, 1]
-    AsRepSourceCred: Annotated[UInt32, 8]
+    EnabledByPolicy: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    AsRepCallbackPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    AsRepCallbackUsed: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    CloudReferralTgtAvailable: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    SpnOracleConfigured: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    KdcProxyPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    PublicKeyCredsPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    PasswordKeysPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    PasswordPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    AsRepSourceCred: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class KERB_CLOUD_KERBEROS_DEBUG_DATA_V0(Structure):
-    EnabledByPolicy: Annotated[UInt32, 1]
-    AsRepCallbackPresent: Annotated[UInt32, 1]
-    AsRepCallbackUsed: Annotated[UInt32, 1]
-    CloudReferralTgtAvailable: Annotated[UInt32, 1]
-    SpnOracleConfigured: Annotated[UInt32, 1]
-    KdcProxyPresent: Annotated[UInt32, 1]
+    EnabledByPolicy: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    AsRepCallbackPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    AsRepCallbackUsed: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    CloudReferralTgtAvailable: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    SpnOracleConfigured: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    KdcProxyPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class KERB_CLOUD_KERBEROS_DEBUG_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     LogonId: win32more.Windows.Win32.Foundation.LUID
@@ -2197,7 +2245,7 @@ class KERB_CLOUD_KERBEROS_DEBUG_RESPONSE(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     Version: UInt32
     Length: UInt32
-    Data: UInt32 * 1
+    Data: FlexibleArray[UInt32]
 class KERB_CRYPTO_KEY(Structure):
     KeyType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_CRYPTO_KEY_TYPE
     Length: UInt32
@@ -2225,11 +2273,11 @@ class KERB_DECRYPT_REQUEST(Structure):
     InitialVector: POINTER(Byte)
     EncryptedData: POINTER(Byte)
 class KERB_DECRYPT_RESPONSE(Structure):
-    DecryptedData: Byte * 1
+    DecryptedData: FlexibleArray[Byte]
 class KERB_EXTERNAL_NAME(Structure):
     NameType: Int16
     NameCount: UInt16
-    Names: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING * 1
+    Names: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING]
 class KERB_EXTERNAL_TICKET(Structure):
     ServiceName: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.KERB_EXTERNAL_NAME)
     TargetName: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.KERB_EXTERNAL_NAME)
@@ -2292,7 +2340,7 @@ class KERB_NET_ADDRESS(Structure):
     Address: win32more.Windows.Win32.Foundation.PSTR
 class KERB_NET_ADDRESSES(Structure):
     Number: UInt32
-    Addresses: win32more.Windows.Win32.Security.Authentication.Identity.KERB_NET_ADDRESS * 1
+    Addresses: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.KERB_NET_ADDRESS]
 KERB_PROFILE_BUFFER_TYPE = Int32
 KerbInteractiveProfile: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROFILE_BUFFER_TYPE = 2
 KerbSmartCardProfile: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROFILE_BUFFER_TYPE = 4
@@ -2335,6 +2383,8 @@ KerbQueryS4U2ProxyCacheMessage: win32more.Windows.Win32.Security.Authentication.
 KerbRetrieveKeyTabMessage: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE = 34
 KerbRefreshPolicyMessage: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE = 35
 KerbPrintCloudKerberosDebugMessage: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE = 36
+KerbNetworkTicketLogonMessage: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE = 37
+KerbNlChangeMachinePasswordMessage: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE = 38
 class KERB_PURGE_BINDING_CACHE_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
 class KERB_PURGE_KDC_PROXY_CACHE_REQUEST(Structure):
@@ -2388,22 +2438,22 @@ class KERB_QUERY_S4U2PROXY_CACHE_RESPONSE(Structure):
 class KERB_QUERY_TKT_CACHE_EX2_RESPONSE(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     CountOfTickets: UInt32
-    Tickets: win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO_EX2 * 1
+    Tickets: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO_EX2]
 class KERB_QUERY_TKT_CACHE_EX3_RESPONSE(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     CountOfTickets: UInt32
-    Tickets: win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO_EX3 * 1
+    Tickets: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO_EX3]
 class KERB_QUERY_TKT_CACHE_EX_RESPONSE(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     CountOfTickets: UInt32
-    Tickets: win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO_EX * 1
+    Tickets: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO_EX]
 class KERB_QUERY_TKT_CACHE_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     LogonId: win32more.Windows.Win32.Foundation.LUID
 class KERB_QUERY_TKT_CACHE_RESPONSE(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     CountOfTickets: UInt32
-    Tickets: win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO * 1
+    Tickets: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.KERB_TICKET_CACHE_INFO]
 class KERB_REFRESH_POLICY_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.KERB_PROTOCOL_MESSAGE_TYPE
     Flags: UInt32
@@ -2776,6 +2826,8 @@ class LSA_SECPKG_FUNCTION_TABLE(Structure):
     GetAppModeInfo: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_GET_APP_MODE_INFO
     SetAppModeInfo: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_SET_APP_MODE_INFO
     GetClientInfoEx: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_GET_CLIENT_INFO_EX
+    GetSecpkgFailureReason: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_GET_SECPKG_FAILURE_REASON
+    SetSecpkgFailureReason: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_SET_SECPKG_FAILURE_REASON
 class LSA_STRING(Structure):
     Length: UInt16
     MaximumLength: UInt16
@@ -2891,7 +2943,7 @@ class MSV1_0_INTERACTIVE_PROFILE(Structure):
 class MSV1_0_IUM_SUPPLEMENTAL_CREDENTIAL(Structure):
     Version: UInt32
     EncryptedCredsSize: UInt32
-    EncryptedCreds: Byte * 1
+    EncryptedCreds: FlexibleArray[Byte]
 class MSV1_0_LM20_LOGON(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.MSV1_0_LOGON_SUBMIT_TYPE
     LogonDomainName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
@@ -2930,7 +2982,7 @@ class MSV1_0_NTLM3_RESPONSE(Structure):
     TimeStamp: UInt64
     ChallengeFromClient: Byte * 8
     AvPairsOff: UInt32
-    Buffer: Byte * 1
+    Buffer: FlexibleArray[Byte]
 class MSV1_0_PASSTHROUGH_REQUEST(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.MSV1_0_PROTOCOL_MESSAGE_TYPE
     DomainName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
@@ -2979,7 +3031,7 @@ class MSV1_0_REMOTE_SUPPLEMENTAL_CREDENTIAL(Structure):
     CredentialKey: win32more.Windows.Win32.Security.Authentication.Identity.MSV1_0_CREDENTIAL_KEY
     CredentialKeyType: win32more.Windows.Win32.Security.Authentication.Identity.MSV1_0_CREDENTIAL_KEY_TYPE
     EncryptedCredsSize: UInt32
-    EncryptedCreds: Byte * 1
+    EncryptedCreds: FlexibleArray[Byte]
     _pack_ = 1
 class MSV1_0_S4U_LOGON(Structure):
     MessageType: win32more.Windows.Win32.Security.Authentication.Identity.MSV1_0_LOGON_SUBMIT_TYPE
@@ -3103,6 +3155,7 @@ NetlogonGenericInformation: win32more.Windows.Win32.Security.Authentication.Iden
 NetlogonInteractiveTransitiveInformation: win32more.Windows.Win32.Security.Authentication.Identity.NETLOGON_LOGON_INFO_CLASS = 5
 NetlogonNetworkTransitiveInformation: win32more.Windows.Win32.Security.Authentication.Identity.NETLOGON_LOGON_INFO_CLASS = 6
 NetlogonServiceTransitiveInformation: win32more.Windows.Win32.Security.Authentication.Identity.NETLOGON_LOGON_INFO_CLASS = 7
+NetlogonTicketLogonInformation: win32more.Windows.Win32.Security.Authentication.Identity.NETLOGON_LOGON_INFO_CLASS = 8
 class NETLOGON_NETWORK_INFO(Structure):
     Identity: win32more.Windows.Win32.Security.Authentication.Identity.NETLOGON_LOGON_IDENTITY_INFO
     LmChallenge: win32more.Windows.Win32.Security.Authentication.Identity.CLEAR_BLOCK
@@ -3112,6 +3165,14 @@ class NETLOGON_SERVICE_INFO(Structure):
     Identity: win32more.Windows.Win32.Security.Authentication.Identity.NETLOGON_LOGON_IDENTITY_INFO
     LmOwfPassword: win32more.Windows.Win32.System.PasswordManagement.LM_OWF_PASSWORD
     NtOwfPassword: win32more.Windows.Win32.System.PasswordManagement.LM_OWF_PASSWORD
+class NETLOGON_TARGET_INFO(Structure):
+    Type: UInt32
+    NbComputerName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
+    NbDomainName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
+    DnsComputerName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
+    DnsDomainName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
+    DnsTreeName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
+    TargetName: win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING
 @winfunctype_pointer
 def PKSEC_CREATE_CONTEXT_LIST(Type: win32more.Windows.Win32.Security.Authentication.Identity.KSEC_CONTEXT_TYPE) -> VoidPtr: ...
 @winfunctype_pointer
@@ -3247,6 +3308,8 @@ def PLSA_GET_CREDENTIALS(LogonId: POINTER(win32more.Windows.Win32.Foundation.LUI
 @winfunctype_pointer
 def PLSA_GET_EXTENDED_CALL_FLAGS(Flags: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype_pointer
+def PLSA_GET_SECPKG_FAILURE_REASON(PackageID: UIntPtr, Reason: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_REASON)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
+@winfunctype_pointer
 def PLSA_GET_SERVICE_ACCOUNT_PASSWORD(AccountName: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING), DomainName: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING), CredFetch: win32more.Windows.Win32.Security.Authentication.Identity.CRED_FETCH, FileTimeExpiry: POINTER(win32more.Windows.Win32.Foundation.FILETIME), CurrentPassword: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING), PreviousPassword: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.LSA_UNICODE_STRING), FileTimeCurrPwdValidForOutbound: POINTER(win32more.Windows.Win32.Foundation.FILETIME)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype_pointer
 def PLSA_GET_USER_AUTH_DATA(UserHandle: VoidPtr, UserAuthData: POINTER(POINTER(Byte)), UserAuthDataSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
@@ -3286,6 +3349,8 @@ def PLSA_REGISTER_NOTIFICATION(StartFunction: win32more.Windows.Win32.System.Thr
 def PLSA_SAVE_SUPPLEMENTAL_CREDENTIALS(LogonId: POINTER(win32more.Windows.Win32.Foundation.LUID), SupplementalCredSize: UInt32, SupplementalCreds: VoidPtr, Synchronous: win32more.Windows.Win32.Foundation.BOOLEAN) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype_pointer
 def PLSA_SET_APP_MODE_INFO(UserFunction: UInt32, Argument1: UIntPtr, Argument2: UIntPtr, UserData: POINTER(win32more.Windows.Win32.Security.Authentication.Identity.SecBuffer), ReturnToLsa: win32more.Windows.Win32.Foundation.BOOLEAN) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
+@winfunctype_pointer
+def PLSA_SET_SECPKG_FAILURE_REASON(Reason: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_REASON) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype_pointer
 def PLSA_UNLOAD_PACKAGE() -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype_pointer
@@ -3417,7 +3482,7 @@ def PSAM_PASSWORD_NOTIFICATION_ROUTINE(UserName: POINTER(win32more.Windows.Win32
 class PctPublicKey(Structure):
     Type: UInt32
     cbKey: UInt32
-    pKey: Byte * 1
+    pKey: FlexibleArray[Byte]
 @winfunctype_pointer
 def QUERY_CONTEXT_ATTRIBUTES_EX_FN_A(param0: POINTER(win32more.Windows.Win32.Security.Credentials.SecHandle), param1: UInt32, param2: VoidPtr, param3: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
@@ -3663,7 +3728,7 @@ class SECPKG_CLIENT_INFO_EX(Structure):
     IdentificationToken: win32more.Windows.Win32.Foundation.HANDLE
 class SECPKG_CONTEXT_THUNKS(Structure):
     InfoLevelCount: UInt32
-    Levels: UInt32 * 1
+    Levels: FlexibleArray[UInt32]
 SECPKG_CRED = UInt32
 SECPKG_CRED_INBOUND: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_CRED = 1
 SECPKG_CRED_OUTBOUND: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_CRED = 2
@@ -3726,7 +3791,23 @@ SecpkgMaxInfo: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_E
 SecpkgNego2Info: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_EXTENDED_INFORMATION_CLASS = 7
 class SECPKG_EXTRA_OIDS(Structure):
     OidCount: UInt32
-    Oids: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_SERIALIZED_OID * 1
+    Oids: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_SERIALIZED_OID]
+class SECPKG_FAILURE_REASON(Structure):
+    Status: win32more.Windows.Win32.Foundation.NTSTATUS
+    Reason: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON
+SECPKG_FAILURE_SPECIAL_REASON = Int32
+SecpkgFailureReason_Unknown: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 0
+SecpkgFailureReason_NoFailure: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 1
+SecpkgFailureReason_LocalAccount: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 2
+SecpkgFailureReason_DomainAccount: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 3
+SecpkgFailureReason_CloudAccount: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 4
+SecpkgFailureReason_NullTarget: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 5
+SecpkgFailureReason_UnknownTarget: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 6
+SecpkgFailureReason_IpAddress: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 7
+SecpkgFailureReason_DupTarget: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 8
+SecpkgFailureReason_NoLineOfSight: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 9
+SecpkgFailureReason_Loopback: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 10
+SecpkgFailureReason_NullSession: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_FAILURE_SPECIAL_REASON = 11
 class SECPKG_FUNCTION_TABLE(Structure):
     InitializePackage: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_AP_INITIALIZE_PACKAGE
     LogonUserA: win32more.Windows.Win32.Security.Authentication.Identity.PLSA_AP_LOGON_USER
@@ -3894,7 +3975,7 @@ class SECPKG_SUPPLEMENTAL_CRED(Structure):
     Credentials: POINTER(Byte)
 class SECPKG_SUPPLEMENTAL_CRED_ARRAY(Structure):
     CredentialCount: UInt32
-    Credentials: win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_SUPPLEMENTAL_CRED * 1
+    Credentials: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.SECPKG_SUPPLEMENTAL_CRED]
 class SECPKG_SUPPLIED_CREDENTIAL(Structure):
     cbHeaderLength: UInt16
     cbStructureLength: UInt16
@@ -3990,11 +4071,11 @@ class SECURITY_USER_DATA(Structure):
     pSid: win32more.Windows.Win32.Security.PSID
 class SEC_APPLICATION_PROTOCOLS(Structure):
     ProtocolListsSize: UInt32
-    ProtocolLists: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_LIST * 1
+    ProtocolLists: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_LIST]
 class SEC_APPLICATION_PROTOCOL_LIST(Structure):
     ProtoNegoExt: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT
     ProtocolListSize: UInt16
-    ProtocolList: Byte * 1
+    ProtocolList: FlexibleArray[Byte]
 SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT = Int32
 SecApplicationProtocolNegotiationExt_None: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT = 0
 SecApplicationProtocolNegotiationExt_NPN: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_NEGOTIATION_EXT = 1
@@ -4003,9 +4084,12 @@ SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS = Int32
 SecApplicationProtocolNegotiationStatus_None: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS = 0
 SecApplicationProtocolNegotiationStatus_Success: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS = 1
 SecApplicationProtocolNegotiationStatus_SelectedClientOnly: win32more.Windows.Win32.Security.Authentication.Identity.SEC_APPLICATION_PROTOCOL_NEGOTIATION_STATUS = 2
+class SEC_APP_SESSION_STATE(Structure):
+    AppSessionStateSize: UInt16
+    AppSessionState: FlexibleArray[Byte]
 class SEC_CERTIFICATE_REQUEST_CONTEXT(Structure):
     cbCertificateRequestContext: Byte
-    rgCertificateRequestContext: Byte * 1
+    rgCertificateRequestContext: FlexibleArray[Byte]
 class SEC_CHANNEL_BINDINGS(Structure):
     dwInitiatorAddrType: UInt32
     cbInitiatorLength: UInt32
@@ -4043,21 +4127,24 @@ class SEC_NEGOTIATION_INFO(Structure):
     Reserved: VoidPtr
 class SEC_PRESHAREDKEY(Structure):
     KeySize: UInt16
-    Key: Byte * 1
+    Key: FlexibleArray[Byte]
 class SEC_PRESHAREDKEY_IDENTITY(Structure):
     KeyIdentitySize: UInt16
-    KeyIdentity: Byte * 1
+    KeyIdentity: FlexibleArray[Byte]
+class SEC_SESSION_TICKET(Structure):
+    SessionTicketSize: UInt16
+    SessionTicket: FlexibleArray[Byte]
 class SEC_SRTP_MASTER_KEY_IDENTIFIER(Structure):
     MasterKeyIdentifierSize: Byte
-    MasterKeyIdentifier: Byte * 1
+    MasterKeyIdentifier: FlexibleArray[Byte]
 class SEC_SRTP_PROTECTION_PROFILES(Structure):
     ProfilesSize: UInt16
-    ProfilesList: UInt16 * 1
+    ProfilesList: FlexibleArray[UInt16]
 class SEC_TOKEN_BINDING(Structure):
     MajorVersion: Byte
     MinorVersion: Byte
     KeyParametersSize: UInt16
-    KeyParameters: Byte * 1
+    KeyParameters: FlexibleArray[Byte]
 class SEC_TRAFFIC_SECRETS(Structure):
     SymmetricAlgId: Char * 64
     ChainingMode: Char * 64
@@ -4068,7 +4155,7 @@ class SEC_TRAFFIC_SECRETS(Structure):
     MsgSequenceEnd: UInt16
     TrafficSecretType: win32more.Windows.Win32.Security.Authentication.Identity.SEC_TRAFFIC_SECRET_TYPE
     TrafficSecretSize: UInt16
-    TrafficSecret: Byte * 1
+    TrafficSecret: FlexibleArray[Byte]
 SEC_TRAFFIC_SECRET_TYPE = Int32
 SecTrafficSecret_None: win32more.Windows.Win32.Security.Authentication.Identity.SEC_TRAFFIC_SECRET_TYPE = 0
 SecTrafficSecret_Client: win32more.Windows.Win32.Security.Authentication.Identity.SEC_TRAFFIC_SECRET_TYPE = 1
@@ -4142,7 +4229,7 @@ class SEND_GENERIC_TLS_EXTENSION(Structure):
     HandshakeType: UInt16
     Flags: UInt32
     BufferSize: UInt16
-    Buffer: Byte * 1
+    Buffer: FlexibleArray[Byte]
 @winfunctype_pointer
 def SET_CONTEXT_ATTRIBUTES_FN_A(param0: POINTER(win32more.Windows.Win32.Security.Credentials.SecHandle), param1: UInt32, param2: VoidPtr, param3: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
@@ -4308,7 +4395,7 @@ def SSL_FREE_CERTIFICATE_FN(pCertificate: POINTER(win32more.Windows.Win32.Securi
 class SUBSCRIBE_GENERIC_TLS_EXTENSION(Structure):
     Flags: UInt32
     SubscriptionsCount: UInt32
-    Subscriptions: win32more.Windows.Win32.Security.Authentication.Identity.TLS_EXTENSION_SUBSCRIPTION * 1
+    Subscriptions: FlexibleArray[win32more.Windows.Win32.Security.Authentication.Identity.TLS_EXTENSION_SUBSCRIPTION]
 SchGetExtensionsOptions = Int32
 SCH_EXTENSIONS_OPTIONS_NONE: win32more.Windows.Win32.Security.Authentication.Identity.SchGetExtensionsOptions = 0
 SCH_NO_RECORD_HEADER: win32more.Windows.Win32.Security.Authentication.Identity.SchGetExtensionsOptions = 1
@@ -4600,6 +4687,14 @@ class SecPkgCred_SupportedProtocols(Structure):
 class SecPkgCredentials_Cert(Structure):
     EncodedCertSize: UInt32
     EncodedCert: POINTER(Byte)
+class SecPkgCredentials_KdcNetworkSettingsW(Structure):
+    Version: UInt32
+    Flags: UInt32
+    ProxyServerOffset: UInt16
+    ProxyServerLength: UInt16
+    ClientTlsCredOffset: UInt16
+    ClientTlsCredLength: UInt16
+    DcDiscoveryFlags: UInt32
 class SecPkgCredentials_KdcProxySettingsW(Structure):
     Version: UInt32
     Flags: UInt32

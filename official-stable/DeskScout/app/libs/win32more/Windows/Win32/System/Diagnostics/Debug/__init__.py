@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security.WinTrust
 import win32more.Windows.Win32.Storage.FileSystem
@@ -31,39 +31,42 @@ AddrModeFlat: win32more.Windows.Win32.System.Diagnostics.Debug.ADDRESS_MODE = 3
 class AER_BRIDGE_DESCRIPTOR_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     AsUSHORT: UInt16
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Struct(Structure):
-        UncorrectableErrorMaskRW: Annotated[UInt16, 1]
-        UncorrectableErrorSeverityRW: Annotated[UInt16, 1]
-        CorrectableErrorMaskRW: Annotated[UInt16, 1]
-        AdvancedCapsAndControlRW: Annotated[UInt16, 1]
-        SecondaryUncorrectableErrorMaskRW: Annotated[UInt16, 1]
-        SecondaryUncorrectableErrorSevRW: Annotated[UInt16, 1]
-        SecondaryCapsAndControlRW: Annotated[UInt16, 1]
-        Reserved: Annotated[UInt16, 9]
+        UncorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        UncorrectableErrorSeverityRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        CorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        AdvancedCapsAndControlRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        SecondaryUncorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        SecondaryUncorrectableErrorSevRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        SecondaryCapsAndControlRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt16, NativeBitfieldAttribute(9)]
         _pack_ = 1
 class AER_ENDPOINT_DESCRIPTOR_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     AsUSHORT: UInt16
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Struct(Structure):
-        UncorrectableErrorMaskRW: Annotated[UInt16, 1]
-        UncorrectableErrorSeverityRW: Annotated[UInt16, 1]
-        CorrectableErrorMaskRW: Annotated[UInt16, 1]
-        AdvancedCapsAndControlRW: Annotated[UInt16, 1]
-        Reserved: Annotated[UInt16, 12]
+        UncorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        UncorrectableErrorSeverityRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        CorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        AdvancedCapsAndControlRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt16, NativeBitfieldAttribute(12)]
         _pack_ = 1
 class AER_ROOTPORT_DESCRIPTOR_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     AsUSHORT: UInt16
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Struct(Structure):
-        UncorrectableErrorMaskRW: Annotated[UInt16, 1]
-        UncorrectableErrorSeverityRW: Annotated[UInt16, 1]
-        CorrectableErrorMaskRW: Annotated[UInt16, 1]
-        AdvancedCapsAndControlRW: Annotated[UInt16, 1]
-        RootErrorCommandRW: Annotated[UInt16, 1]
-        Reserved: Annotated[UInt16, 11]
+        UncorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        UncorrectableErrorSeverityRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        CorrectableErrorMaskRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        AdvancedCapsAndControlRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        RootErrorCommandRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt16, NativeBitfieldAttribute(11)]
         _pack_ = 1
 class APC_CALLBACK_DATA(Structure):
     Parameter: UIntPtr
@@ -89,9 +92,11 @@ if ARCH in 'X86,X64':
         Bvr: UInt64 * 8
         Wcr: UInt32 * 2
         Wvr: UInt64 * 2
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             Anonymous: _Anonymous_e__Struct
             X: UInt64 * 31
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 X0: UInt64
                 X1: UInt64
@@ -130,6 +135,7 @@ class ARM64_NT_NEON128(Union):
     S: Single * 4
     H: UInt16 * 8
     B: Byte * 16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         Low: UInt64
         High: Int64
@@ -195,6 +201,7 @@ SYMFLAG_PUBLIC_CODE: UInt32 = 4194304
 SYMFLAG_REGREL_ALIASINDIR: UInt32 = 8388608
 SYMFLAG_FIXUP_ARM64X: UInt32 = 16777216
 SYMFLAG_GLOBAL: UInt32 = 33554432
+SYMFLAG_COMPLEX: UInt32 = 67108864
 SYMFLAG_RESET: UInt32 = 2147483648
 IMAGEHLP_MODULE_REGION_DLLBASE: UInt32 = 1
 IMAGEHLP_MODULE_REGION_DLLRANGE: UInt32 = 2
@@ -388,6 +395,8 @@ MINIDUMP_SYSMEMINFO1_FILECACHE_TRANSITIONREPURPOSECOUNT_FLAGS: UInt32 = 1
 MINIDUMP_SYSMEMINFO1_BASICPERF: UInt32 = 2
 MINIDUMP_SYSMEMINFO1_PERF_CCTOTALDIRTYPAGES_CCDIRTYPAGETHRESHOLD: UInt32 = 4
 MINIDUMP_SYSMEMINFO1_PERF_RESIDENTAVAILABLEPAGES_SHAREDCOMMITPAGES: UInt32 = 8
+MINIDUMP_SYSMEMINFO1_PERF_MDLPAGESALLOCATED_PFNDATABASECOMMITTEDPAGES: UInt32 = 16
+MINIDUMP_SYSMEMINFO1_PERF_SYSTEMPAGETABLECOMMITTEDPAGES_CONTIGUOUSPAGESALLOCATED: UInt32 = 32
 MINIDUMP_PROCESS_VM_COUNTERS: UInt32 = 1
 MINIDUMP_PROCESS_VM_COUNTERS_VIRTUALSIZE: UInt32 = 2
 MINIDUMP_PROCESS_VM_COUNTERS_EX: UInt32 = 4
@@ -407,6 +416,7 @@ WHEA_ERROR_SOURCE_FLAG_FIRMWAREFIRST: UInt32 = 1
 WHEA_ERROR_SOURCE_FLAG_GLOBAL: UInt32 = 2
 WHEA_ERROR_SOURCE_FLAG_GHES_ASSIST: UInt32 = 4
 WHEA_ERROR_SOURCE_FLAG_DEFAULTSOURCE: UInt32 = 2147483648
+WHEA_ERR_SRC_OVERRIDE_FLAG: UInt32 = 1073741824
 WHEA_ERROR_SOURCE_INVALID_RELATED_SOURCE: UInt32 = 65535
 WHEA_ERROR_SOURCE_DESCRIPTOR_TYPE_XPFMCE: UInt32 = 0
 WHEA_ERROR_SOURCE_DESCRIPTOR_TYPE_XPFCMC: UInt32 = 1
@@ -461,6 +471,8 @@ WHEA_NOTIFY_ALL_OFFLINES: UInt32 = 16
 WHEA_ROW_FAIL_CHECK_EXTENT: UInt32 = 17
 WHEA_ROW_FAIL_CHECK_ENABLE: UInt32 = 18
 WHEA_ROW_FAIL_CHECK_THRESHOLD: UInt32 = 19
+WHEA_DISABLE_PRM_ADDRESS_TRANSLATION: UInt32 = 20
+WHEA_ENABLE_BATCHED_ROW_OFFLINE: UInt32 = 21
 IPMI_OS_SEL_RECORD_VERSION_1: UInt32 = 1
 IPMI_OS_SEL_RECORD_VERSION: UInt32 = 1
 IPMI_IOCTL_INDEX: UInt32 = 1024
@@ -747,6 +759,8 @@ def ImagehlpApiVersionEx(AppVersion: POINTER(win32more.Windows.Win32.System.Diag
 def GetTimestampForLoadedLibrary(Module: win32more.Windows.Win32.Foundation.HMODULE) -> UInt32: ...
 @winfunctype('dbghelp.dll')
 def SymSetParentWindow(hwnd: win32more.Windows.Win32.Foundation.HWND) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('dbghelp.dll')
+def SymGetParentWindow(pHwnd: POINTER(win32more.Windows.Win32.Foundation.HWND)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('dbghelp.dll')
 def SymSetHomeDirectoryW(hProcess: win32more.Windows.Win32.Foundation.HANDLE, dir: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.PWSTR: ...
 SymSetHomeDirectory = UnicodeAlias('SymSetHomeDirectoryW')
@@ -1105,18 +1119,14 @@ def CopyContext(Destination: POINTER(win32more.Windows.Win32.System.Diagnostics.
 def InitializeContext(Buffer: VoidPtr, ContextFlags: win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT_FLAGS, Context: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT)), ContextLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
 def InitializeContext2(Buffer: VoidPtr, ContextFlags: win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT_FLAGS, Context: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT)), ContextLength: POINTER(UInt32), XStateCompactionMask: UInt64) -> win32more.Windows.Win32.Foundation.BOOL: ...
-if ARCH in 'X86,X64':
-    @winfunctype('KERNEL32.dll')
-    def GetEnabledXStateFeatures() -> UInt64: ...
-if ARCH in 'X86,X64':
-    @winfunctype('KERNEL32.dll')
-    def GetXStateFeaturesMask(Context: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT), FeatureMask: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-if ARCH in 'X86,X64':
-    @winfunctype('KERNEL32.dll')
-    def LocateXStateFeature(Context: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT), FeatureId: UInt32, Length: POINTER(UInt32)) -> VoidPtr: ...
-if ARCH in 'X86,X64':
-    @winfunctype('KERNEL32.dll')
-    def SetXStateFeaturesMask(Context: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT), FeatureMask: UInt64) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
+def GetEnabledXStateFeatures() -> UInt64: ...
+@winfunctype('KERNEL32.dll')
+def GetXStateFeaturesMask(Context: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT), FeatureMask: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
+def LocateXStateFeature(Context: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT), FeatureId: UInt32, Length: POINTER(UInt32)) -> VoidPtr: ...
+@winfunctype('KERNEL32.dll')
+def SetXStateFeaturesMask(Context: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.CONTEXT), FeatureMask: UInt64) -> win32more.Windows.Win32.Foundation.BOOL: ...
 BUGCHECK_ERROR = UInt32
 HARDWARE_PROFILE_UNDOCKED_STRING: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 1073807361
 HARDWARE_PROFILE_DOCKED_STRING: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 1073807362
@@ -1525,9 +1535,11 @@ ERESOURCE_INVALID_RELEASE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGC
 CLUSTER_CSV_STATE_TRANSITION_INTERVAL_TIMEOUT_LIVEDUMP: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 367
 CLUSTER_CSV_CLUSSVC_DISCONNECT_WATCHDOG: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 368
 CRYPTO_LIBRARY_INTERNAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 369
+SECURE_KERNEL_HIBERNATE_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 370
 COREMSGCALL_INTERNAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 371
 COREMSG_INTERNAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 372
 PREVIOUS_FATAL_ABNORMAL_RESET_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 373
+STORAGE_STACK_FATAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 374
 ELAM_DRIVER_DETECTED_FATAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 376
 CLUSTER_CLUSPORT_STATUS_IO_TIMEOUT_LIVEDUMP: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 377
 PROFILER_CONFIGURATION_ILLEGAL: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 379
@@ -1629,14 +1641,28 @@ KASAN_ENLIGHTENMENT_VIOLATION: win32more.Windows.Win32.System.Diagnostics.Debug.
 KASAN_ILLEGAL_ACCESS: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 498
 IORING: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 499
 MDL_CACHE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 500
+APPLICATION_HANG_KERNEL_LIVEDUMP: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 501
 MISALIGNED_POINTER_PARAMETER: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 502
 MSSECCORE_ASSERTION_FAILURE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 503
+INVALID_MINIMAL_PROCESS_STATE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 504
+PREVIOUS_MODE_MISMATCH: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 505
+SMB_SRV_REQUEST_VALIDATION_FAILURE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 506
+IOMMU_INTERRUPT_REMAPPING_FAULT: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 507
+WIN32K_CALLOUT_UNREGISTER_FAILED: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 508
+HAL_SPE_INTERNAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 509
+SMB_CLIENT_REQUEST_VALIDATION_FAILURE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 510
+CPU_SCHEDULER_INTERNAL_ERROR: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 512
+PROCESS_TERMINATE_LIKELY_DEADLOCK: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 513
+UNEXPECTED_CODEPATH: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 514
+INVALID_EXTENSION_STATE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 515
+STORAGE_DRIVER_LIVEDUMP: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 519
 XBOX_VMCTRL_CS_TIMEOUT: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 854
 XBOX_CORRUPTED_IMAGE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 855
 XBOX_INVERTED_FUNCTION_TABLE_OVERFLOW: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 856
 XBOX_CORRUPTED_IMAGE_BASE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 857
 XBOX_XDS_WATCHDOG_TIMEOUT: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 858
 XBOX_SHUTDOWN_WATCHDOG_TIMEOUT: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 859
+XBOX_CANNOT_MANAGE_PARTITION_MEMORY: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 861
 XBOX_360_SYSTEM_CRASH: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 864
 XBOX_360_SYSTEM_CRASH_RESERVED: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 1056
 XBOX_SECURITY_FAILUE: win32more.Windows.Win32.System.Diagnostics.Debug.BUGCHECK_ERROR = 1057
@@ -1662,9 +1688,11 @@ if ARCH in 'ARM64':
         Bvr: UInt64 * 8
         Wcr: UInt32 * 2
         Wvr: UInt64 * 2
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             Anonymous: _Anonymous_e__Struct
             X: UInt64 * 31
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 X0: UInt64
                 X1: UInt64
@@ -1745,9 +1773,11 @@ elif ARCH in 'X64':
         LastBranchFromRip: UInt64
         LastExceptionToRip: UInt64
         LastExceptionFromRip: UInt64
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             FltSave: win32more.Windows.Win32.System.Diagnostics.Debug.XSAVE_FORMAT
             Anonymous: _Anonymous_e__Struct
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 Header: win32more.Windows.Win32.System.Diagnostics.Debug.M128A * 2
                 Legacy: win32more.Windows.Win32.System.Diagnostics.Debug.M128A * 8
@@ -1943,6 +1973,82 @@ RIP_EVENT: win32more.Windows.Win32.System.Diagnostics.Debug.DEBUG_EVENT_CODE = 9
 UNLOAD_DLL_DEBUG_EVENT: win32more.Windows.Win32.System.Diagnostics.Debug.DEBUG_EVENT_CODE = 7
 @winfunctype_pointer
 def DIGEST_FUNCTION(refdata: VoidPtr, pData: POINTER(Byte), dwLength: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+class DIMM_ADDRESS(Union):
+    Ddr4: _Ddr4_e__Struct
+    Ddr5: _Ddr5_e__Struct
+    class _Ddr4_e__Struct(Structure):
+        SocketId: Annotated[UInt64, NativeBitfieldAttribute(4)]
+        MemoryControllerId: Annotated[UInt64, NativeBitfieldAttribute(2)]
+        ChannelId: Annotated[UInt64, NativeBitfieldAttribute(2)]
+        DimmSlot: Annotated[UInt64, NativeBitfieldAttribute(2)]
+        DimmRank: Annotated[UInt64, NativeBitfieldAttribute(2)]
+        Device: Annotated[UInt64, NativeBitfieldAttribute(5)]
+        ChipSelect: Annotated[UInt64, NativeBitfieldAttribute(3)]
+        Bank: Annotated[UInt64, NativeBitfieldAttribute(8)]
+        Dq: Annotated[UInt64, NativeBitfieldAttribute(4)]
+        Reserved: Annotated[UInt64, NativeBitfieldAttribute(32)]
+        Row: UInt32
+        Column: UInt32
+        Info: UInt64
+        _pack_ = 1
+    class _Ddr5_e__Struct(Structure):
+        SocketId: Annotated[UInt64, NativeBitfieldAttribute(5)]
+        MemoryControllerId: Annotated[UInt64, NativeBitfieldAttribute(4)]
+        ChannelId: Annotated[UInt64, NativeBitfieldAttribute(3)]
+        SubChannelId: Annotated[UInt64, NativeBitfieldAttribute(2)]
+        DimmSlot: Annotated[UInt64, NativeBitfieldAttribute(2)]
+        DimmRank: Annotated[UInt64, NativeBitfieldAttribute(4)]
+        Device: Annotated[UInt64, NativeBitfieldAttribute(6)]
+        ChipId: Annotated[UInt64, NativeBitfieldAttribute(4)]
+        Bank: Annotated[UInt64, NativeBitfieldAttribute(8)]
+        Dq: Annotated[UInt64, NativeBitfieldAttribute(5)]
+        Reserved: Annotated[UInt64, NativeBitfieldAttribute(21)]
+        Row: UInt32
+        Column: UInt32
+        Info: UInt64
+        _pack_ = 1
+class DIMM_ADDR_VALID_BITS(Union):
+    VB_DDR4: win32more.Windows.Win32.System.Diagnostics.Debug.DIMM_ADDR_VALID_BITS_DDR4
+    VB_DDR5: win32more.Windows.Win32.System.Diagnostics.Debug.DIMM_ADDR_VALID_BITS_DDR5
+    AsUINT32: UInt32
+    _pack_ = 1
+class DIMM_ADDR_VALID_BITS_DDR4(Structure):
+    SocketId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    MemoryControllerId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    ChannelId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    DimmSlot: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    DimmRank: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Device: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    ChipSelect: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Bank: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Dq: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Row: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Column: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Info: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(20)]
+    _pack_ = 1
+class DIMM_ADDR_VALID_BITS_DDR5(Structure):
+    SocketId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    MemoryControllerId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    ChannelId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    SubChannelId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    DimmSlot: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    DimmRank: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Device: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    ChipId: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Bank: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Dq: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Row: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Column: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Info: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(19)]
+    _pack_ = 1
+class DIMM_INFO(Structure):
+    DimmAddress: win32more.Windows.Win32.System.Diagnostics.Debug.DIMM_ADDRESS
+    ValidBits: win32more.Windows.Win32.System.Diagnostics.Debug.DIMM_ADDR_VALID_BITS
+class DISCRIMINATEDUNION_TAG_VALUE(Structure):
+    value: Byte * 16
+    valueSizeBytes: Byte
 if ARCH in 'ARM64':
     class DISPATCHER_CONTEXT(Structure):
         ControlPc: UIntPtr
@@ -1973,18 +2079,19 @@ elif ARCH in 'X64':
 class DUMP_FILE_ATTRIBUTES(Union):
     Anonymous: _Anonymous_e__Struct
     Attributes: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        HiberCrash: Annotated[UInt32, 1]
-        DumpDevicePowerOff: Annotated[UInt32, 1]
-        InsufficientDumpfileSize: Annotated[UInt32, 1]
-        KernelGeneratedTriageDump: Annotated[UInt32, 1]
-        LiveDumpGeneratedDump: Annotated[UInt32, 1]
-        DumpIsGeneratedOffline: Annotated[UInt32, 1]
-        FilterDumpFile: Annotated[UInt32, 1]
-        EarlyBootCrash: Annotated[UInt32, 1]
-        EncryptedDumpData: Annotated[UInt32, 1]
-        DecryptedDump: Annotated[UInt32, 1]
-        ReservedFlags: Annotated[UInt32, 22]
+        HiberCrash: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        DumpDevicePowerOff: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        InsufficientDumpfileSize: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        KernelGeneratedTriageDump: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        LiveDumpGeneratedDump: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        DumpIsGeneratedOffline: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        FilterDumpFile: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        EarlyBootCrash: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        EncryptedDumpData: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        DecryptedDump: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(22)]
 class DUMP_HEADER32(Structure):
     Signature: UInt32
     ValidDump: UInt32
@@ -2024,6 +2131,7 @@ class DUMP_HEADER32(Structure):
     SystemUpTime: Int64
     SystemTime: Int64
     _reserved3: Byte * 56
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PhysicalMemoryBlock: win32more.Windows.Win32.System.Diagnostics.Debug.PHYSICAL_MEMORY_DESCRIPTOR32
         PhysicalMemoryBlockBuffer: Byte * 700
@@ -2064,6 +2172,7 @@ class DUMP_HEADER64(Structure):
     Attributes: win32more.Windows.Win32.System.Diagnostics.Debug.DUMP_FILE_ATTRIBUTES
     BootId: UInt32
     _reserved0: Byte * 4008
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PhysicalMemoryBlock: win32more.Windows.Win32.System.Diagnostics.Debug.PHYSICAL_MEMORY_DESCRIPTOR64
         PhysicalMemoryBlockBuffer: Byte * 700
@@ -2288,6 +2397,10 @@ FACILITY_WEP: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2
 FACILITY_SYNCENGINE: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2050
 FACILITY_XBOX: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2339
 FACILITY_GAME: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2340
+FACILITY_USERMODE_UNIONFS: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2341
+FACILITY_USERMODE_PRM: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2342
+FACILITY_USERMODE_WIN_ACCEL: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2343
+FACILITY_PPF: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2344
 FACILITY_PIX: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 2748
 FACILITY_NT_BIT: win32more.Windows.Win32.System.Diagnostics.Debug.FACILITY_CODE = 268435456
 FORMAT_MESSAGE_OPTIONS = UInt32
@@ -2302,12 +2415,12 @@ class FPO_DATA(Structure):
     cbProcSize: UInt32
     cdwLocals: UInt32
     cdwParams: UInt16
-    cbProlog: Annotated[UInt16, 8]
-    cbRegs: Annotated[UInt16, 3]
-    fHasSEH: Annotated[UInt16, 1]
-    fUseBP: Annotated[UInt16, 1]
-    reserved: Annotated[UInt16, 1]
-    cbFrame: Annotated[UInt16, 2]
+    cbProlog: Annotated[UInt16, NativeBitfieldAttribute(8)]
+    cbRegs: Annotated[UInt16, NativeBitfieldAttribute(3)]
+    fHasSEH: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    fUseBP: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    reserved: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    cbFrame: Annotated[UInt16, NativeBitfieldAttribute(2)]
 class IDebugExtendedProperty(ComPtr):
     extends: win32more.Windows.Win32.System.Diagnostics.Debug.IDebugProperty
     _iid_ = Guid('{51973c52-cb0c-11d0-b5c9-00a0244a0e7a}')
@@ -2599,7 +2712,7 @@ class IMAGEHLP_SYMBOL64(Structure):
     Size: UInt32
     Flags: UInt32
     MaxNameLength: UInt32
-    Name: win32more.Windows.Win32.Foundation.CHAR * 1
+    Name: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 class IMAGEHLP_SYMBOL64_PACKAGE(Structure):
     sym: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL64
     name: win32more.Windows.Win32.Foundation.CHAR * 2001
@@ -2610,7 +2723,7 @@ if ARCH in 'X86':
         Size: UInt32
         Flags: UInt32
         MaxNameLength: UInt32
-        Name: Char * 1
+        Name: FlexibleArray[Char]
 if ARCH in 'X86':
     IMAGEHLP_SYMBOL = UnicodeAlias('IMAGEHLP_SYMBOLW')
 class IMAGEHLP_SYMBOLW64(Structure):
@@ -2619,7 +2732,7 @@ class IMAGEHLP_SYMBOLW64(Structure):
     Size: UInt32
     Flags: UInt32
     MaxNameLength: UInt32
-    Name: Char * 1
+    Name: FlexibleArray[Char]
 class IMAGEHLP_SYMBOLW64_PACKAGE(Structure):
     sym: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOLW64
     name: Char * 2001
@@ -2671,21 +2784,27 @@ TI_GET_IS_REFERENCE: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_S
 TI_GET_INDIRECTVIRTUALBASECLASS: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 32
 TI_GET_VIRTUALBASETABLETYPE: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 33
 TI_GET_OBJECTPOINTERTYPE: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 34
-IMAGEHLP_SYMBOL_TYPE_INFO_MAX: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 35
+TI_GET_DISCRIMINATEDUNION_TAG_TYPEID: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 35
+TI_GET_DISCRIMINATEDUNION_TAG_OFFSET: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 36
+TI_GET_DISCRIMINATEDUNION_TAG_RANGESCOUNT: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 37
+TI_GET_DISCRIMINATEDUNION_TAG_RANGES: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 38
+IMAGEHLP_SYMBOL_TYPE_INFO_MAX: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGEHLP_SYMBOL_TYPE_INFO = 39
 class IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY(Structure):
     BeginAddress: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         UnwindData: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Flag: Annotated[UInt32, 2]
-            FunctionLength: Annotated[UInt32, 11]
-            RegF: Annotated[UInt32, 3]
-            RegI: Annotated[UInt32, 4]
-            H: Annotated[UInt32, 1]
-            CR: Annotated[UInt32, 2]
-            FrameSize: Annotated[UInt32, 9]
+            Flag: Annotated[UInt32, NativeBitfieldAttribute(2)]
+            FunctionLength: Annotated[UInt32, NativeBitfieldAttribute(11)]
+            RegF: Annotated[UInt32, NativeBitfieldAttribute(3)]
+            RegI: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            H: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            CR: Annotated[UInt32, NativeBitfieldAttribute(2)]
+            FrameSize: Annotated[UInt32, NativeBitfieldAttribute(9)]
 class IMAGE_COFF_SYMBOLS_HEADER(Structure):
     NumberOfSymbols: UInt32
     LvaToFirstSymbol: UInt32
@@ -2708,6 +2827,7 @@ class IMAGE_COR20_HEADER(Structure):
     VTableFixups: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DATA_DIRECTORY
     ExportAddressTableJumps: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DATA_DIRECTORY
     ManagedNativeHeader: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DATA_DIRECTORY
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         EntryPointToken: UInt32
         EntryPointRVA: UInt32
@@ -2799,6 +2919,8 @@ IMAGE_DLLCHARACTERISTICS_EX_CET_SET_CONTEXT_IP_VALIDATION_RELAXED_MODE: win32mor
 IMAGE_DLLCHARACTERISTICS_EX_CET_DYNAMIC_APIS_ALLOW_IN_PROC: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DLL_CHARACTERISTICS = 8
 IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_1: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DLL_CHARACTERISTICS = 16
 IMAGE_DLLCHARACTERISTICS_EX_CET_RESERVED_2: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DLL_CHARACTERISTICS = 32
+IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DLL_CHARACTERISTICS = 64
+IMAGE_DLLCHARACTERISTICS_EX_HOTPATCH_COMPATIBLE: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_DLL_CHARACTERISTICS = 128
 IMAGE_FILE_CHARACTERISTICS = UInt16
 IMAGE_FILE_RELOCS_STRIPPED: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_FILE_CHARACTERISTICS = 1
 IMAGE_FILE_EXECUTABLE_IMAGE: win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_FILE_CHARACTERISTICS = 2
@@ -2847,6 +2969,7 @@ class IMAGE_FUNCTION_ENTRY64(Structure):
     StartingAddress: UInt64
     EndingAddress: UInt64
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 4
     class _Anonymous_e__Union(Union):
         EndOfPrologue: UInt64
@@ -2907,6 +3030,7 @@ class IMAGE_LOAD_CONFIG_DIRECTORY32(Structure):
     GuardXFGTableDispatchFunctionPointer: UInt32
     CastGuardOsDeterminedFailureMode: UInt32
     GuardMemcpyFunctionPointer: UInt32
+    UmaFunctionPointers: UInt32
 class IMAGE_LOAD_CONFIG_DIRECTORY64(Structure):
     Size: UInt32
     TimeDateStamp: UInt32
@@ -2957,6 +3081,7 @@ class IMAGE_LOAD_CONFIG_DIRECTORY64(Structure):
     GuardXFGTableDispatchFunctionPointer: UInt64
     CastGuardOsDeterminedFailureMode: UInt64
     GuardMemcpyFunctionPointer: UInt64
+    UmaFunctionPointers: UInt64
     _pack_ = 4
 class IMAGE_NT_HEADERS32(Structure):
     Signature: UInt32
@@ -3056,6 +3181,7 @@ class IMAGE_RUNTIME_FUNCTION_ENTRY(Structure):
     BeginAddress: UInt32
     EndAddress: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         UnwindInfoAddress: UInt32
         UnwindData: UInt32
@@ -3142,7 +3268,7 @@ class IPMI_OS_SEL_RECORD(Structure):
     Length: UInt32
     RecordType: win32more.Windows.Win32.System.Diagnostics.Debug.IPMI_OS_SEL_RECORD_TYPE
     DataLength: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
     _pack_ = 1
 IPMI_OS_SEL_RECORD_TYPE = Int32
 IpmiOsSelRecordTypeWhea: win32more.Windows.Win32.System.Diagnostics.Debug.IPMI_OS_SEL_RECORD_TYPE = 0
@@ -3225,9 +3351,11 @@ elif ARCH in 'X64':
     class KNONVOLATILE_CONTEXT_POINTERS(Structure):
         Anonymous1: _Anonymous1_e__Union
         Anonymous2: _Anonymous2_e__Union
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Union(Union):
             FloatingContext: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.M128A) * 16
             Anonymous: _Anonymous_e__Struct
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 Xmm0: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.M128A)
                 Xmm1: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.M128A)
@@ -3248,6 +3376,7 @@ elif ARCH in 'X64':
         class _Anonymous2_e__Union(Union):
             IntegerContext: POINTER(UInt64) * 16
             Anonymous: _Anonymous_e__Struct
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 Rax: POINTER(UInt64)
                 Rcx: POINTER(UInt64)
@@ -3281,16 +3410,16 @@ class LDT_ENTRY(Structure):
             Flags2: Byte
             BaseHi: Byte
         class _Bits_e__Struct(Structure):
-            BaseMid: Annotated[UInt32, 8]
-            Type: Annotated[UInt32, 5]
-            Dpl: Annotated[UInt32, 2]
-            Pres: Annotated[UInt32, 1]
-            LimitHi: Annotated[UInt32, 4]
-            Sys: Annotated[UInt32, 1]
-            Reserved_0: Annotated[UInt32, 1]
-            Default_Big: Annotated[UInt32, 1]
-            Granularity: Annotated[UInt32, 1]
-            BaseHi: Annotated[UInt32, 8]
+            BaseMid: Annotated[UInt32, NativeBitfieldAttribute(8)]
+            Type: Annotated[UInt32, NativeBitfieldAttribute(5)]
+            Dpl: Annotated[UInt32, NativeBitfieldAttribute(2)]
+            Pres: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            LimitHi: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Sys: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Reserved_0: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Default_Big: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Granularity: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            BaseHi: Annotated[UInt32, NativeBitfieldAttribute(8)]
 if ARCH in 'X64,ARM64':
     class LOADED_IMAGE(Structure):
         ModuleName: win32more.Windows.Win32.Foundation.PSTR
@@ -3337,6 +3466,11 @@ def LPTOP_LEVEL_EXCEPTION_FILTER(ExceptionInfo: POINTER(win32more.Windows.Win32.
 class M128A(Structure):
     Low: UInt64
     High: Int64
+class MEMORY_DEFECT(Structure):
+    Version: UInt32
+    DimmInfo: win32more.Windows.Win32.System.Diagnostics.Debug.DIMM_INFO
+    ErrType: win32more.Windows.Win32.System.Diagnostics.Debug.PAGE_OFFLINE_ERROR_TYPES
+    _pack_ = 1
 if ARCH in 'X64,ARM64':
     class MINIDUMP_CALLBACK_INFORMATION(Structure):
         CallbackRoutine: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_CALLBACK_ROUTINE
@@ -3351,6 +3485,7 @@ class MINIDUMP_CALLBACK_INPUT(Structure):
     ProcessHandle: win32more.Windows.Win32.Foundation.HANDLE
     CallbackType: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 4
     class _Anonymous_e__Union(Union):
         Status: win32more.Windows.Win32.Foundation.HRESULT
@@ -3367,6 +3502,7 @@ class MINIDUMP_CALLBACK_INPUT(Structure):
         VmPostRead: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_VM_POST_READ_CALLBACK
 class MINIDUMP_CALLBACK_OUTPUT(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 4
     class _Anonymous_e__Union(Union):
         ModuleWriteFlags: UInt32
@@ -3379,6 +3515,7 @@ class MINIDUMP_CALLBACK_OUTPUT(Structure):
         Anonymous4: _Anonymous4_e__Struct
         Anonymous5: _Anonymous5_e__Struct
         Status: win32more.Windows.Win32.Foundation.HRESULT
+        _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3', 'Anonymous4', 'Anonymous5')
         class _Anonymous1_e__Struct(Structure):
             MemoryBase: UInt64
             MemorySize: UInt32
@@ -3526,6 +3663,7 @@ class MINIDUMP_HEADER(Structure):
     CheckSum: UInt32
     Anonymous: _Anonymous_e__Union
     Flags: UInt64
+    _anonymous_ = ('Anonymous',)
     _pack_ = 4
     class _Anonymous_e__Union(Union):
         Reserved: UInt32
@@ -3553,7 +3691,7 @@ class MINIDUMP_LOCATION_DESCRIPTOR64(Structure):
 class MINIDUMP_MEMORY64_LIST(Structure):
     NumberOfMemoryRanges: UInt64
     BaseRva: UInt64
-    MemoryRanges: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_MEMORY_DESCRIPTOR64 * 1
+    MemoryRanges: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_MEMORY_DESCRIPTOR64]
     _pack_ = 4
 class MINIDUMP_MEMORY_DESCRIPTOR(Structure):
     StartOfMemoryRange: UInt64
@@ -3581,7 +3719,7 @@ class MINIDUMP_MEMORY_INFO_LIST(Structure):
     _pack_ = 4
 class MINIDUMP_MEMORY_LIST(Structure):
     NumberOfMemoryRanges: UInt32
-    MemoryRanges: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_MEMORY_DESCRIPTOR * 1
+    MemoryRanges: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_MEMORY_DESCRIPTOR]
     _pack_ = 4
 class MINIDUMP_MISC_INFO(Structure):
     SizeOfInfo: UInt32
@@ -3693,7 +3831,7 @@ class MINIDUMP_MODULE_CALLBACK(Structure):
     _pack_ = 4
 class MINIDUMP_MODULE_LIST(Structure):
     NumberOfModules: UInt32
-    Modules: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_MODULE * 1
+    Modules: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_MODULE]
     _pack_ = 4
 class MINIDUMP_PROCESS_VM_COUNTERS_1(Structure):
     Revision: UInt16
@@ -3781,7 +3919,7 @@ ceStreamDiagnosisList: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP
 LastReservedStream: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_STREAM_TYPE = 65535
 class MINIDUMP_STRING(Structure):
     Length: UInt32
-    Buffer: Char * 1
+    Buffer: FlexibleArray[Char]
     _pack_ = 4
 class MINIDUMP_SYSTEM_BASIC_INFORMATION(Structure):
     TimerResolution: UInt32
@@ -3824,16 +3962,19 @@ class MINIDUMP_SYSTEM_INFO(Structure):
     CSDVersionRva: UInt32
     Anonymous2: _Anonymous2_e__Union
     Cpu: win32more.Windows.Win32.System.Diagnostics.Debug.CPU_INFORMATION
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     _pack_ = 4
     class _Anonymous1_e__Union(Union):
         Reserved0: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             NumberOfProcessors: Byte
             ProductType: Byte
     class _Anonymous2_e__Union(Union):
         Reserved1: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             SuiteMask: UInt16
             Reserved2: UInt16
@@ -3845,6 +3986,13 @@ class MINIDUMP_SYSTEM_MEMORY_INFO_1(Structure):
     BasicPerfInfo: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_SYSTEM_BASIC_PERFORMANCE_INFORMATION
     PerfInfo: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_SYSTEM_PERFORMANCE_INFORMATION
     _pack_ = 4
+class MINIDUMP_SYSTEM_MEMORY_INFO_2(Structure):
+    Revision: UInt16
+    Flags: UInt16
+    BasicInfo: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_SYSTEM_BASIC_INFORMATION
+    FileCacheInfo: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_SYSTEM_FILECACHE_INFORMATION
+    BasicPerfInfo: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_SYSTEM_BASIC_PERFORMANCE_INFORMATION
+    PerfInfo: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_SYSTEM_PERFORMANCE_INFORMATION_2
 class MINIDUMP_SYSTEM_PERFORMANCE_INFORMATION(Structure):
     IdleProcessTime: UInt64
     IoReadTransferCount: UInt64
@@ -3925,6 +4073,90 @@ class MINIDUMP_SYSTEM_PERFORMANCE_INFORMATION(Structure):
     ResidentAvailablePages: Int64
     SharedCommittedPages: UInt64
     _pack_ = 4
+class MINIDUMP_SYSTEM_PERFORMANCE_INFORMATION_2(Structure):
+    IdleProcessTime: UInt64
+    IoReadTransferCount: UInt64
+    IoWriteTransferCount: UInt64
+    IoOtherTransferCount: UInt64
+    IoReadOperationCount: UInt32
+    IoWriteOperationCount: UInt32
+    IoOtherOperationCount: UInt32
+    AvailablePages: UInt32
+    CommittedPages: UInt32
+    CommitLimit: UInt32
+    PeakCommitment: UInt32
+    PageFaultCount: UInt32
+    CopyOnWriteCount: UInt32
+    TransitionCount: UInt32
+    CacheTransitionCount: UInt32
+    DemandZeroCount: UInt32
+    PageReadCount: UInt32
+    PageReadIoCount: UInt32
+    CacheReadCount: UInt32
+    CacheIoCount: UInt32
+    DirtyPagesWriteCount: UInt32
+    DirtyWriteIoCount: UInt32
+    MappedPagesWriteCount: UInt32
+    MappedWriteIoCount: UInt32
+    PagedPoolPages: UInt32
+    NonPagedPoolPages: UInt32
+    PagedPoolAllocs: UInt32
+    PagedPoolFrees: UInt32
+    NonPagedPoolAllocs: UInt32
+    NonPagedPoolFrees: UInt32
+    FreeSystemPtes: UInt32
+    ResidentSystemCodePage: UInt32
+    TotalSystemDriverPages: UInt32
+    TotalSystemCodePages: UInt32
+    NonPagedPoolLookasideHits: UInt32
+    PagedPoolLookasideHits: UInt32
+    AvailablePagedPoolPages: UInt32
+    ResidentSystemCachePage: UInt32
+    ResidentPagedPoolPage: UInt32
+    ResidentSystemDriverPage: UInt32
+    CcFastReadNoWait: UInt32
+    CcFastReadWait: UInt32
+    CcFastReadResourceMiss: UInt32
+    CcFastReadNotPossible: UInt32
+    CcFastMdlReadNoWait: UInt32
+    CcFastMdlReadWait: UInt32
+    CcFastMdlReadResourceMiss: UInt32
+    CcFastMdlReadNotPossible: UInt32
+    CcMapDataNoWait: UInt32
+    CcMapDataWait: UInt32
+    CcMapDataNoWaitMiss: UInt32
+    CcMapDataWaitMiss: UInt32
+    CcPinMappedDataCount: UInt32
+    CcPinReadNoWait: UInt32
+    CcPinReadWait: UInt32
+    CcPinReadNoWaitMiss: UInt32
+    CcPinReadWaitMiss: UInt32
+    CcCopyReadNoWait: UInt32
+    CcCopyReadWait: UInt32
+    CcCopyReadNoWaitMiss: UInt32
+    CcCopyReadWaitMiss: UInt32
+    CcMdlReadNoWait: UInt32
+    CcMdlReadWait: UInt32
+    CcMdlReadNoWaitMiss: UInt32
+    CcMdlReadWaitMiss: UInt32
+    CcReadAheadIos: UInt32
+    CcLazyWriteIos: UInt32
+    CcLazyWritePages: UInt32
+    CcDataFlushes: UInt32
+    CcDataPages: UInt32
+    ContextSwitches: UInt32
+    FirstLevelTbFills: UInt32
+    SecondLevelTbFills: UInt32
+    SystemCalls: UInt32
+    CcTotalDirtyPages: UInt64
+    CcDirtyPageThreshold: UInt64
+    ResidentAvailablePages: Int64
+    SharedCommittedPages: UInt64
+    MdlPagesAllocated: UInt64
+    PfnDatabaseCommittedPages: UInt64
+    SystemPageTableCommittedPages: UInt64
+    ContiguousPagesAllocated: UInt64
+    _pack_ = 4
 class MINIDUMP_THREAD(Structure):
     ThreadId: UInt32
     SuspendCount: UInt32
@@ -3988,7 +4220,7 @@ elif ARCH in 'X86,X64':
         _pack_ = 4
 class MINIDUMP_THREAD_EX_LIST(Structure):
     NumberOfThreads: UInt32
-    Threads: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_THREAD_EX * 1
+    Threads: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_THREAD_EX]
     _pack_ = 4
 class MINIDUMP_THREAD_INFO(Structure):
     ThreadId: UInt32
@@ -4016,7 +4248,7 @@ class MINIDUMP_THREAD_INFO_LIST(Structure):
     _pack_ = 4
 class MINIDUMP_THREAD_LIST(Structure):
     NumberOfThreads: UInt32
-    Threads: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_THREAD * 1
+    Threads: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_THREAD]
     _pack_ = 4
 class MINIDUMP_THREAD_NAME(Structure):
     ThreadId: UInt32
@@ -4024,7 +4256,7 @@ class MINIDUMP_THREAD_NAME(Structure):
     _pack_ = 4
 class MINIDUMP_THREAD_NAME_LIST(Structure):
     NumberOfThreadNames: UInt32
-    ThreadNames: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_THREAD_NAME * 1
+    ThreadNames: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_THREAD_NAME]
     _pack_ = 4
 class MINIDUMP_TOKEN_INFO_HEADER(Structure):
     TokenSize: UInt32
@@ -4065,6 +4297,8 @@ MiniDumpWithIptTrace: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_
 MiniDumpScanInaccessiblePartialPages: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_TYPE = 8388608
 MiniDumpFilterWriteCombinedMemory: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_TYPE = 16777216
 MiniDumpValidTypeFlags: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_TYPE = 33554431
+MiniDumpNoIgnoreInaccessibleMemory: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_TYPE = 33554432
+MiniDumpValidTypeFlagsEx: win32more.Windows.Win32.System.Diagnostics.Debug.MINIDUMP_TYPE = 67108863
 class MINIDUMP_UNLOADED_MODULE(Structure):
     BaseOfImage: UInt64
     SizeOfImage: UInt32
@@ -4138,7 +4372,7 @@ class MODLOAD_PDBGUID_PDBAGE(Structure):
 class MODULE_TYPE_INFO(Structure):
     dataLength: UInt16
     leaf: UInt16
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 MODULE_WRITE_FLAGS = Int32
 ModuleWriteModule: win32more.Windows.Win32.System.Diagnostics.Debug.MODULE_WRITE_FLAGS = 1
 ModuleWriteDataSeg: win32more.Windows.Win32.System.Diagnostics.Debug.MODULE_WRITE_FLAGS = 2
@@ -4192,6 +4426,19 @@ class OUTPUT_DEBUG_STRING_INFO(Structure):
     lpDebugStringData: win32more.Windows.Win32.Foundation.PSTR
     fUnicode: UInt16
     nDebugStringLength: UInt16
+PAGE_OFFLINE_ERROR_TYPES = Int32
+BitErrorDdr4: win32more.Windows.Win32.System.Diagnostics.Debug.PAGE_OFFLINE_ERROR_TYPES = 0
+RowErrorDdr4: win32more.Windows.Win32.System.Diagnostics.Debug.PAGE_OFFLINE_ERROR_TYPES = 1
+BitErrorDdr5: win32more.Windows.Win32.System.Diagnostics.Debug.PAGE_OFFLINE_ERROR_TYPES = 2
+RowErrorDdr5: win32more.Windows.Win32.System.Diagnostics.Debug.PAGE_OFFLINE_ERROR_TYPES = 3
+class PAGE_OFFLINE_VALID_BITS(Union):
+    Anonymous: _Anonymous_e__Struct
+    AsUINT8: Byte
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        PhysicalAddress: Annotated[Byte, NativeBitfieldAttribute(1)]
+        MemDefect: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[Byte, NativeBitfieldAttribute(6)]
 @winfunctype_pointer
 def PCOGETACTIVATIONSTATE(param0: Guid, param1: UInt32, param2: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
@@ -4240,11 +4487,11 @@ def PGET_TARGET_ATTRIBUTE_VALUE64(hProcess: win32more.Windows.Win32.Foundation.H
 class PHYSICAL_MEMORY_DESCRIPTOR32(Structure):
     NumberOfRuns: UInt32
     NumberOfPages: UInt32
-    Run: win32more.Windows.Win32.System.Diagnostics.Debug.PHYSICAL_MEMORY_RUN32 * 1
+    Run: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.PHYSICAL_MEMORY_RUN32]
 class PHYSICAL_MEMORY_DESCRIPTOR64(Structure):
     NumberOfRuns: UInt32
     NumberOfPages: UInt64
-    Run: win32more.Windows.Win32.System.Diagnostics.Debug.PHYSICAL_MEMORY_RUN64 * 1
+    Run: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.PHYSICAL_MEMORY_RUN64]
 class PHYSICAL_MEMORY_RUN32(Structure):
     BasePage: UInt32
     PageCount: UInt32
@@ -4456,7 +4703,7 @@ class SYMBOL_INFOW(Structure):
     Tag: UInt32
     NameLen: UInt32
     MaxNameLen: UInt32
-    Name: Char * 1
+    Name: FlexibleArray[Char]
 SYMBOL_INFO = UnicodeAlias('SYMBOL_INFOW')
 SYMBOL_INFO_FLAGS = UInt32
 SYMFLAG_CLR_TOKEN: win32more.Windows.Win32.System.Diagnostics.Debug.SYMBOL_INFO_FLAGS = 262144
@@ -4539,7 +4786,11 @@ ThreadWriteThreadInfo: win32more.Windows.Win32.System.Diagnostics.Debug.THREAD_W
 class TI_FINDCHILDREN_PARAMS(Structure):
     Count: UInt32
     Start: UInt32
-    ChildId: UInt32 * 1
+    ChildId: FlexibleArray[UInt32]
+class TI_GET_DISCRIMINATEDUNION_TAG_RANGES_PARAMS(Structure):
+    Count: UInt32
+    Start: UInt32
+    Range: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.DISCRIMINATEDUNION_TAG_VALUE]
 class UNLOAD_DLL_DEBUG_INFO(Structure):
     lpBaseOfDll: VoidPtr
 if ARCH in 'X64,ARM64':
@@ -4568,6 +4819,7 @@ class WAITCHAIN_NODE_INFO(Structure):
     ObjectType: win32more.Windows.Win32.System.Diagnostics.Debug.WCT_OBJECT_TYPE
     ObjectStatus: win32more.Windows.Win32.System.Diagnostics.Debug.WCT_OBJECT_STATUS
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         LockObject: _LockObject_e__Struct
         ThreadObject: _ThreadObject_e__Struct
@@ -4886,14 +5138,15 @@ class WHEA_NOTIFICATION_DESCRIPTOR(Structure):
 class WHEA_NOTIFICATION_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     AsUSHORT: UInt16
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Struct(Structure):
-        PollIntervalRW: Annotated[UInt16, 1]
-        SwitchToPollingThresholdRW: Annotated[UInt16, 1]
-        SwitchToPollingWindowRW: Annotated[UInt16, 1]
-        ErrorThresholdRW: Annotated[UInt16, 1]
-        ErrorThresholdWindowRW: Annotated[UInt16, 1]
-        Reserved: Annotated[UInt16, 11]
+        PollIntervalRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        SwitchToPollingThresholdRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        SwitchToPollingWindowRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        ErrorThresholdRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        ErrorThresholdWindowRW: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt16, NativeBitfieldAttribute(11)]
         _pack_ = 1
 class WHEA_PCI_SLOT_NUMBER(Structure):
     u: _u_e__Union
@@ -4902,9 +5155,9 @@ class WHEA_PCI_SLOT_NUMBER(Structure):
         AsULONG: UInt32
         _pack_ = 1
         class _bits_e__Struct(Structure):
-            DeviceNumber: Annotated[UInt32, 5]
-            FunctionNumber: Annotated[UInt32, 3]
-            Reserved: Annotated[UInt32, 24]
+            DeviceNumber: Annotated[UInt32, NativeBitfieldAttribute(5)]
+            FunctionNumber: Annotated[UInt32, NativeBitfieldAttribute(3)]
+            Reserved: Annotated[UInt32, NativeBitfieldAttribute(24)]
             _pack_ = 1
 class WHEA_XPF_CMC_DESCRIPTOR(Structure):
     Type: UInt16
@@ -5005,32 +5258,34 @@ class WOW64_LDT_ENTRY(Structure):
             Flags2: Byte
             BaseHi: Byte
         class _Bits_e__Struct(Structure):
-            BaseMid: Annotated[UInt32, 8]
-            Type: Annotated[UInt32, 5]
-            Dpl: Annotated[UInt32, 2]
-            Pres: Annotated[UInt32, 1]
-            LimitHi: Annotated[UInt32, 4]
-            Sys: Annotated[UInt32, 1]
-            Reserved_0: Annotated[UInt32, 1]
-            Default_Big: Annotated[UInt32, 1]
-            Granularity: Annotated[UInt32, 1]
-            BaseHi: Annotated[UInt32, 8]
+            BaseMid: Annotated[UInt32, NativeBitfieldAttribute(8)]
+            Type: Annotated[UInt32, NativeBitfieldAttribute(5)]
+            Dpl: Annotated[UInt32, NativeBitfieldAttribute(2)]
+            Pres: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            LimitHi: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Sys: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Reserved_0: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Default_Big: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Granularity: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            BaseHi: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class XPF_MCE_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     AsULONG: UInt32
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Struct(Structure):
-        MCG_CapabilityRW: Annotated[UInt32, 1]
-        MCG_GlobalControlRW: Annotated[UInt32, 1]
-        Reserved: Annotated[UInt32, 30]
+        MCG_CapabilityRW: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        MCG_GlobalControlRW: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(30)]
         _pack_ = 1
 class XPF_MC_BANK_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     AsUCHAR: Byte
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        ClearOnInitializationRW: Annotated[Byte, 1]
-        ControlDataRW: Annotated[Byte, 1]
-        Reserved: Annotated[Byte, 6]
+        ClearOnInitializationRW: Annotated[Byte, NativeBitfieldAttribute(1)]
+        ControlDataRW: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[Byte, NativeBitfieldAttribute(6)]
 class XSAVE_AREA(Structure):
     LegacyState: win32more.Windows.Win32.System.Diagnostics.Debug.XSAVE_FORMAT
     Header: win32more.Windows.Win32.System.Diagnostics.Debug.XSAVE_AREA_HEADER
@@ -5087,14 +5342,17 @@ class XSTATE_CONFIGURATION(Structure):
     EnabledUserVisibleSupervisorFeatures: UInt64
     ExtendedFeatureDisableFeatures: UInt64
     AllNonLargeFeatureSize: UInt32
-    Spare: UInt32
+    MaxSveVectorLength: UInt16
+    Spare1: UInt16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ControlFlags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            OptimizedSave: Annotated[UInt32, 1]
-            CompactionEnabled: Annotated[UInt32, 1]
-            ExtendedFeatureDisable: Annotated[UInt32, 1]
+            OptimizedSave: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            CompactionEnabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ExtendedFeatureDisable: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class XSTATE_CONFIG_FEATURE_MSC_INFO(Structure):
     SizeOfInfo: UInt32
     ContextSize: UInt32
@@ -5105,14 +5363,16 @@ if ARCH in 'X64,ARM64':
     class XSTATE_CONTEXT(Structure):
         Mask: UInt64
         Length: UInt32
-        Reserved1: UInt32
+        Flags: Byte
+        Reserved0: Byte * 3
         Area: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.XSAVE_AREA)
         Buffer: VoidPtr
 elif ARCH in 'X86':
     class XSTATE_CONTEXT(Structure):
         Mask: UInt64
         Length: UInt32
-        Reserved1: UInt32
+        Flags: Byte
+        Reserved0: Byte * 3
         Area: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.XSAVE_AREA)
         Reserved2: UInt32
         Buffer: VoidPtr

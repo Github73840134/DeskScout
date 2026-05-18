@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct2D
 import win32more.Windows.Win32.Graphics.Imaging
@@ -19,6 +19,11 @@ class IWICImagingFactory2(ComPtr):
     _iid_ = Guid('{7b816b45-1996-4476-b132-de9e247c8af0}')
     @commethod(28)
     def CreateImageEncoder(self, pD2DDevice: win32more.Windows.Win32.Graphics.Direct2D.ID2D1Device, ppWICImageEncoder: POINTER(win32more.Windows.Win32.Graphics.Imaging.D2D.IWICImageEncoder)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IWICImagingFactory3(ComPtr):
+    extends: win32more.Windows.Win32.Graphics.Imaging.D2D.IWICImagingFactory2
+    _iid_ = Guid('{489b3d8b-624a-4258-b678-7eece70f299d}')
+    @commethod(29)
+    def CreateBitmapToneMapper(self, ppToneMapper: POINTER(win32more.Windows.Win32.Graphics.Imaging.IWICBitmapToneMapper)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 
 
 make_ready(__name__)

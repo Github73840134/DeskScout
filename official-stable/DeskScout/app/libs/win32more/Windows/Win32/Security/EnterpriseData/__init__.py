@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security.EnterpriseData
 import win32more.Windows.Win32.Storage.Packaging.Appx
@@ -23,6 +23,8 @@ def SrpGetEnterprisePolicy(tokenHandle: win32more.Windows.Win32.Foundation.HANDL
 def SrpIsTokenService(TokenHandle: win32more.Windows.Win32.Foundation.HANDLE, IsTokenService: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype('srpapi.dll')
 def SrpDoesPolicyAllowAppExecution(packageId: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGE_ID), isAllowed: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('srpapi.dll')
+def SrpIsAllowed(FileInfo: POINTER(win32more.Windows.Win32.Security.EnterpriseData._SRP_REQUEST)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype('srpapi.dll')
 def SrpHostingInitialize(Version: win32more.Windows.Win32.Security.EnterpriseData.SRPHOSTING_VERSION, Type: win32more.Windows.Win32.Security.EnterpriseData.SRPHOSTING_TYPE, pvData: VoidPtr, cbData: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('srpapi.dll')
@@ -82,6 +84,7 @@ SRPHOSTING_TYPE_WINHTTP: win32more.Windows.Win32.Security.EnterpriseData.SRPHOST
 SRPHOSTING_TYPE_WININET: win32more.Windows.Win32.Security.EnterpriseData.SRPHOSTING_TYPE = 2
 SRPHOSTING_VERSION = Int32
 SRPHOSTING_VERSION1: win32more.Windows.Win32.Security.EnterpriseData.SRPHOSTING_VERSION = 1
+_SRP_REQUEST = IntPtr
 
 
 make_ready(__name__)

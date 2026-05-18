@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Media
 import win32more.Windows.Win32.Media.Audio
@@ -343,9 +343,11 @@ AUDCLNT_STREAMOPTIONS_NONE: win32more.Windows.Win32.Media.Audio.AUDCLNT_STREAMOP
 AUDCLNT_STREAMOPTIONS_RAW: win32more.Windows.Win32.Media.Audio.AUDCLNT_STREAMOPTIONS = 1
 AUDCLNT_STREAMOPTIONS_MATCH_FORMAT: win32more.Windows.Win32.Media.Audio.AUDCLNT_STREAMOPTIONS = 2
 AUDCLNT_STREAMOPTIONS_AMBISONICS: win32more.Windows.Win32.Media.Audio.AUDCLNT_STREAMOPTIONS = 4
+AUDCLNT_STREAMOPTIONS_POST_VOLUME_LOOPBACK: win32more.Windows.Win32.Media.Audio.AUDCLNT_STREAMOPTIONS = 8
 class AUDIOCLIENT_ACTIVATION_PARAMS(Structure):
     ActivationType: win32more.Windows.Win32.Media.Audio.AUDIOCLIENT_ACTIVATION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ProcessLoopbackParams: win32more.Windows.Win32.Media.Audio.AUDIOCLIENT_PROCESS_LOOPBACK_PARAMS
 AUDIOCLIENT_ACTIVATION_TYPE = Int32
@@ -389,7 +391,7 @@ class AUDIO_VOLUME_NOTIFICATION_DATA(Structure):
     bMuted: win32more.Windows.Win32.Foundation.BOOL
     fMasterVolume: Single
     nChannels: UInt32
-    afChannelVolumes: Single * 1
+    afChannelVolumes: FlexibleArray[Single]
 class AUXCAPS2A(Structure):
     wMid: UInt16
     wPid: UInt16
@@ -510,6 +512,7 @@ AUDCLNT_E_HEADTRACKING_ENABLED: win32more.Windows.Win32.Foundation.HRESULT = -20
 AUDCLNT_E_HEADTRACKING_UNSUPPORTED: win32more.Windows.Win32.Foundation.HRESULT = -2004287424
 AUDCLNT_E_EFFECT_NOT_AVAILABLE: win32more.Windows.Win32.Foundation.HRESULT = -2004287423
 AUDCLNT_E_EFFECT_STATE_READ_ONLY: win32more.Windows.Win32.Foundation.HRESULT = -2004287422
+AUDCLNT_E_POST_VOLUME_LOOPBACK_UNSUPPORTED: win32more.Windows.Win32.Foundation.HRESULT = -2004287421
 AUDCLNT_S_BUFFER_EMPTY: win32more.Windows.Win32.Foundation.HRESULT = 143196161
 AUDCLNT_S_THREAD_ALREADY_REGISTERED: win32more.Windows.Win32.Foundation.HRESULT = 143196162
 AUDCLNT_S_POSITION_STALLED: win32more.Windows.Win32.Foundation.HRESULT = 143196163
@@ -549,6 +552,8 @@ PKEY_AudioEndpoint_FullRangeSpeakers: win32more.Windows.Win32.Foundation.PROPERT
 PKEY_AudioEndpoint_Supports_EventDriven_Mode: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1da5d803-d492-4edd-8c23-e0c0ffee7f0e}'), pid=7)
 PKEY_AudioEndpoint_JackSubType: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1da5d803-d492-4edd-8c23-e0c0ffee7f0e}'), pid=8)
 PKEY_AudioEndpoint_Default_VolumeInDb: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1da5d803-d492-4edd-8c23-e0c0ffee7f0e}'), pid=9)
+PKEY_AudioEndpoint_Max_VolumeInDb: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1da5d803-d492-4edd-8c23-e0c0ffee7f0e}'), pid=10)
+PKEY_AudioEndpoint_Min_VolumeInDb: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1da5d803-d492-4edd-8c23-e0c0ffee7f0e}'), pid=11)
 PKEY_AudioEngine_DeviceFormat: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{f19f064d-082c-4e27-bc73-6882a1bb8e4c}'), pid=0)
 PKEY_AudioEngine_OEMFormat: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{e4870e26-3cc5-4cd2-ba46-ca0a9a70ed04}'), pid=3)
 PKEY_AudioEndpointLogo_IconEffects: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{f1ab780d-2010-4ed3-a3a6-8b87f0f0c476}'), pid=0)
@@ -1281,6 +1286,8 @@ AudioObjectType_BottomFrontRight: win32more.Windows.Win32.Media.Audio.AudioObjec
 AudioObjectType_BottomBackLeft: win32more.Windows.Win32.Media.Audio.AudioObjectType = 32768
 AudioObjectType_BottomBackRight: win32more.Windows.Win32.Media.Audio.AudioObjectType = 65536
 AudioObjectType_BackCenter: win32more.Windows.Win32.Media.Audio.AudioObjectType = 131072
+AudioObjectType_StereoLeft: win32more.Windows.Win32.Media.Audio.AudioObjectType = 262144
+AudioObjectType_StereoRight: win32more.Windows.Win32.Media.Audio.AudioObjectType = 524288
 AudioSessionDisconnectReason = Int32
 DisconnectReasonDeviceRemoval: win32more.Windows.Win32.Media.Audio.AudioSessionDisconnectReason = 0
 DisconnectReasonServerShutdown: win32more.Windows.Win32.Media.Audio.AudioSessionDisconnectReason = 1
@@ -1821,11 +1828,11 @@ class IMessageFilter(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{00000016-0000-0000-c000-000000000046}')
     @commethod(3)
-    def HandleInComingCall(self, dwCallType: UInt32, htaskCaller: win32more.Windows.Win32.Media.HTASK, dwTickCount: UInt32, lpInterfaceInfo: POINTER(win32more.Windows.Win32.System.Com.INTERFACEINFO)) -> UInt32: ...
+    def HandleInComingCall(self, dwCallType: UInt32, htaskCaller: win32more.Windows.Win32.Foundation.HTASK, dwTickCount: UInt32, lpInterfaceInfo: POINTER(win32more.Windows.Win32.System.Com.INTERFACEINFO)) -> UInt32: ...
     @commethod(4)
-    def RetryRejectedCall(self, htaskCallee: win32more.Windows.Win32.Media.HTASK, dwTickCount: UInt32, dwRejectType: UInt32) -> UInt32: ...
+    def RetryRejectedCall(self, htaskCallee: win32more.Windows.Win32.Foundation.HTASK, dwTickCount: UInt32, dwRejectType: UInt32) -> UInt32: ...
     @commethod(5)
-    def MessagePending(self, htaskCallee: win32more.Windows.Win32.Media.HTASK, dwTickCount: UInt32, dwPendingType: UInt32) -> UInt32: ...
+    def MessagePending(self, htaskCallee: win32more.Windows.Win32.Foundation.HTASK, dwTickCount: UInt32, dwPendingType: UInt32) -> UInt32: ...
 class IPart(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{ae2de0e4-5bca-4f2d-aa46-5d13f8fdb3a9}')
@@ -2075,7 +2082,7 @@ class MIDIEVENT(Structure):
     dwDeltaTime: UInt32
     dwStreamID: UInt32
     dwEvent: UInt32
-    dwParms: UInt32 * 1
+    dwParms: FlexibleArray[UInt32]
     _pack_ = 1
 class MIDIHDR(Structure):
     lpData: win32more.Windows.Win32.Foundation.PSTR
@@ -2259,6 +2266,7 @@ class MIXERCONTROLA(Structure):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
         dwReserved: UInt32 * 6
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         _pack_ = 1
         class _Anonymous1_e__Struct(Structure):
             lMinimum: Int32
@@ -2280,6 +2288,7 @@ class MIXERCONTROLDETAILS(Structure):
     Anonymous: _Anonymous_e__Union
     cbDetails: UInt32
     paDetails: VoidPtr
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         hwndOwner: win32more.Windows.Win32.Foundation.HWND
@@ -2320,6 +2329,7 @@ class MIXERCONTROLW(Structure):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
         dwReserved: UInt32 * 6
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         _pack_ = 1
         class _Anonymous1_e__Struct(Structure):
             lMinimum: Int32
@@ -2365,6 +2375,7 @@ class MIXERLINECONTROLSA(Structure):
     cControls: UInt32
     cbmxctrl: UInt32
     pamxctrl: POINTER(win32more.Windows.Win32.Media.Audio.MIXERCONTROLA)
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         dwControlID: UInt32
@@ -2377,6 +2388,7 @@ class MIXERLINECONTROLSW(Structure):
     cControls: UInt32
     cbmxctrl: UInt32
     pamxctrl: POINTER(win32more.Windows.Win32.Media.Audio.MIXERCONTROLW)
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         dwControlID: UInt32

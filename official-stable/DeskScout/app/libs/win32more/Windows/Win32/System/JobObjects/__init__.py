@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.JobObjects
@@ -84,7 +84,9 @@ JobObjectReserved24Information: win32more.Windows.Win32.System.JobObjects.JOBOBJ
 JobObjectReserved25Information: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 47
 JobObjectReserved26Information: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 48
 JobObjectReserved27Information: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 49
-MaxJobObjectInfoClass: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 50
+JobObjectReserved28Information: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 50
+JobObjectNetworkAccountingInformation: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 51
+MaxJobObjectInfoClass: win32more.Windows.Win32.System.JobObjects.JOBOBJECTINFOCLASS = 52
 class JOBOBJECT_ASSOCIATE_COMPLETION_PORT(Structure):
     CompletionKey: VoidPtr
     CompletionPort: win32more.Windows.Win32.Foundation.HANDLE
@@ -113,16 +115,18 @@ class JOBOBJECT_BASIC_LIMIT_INFORMATION(Structure):
 class JOBOBJECT_BASIC_PROCESS_ID_LIST(Structure):
     NumberOfAssignedProcesses: UInt32
     NumberOfProcessIdsInList: UInt32
-    ProcessIdList: UIntPtr * 1
+    ProcessIdList: FlexibleArray[UIntPtr]
 class JOBOBJECT_BASIC_UI_RESTRICTIONS(Structure):
     UIRestrictionsClass: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_UILIMIT
 class JOBOBJECT_CPU_RATE_CONTROL_INFORMATION(Structure):
     ControlFlags: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_CPU_RATE_CONTROL
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         CpuRate: UInt32
         Weight: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             MinRate: UInt16
             MaxRate: UInt16
@@ -230,6 +234,7 @@ class JOBOBJECT_LIMIT_VIOLATION_INFORMATION_2(Structure):
     IoRateControlToleranceLimit: win32more.Windows.Win32.System.JobObjects.JOBOBJECT_RATE_CONTROL_TOLERANCE
     NetRateControlTolerance: win32more.Windows.Win32.System.JobObjects.JOBOBJECT_RATE_CONTROL_TOLERANCE
     NetRateControlToleranceLimit: win32more.Windows.Win32.System.JobObjects.JOBOBJECT_RATE_CONTROL_TOLERANCE
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         JobHighMemoryLimit: UInt64
         JobMemoryLimit: UInt64
@@ -264,6 +269,7 @@ class JOBOBJECT_NOTIFICATION_LIMIT_INFORMATION_2(Structure):
     IoRateControlToleranceInterval: win32more.Windows.Win32.System.JobObjects.JOBOBJECT_RATE_CONTROL_TOLERANCE_INTERVAL
     NetRateControlTolerance: win32more.Windows.Win32.System.JobObjects.JOBOBJECT_RATE_CONTROL_TOLERANCE
     NetRateControlToleranceInterval: win32more.Windows.Win32.System.JobObjects.JOBOBJECT_RATE_CONTROL_TOLERANCE_INTERVAL
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         JobHighMemoryLimit: UInt64
         JobMemoryLimit: UInt64
@@ -293,7 +299,7 @@ JOB_OBJECT_CPU_RATE_CONTROL_WEIGHT_BASED: win32more.Windows.Win32.System.JobObje
 JOB_OBJECT_CPU_RATE_CONTROL_HARD_CAP: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_CPU_RATE_CONTROL = 4
 JOB_OBJECT_CPU_RATE_CONTROL_NOTIFY: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_CPU_RATE_CONTROL = 8
 JOB_OBJECT_CPU_RATE_CONTROL_MIN_MAX_RATE: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_CPU_RATE_CONTROL = 16
-JOB_OBJECT_CPU_RATE_CONTROL_VALID_FLAGS: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_CPU_RATE_CONTROL = 31
+JOB_OBJECT_CPU_RATE_CONTROL_VALID_FLAGS: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_CPU_RATE_CONTROL = 63
 JOB_OBJECT_IO_RATE_CONTROL_FLAGS = Int32
 JOB_OBJECT_IO_RATE_CONTROL_ENABLE: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_IO_RATE_CONTROL_FLAGS = 1
 JOB_OBJECT_IO_RATE_CONTROL_STANDALONE_VOLUME: win32more.Windows.Win32.System.JobObjects.JOB_OBJECT_IO_RATE_CONTROL_FLAGS = 2

@@ -2,13 +2,13 @@
 	"header":{
 		"type":"merge",
 		"version":"2",
-		"fn":"settings.json"
+		"prefname":"settings.json"
 	},
 	"actions":{
 		"ktd":[],
 		"la":[]
 	},
 	"data":{
-
+		"autostart":false
 	}
 }

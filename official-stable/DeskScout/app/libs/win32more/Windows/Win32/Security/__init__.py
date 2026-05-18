@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 class ACCESS_ALLOWED_ACE(Structure):
@@ -483,7 +483,7 @@ class CLAIM_SECURITY_ATTRIBUTE_RELATIVE_V1(Structure):
         pUint64: UInt32 * 1
         ppString: UInt32 * 1
         pFqbn: UInt32 * 1
-        pOctetString: UInt32 * 1
+        pOctetString: FlexibleArray[UInt32]
 class CLAIM_SECURITY_ATTRIBUTE_V1(Structure):
     Name: win32more.Windows.Win32.Foundation.PWSTR
     ValueType: win32more.Windows.Win32.Security.CLAIM_SECURITY_ATTRIBUTE_VALUE_TYPE
@@ -526,6 +526,7 @@ class GENERIC_MAPPING(Structure):
     GenericAll: UInt32
 class LLFILETIME(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ll: Int64
         ft: win32more.Windows.Win32.Foundation.FILETIME
@@ -576,7 +577,7 @@ def PLSA_AP_CALL_PACKAGE_UNTRUSTED(ClientRequest: POINTER(VoidPtr), ProtocolSubm
 class PRIVILEGE_SET(Structure):
     PrivilegeCount: UInt32
     Control: UInt32
-    Privilege: win32more.Windows.Win32.Security.LUID_AND_ATTRIBUTES * 1
+    Privilege: FlexibleArray[win32more.Windows.Win32.Security.LUID_AND_ATTRIBUTES]
 PSECURITY_DESCRIPTOR = VoidPtr
 PSID = VoidPtr
 class QUOTA_LIMITS(Structure):
@@ -683,7 +684,7 @@ class SID(Structure):
     Revision: Byte
     SubAuthorityCount: Byte
     IdentifierAuthority: win32more.Windows.Win32.Security.SID_IDENTIFIER_AUTHORITY
-    SubAuthority: UInt32 * 1
+    SubAuthority: FlexibleArray[UInt32]
 class SID_AND_ATTRIBUTES(Structure):
     Sid: win32more.Windows.Win32.Security.PSID
     Attributes: UInt32
@@ -811,7 +812,7 @@ TOKEN_ALL_ACCESS: win32more.Windows.Win32.Security.TOKEN_ACCESS_MASK = 983551
 class TOKEN_APPCONTAINER_INFORMATION(Structure):
     TokenAppContainer: win32more.Windows.Win32.Security.PSID
 class TOKEN_AUDIT_POLICY(Structure):
-    PerUserPolicy: Byte * 30
+    PerUserPolicy: Byte * 31
 class TOKEN_CONTROL(Structure):
     TokenId: win32more.Windows.Win32.Foundation.LUID
     AuthenticationId: win32more.Windows.Win32.Foundation.LUID
@@ -829,7 +830,7 @@ TokenElevationTypeFull: win32more.Windows.Win32.Security.TOKEN_ELEVATION_TYPE = 
 TokenElevationTypeLimited: win32more.Windows.Win32.Security.TOKEN_ELEVATION_TYPE = 3
 class TOKEN_GROUPS(Structure):
     GroupCount: UInt32
-    Groups: win32more.Windows.Win32.Security.SID_AND_ATTRIBUTES * 1
+    Groups: FlexibleArray[win32more.Windows.Win32.Security.SID_AND_ATTRIBUTES]
 class TOKEN_GROUPS_AND_PRIVILEGES(Structure):
     SidCount: UInt32
     SidLength: UInt32
@@ -890,7 +891,9 @@ TokenChildProcessFlags: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS
 TokenIsLessPrivilegedAppContainer: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 46
 TokenIsSandboxed: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 47
 TokenIsAppSilo: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 48
-MaxTokenInfoClass: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 49
+TokenLoggingInformation: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 49
+TokenLearningMode: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 50
+MaxTokenInfoClass: win32more.Windows.Win32.Security.TOKEN_INFORMATION_CLASS = 51
 class TOKEN_LINKED_TOKEN(Structure):
     LinkedToken: win32more.Windows.Win32.Foundation.HANDLE
 class TOKEN_MANDATORY_LABEL(Structure):
@@ -910,7 +913,7 @@ class TOKEN_PRIMARY_GROUP(Structure):
     PrimaryGroup: win32more.Windows.Win32.Security.PSID
 class TOKEN_PRIVILEGES(Structure):
     PrivilegeCount: UInt32
-    Privileges: win32more.Windows.Win32.Security.LUID_AND_ATTRIBUTES * 1
+    Privileges: FlexibleArray[win32more.Windows.Win32.Security.LUID_AND_ATTRIBUTES]
 TOKEN_PRIVILEGES_ATTRIBUTES = UInt32
 SE_PRIVILEGE_ENABLED: win32more.Windows.Win32.Security.TOKEN_PRIVILEGES_ATTRIBUTES = 2
 SE_PRIVILEGE_ENABLED_BY_DEFAULT: win32more.Windows.Win32.Security.TOKEN_PRIVILEGES_ATTRIBUTES = 1
@@ -1058,6 +1061,8 @@ WinAuthenticationKeyPropertyMFASid: win32more.Windows.Win32.Security.WELL_KNOWN_
 WinAuthenticationKeyPropertyAttestationSid: win32more.Windows.Win32.Security.WELL_KNOWN_SID_TYPE = 117
 WinAuthenticationFreshKeyAuthSid: win32more.Windows.Win32.Security.WELL_KNOWN_SID_TYPE = 118
 WinBuiltinDeviceOwnersSid: win32more.Windows.Win32.Security.WELL_KNOWN_SID_TYPE = 119
+WinBuiltinUserModeHardwareOperatorsSid: win32more.Windows.Win32.Security.WELL_KNOWN_SID_TYPE = 120
+WinBuiltinOpenSSHUsersSid: win32more.Windows.Win32.Security.WELL_KNOWN_SID_TYPE = 121
 
 
 make_ready(__name__)

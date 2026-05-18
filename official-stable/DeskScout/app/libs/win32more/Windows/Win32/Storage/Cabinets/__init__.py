@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Storage.Cabinets
 INCLUDED_FCI: UInt32 = 1
@@ -99,6 +99,7 @@ class FDIDECRYPT(Structure):
     fdidt: win32more.Windows.Win32.Storage.Cabinets.FDIDECRYPTTYPE
     pvUser: VoidPtr
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cabinet: _cabinet_e__Struct
         folder: _folder_e__Struct

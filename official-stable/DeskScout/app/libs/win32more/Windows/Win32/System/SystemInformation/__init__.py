@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.SystemInformation
 NTDDI_WIN2K: UInt32 = 83886080
@@ -110,11 +110,15 @@ NTDDI_WIN10_MN: UInt32 = 167772169
 NTDDI_WIN10_FE: UInt32 = 167772170
 NTDDI_WIN10_CO: UInt32 = 167772171
 NTDDI_WIN10_NI: UInt32 = 167772172
-WDK_NTDDI_VERSION: UInt32 = 167772172
+NTDDI_WIN10_CU: UInt32 = 167772173
+NTDDI_WIN11_ZN: UInt32 = 167772174
+NTDDI_WIN11_GA: UInt32 = 167772175
+NTDDI_WIN11_GE: UInt32 = 167772176
+WDK_NTDDI_VERSION: UInt32 = 167772176
 OSVERSION_MASK: UInt32 = 4294901760
 SPVERSION_MASK: UInt32 = 65280
 SUBVERSION_MASK: UInt32 = 255
-NTDDI_VERSION: UInt32 = 167772172
+NTDDI_VERSION: UInt32 = 167772176
 SCEX2_ALT_NETBIOS_NAME: UInt32 = 1
 @winfunctype('KERNEL32.dll')
 def GlobalMemoryStatusEx(lpBuffer: POINTER(win32more.Windows.Win32.System.SystemInformation.MEMORYSTATUSEX)) -> win32more.Windows.Win32.Foundation.BOOL: ...
@@ -216,6 +220,8 @@ def SetComputerNameExA(NameType: win32more.Windows.Win32.System.SystemInformatio
 @winfunctype('api-ms-win-core-sysinfo-l1-2-6.dll')
 def GetDeveloperDriveEnablementState() -> win32more.Windows.Win32.System.SystemInformation.DEVELOPER_DRIVE_ENABLEMENT_STATE: ...
 @winfunctype('KERNEL32.dll')
+def GetRuntimeAttestationReport(Nonce: POINTER(Byte), PackageVersion: UInt16, ReportTypesBitmap: UInt64, ReportBuffer: VoidPtr, ReportBufferSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
 def GetSystemCpuSetInformation(Information: POINTER(win32more.Windows.Win32.System.SystemInformation.SYSTEM_CPU_SET_INFORMATION), BufferLength: UInt32, ReturnedLength: POINTER(UInt32), Process: win32more.Windows.Win32.Foundation.HANDLE, Flags: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
 def GetSystemWow64DirectoryA(lpBuffer: win32more.Windows.Win32.Foundation.PSTR, uSize: UInt32) -> UInt32: ...
@@ -267,9 +273,10 @@ class CACHE_RELATIONSHIP(Structure):
     Reserved: Byte * 18
     GroupCount: UInt16
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         GroupMask: win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY
-        GroupMasks: win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY * 1
+        GroupMasks: FlexibleArray[win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY]
 COMPUTER_NAME_FORMAT = Int32
 ComputerNameNetBIOS: win32more.Windows.Win32.System.SystemInformation.COMPUTER_NAME_FORMAT = 0
 ComputerNameDnsHostname: win32more.Windows.Win32.System.SystemInformation.COMPUTER_NAME_FORMAT = 1
@@ -340,7 +347,9 @@ DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_06: win32more.Windows.Win32.System.SystemIn
 DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_07: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 43
 DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_08: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 44
 DEVICEFAMILYDEVICEFORM_XBOX_RESERVED_09: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 45
-DEVICEFAMILYDEVICEFORM_MAX: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 45
+DEVICEFAMILYDEVICEFORM_GAMING_HANDHELD: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 46
+DEVICEFAMILYDEVICEFORM_GAMING_CONSOLE: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 47
+DEVICEFAMILYDEVICEFORM_MAX: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYDEVICEFORM = 47
 DEVICEFAMILYINFOENUM = UInt32
 DEVICEFAMILYINFOENUM_UAP: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYINFOENUM = 0
 DEVICEFAMILYINFOENUM_WINDOWS_8X: win32more.Windows.Win32.System.SystemInformation.DEVICEFAMILYINFOENUM = 1
@@ -374,11 +383,19 @@ class GROUP_AFFINITY(Structure):
     Mask: UIntPtr
     Group: UInt16
     Reserved: UInt16 * 3
+class GROUP_AFFINITY32(Structure):
+    Mask: UInt32
+    Group: UInt16
+    Reserved: UInt16 * 3
+class GROUP_AFFINITY64(Structure):
+    Mask: UInt64
+    Group: UInt16
+    Reserved: UInt16 * 3
 class GROUP_RELATIONSHIP(Structure):
     MaximumGroupCount: UInt16
     ActiveGroupCount: UInt16
     Reserved: Byte * 20
-    GroupInfo: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_GROUP_INFO * 1
+    GroupInfo: FlexibleArray[win32more.Windows.Win32.System.SystemInformation.PROCESSOR_GROUP_INFO]
 IMAGE_FILE_MACHINE = UInt16
 IMAGE_FILE_MACHINE_AXP64: win32more.Windows.Win32.System.SystemInformation.IMAGE_FILE_MACHINE = 644
 IMAGE_FILE_MACHINE_I386: win32more.Windows.Win32.System.SystemInformation.IMAGE_FILE_MACHINE = 332
@@ -446,9 +463,10 @@ class NUMA_NODE_RELATIONSHIP(Structure):
     Reserved: Byte * 18
     GroupCount: UInt16
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         GroupMask: win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY
-        GroupMasks: win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY * 1
+        GroupMasks: FlexibleArray[win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY]
 class OSVERSIONINFOA(Structure):
     dwOSVersionInfoSize: UInt32
     dwMajorVersion: UInt32
@@ -493,102 +511,183 @@ OS_DEPLOYEMENT_STATE_VALUES = Int32
 OS_DEPLOYMENT_STANDARD: win32more.Windows.Win32.System.SystemInformation.OS_DEPLOYEMENT_STATE_VALUES = 1
 OS_DEPLOYMENT_COMPACT: win32more.Windows.Win32.System.SystemInformation.OS_DEPLOYEMENT_STATE_VALUES = 2
 OS_PRODUCT_TYPE = UInt32
-PRODUCT_BUSINESS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 6
-PRODUCT_BUSINESS_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 16
-PRODUCT_CLUSTER_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 18
-PRODUCT_CLUSTER_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 64
-PRODUCT_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 101
-PRODUCT_CORE_COUNTRYSPECIFIC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 99
-PRODUCT_CORE_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 98
-PRODUCT_CORE_SINGLELANGUAGE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 100
-PRODUCT_DATACENTER_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 80
-PRODUCT_DATACENTER_A_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 145
-PRODUCT_STANDARD_A_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 146
-PRODUCT_DATACENTER_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 8
-PRODUCT_DATACENTER_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 12
-PRODUCT_DATACENTER_SERVER_CORE_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 39
-PRODUCT_DATACENTER_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 37
-PRODUCT_EDUCATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 121
-PRODUCT_EDUCATION_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 122
-PRODUCT_ENTERPRISE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 4
-PRODUCT_ENTERPRISE_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 70
-PRODUCT_ENTERPRISE_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 72
-PRODUCT_ENTERPRISE_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 27
-PRODUCT_ENTERPRISE_N_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 84
-PRODUCT_ENTERPRISE_S: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 125
-PRODUCT_ENTERPRISE_S_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 129
-PRODUCT_ENTERPRISE_S_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 126
-PRODUCT_ENTERPRISE_S_N_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 130
-PRODUCT_ENTERPRISE_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 10
-PRODUCT_ENTERPRISE_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 14
-PRODUCT_ENTERPRISE_SERVER_CORE_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 41
-PRODUCT_ENTERPRISE_SERVER_IA64: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 15
-PRODUCT_ENTERPRISE_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 38
-PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 60
-PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 62
-PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 59
-PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 61
+PRODUCT_UNDEFINED: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 0
+PRODUCT_ULTIMATE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 1
 PRODUCT_HOME_BASIC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 2
-PRODUCT_HOME_BASIC_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 67
-PRODUCT_HOME_BASIC_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 5
 PRODUCT_HOME_PREMIUM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 3
-PRODUCT_HOME_PREMIUM_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 68
-PRODUCT_HOME_PREMIUM_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 26
-PRODUCT_HOME_PREMIUM_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 34
-PRODUCT_HOME_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 19
-PRODUCT_HYPERV: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 42
-PRODUCT_IOTUAP: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 123
-PRODUCT_IOTUAPCOMMERCIAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 131
-PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 30
-PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 32
-PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 31
-PRODUCT_MOBILE_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 104
-PRODUCT_MOBILE_ENTERPRISE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 133
-PRODUCT_MULTIPOINT_PREMIUM_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 77
-PRODUCT_MULTIPOINT_STANDARD_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 76
-PRODUCT_PRO_WORKSTATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 161
-PRODUCT_PRO_WORKSTATION_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 162
-PRODUCT_PROFESSIONAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 48
-PRODUCT_PROFESSIONAL_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 69
-PRODUCT_PROFESSIONAL_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 49
-PRODUCT_PROFESSIONAL_WMC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 103
-PRODUCT_SB_SOLUTION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 50
-PRODUCT_SB_SOLUTION_SERVER_EM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 54
-PRODUCT_SERVER_FOR_SB_SOLUTIONS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 51
-PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 55
-PRODUCT_SERVER_FOR_SMALLBUSINESS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 24
-PRODUCT_SERVER_FOR_SMALLBUSINESS_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 35
-PRODUCT_SERVER_FOUNDATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 33
-PRODUCT_SMALLBUSINESS_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 9
-PRODUCT_SMALLBUSINESS_SERVER_PREMIUM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 25
-PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 63
-PRODUCT_SOLUTION_EMBEDDEDSERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 56
-PRODUCT_STANDARD_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 79
+PRODUCT_ENTERPRISE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 4
+PRODUCT_HOME_BASIC_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 5
+PRODUCT_BUSINESS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 6
 PRODUCT_STANDARD_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 7
-PRODUCT_STANDARD_SERVER_CORE_: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 13
-PRODUCT_STANDARD_SERVER_CORE_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 40
+PRODUCT_DATACENTER_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 8
+PRODUCT_SMALLBUSINESS_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 9
+PRODUCT_ENTERPRISE_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 10
+PRODUCT_STARTER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 11
+PRODUCT_DATACENTER_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 12
+PRODUCT_STANDARD_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 13
+PRODUCT_ENTERPRISE_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 14
+PRODUCT_ENTERPRISE_SERVER_IA64: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 15
+PRODUCT_BUSINESS_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 16
+PRODUCT_WEB_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 17
+PRODUCT_CLUSTER_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 18
+PRODUCT_HOME_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 19
+PRODUCT_STORAGE_EXPRESS_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 20
+PRODUCT_STORAGE_STANDARD_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 21
+PRODUCT_STORAGE_WORKGROUP_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 22
+PRODUCT_STORAGE_ENTERPRISE_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 23
+PRODUCT_SERVER_FOR_SMALLBUSINESS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 24
+PRODUCT_SMALLBUSINESS_SERVER_PREMIUM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 25
+PRODUCT_HOME_PREMIUM_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 26
+PRODUCT_ENTERPRISE_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 27
+PRODUCT_ULTIMATE_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 28
+PRODUCT_WEB_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 29
+PRODUCT_MEDIUMBUSINESS_SERVER_MANAGEMENT: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 30
+PRODUCT_MEDIUMBUSINESS_SERVER_SECURITY: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 31
+PRODUCT_MEDIUMBUSINESS_SERVER_MESSAGING: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 32
+PRODUCT_SERVER_FOUNDATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 33
+PRODUCT_HOME_PREMIUM_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 34
+PRODUCT_SERVER_FOR_SMALLBUSINESS_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 35
 PRODUCT_STANDARD_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 36
+PRODUCT_DATACENTER_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 37
+PRODUCT_ENTERPRISE_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 38
+PRODUCT_DATACENTER_SERVER_CORE_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 39
+PRODUCT_STANDARD_SERVER_CORE_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 40
+PRODUCT_ENTERPRISE_SERVER_CORE_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 41
+PRODUCT_HYPERV: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 42
+PRODUCT_STORAGE_EXPRESS_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 43
+PRODUCT_STORAGE_STANDARD_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 44
+PRODUCT_STORAGE_WORKGROUP_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 45
+PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 46
+PRODUCT_STARTER_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 47
+PRODUCT_PROFESSIONAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 48
+PRODUCT_PROFESSIONAL_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 49
+PRODUCT_SB_SOLUTION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 50
+PRODUCT_SERVER_FOR_SB_SOLUTIONS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 51
 PRODUCT_STANDARD_SERVER_SOLUTIONS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 52
 PRODUCT_STANDARD_SERVER_SOLUTIONS_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 53
-PRODUCT_STARTER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 11
+PRODUCT_SB_SOLUTION_SERVER_EM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 54
+PRODUCT_SERVER_FOR_SB_SOLUTIONS_EM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 55
+PRODUCT_SOLUTION_EMBEDDEDSERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 56
+PRODUCT_SOLUTION_EMBEDDEDSERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 57
+PRODUCT_PROFESSIONAL_EMBEDDED: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 58
+PRODUCT_ESSENTIALBUSINESS_SERVER_MGMT: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 59
+PRODUCT_ESSENTIALBUSINESS_SERVER_ADDL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 60
+PRODUCT_ESSENTIALBUSINESS_SERVER_MGMTSVC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 61
+PRODUCT_ESSENTIALBUSINESS_SERVER_ADDLSVC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 62
+PRODUCT_SMALLBUSINESS_SERVER_PREMIUM_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 63
+PRODUCT_CLUSTER_SERVER_V: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 64
+PRODUCT_EMBEDDED: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 65
 PRODUCT_STARTER_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 66
-PRODUCT_STARTER_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 47
-PRODUCT_STORAGE_ENTERPRISE_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 23
-PRODUCT_STORAGE_ENTERPRISE_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 46
-PRODUCT_STORAGE_EXPRESS_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 20
-PRODUCT_STORAGE_EXPRESS_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 43
-PRODUCT_STORAGE_STANDARD_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 96
-PRODUCT_STORAGE_STANDARD_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 21
-PRODUCT_STORAGE_STANDARD_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 44
-PRODUCT_STORAGE_WORKGROUP_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 95
-PRODUCT_STORAGE_WORKGROUP_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 22
-PRODUCT_STORAGE_WORKGROUP_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 45
-PRODUCT_ULTIMATE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 1
+PRODUCT_HOME_BASIC_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 67
+PRODUCT_HOME_PREMIUM_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 68
+PRODUCT_PROFESSIONAL_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 69
+PRODUCT_ENTERPRISE_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 70
 PRODUCT_ULTIMATE_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 71
-PRODUCT_ULTIMATE_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 28
-PRODUCT_UNDEFINED: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 0
-PRODUCT_WEB_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 17
-PRODUCT_WEB_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 29
+PRODUCT_ENTERPRISE_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 72
+PRODUCT_MULTIPOINT_STANDARD_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 76
+PRODUCT_MULTIPOINT_PREMIUM_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 77
+PRODUCT_STANDARD_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 79
+PRODUCT_DATACENTER_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 80
+PRODUCT_ENTERPRISE_N_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 84
+PRODUCT_EMBEDDED_AUTOMOTIVE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 85
+PRODUCT_EMBEDDED_INDUSTRY_A: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 86
+PRODUCT_THINPC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 87
+PRODUCT_EMBEDDED_A: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 88
+PRODUCT_EMBEDDED_INDUSTRY: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 89
+PRODUCT_EMBEDDED_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 90
+PRODUCT_EMBEDDED_INDUSTRY_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 91
+PRODUCT_EMBEDDED_INDUSTRY_A_E: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 92
+PRODUCT_STORAGE_WORKGROUP_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 95
+PRODUCT_STORAGE_STANDARD_EVALUATION_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 96
+PRODUCT_CORE_ARM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 97
+PRODUCT_CORE_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 98
+PRODUCT_CORE_COUNTRYSPECIFIC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 99
+PRODUCT_CORE_SINGLELANGUAGE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 100
+PRODUCT_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 101
+PRODUCT_PROFESSIONAL_WMC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 103
+PRODUCT_EMBEDDED_INDUSTRY_EVAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 105
+PRODUCT_EMBEDDED_INDUSTRY_E_EVAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 106
+PRODUCT_EMBEDDED_EVAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 107
+PRODUCT_EMBEDDED_E_EVAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 108
+PRODUCT_NANO_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 109
+PRODUCT_CLOUD_STORAGE_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 110
+PRODUCT_CORE_CONNECTED: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 111
+PRODUCT_PROFESSIONAL_STUDENT: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 112
+PRODUCT_CORE_CONNECTED_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 113
+PRODUCT_PROFESSIONAL_STUDENT_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 114
+PRODUCT_CORE_CONNECTED_SINGLELANGUAGE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 115
+PRODUCT_CORE_CONNECTED_COUNTRYSPECIFIC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 116
+PRODUCT_CONNECTED_CAR: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 117
+PRODUCT_INDUSTRY_HANDHELD: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 118
+PRODUCT_PPI_PRO: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 119
+PRODUCT_ARM64_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 120
+PRODUCT_EDUCATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 121
+PRODUCT_EDUCATION_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 122
+PRODUCT_IOTUAP: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 123
+PRODUCT_CLOUD_HOST_INFRASTRUCTURE_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 124
+PRODUCT_ENTERPRISE_S: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 125
+PRODUCT_ENTERPRISE_S_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 126
+PRODUCT_PROFESSIONAL_S: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 127
+PRODUCT_PROFESSIONAL_S_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 128
+PRODUCT_ENTERPRISE_S_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 129
+PRODUCT_ENTERPRISE_S_N_EVALUATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 130
+PRODUCT_HOLOGRAPHIC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 135
+PRODUCT_HOLOGRAPHIC_BUSINESS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 136
+PRODUCT_PRO_SINGLE_LANGUAGE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 138
+PRODUCT_PRO_CHINA: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 139
+PRODUCT_ENTERPRISE_SUBSCRIPTION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 140
+PRODUCT_ENTERPRISE_SUBSCRIPTION_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 141
+PRODUCT_DATACENTER_NANO_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 143
+PRODUCT_STANDARD_NANO_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 144
+PRODUCT_DATACENTER_A_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 145
+PRODUCT_STANDARD_A_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 146
+PRODUCT_DATACENTER_WS_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 147
+PRODUCT_STANDARD_WS_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 148
+PRODUCT_UTILITY_VM: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 149
+PRODUCT_DATACENTER_EVALUATION_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 159
+PRODUCT_STANDARD_EVALUATION_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 160
+PRODUCT_PRO_WORKSTATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 161
+PRODUCT_PRO_WORKSTATION_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 162
+PRODUCT_PRO_FOR_EDUCATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 164
+PRODUCT_PRO_FOR_EDUCATION_N: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 165
+PRODUCT_AZURE_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 168
+PRODUCT_AZURE_NANO_SERVER: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 169
+PRODUCT_ENTERPRISEG: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 171
+PRODUCT_ENTERPRISEGN: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 172
+PRODUCT_SERVERRDSH: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 175
+PRODUCT_CLOUD: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 178
+PRODUCT_CLOUDN: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 179
+PRODUCT_HUBOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 180
+PRODUCT_ONECOREUPDATEOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 182
+PRODUCT_CLOUDE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 183
+PRODUCT_IOTOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 185
+PRODUCT_CLOUDEN: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 186
+PRODUCT_IOTEDGEOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 187
+PRODUCT_IOTENTERPRISE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 188
+PRODUCT_LITE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 189
+PRODUCT_IOTENTERPRISES: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 191
+PRODUCT_XBOX_SYSTEMOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 192
+PRODUCT_XBOX_GAMEOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 194
+PRODUCT_XBOX_ERAOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 195
+PRODUCT_XBOX_DURANGOHOSTOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 196
+PRODUCT_XBOX_SCARLETTHOSTOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 197
+PRODUCT_XBOX_KEYSTONE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 198
+PRODUCT_AZURE_SERVER_CLOUDHOST: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 199
+PRODUCT_AZURE_SERVER_CLOUDMOS: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 200
+PRODUCT_CLOUDEDITIONN: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 202
+PRODUCT_CLOUDEDITION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 203
+PRODUCT_VALIDATION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 204
+PRODUCT_IOTENTERPRISESK: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 205
+PRODUCT_IOTENTERPRISEK: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 206
+PRODUCT_IOTENTERPRISESEVAL: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 207
+PRODUCT_AZURE_SERVER_AGENTBRIDGE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 208
+PRODUCT_AZURE_SERVER_NANOHOST: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 209
+PRODUCT_WNC: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 210
+PRODUCT_AZURESTACKHCI_SERVER_CORE: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 406
+PRODUCT_DATACENTER_SERVER_AZURE_EDITION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 407
+PRODUCT_DATACENTER_SERVER_CORE_AZURE_EDITION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 408
+PRODUCT_DATACENTER_WS_SERVER_CORE_AZURE_EDITION: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 409
+PRODUCT_UNLICENSED: win32more.Windows.Win32.System.SystemInformation.OS_PRODUCT_TYPE = 2882382797
 @winfunctype_pointer
 def PGET_SYSTEM_WOW64_DIRECTORY_A(lpBuffer: win32more.Windows.Win32.Foundation.PSTR, uSize: UInt32) -> UInt32: ...
 @winfunctype_pointer
@@ -616,6 +715,7 @@ CacheUnified: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_CACHE_T
 CacheInstruction: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_CACHE_TYPE = 1
 CacheData: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_CACHE_TYPE = 2
 CacheTrace: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_CACHE_TYPE = 3
+CacheUnknown: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_CACHE_TYPE = 4
 class PROCESSOR_GROUP_INFO(Structure):
     MaximumProcessorCount: Byte
     ActiveProcessorCount: Byte
@@ -626,7 +726,7 @@ class PROCESSOR_RELATIONSHIP(Structure):
     EfficiencyClass: Byte
     Reserved: Byte * 20
     GroupCount: UInt16
-    GroupMask: win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY * 1
+    GroupMask: FlexibleArray[win32more.Windows.Win32.System.SystemInformation.GROUP_AFFINITY]
 RTL_SYSTEM_GLOBAL_DATA_ID = Int32
 GlobalDataIdUnknown: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 0
 GlobalDataIdRngSeedVersion: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 1
@@ -644,14 +744,14 @@ GlobalDataIdSafeBootMode: win32more.Windows.Win32.System.SystemInformation.RTL_S
 GlobalDataIdLastSystemRITEventTickCount: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 13
 GlobalDataIdConsoleSharedDataFlags: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 14
 GlobalDataIdNtSystemRootDrive: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 15
-GlobalDataIdQpcShift: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 16
-GlobalDataIdQpcBypassEnabled: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 17
-GlobalDataIdQpcData: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 18
-GlobalDataIdQpcBias: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 19
+GlobalDataIdQpcBypassEnabled: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 16
+GlobalDataIdQpcData: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 17
+GlobalDataIdQpcBias: win32more.Windows.Win32.System.SystemInformation.RTL_SYSTEM_GLOBAL_DATA_ID = 18
 class SYSTEM_CPU_SET_INFORMATION(Structure):
     Size: UInt32
     Type: win32more.Windows.Win32.System.SystemInformation.CPU_SET_INFORMATION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         CpuSet: _CpuSet_e__Struct
         class _CpuSet_e__Struct(Structure):
@@ -665,15 +765,17 @@ class SYSTEM_CPU_SET_INFORMATION(Structure):
             Anonymous1: _Anonymous1_e__Union
             Anonymous2: _Anonymous2_e__Union
             AllocationTag: UInt64
+            _anonymous_ = ('Anonymous1', 'Anonymous2')
             class _Anonymous1_e__Union(Union):
                 AllFlags: Byte
                 Anonymous: _Anonymous_e__Struct
+                _anonymous_ = ('Anonymous',)
                 class _Anonymous_e__Struct(Structure):
-                    Parked: Annotated[Byte, 1]
-                    Allocated: Annotated[Byte, 1]
-                    AllocatedToTargetProcess: Annotated[Byte, 1]
-                    RealTime: Annotated[Byte, 1]
-                    ReservedFlags: Annotated[Byte, 4]
+                    Parked: Annotated[Byte, NativeBitfieldAttribute(1)]
+                    Allocated: Annotated[Byte, NativeBitfieldAttribute(1)]
+                    AllocatedToTargetProcess: Annotated[Byte, NativeBitfieldAttribute(1)]
+                    RealTime: Annotated[Byte, NativeBitfieldAttribute(1)]
+                    ReservedFlags: Annotated[Byte, NativeBitfieldAttribute(4)]
             class _Anonymous2_e__Union(Union):
                 Reserved: UInt32
                 SchedulingClass: Byte
@@ -688,9 +790,11 @@ class SYSTEM_INFO(Structure):
     dwAllocationGranularity: UInt32
     wProcessorLevel: UInt16
     wProcessorRevision: UInt16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwOemId: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             wProcessorArchitecture: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_ARCHITECTURE
             wReserved: UInt16
@@ -698,6 +802,7 @@ class SYSTEM_LOGICAL_PROCESSOR_INFORMATION(Structure):
     ProcessorMask: UIntPtr
     Relationship: win32more.Windows.Win32.System.SystemInformation.LOGICAL_PROCESSOR_RELATIONSHIP
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ProcessorCore: _ProcessorCore_e__Struct
         NumaNode: _NumaNode_e__Struct
@@ -711,6 +816,7 @@ class SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX(Structure):
     Relationship: win32more.Windows.Win32.System.SystemInformation.LOGICAL_PROCESSOR_RELATIONSHIP
     Size: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Processor: win32more.Windows.Win32.System.SystemInformation.PROCESSOR_RELATIONSHIP
         NumaNode: win32more.Windows.Win32.System.SystemInformation.NUMA_NODE_RELATIONSHIP
@@ -721,13 +827,13 @@ class SYSTEM_POOL_ZEROING_INFORMATION(Structure):
 class SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION(Structure):
     CycleTime: UInt64
 class SYSTEM_SUPPORTED_PROCESSOR_ARCHITECTURES_INFORMATION(Structure):
-    Machine: Annotated[UInt32, 16]
-    KernelMode: Annotated[UInt32, 1]
-    UserMode: Annotated[UInt32, 1]
-    Native: Annotated[UInt32, 1]
-    Process: Annotated[UInt32, 1]
-    WoW64Container: Annotated[UInt32, 1]
-    ReservedZero0: Annotated[UInt32, 11]
+    Machine: Annotated[UInt32, NativeBitfieldAttribute(16)]
+    KernelMode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    UserMode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Native: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Process: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    WoW64Container: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    ReservedZero0: Annotated[UInt32, NativeBitfieldAttribute(11)]
 USER_CET_ENVIRONMENT = UInt32
 USER_CET_ENVIRONMENT_WIN32_PROCESS: win32more.Windows.Win32.System.SystemInformation.USER_CET_ENVIRONMENT = 0
 USER_CET_ENVIRONMENT_SGX2_ENCLAVE: win32more.Windows.Win32.System.SystemInformation.USER_CET_ENVIRONMENT = 2

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Security.Cryptography
@@ -115,8 +115,6 @@ PARTITION_DPP_GUID: Guid = Guid('{57434f53-94cb-43f0-a533-d73c10cfa57d}')
 PARTITION_ENTRY_UNUSED_GUID: Guid = Guid('{00000000-0000-0000-0000-000000000000}')
 PARTITION_LDM_DATA_GUID: Guid = Guid('{af9b60a0-1431-4f62-bc68-3311714a69ad}')
 PARTITION_LDM_METADATA_GUID: Guid = Guid('{5808c8aa-7e8f-42e0-85d2-e1e90434cfb3}')
-PARTITION_LEGACY_BL_GUID: Guid = Guid('{424ca0e2-7cb2-4fb9-8143-c52a99398bc6}')
-PARTITION_LEGACY_BL_GUID_BACKUP: Guid = Guid('{424c3e6c-d79f-49cb-935d-36d71467a288}')
 PARTITION_MAIN_OS_GUID: Guid = Guid('{57434f53-8f45-405e-8a23-186d8a4330d3}')
 PARTITION_MSFT_RECOVERY_GUID: Guid = Guid('{de94bba4-06d1-4d40-a16a-bfd50179d6ac}')
 PARTITION_MSFT_RESERVED_GUID: Guid = Guid('{e3c9e316-0b5c-4db8-817d-f92df00215ae}')
@@ -529,6 +527,23 @@ def GetTempPath2W(BufferLength: UInt32, Buffer: win32more.Windows.Win32.Foundati
 GetTempPath2 = UnicodeAlias('GetTempPath2W')
 @winfunctype('KERNEL32.dll')
 def GetTempPath2A(BufferLength: UInt32, Buffer: win32more.Windows.Win32.Foundation.PSTR) -> UInt32: ...
+@winfunctype('KERNEL32.dll')
+def CreateFile3(lpFileName: win32more.Windows.Win32.Foundation.PWSTR, dwDesiredAccess: UInt32, dwShareMode: UInt32, dwCreationDisposition: UInt32, pCreateExParams: POINTER(win32more.Windows.Win32.Storage.FileSystem.CREATEFILE3_EXTENDED_PARAMETERS)) -> win32more.Windows.Win32.Foundation.HANDLE: ...
+@winfunctype('KERNEL32.dll')
+def CreateDirectory2A(lpPathName: win32more.Windows.Win32.Foundation.PSTR, dwDesiredAccess: UInt32, dwShareMode: UInt32, DirectoryFlags: win32more.Windows.Win32.Storage.FileSystem.DIRECTORY_FLAGS, lpSecurityAttributes: POINTER(win32more.Windows.Win32.Security.SECURITY_ATTRIBUTES)) -> win32more.Windows.Win32.Foundation.HANDLE: ...
+@winfunctype('KERNEL32.dll')
+def CreateDirectory2W(lpPathName: win32more.Windows.Win32.Foundation.PWSTR, dwDesiredAccess: UInt32, dwShareMode: UInt32, DirectoryFlags: win32more.Windows.Win32.Storage.FileSystem.DIRECTORY_FLAGS, lpSecurityAttributes: POINTER(win32more.Windows.Win32.Security.SECURITY_ATTRIBUTES)) -> win32more.Windows.Win32.Foundation.HANDLE: ...
+CreateDirectory2 = UnicodeAlias('CreateDirectory2W')
+@winfunctype('KERNEL32.dll')
+def RemoveDirectory2A(lpPathName: win32more.Windows.Win32.Foundation.PSTR, DirectoryFlags: win32more.Windows.Win32.Storage.FileSystem.DIRECTORY_FLAGS) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
+def RemoveDirectory2W(lpPathName: win32more.Windows.Win32.Foundation.PWSTR, DirectoryFlags: win32more.Windows.Win32.Storage.FileSystem.DIRECTORY_FLAGS) -> win32more.Windows.Win32.Foundation.BOOL: ...
+RemoveDirectory2 = UnicodeAlias('RemoveDirectory2W')
+@winfunctype('KERNEL32.dll')
+def DeleteFile2A(lpFileName: win32more.Windows.Win32.Foundation.PSTR, Flags: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
+def DeleteFile2W(lpFileName: win32more.Windows.Win32.Foundation.PWSTR, Flags: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+DeleteFile2 = UnicodeAlias('DeleteFile2W')
 @winfunctype('api-ms-win-core-file-fromapp-l1-1-0.dll')
 def CopyFileFromAppW(lpExistingFileName: win32more.Windows.Win32.Foundation.PWSTR, lpNewFileName: win32more.Windows.Win32.Foundation.PWSTR, bFailIfExists: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('api-ms-win-core-file-fromapp-l1-1-0.dll')
@@ -946,6 +961,14 @@ def BuildIoRingWriteFile(ioRing: win32more.Windows.Win32.Storage.FileSystem.HIOR
 @winfunctype('KERNEL32.dll')
 def BuildIoRingFlushFile(ioRing: win32more.Windows.Win32.Storage.FileSystem.HIORING, fileRef: win32more.Windows.Win32.Storage.FileSystem.IORING_HANDLE_REF, flushMode: win32more.Windows.Win32.Storage.FileSystem.FILE_FLUSH_MODE, userData: UIntPtr, sqeFlags: win32more.Windows.Win32.Storage.FileSystem.IORING_SQE_FLAGS) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNEL32.dll')
+def BuildIoRingReadFileScatter(ioRing: win32more.Windows.Win32.Storage.FileSystem.HIORING, fileRef: win32more.Windows.Win32.Storage.FileSystem.IORING_HANDLE_REF, segmentCount: UInt32, segmentArray: POINTER(win32more.Windows.Win32.Storage.FileSystem.FILE_SEGMENT_ELEMENT), numberOfBytesToRead: UInt32, fileOffset: UInt64, userData: UIntPtr, sqeFlags: win32more.Windows.Win32.Storage.FileSystem.IORING_SQE_FLAGS) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('KERNEL32.dll')
+def BuildIoRingWriteFileGather(ioRing: win32more.Windows.Win32.Storage.FileSystem.HIORING, fileRef: win32more.Windows.Win32.Storage.FileSystem.IORING_HANDLE_REF, segmentCount: UInt32, segmentArray: POINTER(win32more.Windows.Win32.Storage.FileSystem.FILE_SEGMENT_ELEMENT), numberOfBytesToWrite: UInt32, fileOffset: UInt64, writeFlags: win32more.Windows.Win32.Storage.FileSystem.FILE_WRITE_FLAGS, userData: UIntPtr, sqeFlags: win32more.Windows.Win32.Storage.FileSystem.IORING_SQE_FLAGS) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('BINDFLTAPI.dll')
+def CreateBindLink(virtualPath: win32more.Windows.Win32.Foundation.PWSTR, backingPath: win32more.Windows.Win32.Foundation.PWSTR, createBindLinkFlags: win32more.Windows.Win32.Storage.FileSystem.CREATE_BIND_LINK_FLAGS, exceptionCount: UInt32, exceptionPaths: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('BINDFLTAPI.dll')
+def RemoveBindLink(virtualPath: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('KERNEL32.dll')
 def Wow64EnableWow64FsRedirection(Wow64FsEnableRedirection: win32more.Windows.Win32.Foundation.BOOLEAN) -> win32more.Windows.Win32.Foundation.BOOLEAN: ...
 @winfunctype('KERNEL32.dll')
 def Wow64DisableWow64FsRedirection(OldValue: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.BOOL: ...
@@ -1188,6 +1211,8 @@ def GetVolumePathNamesForVolumeNameA(lpszVolumeName: win32more.Windows.Win32.Fou
 @winfunctype('KERNEL32.dll')
 def GetFileInformationByHandleEx(hFile: win32more.Windows.Win32.Foundation.HANDLE, FileInformationClass: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_HANDLE_CLASS, lpFileInformation: VoidPtr, dwBufferSize: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
+def GetFileInformationByName(FileName: win32more.Windows.Win32.Foundation.PWSTR, FileInformationClass: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_NAME_CLASS, FileInfoBuffer: VoidPtr, FileInfoBufferSize: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
 def OpenFileById(hVolumeHint: win32more.Windows.Win32.Foundation.HANDLE, lpFileId: POINTER(win32more.Windows.Win32.Storage.FileSystem.FILE_ID_DESCRIPTOR), dwDesiredAccess: UInt32, dwShareMode: win32more.Windows.Win32.Storage.FileSystem.FILE_SHARE_MODE, lpSecurityAttributes: POINTER(win32more.Windows.Win32.Security.SECURITY_ATTRIBUTES), dwFlagsAndAttributes: win32more.Windows.Win32.Storage.FileSystem.FILE_FLAGS_AND_ATTRIBUTES) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('KERNEL32.dll')
 def CreateSymbolicLinkA(lpSymlinkFileName: win32more.Windows.Win32.Foundation.PSTR, lpTargetFileName: win32more.Windows.Win32.Foundation.PSTR, dwFlags: win32more.Windows.Win32.Storage.FileSystem.SYMBOLIC_LINK_FLAGS) -> win32more.Windows.Win32.Foundation.BOOLEAN: ...
@@ -1246,7 +1271,7 @@ ClfsLogArchiveEnabled: win32more.Windows.Win32.Storage.FileSystem.CLFS_LOG_ARCHI
 ClfsLogArchiveDisabled: win32more.Windows.Win32.Storage.FileSystem.CLFS_LOG_ARCHIVE_MODE = 2
 class CLFS_LOG_NAME_INFORMATION(Structure):
     NameLengthInBytes: UInt16
-    Name: Char * 1
+    Name: FlexibleArray[Char]
 class CLFS_MGMT_NOTIFICATION(Structure):
     Notification: win32more.Windows.Win32.Storage.FileSystem.CLFS_MGMT_NOTIFICATION_TYPE
     Lsn: win32more.Windows.Win32.Storage.FileSystem.CLS_LSN
@@ -1291,12 +1316,12 @@ class CLFS_MGMT_POLICY(Structure):
             Enabled: UInt32
         class _NewContainerPrefix_e__Struct(Structure):
             PrefixLengthInBytes: UInt16
-            PrefixString: Char * 1
+            PrefixString: FlexibleArray[Char]
         class _NewContainerSuffix_e__Struct(Structure):
             NextContainerSuffix: UInt64
         class _NewContainerExtension_e__Struct(Structure):
             ExtensionLengthInBytes: UInt16
-            ExtensionString: Char * 1
+            ExtensionString: FlexibleArray[Char]
 CLFS_MGMT_POLICY_TYPE = Int32
 ClfsMgmtPolicyMaximumSize: win32more.Windows.Win32.Storage.FileSystem.CLFS_MGMT_POLICY_TYPE = 0
 ClfsMgmtPolicyMinimumSize: win32more.Windows.Win32.Storage.FileSystem.CLFS_MGMT_POLICY_TYPE = 1
@@ -1399,6 +1424,9 @@ COMPRESSION_FORMAT_LZNT1: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION
 COMPRESSION_FORMAT_XPRESS: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT = 3
 COMPRESSION_FORMAT_XPRESS_HUFF: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT = 4
 COMPRESSION_FORMAT_XP10: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT = 5
+COMPRESSION_FORMAT_LZ4: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT = 6
+COMPRESSION_FORMAT_DEFLATE: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT = 7
+COMPRESSION_FORMAT_ZLIB: win32more.Windows.Win32.Storage.FileSystem.COMPRESSION_FORMAT = 8
 class CONNECTION_INFO_0(Structure):
     coni0_id: UInt32
 class CONNECTION_INFO_1(Structure):
@@ -1418,6 +1446,9 @@ COPYFILE2_PHASE_WRITE_DESTINATION: win32more.Windows.Win32.Storage.FileSystem.CO
 COPYFILE2_PHASE_SERVER_COPY: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_COPY_PHASE = 5
 COPYFILE2_PHASE_NAMEGRAFT_COPY: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_COPY_PHASE = 6
 COPYFILE2_PHASE_MAX: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_COPY_PHASE = 7
+class COPYFILE2_CREATE_OPLOCK_KEYS(Structure):
+    ParentOplockKey: Guid
+    TargetOplockKey: Guid
 class COPYFILE2_EXTENDED_PARAMETERS(Structure):
     dwSize: UInt32
     dwCopyFlags: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS
@@ -1433,7 +1464,9 @@ class COPYFILE2_EXTENDED_PARAMETERS_V2(Structure):
     dwCopyFlagsV2: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_V2_FLAGS
     ioDesiredSize: UInt32
     ioDesiredRate: UInt32
-    reserved: VoidPtr * 8
+    pProgressRoutineOld: win32more.Windows.Win32.Storage.FileSystem.LPPROGRESS_ROUTINE
+    SourceOplockKeys: POINTER(win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_CREATE_OPLOCK_KEYS)
+    reserved: VoidPtr * 6
 class COPYFILE2_MESSAGE(Structure):
     Type: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_MESSAGE_TYPE
     dwPadding: UInt32
@@ -1510,7 +1543,8 @@ COPYFILE2_CALLBACK_ERROR: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_M
 COPYFILE2_CALLBACK_MAX: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_MESSAGE_TYPE = 7
 COPYFILE2_V2_FLAGS = UInt32
 COPY_FILE2_V2_DONT_COPY_JUNCTIONS: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_V2_FLAGS = 1
-COPY_FILE2_V2_VALID_FLAGS: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_V2_FLAGS = 1
+COPY_FILE2_V2_DISABLE_BLOCK_CLONING: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_V2_FLAGS = 2
+COPY_FILE2_V2_VALID_FLAGS: win32more.Windows.Win32.Storage.FileSystem.COPYFILE2_V2_FLAGS = 3
 COPYFILE_FLAGS = UInt32
 COPY_FILE_FAIL_IF_EXISTS: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS = 1
 COPY_FILE_RESTARTABLE: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS = 2
@@ -1531,6 +1565,7 @@ COPY_FILE_SKIP_ALTERNATE_STREAMS: win32more.Windows.Win32.Storage.FileSystem.COP
 COPY_FILE_DISABLE_PRE_ALLOCATION: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS = 67108864
 COPY_FILE_ENABLE_LOW_FREE_SPACE_MODE: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS = 134217728
 COPY_FILE_ENABLE_SPARSE_COPY: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS = 536870912
+COPY_FILE_DISABLE_SPARSE_COPY: win32more.Windows.Win32.Storage.FileSystem.COPYFILE_FLAGS = 2147483648
 COPYPROGRESSROUTINE_PROGRESS = UInt32
 PROGRESS_CONTINUE: win32more.Windows.Win32.Storage.FileSystem.COPYPROGRESSROUTINE_PROGRESS = 0
 PROGRESS_CANCEL: win32more.Windows.Win32.Storage.FileSystem.COPYPROGRESSROUTINE_PROGRESS = 1
@@ -1543,6 +1578,17 @@ class CREATEFILE2_EXTENDED_PARAMETERS(Structure):
     dwSecurityQosFlags: UInt32
     lpSecurityAttributes: POINTER(win32more.Windows.Win32.Security.SECURITY_ATTRIBUTES)
     hTemplateFile: win32more.Windows.Win32.Foundation.HANDLE
+class CREATEFILE3_EXTENDED_PARAMETERS(Structure):
+    dwSize: UInt32
+    dwFileAttributes: UInt32
+    dwFileFlags: UInt32
+    dwSecurityQosFlags: UInt32
+    lpSecurityAttributes: POINTER(win32more.Windows.Win32.Security.SECURITY_ATTRIBUTES)
+    hTemplateFile: win32more.Windows.Win32.Foundation.HANDLE
+CREATE_BIND_LINK_FLAGS = Int32
+CREATE_BIND_LINK_FLAG_NONE: win32more.Windows.Win32.Storage.FileSystem.CREATE_BIND_LINK_FLAGS = 0
+CREATE_BIND_LINK_FLAG_READ_ONLY: win32more.Windows.Win32.Storage.FileSystem.CREATE_BIND_LINK_FLAGS = 1
+CREATE_BIND_LINK_FLAG_MERGED: win32more.Windows.Win32.Storage.FileSystem.CREATE_BIND_LINK_FLAGS = 2
 CREATE_TAPE_PARTITION_METHOD = UInt32
 TAPE_FIXED_PARTITIONS: win32more.Windows.Win32.Storage.FileSystem.CREATE_TAPE_PARTITION_METHOD = 0
 TAPE_INITIATOR_PARTITIONS: win32more.Windows.Win32.Storage.FileSystem.CREATE_TAPE_PARTITION_METHOD = 2
@@ -1553,6 +1599,9 @@ DDD_REMOVE_DEFINITION: win32more.Windows.Win32.Storage.FileSystem.DEFINE_DOS_DEV
 DDD_EXACT_MATCH_ON_REMOVE: win32more.Windows.Win32.Storage.FileSystem.DEFINE_DOS_DEVICE_FLAGS = 4
 DDD_NO_BROADCAST_SYSTEM: win32more.Windows.Win32.Storage.FileSystem.DEFINE_DOS_DEVICE_FLAGS = 8
 DDD_LUID_BROADCAST_DRIVE: win32more.Windows.Win32.Storage.FileSystem.DEFINE_DOS_DEVICE_FLAGS = 16
+DIRECTORY_FLAGS = Int32
+DIRECTORY_FLAGS_NONE: win32more.Windows.Win32.Storage.FileSystem.DIRECTORY_FLAGS = 0
+DIRECTORY_FLAGS_DISALLOW_PATH_REDIRECTS: win32more.Windows.Win32.Storage.FileSystem.DIRECTORY_FLAGS = 1
 DISKQUOTA_USERNAME_RESOLVE = UInt32
 DISKQUOTA_USERNAME_RESOLVE_ASYNC: win32more.Windows.Win32.Storage.FileSystem.DISKQUOTA_USERNAME_RESOLVE = 2
 DISKQUOTA_USERNAME_RESOLVE_NONE: win32more.Windows.Win32.Storage.FileSystem.DISKQUOTA_USERNAME_RESOLVE = 0
@@ -1799,7 +1848,7 @@ class FILE_FULL_DIR_INFO(Structure):
     FileAttributes: UInt32
     FileNameLength: UInt32
     EaSize: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class FILE_ID_128(Structure):
     Identifier: Byte * 16
 class FILE_ID_BOTH_DIR_INFO(Structure):
@@ -1817,11 +1866,12 @@ class FILE_ID_BOTH_DIR_INFO(Structure):
     ShortNameLength: SByte
     ShortName: Char * 12
     FileId: Int64
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class FILE_ID_DESCRIPTOR(Structure):
     dwSize: UInt32
     Type: win32more.Windows.Win32.Storage.FileSystem.FILE_ID_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FileId: Int64
         ObjectId: Guid
@@ -1840,7 +1890,7 @@ class FILE_ID_EXTD_DIR_INFO(Structure):
     EaSize: UInt32
     ReparsePointTag: UInt32
     FileId: win32more.Windows.Win32.Storage.FileSystem.FILE_ID_128
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class FILE_ID_INFO(Structure):
     VolumeSerialNumber: UInt64
     FileId: win32more.Windows.Win32.Storage.FileSystem.FILE_ID_128
@@ -1884,6 +1934,12 @@ FileRenameInfoEx: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_HANDLE
 FileCaseSensitiveInfo: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_HANDLE_CLASS = 23
 FileNormalizedNameInfo: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_HANDLE_CLASS = 24
 MaximumFileInfoByHandleClass: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_HANDLE_CLASS = 25
+FILE_INFO_BY_NAME_CLASS = Int32
+FileStatByNameInfo: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_NAME_CLASS = 0
+FileStatLxByNameInfo: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_NAME_CLASS = 1
+FileCaseSensitiveByNameInfo: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_NAME_CLASS = 2
+FileStatBasicByNameInfo: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_NAME_CLASS = 3
+MaximumFileInfoByNameClass: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_BY_NAME_CLASS = 4
 FILE_INFO_FLAGS_PERMISSIONS = UInt32
 PERM_FILE_READ: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_FLAGS_PERMISSIONS = 1
 PERM_FILE_WRITE: win32more.Windows.Win32.Storage.FileSystem.FILE_INFO_FLAGS_PERMISSIONS = 2
@@ -1892,7 +1948,7 @@ class FILE_IO_PRIORITY_HINT_INFO(Structure):
     PriorityHint: win32more.Windows.Win32.Storage.FileSystem.PRIORITY_HINT
 class FILE_NAME_INFO(Structure):
     FileNameLength: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 FILE_NOTIFY_CHANGE = UInt32
 FILE_NOTIFY_CHANGE_FILE_NAME: win32more.Windows.Win32.Storage.FileSystem.FILE_NOTIFY_CHANGE = 1
 FILE_NOTIFY_CHANGE_DIR_NAME: win32more.Windows.Win32.Storage.FileSystem.FILE_NOTIFY_CHANGE = 2
@@ -1916,7 +1972,8 @@ class FILE_NOTIFY_EXTENDED_INFORMATION(Structure):
     FileId: Int64
     ParentFileId: Int64
     FileNameLength: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ReparsePointTag: UInt32
         EaSize: UInt32
@@ -1924,7 +1981,7 @@ class FILE_NOTIFY_INFORMATION(Structure):
     NextEntryOffset: UInt32
     Action: win32more.Windows.Win32.Storage.FileSystem.FILE_ACTION
     FileNameLength: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class FILE_REMOTE_PROTOCOL_INFO(Structure):
     StructureVersion: UInt16
     StructureSize: UInt16
@@ -1953,7 +2010,8 @@ class FILE_RENAME_INFO(Structure):
     Anonymous: _Anonymous_e__Union
     RootDirectory: win32more.Windows.Win32.Foundation.HANDLE
     FileNameLength: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ReplaceIfExists: win32more.Windows.Win32.Foundation.BOOLEAN
         Flags: UInt32
@@ -1971,6 +2029,22 @@ class FILE_STANDARD_INFO(Structure):
     NumberOfLinks: UInt32
     DeletePending: win32more.Windows.Win32.Foundation.BOOLEAN
     Directory: win32more.Windows.Win32.Foundation.BOOLEAN
+class FILE_STAT_BASIC_INFORMATION(Structure):
+    FileId: Int64
+    CreationTime: Int64
+    LastAccessTime: Int64
+    LastWriteTime: Int64
+    ChangeTime: Int64
+    AllocationSize: Int64
+    EndOfFile: Int64
+    FileAttributes: UInt32
+    ReparseTag: UInt32
+    NumberOfLinks: UInt32
+    DeviceType: UInt32
+    DeviceCharacteristics: UInt32
+    Reserved: UInt32
+    VolumeSerialNumber: Int64
+    FileId128: win32more.Windows.Win32.Storage.FileSystem.FILE_ID_128
 class FILE_STORAGE_INFO(Structure):
     LogicalBytesPerSector: UInt32
     PhysicalBytesPerSectorForAtomicity: UInt32
@@ -1984,7 +2058,7 @@ class FILE_STREAM_INFO(Structure):
     StreamNameLength: UInt32
     StreamSize: Int64
     StreamAllocationSize: Int64
-    StreamName: Char * 1
+    StreamName: FlexibleArray[Char]
 FILE_TYPE = UInt32
 FILE_TYPE_UNKNOWN: win32more.Windows.Win32.Storage.FileSystem.FILE_TYPE = 0
 FILE_TYPE_DISK: win32more.Windows.Win32.Storage.FileSystem.FILE_TYPE = 1
@@ -2156,6 +2230,7 @@ class IORING_CQE(Structure):
     Information: UIntPtr
 IORING_CREATE_ADVISORY_FLAGS = Int32
 IORING_CREATE_ADVISORY_FLAGS_NONE: win32more.Windows.Win32.Storage.FileSystem.IORING_CREATE_ADVISORY_FLAGS = 0
+IORING_CREATE_SKIP_BUILDER_PARAM_CHECKS: win32more.Windows.Win32.Storage.FileSystem.IORING_CREATE_ADVISORY_FLAGS = 1
 class IORING_CREATE_FLAGS(Structure):
     Required: win32more.Windows.Win32.Storage.FileSystem.IORING_CREATE_REQUIRED_FLAGS
     Advisory: win32more.Windows.Win32.Storage.FileSystem.IORING_CREATE_ADVISORY_FLAGS
@@ -2184,6 +2259,8 @@ IORING_OP_REGISTER_BUFFERS: win32more.Windows.Win32.Storage.FileSystem.IORING_OP
 IORING_OP_CANCEL: win32more.Windows.Win32.Storage.FileSystem.IORING_OP_CODE = 4
 IORING_OP_WRITE: win32more.Windows.Win32.Storage.FileSystem.IORING_OP_CODE = 5
 IORING_OP_FLUSH: win32more.Windows.Win32.Storage.FileSystem.IORING_OP_CODE = 6
+IORING_OP_READ_SCATTER: win32more.Windows.Win32.Storage.FileSystem.IORING_OP_CODE = 7
+IORING_OP_WRITE_GATHER: win32more.Windows.Win32.Storage.FileSystem.IORING_OP_CODE = 8
 IORING_REF_KIND = Int32
 IORING_REF_RAW: win32more.Windows.Win32.Storage.FileSystem.IORING_REF_KIND = 0
 IORING_REF_REGISTERED: win32more.Windows.Win32.Storage.FileSystem.IORING_REF_KIND = 1
@@ -2198,6 +2275,7 @@ IORING_VERSION_INVALID: win32more.Windows.Win32.Storage.FileSystem.IORING_VERSIO
 IORING_VERSION_1: win32more.Windows.Win32.Storage.FileSystem.IORING_VERSION = 1
 IORING_VERSION_2: win32more.Windows.Win32.Storage.FileSystem.IORING_VERSION = 2
 IORING_VERSION_3: win32more.Windows.Win32.Storage.FileSystem.IORING_VERSION = 300
+IORING_VERSION_4: win32more.Windows.Win32.Storage.FileSystem.IORING_VERSION = 400
 class KCRM_MARSHAL_HEADER(Structure):
     VersionMajor: UInt32
     VersionMinor: UInt32
@@ -3073,7 +3151,7 @@ class REPARSE_GUID_DATA_BUFFER(Structure):
     ReparseGuid: Guid
     GenericReparseBuffer: _GenericReparseBuffer_e__Struct
     class _GenericReparseBuffer_e__Struct(Structure):
-        DataBuffer: Byte * 1
+        DataBuffer: FlexibleArray[Byte]
 REPLACE_FILE_FLAGS = UInt32
 REPLACEFILE_WRITE_THROUGH: win32more.Windows.Win32.Storage.FileSystem.REPLACE_FILE_FLAGS = 1
 REPLACEFILE_IGNORE_MERGE_ERRORS: win32more.Windows.Win32.Storage.FileSystem.REPLACE_FILE_FLAGS = 2
@@ -3083,22 +3161,6 @@ class SERVER_ALIAS_INFO_0(Structure):
     srvai0_target: win32more.Windows.Win32.Foundation.PWSTR
     srvai0_default: win32more.Windows.Win32.Foundation.BOOLEAN
     srvai0_reserved: UInt32
-class SERVER_CERTIFICATE_INFO_0(Structure):
-    srvci0_name: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_subject: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_issuer: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_thumbprint: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_friendlyname: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_notbefore: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_notafter: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_storelocation: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_storename: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_renewalchain: win32more.Windows.Win32.Foundation.PWSTR
-    srvci0_type: UInt32
-    srvci0_flags: UInt32
-    srvci0_mapping_status: UInt32
-SERVER_CERTIFICATE_TYPE = Int32
-QUIC: win32more.Windows.Win32.Storage.FileSystem.SERVER_CERTIFICATE_TYPE = 0
 class SESSION_INFO_0(Structure):
     sesi0_cname: win32more.Windows.Win32.Foundation.PWSTR
 class SESSION_INFO_1(Structure):
@@ -3288,7 +3350,8 @@ BusTypeSpaces: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 16
 BusTypeNvme: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 17
 BusTypeSCM: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 18
 BusTypeUfs: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 19
-BusTypeMax: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 20
+BusTypeNvmeof: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 20
+BusTypeMax: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 21
 BusTypeMaxReserved: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE = 127
 STREAM_INFO_LEVELS = Int32
 FindStreamInfoStandard: win32more.Windows.Win32.Storage.FileSystem.STREAM_INFO_LEVELS = 0
@@ -3367,6 +3430,7 @@ TXFS_MINIVERSION_DIRTY_VIEW: win32more.Windows.Win32.Storage.FileSystem.TXFS_MIN
 TXFS_MINIVERSION_DEFAULT_VIEW: win32more.Windows.Win32.Storage.FileSystem.TXFS_MINIVERSION = 65534
 class TXF_ID(Structure):
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     _pack_ = 4
     class _Anonymous_e__Struct(Structure):
         LowPart: Int64
@@ -3464,14 +3528,14 @@ class VOLUME_ALLOCATION_HINT_INPUT(Structure):
     NumberOfClusters: UInt32
     StartingClusterNumber: Int64
 class VOLUME_ALLOCATION_HINT_OUTPUT(Structure):
-    Bitmap: UInt32 * 1
+    Bitmap: FlexibleArray[UInt32]
 class VOLUME_CRITICAL_IO(Structure):
     AccessType: UInt32
     ExtentsCount: UInt32
-    Extents: win32more.Windows.Win32.Storage.FileSystem.FILE_EXTENT * 1
+    Extents: FlexibleArray[win32more.Windows.Win32.Storage.FileSystem.FILE_EXTENT]
 class VOLUME_FAILOVER_SET(Structure):
     NumberOfDisks: UInt32
-    DiskNumbers: UInt32 * 1
+    DiskNumbers: FlexibleArray[UInt32]
 class VOLUME_GET_BC_PROPERTIES_INPUT(Structure):
     Version: UInt32
     Reserved1: UInt32
@@ -3496,7 +3560,7 @@ class VOLUME_PHYSICAL_OFFSET(Structure):
     Offset: Int64
 class VOLUME_PHYSICAL_OFFSETS(Structure):
     NumberOfPhysicalOffsets: UInt32
-    PhysicalOffset: win32more.Windows.Win32.Storage.FileSystem.VOLUME_PHYSICAL_OFFSET * 1
+    PhysicalOffset: FlexibleArray[win32more.Windows.Win32.Storage.FileSystem.VOLUME_PHYSICAL_OFFSET]
 class VOLUME_READ_PLEX_INPUT(Structure):
     ByteOffset: Int64
     Length: UInt32
@@ -3622,7 +3686,7 @@ class WIN32_STREAM_ID(Structure):
     dwStreamAttributes: UInt32
     Size: Int64
     dwStreamNameSize: UInt32
-    cStreamName: Char * 1
+    cStreamName: FlexibleArray[Char]
 WIN_STREAM_ID = UInt32
 BACKUP_ALTERNATE_DATA: win32more.Windows.Win32.Storage.FileSystem.WIN_STREAM_ID = 4
 BACKUP_DATA: win32more.Windows.Win32.Storage.FileSystem.WIN_STREAM_ID = 1

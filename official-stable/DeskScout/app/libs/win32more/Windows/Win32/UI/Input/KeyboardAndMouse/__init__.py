@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.UI.Input.KeyboardAndMouse
 ACTIVATE_KEYBOARD_LAYOUT_FLAGS = UInt32
@@ -276,6 +276,7 @@ MOD_WIN: win32more.Windows.Win32.UI.Input.KeyboardAndMouse.HOT_KEY_MODIFIERS = 8
 class INPUT(Structure):
     type: win32more.Windows.Win32.UI.Input.KeyboardAndMouse.INPUT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         mi: win32more.Windows.Win32.UI.Input.KeyboardAndMouse.MOUSEINPUT
         ki: win32more.Windows.Win32.UI.Input.KeyboardAndMouse.KEYBDINPUT
@@ -336,7 +337,7 @@ class LASTINPUTINFO(Structure):
 class LIGATURE1(Structure):
     VirtualKey: Byte
     ModificationNumber: UInt16
-    wch: Char * 1
+    wch: FlexibleArray[Char]
 class LIGATURE2(Structure):
     VirtualKey: Byte
     ModificationNumber: UInt16
@@ -665,7 +666,7 @@ class VK_TO_BIT(Structure):
 class VK_TO_WCHARS1(Structure):
     VirtualKey: Byte
     Attributes: Byte
-    wch: Char * 1
+    wch: FlexibleArray[Char]
 class VK_TO_WCHARS10(Structure):
     VirtualKey: Byte
     Attributes: Byte

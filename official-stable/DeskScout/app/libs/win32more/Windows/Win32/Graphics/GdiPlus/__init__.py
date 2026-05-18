@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.DirectDraw
 import win32more.Windows.Win32.Graphics.Gdi
@@ -1799,7 +1799,7 @@ ColorModeARGB64: win32more.Windows.Win32.Graphics.GdiPlus.ColorMode = 1
 class ColorPalette(Structure):
     Flags: UInt32
     Count: UInt32
-    Entries: UInt32 * 1
+    Entries: FlexibleArray[UInt32]
 CombineMode = Int32
 CombineModeReplace: win32more.Windows.Win32.Graphics.GdiPlus.CombineMode = 0
 CombineModeIntersect: win32more.Windows.Win32.Graphics.GdiPlus.CombineMode = 1
@@ -2193,7 +2193,7 @@ EncoderParameterValueTypeRationalRange: win32more.Windows.Win32.Graphics.GdiPlus
 EncoderParameterValueTypePointer: win32more.Windows.Win32.Graphics.GdiPlus.EncoderParameterValueType = 9
 class EncoderParameters(Structure):
     Count: UInt32
-    Parameter: win32more.Windows.Win32.Graphics.GdiPlus.EncoderParameter * 1
+    Parameter: FlexibleArray[win32more.Windows.Win32.Graphics.GdiPlus.EncoderParameter]
 EncoderValue = Int32
 EncoderValueColorTypeCMYK: win32more.Windows.Win32.Graphics.GdiPlus.EncoderValue = 0
 EncoderValueColorTypeYCCK: win32more.Windows.Win32.Graphics.GdiPlus.EncoderValue = 1
@@ -2251,6 +2251,9 @@ class GdiplusStartupInput(Structure):
 class GdiplusStartupInputEx(Structure):
     Base: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupInput
     StartupParameters: Int32
+    class Version(Enum, UInt32):
+        V2 = 2
+        V3 = 3
 class GdiplusStartupOutput(Structure):
     NotificationHook: IntPtr
     NotificationUnhook: IntPtr
@@ -2258,6 +2261,9 @@ GdiplusStartupParams = Int32
 GdiplusStartupDefault: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = 0
 GdiplusStartupNoSetRound: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = 1
 GdiplusStartupSetPSValue: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = 2
+GdiplusStartupReserved0: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = 4
+GdiplusStartupReserved1: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = 8
+GdiplusStartupReserved2: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = 16
 GdiplusStartupTransparencyMask: win32more.Windows.Win32.Graphics.GdiPlus.GdiplusStartupParams = -16777216
 GenericFontFamily = Int32
 GenericFontFamilySerif: win32more.Windows.Win32.Graphics.GdiPlus.GenericFontFamily = 0
@@ -2531,6 +2537,7 @@ class MetafileHeader(Structure):
     EmfPlusHeaderSize: Int32
     LogicalDpiX: Int32
     LogicalDpiY: Int32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         WmfHeader: win32more.Windows.Win32.Graphics.Gdi.METAHEADER
         EmfHeader: win32more.Windows.Win32.Graphics.GdiPlus.ENHMETAHEADER3
@@ -2746,6 +2753,9 @@ UnitPoint: win32more.Windows.Win32.Graphics.GdiPlus.Unit = 3
 UnitInch: win32more.Windows.Win32.Graphics.GdiPlus.Unit = 4
 UnitDocument: win32more.Windows.Win32.Graphics.GdiPlus.Unit = 5
 UnitMillimeter: win32more.Windows.Win32.Graphics.GdiPlus.Unit = 6
+Version = UInt32
+V2: win32more.Windows.Win32.Graphics.GdiPlus.Version = 2
+V3: win32more.Windows.Win32.Graphics.GdiPlus.Version = 3
 WarpMode = Int32
 WarpModePerspective: win32more.Windows.Win32.Graphics.GdiPlus.WarpMode = 0
 WarpModeBilinear: win32more.Windows.Win32.Graphics.GdiPlus.WarpMode = 1

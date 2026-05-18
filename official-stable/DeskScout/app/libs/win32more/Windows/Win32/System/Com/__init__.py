@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Security
@@ -81,6 +81,7 @@ APPIDREGFLAGS_AAA_NO_IMPLICIT_ACTIVATE_AS_IU: UInt32 = 2048
 APPIDREGFLAGS_RESERVED7: UInt32 = 4096
 APPIDREGFLAGS_RESERVED8: UInt32 = 8192
 APPIDREGFLAGS_RESERVED9: UInt32 = 16384
+APPIDREGFLAGS_RESERVED10: UInt32 = 32768
 DCOMSCM_ACTIVATION_USE_ALL_AUTHNSERVICES: UInt32 = 1
 DCOMSCM_ACTIVATION_DISALLOW_UNSECURE_CALL: UInt32 = 2
 DCOMSCM_RESOLVE_USE_ALL_AUTHNSERVICES: UInt32 = 4
@@ -441,7 +442,7 @@ class BLOB(Structure):
     pBlobData: POINTER(Byte)
 class BYTE_BLOB(Structure):
     clSize: UInt32
-    abData: Byte * 1
+    abData: FlexibleArray[Byte]
 class BYTE_SIZEDARR(Structure):
     clSize: UInt32
     pData: POINTER(Byte)
@@ -495,6 +496,8 @@ CLSCTX_ACTIVATE_AAA_AS_IU: win32more.Windows.Win32.System.Com.CLSCTX = 8388608
 CLSCTX_RESERVED6: win32more.Windows.Win32.System.Com.CLSCTX = 16777216
 CLSCTX_ACTIVATE_ARM32_SERVER: win32more.Windows.Win32.System.Com.CLSCTX = 33554432
 CLSCTX_ALLOW_LOWER_TRUST_REGISTRATION: win32more.Windows.Win32.System.Com.CLSCTX = 67108864
+CLSCTX_SERVER_MUST_BE_EQUAL_OR_GREATER_PRIVILEGE: win32more.Windows.Win32.System.Com.CLSCTX = 134217728
+CLSCTX_DO_NOT_ELEVATE_SERVER: win32more.Windows.Win32.System.Com.CLSCTX = 268435456
 CLSCTX_PS_DLL: win32more.Windows.Win32.System.Com.CLSCTX = 2147483648
 CLSCTX_ALL: win32more.Windows.Win32.System.Com.CLSCTX = 23
 CLSCTX_SERVER: win32more.Windows.Win32.System.Com.CLSCTX = 21
@@ -581,6 +584,7 @@ CWMO_DISPATCH_WINDOW_MESSAGES: win32more.Windows.Win32.System.Com.CWMO_FLAGS = 2
 class CY(Union):
     Anonymous: _Anonymous_e__Struct
     int64: Int64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         Lo: UInt32
         Hi: Int32
@@ -629,16 +633,17 @@ class DVTARGETDEVICE(Structure):
     tdDeviceNameOffset: UInt16
     tdPortNameOffset: UInt16
     tdExtDevmodeOffset: UInt16
-    tdData: Byte * 1
+    tdData: FlexibleArray[Byte]
 class DWORD_BLOB(Structure):
     clSize: UInt32
-    alData: UInt32 * 1
+    alData: FlexibleArray[UInt32]
 class DWORD_SIZEDARR(Structure):
     clSize: UInt32
     pData: POINTER(UInt32)
 class ELEMDESC(Structure):
     tdesc: win32more.Windows.Win32.System.Com.TYPEDESC
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         idldesc: win32more.Windows.Win32.System.Com.IDLDESC
         paramdesc: win32more.Windows.Win32.System.Ole.PARAMDESC
@@ -676,11 +681,11 @@ EXTCONN_CALLABLE: win32more.Windows.Win32.System.Com.EXTCONN = 4
 class FLAGGED_BYTE_BLOB(Structure):
     fFlags: UInt32
     clSize: UInt32
-    abData: Byte * 1
+    abData: FlexibleArray[Byte]
 class FLAGGED_WORD_BLOB(Structure):
     fFlags: UInt32
     clSize: UInt32
-    asData: UInt16 * 1
+    asData: FlexibleArray[UInt16]
 class FLAG_STGMEDIUM(Structure):
     ContextFlags: Int32
     fPassOwnership: Int32
@@ -1387,6 +1392,11 @@ class IPSFactoryBuffer(ComPtr):
     def CreateProxy(self, pUnkOuter: win32more.Windows.Win32.System.Com.IUnknown, riid: POINTER(Guid), ppProxy: POINTER(win32more.Windows.Win32.System.Com.IRpcProxyBuffer), ppv: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def CreateStub(self, riid: POINTER(Guid), pUnkServer: win32more.Windows.Win32.System.Com.IUnknown, ppStub: POINTER(win32more.Windows.Win32.System.Com.IRpcStubBuffer)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IPackagedComSyntaxSupport(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{8f146474-b228-48fb-a58c-105ebb273abc}')
+    @commethod(3)
+    def GetSupportedVersion(self, supportedVersion: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IPersist(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{0000010c-0000-0000-c000-000000000046}')
@@ -1647,14 +1657,35 @@ class IStream(ComPtr):
     def Stat(self, pstatstg: POINTER(win32more.Windows.Win32.System.Com.STATSTG), grfStatFlag: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(13)
     def Clone(self, ppstm: POINTER(win32more.Windows.Win32.System.Com.IStream)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ISupportActivateAsActivatorPackaged(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{765d1df2-f0af-4ef8-aa50-84789ca330ed}')
+class ISupportActivationFromPackage(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{0a18aae5-5caa-48c5-a9f4-6e46dcd58ad5}')
 class ISupportAllowLowerTrustActivation(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{e9956ef2-3828-4b4b-8fa9-7db61dee4954}')
+class ISupportCoAddComDependencyOnPackage(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{c8059efc-4e98-4fd0-bfc6-44190b80b823}')
+class ISupportDoNotElevateServerActivation(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{40aefe22-3ff6-43dc-8108-c8c402d57b5c}')
 class ISupportErrorInfo(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{df0b3d60-548f-101b-8e65-08002b2bd119}')
     @commethod(3)
     def InterfaceSupportsErrorInfo(self, riid: POINTER(Guid)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ISupportPackagedComElevationEnabledClasses(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{b4219019-f712-4d4f-ade7-f468276af0b8}')
+class ISupportPackagedComRegistrationVisibility(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{8dc3444e-c7ee-449a-9fb8-b9173988d66a}')
+class ISupportServerMustBeEqualOrGreaterPrivilegeActivation(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{5bdb3ee2-46bc-4313-b5fb-801c360ba5f9}')
 class ISurrogate(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{00000022-0000-0000-c000-000000000046}')
@@ -2090,14 +2121,14 @@ class RemSTGMEDIUM(Structure):
     pData: UInt32
     pUnkForRelease: UInt32
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class SAFEARRAY(Structure):
     cDims: UInt16
     fFeatures: win32more.Windows.Win32.System.Com.ADVANCED_FEATURE_FLAGS
     cbElements: UInt32
     cLocks: UInt32
     pvData: VoidPtr
-    rgsabound: win32more.Windows.Win32.System.Com.SAFEARRAYBOUND * 1
+    rgsabound: FlexibleArray[win32more.Windows.Win32.System.Com.SAFEARRAYBOUND]
 class SAFEARRAYBOUND(Structure):
     cElements: UInt32
     lLbound: Int32
@@ -2245,6 +2276,7 @@ class TYPEATTR(Structure):
 class TYPEDESC(Structure):
     Anonymous: _Anonymous_e__Union
     vt: win32more.Windows.Win32.System.Variant.VARENUM
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         lptdesc: POINTER(win32more.Windows.Win32.System.Com.TYPEDESC)
         lpadesc: POINTER(win32more.Windows.Win32.System.Ole.ARRAYDESC)
@@ -2317,6 +2349,7 @@ class VARDESC(Structure):
     elemdescVar: win32more.Windows.Win32.System.Com.ELEMDESC
     wVarFlags: win32more.Windows.Win32.System.Com.VARFLAGS
     varkind: win32more.Windows.Win32.System.Com.VARKIND
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         oInst: UInt32
         lpvarValue: POINTER(win32more.Windows.Win32.System.Variant.VARIANT)
@@ -2341,7 +2374,7 @@ VAR_CONST: win32more.Windows.Win32.System.Com.VARKIND = 2
 VAR_DISPATCH: win32more.Windows.Win32.System.Com.VARKIND = 3
 class WORD_BLOB(Structure):
     clSize: UInt32
-    asData: UInt16 * 1
+    asData: FlexibleArray[UInt16]
 class WORD_SIZEDARR(Structure):
     clSize: UInt32
     pData: POINTER(UInt16)

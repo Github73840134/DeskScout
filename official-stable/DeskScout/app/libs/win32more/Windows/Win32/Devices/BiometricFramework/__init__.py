@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Devices.BiometricFramework
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.IO
@@ -233,6 +233,8 @@ def WinBioGetEnabledSetting(Value: POINTER(Byte), Source: POINTER(win32more.Wind
 def WinBioGetLogonSetting(Value: POINTER(Byte), Source: POINTER(win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_SETTING_SOURCE)) -> Void: ...
 @winfunctype('winbio.dll')
 def WinBioGetDomainLogonSetting(Value: POINTER(Byte), Source: POINTER(win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_SETTING_SOURCE)) -> Void: ...
+@winfunctype('winbio.dll')
+def WinBioIsESSCapable(Value: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('winbio.dll')
 def WinBioAcquireFocus() -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('winbio.dll')
@@ -704,6 +706,9 @@ WINBIO_COMPONENT = UInt32
 WINBIO_COMPONENT_SENSOR: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_COMPONENT = 1
 WINBIO_COMPONENT_ENGINE: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_COMPONENT = 2
 WINBIO_COMPONENT_STORAGE: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_COMPONENT = 3
+class WINBIO_CONNECTED_SENSOR(Structure):
+    biometricType: UInt32
+    isEnhancedSignInSecurityCapable: win32more.Windows.Win32.Foundation.BOOL
 WINBIO_CREDENTIAL_FORMAT = Int32
 WINBIO_PASSWORD_GENERIC: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_CREDENTIAL_FORMAT = 1
 WINBIO_PASSWORD_PACKED: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_CREDENTIAL_FORMAT = 2
@@ -716,7 +721,7 @@ WINBIO_CREDENTIAL_PASSWORD: win32more.Windows.Win32.Devices.BiometricFramework.W
 WINBIO_CREDENTIAL_ALL: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_CREDENTIAL_TYPE = -1
 class WINBIO_DATA(Structure):
     Size: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 class WINBIO_DIAGNOSTICS(Structure):
     PayloadSize: UInt32
     WinBioHresult: win32more.Windows.Win32.Foundation.HRESULT
@@ -775,6 +780,23 @@ class WINBIO_ENGINE_INTERFACE(Structure):
     AcceptPrivateSensorTypeInfo: win32more.Windows.Win32.Devices.BiometricFramework.PIBIO_ENGINE_ACCEPT_PRIVATE_SENSOR_TYPE_INFO_FN
     CreateEnrollmentAuthenticated: win32more.Windows.Win32.Devices.BiometricFramework.PIBIO_ENGINE_CREATE_ENROLLMENT_AUTHENTICATED_FN
     IdentifyFeatureSetAuthenticated: win32more.Windows.Win32.Devices.BiometricFramework.PIBIO_ENGINE_IDENTIFY_FEATURE_SET_AUTHENTICATED_FN
+WINBIO_ESS_STATE_FLAGS = Int32
+WINBIO_ESS_REQUIRES_TPM2: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 1
+WINBIO_ESS_REQUIRES_VBS_CAPABLE: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 2
+WINBIO_ESS_REQUIRES_NON_VBS_WINDOWS_HELLO_ABSENCE: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 4
+WINBIO_ESS_REQUIRES_VBS_WINDOWS_HELLO: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 8
+WINBIO_ESS_REQUIRES_VBS_RUNNING: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 16
+WINBIO_ESS_REQUIRES_VBS_ENCRYPTION_KEY: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 32
+WINBIO_ESS_REQUIRES_ENABLEMENT: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 64
+WINBIO_ESS_MANAGED_BY_POLICY: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 128
+WINBIO_ESS_REQUIRES_NON_VBS_BIOMETRIC_ENROLLMENT_ABSENCE: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 256
+WINBIO_ESS_REQUIRES_VBS_BIOMETRIC_ENROLLMENT: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 512
+WINBIO_ESS_REQUIRES_FACE_SENSOR: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 1024
+WINBIO_ESS_REQUIRES_FPR_SENSOR: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 2048
+WINBIO_ESS_REQUIRES_ISOLATED_PROCESS: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 4096
+WINBIO_ESS_BLOCKED_NON_ESS_FPR: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 8192
+WINBIO_ESS_BLOCKED_NON_ESS_CAMERA: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 16384
+WINBIO_ESS_SOURCE_DEFAULT: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ESS_STATE_FLAGS = 32768
 class WINBIO_EVENT(Structure):
     Type: UInt32
     Parameters: _Parameters_e__Union
@@ -1088,7 +1110,7 @@ class WINBIO_SENSOR_ATTRIBUTES(Structure):
     SerialNumber: UInt16 * 256
     FirmwareVersion: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_VERSION
     SupportedFormatEntries: UInt32
-    SupportedFormat: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_REGISTERED_FORMAT * 1
+    SupportedFormat: FlexibleArray[win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_REGISTERED_FORMAT]
 class WINBIO_SENSOR_INTERFACE(Structure):
     Version: win32more.Windows.Win32.Devices.BiometricFramework.WINBIO_ADAPTER_INTERFACE_VERSION
     Type: UInt32

@@ -1,6 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.UI.Core
@@ -9,7 +8,6 @@ import win32more.Windows.UI.Xaml
 import win32more.Windows.UI.Xaml.Documents
 import win32more.Windows.UI.Xaml.Input
 import win32more.Windows.UI.Xaml.Media
-import win32more.Windows.Win32.System.WinRT
 class _Block_Meta_(ComPtr.__class__):
     pass
 class Block(ComPtr, metaclass=_Block_Meta_):
@@ -24,7 +22,7 @@ class Block(ComPtr, metaclass=_Block_Meta_):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.IBlockFactory, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Block: ...
+    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.IBlockFactory, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Block: ...
     @winrt_mixinmethod
     def get_TextAlignment(self: win32more.Windows.UI.Xaml.Documents.IBlock) -> win32more.Windows.UI.Xaml.TextAlignment: ...
     @winrt_mixinmethod
@@ -66,7 +64,7 @@ class Block(ComPtr, metaclass=_Block_Meta_):
     _Block_Meta_.MarginProperty = property(get_MarginProperty, None)
     _Block_Meta_.TextAlignmentProperty = property(get_TextAlignmentProperty, None)
 class BlockCollection(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[SequenceProtocol[win32more.Windows.UI.Xaml.Documents.Block]]
     default_interface: win32more.Windows.Foundation.Collections.IVector[win32more.Windows.UI.Xaml.Documents.Block]
     _classid_ = 'Windows.UI.Xaml.Documents.BlockCollection'
@@ -267,11 +265,11 @@ class ContentLink(ComPtr, metaclass=_ContentLink_Meta_):
     _ContentLink_Meta_.XYFocusRightProperty = property(get_XYFocusRightProperty, None)
     _ContentLink_Meta_.XYFocusUpNavigationStrategyProperty = property(get_XYFocusUpNavigationStrategyProperty, None)
     _ContentLink_Meta_.XYFocusUpProperty = property(get_XYFocusUpProperty, None)
-    Invoked = event()
-    GotFocus = event()
-    LostFocus = event()
+    GotFocus = event(add_GotFocus, remove_GotFocus)
+    Invoked = event(add_Invoked, remove_Invoked)
+    LostFocus = event(add_LostFocus, remove_LostFocus)
 class ContentLinkInvokedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.UI.Xaml.Documents.IContentLinkInvokedEventArgs
     _classid_ = 'Windows.UI.Xaml.Documents.ContentLinkInvokedEventArgs'
     @winrt_mixinmethod
@@ -294,9 +292,9 @@ class ContentLinkProvider(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.IContentLinkProviderFactory, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.ContentLinkProvider: ...
+    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.IContentLinkProviderFactory, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.ContentLinkProvider: ...
 class ContentLinkProviderCollection(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[SequenceProtocol[win32more.Windows.UI.Xaml.Documents.ContentLinkProvider]]
     default_interface: win32more.Windows.UI.Xaml.Documents.IContentLinkProviderCollection
     _classid_ = 'Windows.UI.Xaml.Documents.ContentLinkProviderCollection'
@@ -352,13 +350,13 @@ class Glyphs(ComPtr, metaclass=_Glyphs_Meta_):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.UI.Xaml.Documents.Glyphs: ...
     @winrt_mixinmethod
-    def get_UnicodeString(self: win32more.Windows.UI.Xaml.Documents.IGlyphs) -> WinRT_String: ...
+    def get_UnicodeString(self: win32more.Windows.UI.Xaml.Documents.IGlyphs) -> hstr: ...
     @winrt_mixinmethod
-    def put_UnicodeString(self: win32more.Windows.UI.Xaml.Documents.IGlyphs, value: WinRT_String) -> Void: ...
+    def put_UnicodeString(self: win32more.Windows.UI.Xaml.Documents.IGlyphs, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_Indices(self: win32more.Windows.UI.Xaml.Documents.IGlyphs) -> WinRT_String: ...
+    def get_Indices(self: win32more.Windows.UI.Xaml.Documents.IGlyphs) -> hstr: ...
     @winrt_mixinmethod
-    def put_Indices(self: win32more.Windows.UI.Xaml.Documents.IGlyphs, value: WinRT_String) -> Void: ...
+    def put_Indices(self: win32more.Windows.UI.Xaml.Documents.IGlyphs, value: hstr) -> Void: ...
     @winrt_mixinmethod
     def get_FontUri(self: win32more.Windows.UI.Xaml.Documents.IGlyphs) -> win32more.Windows.Foundation.Uri: ...
     @winrt_mixinmethod
@@ -570,15 +568,15 @@ class Hyperlink(ComPtr, metaclass=_Hyperlink_Meta_):
     _Hyperlink_Meta_.XYFocusRightProperty = property(get_XYFocusRightProperty, None)
     _Hyperlink_Meta_.XYFocusUpNavigationStrategyProperty = property(get_XYFocusUpNavigationStrategyProperty, None)
     _Hyperlink_Meta_.XYFocusUpProperty = property(get_XYFocusUpProperty, None)
-    Click = event()
-    GotFocus = event()
-    LostFocus = event()
+    Click = event(add_Click, remove_Click)
+    GotFocus = event(add_GotFocus, remove_GotFocus)
+    LostFocus = event(add_LostFocus, remove_LostFocus)
 class HyperlinkClickEventArgs(ComPtr):
     extends: win32more.Windows.UI.Xaml.RoutedEventArgs
     default_interface: win32more.Windows.UI.Xaml.Documents.IHyperlinkClickEventArgs
     _classid_ = 'Windows.UI.Xaml.Documents.HyperlinkClickEventArgs'
 class IBlock(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IBlock'
     _iid_ = Guid('{4bce0016-dd47-4350-8cb0-e171600ac896}')
     @winrt_commethod(6)
@@ -602,7 +600,7 @@ class IBlock(ComPtr):
     Margin = property(get_Margin, put_Margin)
     TextAlignment = property(get_TextAlignment, put_TextAlignment)
 class IBlock2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IBlock2'
     _iid_ = Guid('{5ec7bdf3-1333-4a92-8318-6caedc12ef89}')
     @winrt_commethod(6)
@@ -611,13 +609,13 @@ class IBlock2(ComPtr):
     def put_HorizontalTextAlignment(self, value: win32more.Windows.UI.Xaml.TextAlignment) -> Void: ...
     HorizontalTextAlignment = property(get_HorizontalTextAlignment, put_HorizontalTextAlignment)
 class IBlockFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IBlockFactory'
     _iid_ = Guid('{07110532-4f59-4f3b-9ce5-25784c430507}')
     @winrt_commethod(6)
-    def CreateInstance(self, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Block: ...
+    def CreateInstance(self, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Block: ...
 class IBlockStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IBlockStatics'
     _iid_ = Guid('{f86a8c34-8d18-4c53-aebd-91e610a5e010}')
     @winrt_commethod(6)
@@ -633,22 +631,22 @@ class IBlockStatics(ComPtr):
     MarginProperty = property(get_MarginProperty, None)
     TextAlignmentProperty = property(get_TextAlignmentProperty, None)
 class IBlockStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IBlockStatics2'
     _iid_ = Guid('{af01a4d6-03e3-4cee-9b02-2bfc308b27a9}')
     @winrt_commethod(6)
     def get_HorizontalTextAlignmentProperty(self) -> win32more.Windows.UI.Xaml.DependencyProperty: ...
     HorizontalTextAlignmentProperty = property(get_HorizontalTextAlignmentProperty, None)
 class IBold(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IBold'
     _iid_ = Guid('{ade73784-1b59-4da4-bb23-0f20e885b4bf}')
 class IContactContentLinkProvider(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContactContentLinkProvider'
     _iid_ = Guid('{f92fd29b-589b-4abd-9d37-35a1468f021e}')
 class IContentLink(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContentLink'
     _iid_ = Guid('{6c60c3e1-528c-42f8-92be-34b8c68be304}')
     @winrt_commethod(6)
@@ -738,11 +736,11 @@ class IContentLink(ComPtr):
     XYFocusRightNavigationStrategy = property(get_XYFocusRightNavigationStrategy, put_XYFocusRightNavigationStrategy)
     XYFocusUp = property(get_XYFocusUp, put_XYFocusUp)
     XYFocusUpNavigationStrategy = property(get_XYFocusUpNavigationStrategy, put_XYFocusUpNavigationStrategy)
-    Invoked = event()
-    GotFocus = event()
-    LostFocus = event()
+    GotFocus = event(add_GotFocus, remove_GotFocus)
+    Invoked = event(add_Invoked, remove_Invoked)
+    LostFocus = event(add_LostFocus, remove_LostFocus)
 class IContentLinkInvokedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContentLinkInvokedEventArgs'
     _iid_ = Guid('{546717c1-e8df-4593-9639-97595fdf8310}')
     @winrt_commethod(6)
@@ -754,21 +752,21 @@ class IContentLinkInvokedEventArgs(ComPtr):
     ContentLinkInfo = property(get_ContentLinkInfo, None)
     Handled = property(get_Handled, put_Handled)
 class IContentLinkProvider(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContentLinkProvider'
     _iid_ = Guid('{730587fd-bfdc-4cb3-904d-b65ab339bbf5}')
 class IContentLinkProviderCollection(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContentLinkProviderCollection'
     _iid_ = Guid('{f5b84d0c-a9f4-4d1a-a13c-10def1843734}')
 class IContentLinkProviderFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContentLinkProviderFactory'
     _iid_ = Guid('{57d60d3b-ef1a-4e8e-839b-d36ef3a503e0}')
     @winrt_commethod(6)
-    def CreateInstance(self, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.ContentLinkProvider: ...
+    def CreateInstance(self, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.ContentLinkProvider: ...
 class IContentLinkStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IContentLinkStatics'
     _iid_ = Guid('{a34e3063-eb16-484e-a3df-522b9a832e6e}')
     @winrt_commethod(6)
@@ -814,17 +812,17 @@ class IContentLinkStatics(ComPtr):
     XYFocusUpNavigationStrategyProperty = property(get_XYFocusUpNavigationStrategyProperty, None)
     XYFocusUpProperty = property(get_XYFocusUpProperty, None)
 class IGlyphs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IGlyphs'
     _iid_ = Guid('{d079498b-f2b1-4281-99a2-e4d05932b2b5}')
     @winrt_commethod(6)
-    def get_UnicodeString(self) -> WinRT_String: ...
+    def get_UnicodeString(self) -> hstr: ...
     @winrt_commethod(7)
-    def put_UnicodeString(self, value: WinRT_String) -> Void: ...
+    def put_UnicodeString(self, value: hstr) -> Void: ...
     @winrt_commethod(8)
-    def get_Indices(self) -> WinRT_String: ...
+    def get_Indices(self) -> hstr: ...
     @winrt_commethod(9)
-    def put_Indices(self, value: WinRT_String) -> Void: ...
+    def put_Indices(self, value: hstr) -> Void: ...
     @winrt_commethod(10)
     def get_FontUri(self) -> win32more.Windows.Foundation.Uri: ...
     @winrt_commethod(11)
@@ -858,7 +856,7 @@ class IGlyphs(ComPtr):
     StyleSimulations = property(get_StyleSimulations, put_StyleSimulations)
     UnicodeString = property(get_UnicodeString, put_UnicodeString)
 class IGlyphs2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IGlyphs2'
     _iid_ = Guid('{aa8bfe5c-3754-4bee-bbe1-4403ee9b86f0}')
     @winrt_commethod(6)
@@ -872,7 +870,7 @@ class IGlyphs2(ComPtr):
     ColorFontPaletteIndex = property(get_ColorFontPaletteIndex, put_ColorFontPaletteIndex)
     IsColorFontEnabled = property(get_IsColorFontEnabled, put_IsColorFontEnabled)
 class IGlyphsStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IGlyphsStatics'
     _iid_ = Guid('{225cf4c5-fdf1-43ed-958f-414e86f103f2}')
     @winrt_commethod(6)
@@ -900,7 +898,7 @@ class IGlyphsStatics(ComPtr):
     StyleSimulationsProperty = property(get_StyleSimulationsProperty, None)
     UnicodeStringProperty = property(get_UnicodeStringProperty, None)
 class IGlyphsStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IGlyphsStatics2'
     _iid_ = Guid('{10489aa7-1615-4a33-aa02-d7ef2aefc739}')
     @winrt_commethod(6)
@@ -910,7 +908,7 @@ class IGlyphsStatics2(ComPtr):
     ColorFontPaletteIndexProperty = property(get_ColorFontPaletteIndexProperty, None)
     IsColorFontEnabledProperty = property(get_IsColorFontEnabledProperty, None)
 class IHyperlink(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlink'
     _iid_ = Guid('{0fe2363b-14e9-4152-9e58-5aea5b21f08d}')
     @winrt_commethod(6)
@@ -922,9 +920,9 @@ class IHyperlink(ComPtr):
     @winrt_commethod(9)
     def remove_Click(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     NavigateUri = property(get_NavigateUri, put_NavigateUri)
-    Click = event()
+    Click = event(add_Click, remove_Click)
 class IHyperlink2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlink2'
     _iid_ = Guid('{4ce9da5f-7cff-4291-b78f-dfec72490576}')
     @winrt_commethod(6)
@@ -933,7 +931,7 @@ class IHyperlink2(ComPtr):
     def put_UnderlineStyle(self, value: win32more.Windows.UI.Xaml.Documents.UnderlineStyle) -> Void: ...
     UnderlineStyle = property(get_UnderlineStyle, put_UnderlineStyle)
 class IHyperlink3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlink3'
     _iid_ = Guid('{c3f157d9-e5d3-4fb7-8702-4f6d85dd9e0a}')
     @winrt_commethod(6)
@@ -962,7 +960,7 @@ class IHyperlink3(ComPtr):
     XYFocusRight = property(get_XYFocusRight, put_XYFocusRight)
     XYFocusUp = property(get_XYFocusUp, put_XYFocusUp)
 class IHyperlink4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlink4'
     _iid_ = Guid('{f7d02959-82fb-400a-a407-5a4ee677988a}')
     @winrt_commethod(6)
@@ -998,10 +996,10 @@ class IHyperlink4(ComPtr):
     XYFocusLeftNavigationStrategy = property(get_XYFocusLeftNavigationStrategy, put_XYFocusLeftNavigationStrategy)
     XYFocusRightNavigationStrategy = property(get_XYFocusRightNavigationStrategy, put_XYFocusRightNavigationStrategy)
     XYFocusUpNavigationStrategy = property(get_XYFocusUpNavigationStrategy, put_XYFocusUpNavigationStrategy)
-    GotFocus = event()
-    LostFocus = event()
+    GotFocus = event(add_GotFocus, remove_GotFocus)
+    LostFocus = event(add_LostFocus, remove_LostFocus)
 class IHyperlink5(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlink5'
     _iid_ = Guid('{607dd7d2-0945-4328-91ee-94ccec2ea6c3}')
     @winrt_commethod(6)
@@ -1015,25 +1013,25 @@ class IHyperlink5(ComPtr):
     IsTabStop = property(get_IsTabStop, put_IsTabStop)
     TabIndex = property(get_TabIndex, put_TabIndex)
 class IHyperlinkClickEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlinkClickEventArgs'
     _iid_ = Guid('{c755916b-7bdc-4be7-b373-9240a503d870}')
 class IHyperlinkStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlinkStatics'
     _iid_ = Guid('{3a44d3d4-fd41-41db-8c72-3b790acd9fd3}')
     @winrt_commethod(6)
     def get_NavigateUriProperty(self) -> win32more.Windows.UI.Xaml.DependencyProperty: ...
     NavigateUriProperty = property(get_NavigateUriProperty, None)
 class IHyperlinkStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlinkStatics2'
     _iid_ = Guid('{5028d8b7-7adf-43ee-a4ae-9c925f755716}')
     @winrt_commethod(6)
     def get_UnderlineStyleProperty(self) -> win32more.Windows.UI.Xaml.DependencyProperty: ...
     UnderlineStyleProperty = property(get_UnderlineStyleProperty, None)
 class IHyperlinkStatics3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlinkStatics3'
     _iid_ = Guid('{3e15dea0-205e-4947-99a5-74e757e8e1b4}')
     @winrt_commethod(6)
@@ -1052,7 +1050,7 @@ class IHyperlinkStatics3(ComPtr):
     XYFocusRightProperty = property(get_XYFocusRightProperty, None)
     XYFocusUpProperty = property(get_XYFocusUpProperty, None)
 class IHyperlinkStatics4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlinkStatics4'
     _iid_ = Guid('{0476b378-8faa-4e24-b3b6-e9de4d3c708c}')
     @winrt_commethod(6)
@@ -1071,7 +1069,7 @@ class IHyperlinkStatics4(ComPtr):
     XYFocusRightNavigationStrategyProperty = property(get_XYFocusRightNavigationStrategyProperty, None)
     XYFocusUpNavigationStrategyProperty = property(get_XYFocusUpNavigationStrategyProperty, None)
 class IHyperlinkStatics5(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IHyperlinkStatics5'
     _iid_ = Guid('{59308cea-1e49-4921-bd88-a2878d07e30e}')
     @winrt_commethod(6)
@@ -1081,17 +1079,17 @@ class IHyperlinkStatics5(ComPtr):
     IsTabStopProperty = property(get_IsTabStopProperty, None)
     TabIndexProperty = property(get_TabIndexProperty, None)
 class IInline(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IInline'
     _iid_ = Guid('{0c92712d-1bc9-4931-8cb1-1aeadf1cc685}')
 class IInlineFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IInlineFactory'
     _iid_ = Guid('{4058acd1-2f90-4b8f-99dd-4218ef5f03de}')
     @winrt_commethod(6)
-    def CreateInstance(self, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Inline: ...
+    def CreateInstance(self, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Inline: ...
 class IInlineUIContainer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IInlineUIContainer'
     _iid_ = Guid('{1416ce81-28ee-452e-b121-5fc4f60b86a6}')
     @winrt_commethod(6)
@@ -1100,15 +1098,15 @@ class IInlineUIContainer(ComPtr):
     def put_Child(self, value: win32more.Windows.UI.Xaml.UIElement) -> Void: ...
     Child = property(get_Child, put_Child)
 class IItalic(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IItalic'
     _iid_ = Guid('{91f4619c-fcbb-4157-802c-76f63b5fb657}')
 class ILineBreak(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ILineBreak'
     _iid_ = Guid('{645589c4-f769-41ed-895b-8a1b2fb31562}')
 class IParagraph(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IParagraph'
     _iid_ = Guid('{f83ef59a-fa61-4bef-ae33-0b0ad756a84d}')
     @winrt_commethod(6)
@@ -1120,24 +1118,24 @@ class IParagraph(ComPtr):
     Inlines = property(get_Inlines, None)
     TextIndent = property(get_TextIndent, put_TextIndent)
 class IParagraphStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IParagraphStatics'
     _iid_ = Guid('{ef08889a-535b-4e4c-8d84-283b33e98a37}')
     @winrt_commethod(6)
     def get_TextIndentProperty(self) -> win32more.Windows.UI.Xaml.DependencyProperty: ...
     TextIndentProperty = property(get_TextIndentProperty, None)
 class IPlaceContentLinkProvider(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IPlaceContentLinkProvider'
     _iid_ = Guid('{10348a4c-2366-41be-90c8-3258b53b5483}')
 class IRun(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IRun'
     _iid_ = Guid('{59553c83-0e14-49bd-b84b-c526f3034349}')
     @winrt_commethod(6)
-    def get_Text(self) -> WinRT_String: ...
+    def get_Text(self) -> hstr: ...
     @winrt_commethod(7)
-    def put_Text(self, value: WinRT_String) -> Void: ...
+    def put_Text(self, value: hstr) -> Void: ...
     @winrt_commethod(8)
     def get_FlowDirection(self) -> win32more.Windows.UI.Xaml.FlowDirection: ...
     @winrt_commethod(9)
@@ -1145,14 +1143,14 @@ class IRun(ComPtr):
     FlowDirection = property(get_FlowDirection, put_FlowDirection)
     Text = property(get_Text, put_Text)
 class IRunStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IRunStatics'
     _iid_ = Guid('{e9303cef-65a0-4b8d-a7f7-8fdb287b46f3}')
     @winrt_commethod(6)
     def get_FlowDirectionProperty(self) -> win32more.Windows.UI.Xaml.DependencyProperty: ...
     FlowDirectionProperty = property(get_FlowDirectionProperty, None)
 class ISpan(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ISpan'
     _iid_ = Guid('{9839d4a9-02af-4811-aa15-6bef3acac97a}')
     @winrt_commethod(6)
@@ -1161,17 +1159,17 @@ class ISpan(ComPtr):
     def put_Inlines(self, value: win32more.Windows.UI.Xaml.Documents.InlineCollection) -> Void: ...
     Inlines = property(get_Inlines, put_Inlines)
 class ISpanFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ISpanFactory'
     _iid_ = Guid('{5b916f5c-cd2d-40c0-956a-386448322f79}')
     @winrt_commethod(6)
-    def CreateInstance(self, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Span: ...
+    def CreateInstance(self, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Span: ...
 class ITextElement(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElement'
     _iid_ = Guid('{e83b0062-d776-4f92-baea-40e77d4791d5}')
     @winrt_commethod(6)
-    def get_Name(self) -> WinRT_String: ...
+    def get_Name(self) -> hstr: ...
     @winrt_commethod(7)
     def get_FontSize(self) -> Double: ...
     @winrt_commethod(8)
@@ -1201,9 +1199,9 @@ class ITextElement(ComPtr):
     @winrt_commethod(20)
     def put_Foreground(self, value: win32more.Windows.UI.Xaml.Media.Brush) -> Void: ...
     @winrt_commethod(21)
-    def get_Language(self) -> WinRT_String: ...
+    def get_Language(self) -> hstr: ...
     @winrt_commethod(22)
-    def put_Language(self, value: WinRT_String) -> Void: ...
+    def put_Language(self, value: hstr) -> Void: ...
     @winrt_commethod(23)
     def get_ContentStart(self) -> win32more.Windows.UI.Xaml.Documents.TextPointer: ...
     @winrt_commethod(24)
@@ -1213,7 +1211,7 @@ class ITextElement(ComPtr):
     @winrt_commethod(26)
     def get_ElementEnd(self) -> win32more.Windows.UI.Xaml.Documents.TextPointer: ...
     @winrt_commethod(27)
-    def FindName(self, name: WinRT_String) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def FindName(self, name: hstr) -> IInspectable: ...
     CharacterSpacing = property(get_CharacterSpacing, put_CharacterSpacing)
     ContentEnd = property(get_ContentEnd, None)
     ContentStart = property(get_ContentStart, None)
@@ -1228,7 +1226,7 @@ class ITextElement(ComPtr):
     Language = property(get_Language, put_Language)
     Name = property(get_Name, None)
 class ITextElement2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElement2'
     _iid_ = Guid('{a8076aa8-f892-49f6-8cd2-89addaf06d2d}')
     @winrt_commethod(6)
@@ -1237,7 +1235,7 @@ class ITextElement2(ComPtr):
     def put_IsTextScaleFactorEnabled(self, value: Boolean) -> Void: ...
     IsTextScaleFactorEnabled = property(get_IsTextScaleFactorEnabled, put_IsTextScaleFactorEnabled)
 class ITextElement3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElement3'
     _iid_ = Guid('{d1db340f-1bc4-4ca8-bcf7-770bff9b27ab}')
     @winrt_commethod(6)
@@ -1245,9 +1243,9 @@ class ITextElement3(ComPtr):
     @winrt_commethod(7)
     def put_AllowFocusOnInteraction(self, value: Boolean) -> Void: ...
     @winrt_commethod(8)
-    def get_AccessKey(self) -> WinRT_String: ...
+    def get_AccessKey(self) -> hstr: ...
     @winrt_commethod(9)
-    def put_AccessKey(self, value: WinRT_String) -> Void: ...
+    def put_AccessKey(self, value: hstr) -> Void: ...
     @winrt_commethod(10)
     def get_ExitDisplayModeOnAccessKeyInvoked(self) -> Boolean: ...
     @winrt_commethod(11)
@@ -1256,7 +1254,7 @@ class ITextElement3(ComPtr):
     AllowFocusOnInteraction = property(get_AllowFocusOnInteraction, put_AllowFocusOnInteraction)
     ExitDisplayModeOnAccessKeyInvoked = property(get_ExitDisplayModeOnAccessKeyInvoked, put_ExitDisplayModeOnAccessKeyInvoked)
 class ITextElement4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElement4'
     _iid_ = Guid('{b196e222-ca0e-48a9-83bc-36ce50566ac7}')
     @winrt_commethod(6)
@@ -1301,11 +1299,11 @@ class ITextElement4(ComPtr):
     KeyTipPlacementMode = property(get_KeyTipPlacementMode, put_KeyTipPlacementMode)
     KeyTipVerticalOffset = property(get_KeyTipVerticalOffset, put_KeyTipVerticalOffset)
     TextDecorations = property(get_TextDecorations, put_TextDecorations)
-    AccessKeyDisplayRequested = event()
-    AccessKeyDisplayDismissed = event()
-    AccessKeyInvoked = event()
+    AccessKeyDisplayDismissed = event(add_AccessKeyDisplayDismissed, remove_AccessKeyDisplayDismissed)
+    AccessKeyDisplayRequested = event(add_AccessKeyDisplayRequested, remove_AccessKeyDisplayRequested)
+    AccessKeyInvoked = event(add_AccessKeyInvoked, remove_AccessKeyInvoked)
 class ITextElement5(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElement5'
     _iid_ = Guid('{bd9552f3-540d-58bf-b6a8-07556aeda2ea}')
     @winrt_commethod(6)
@@ -1314,17 +1312,17 @@ class ITextElement5(ComPtr):
     def put_XamlRoot(self, value: win32more.Windows.UI.Xaml.XamlRoot) -> Void: ...
     XamlRoot = property(get_XamlRoot, put_XamlRoot)
 class ITextElementFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElementFactory'
     _iid_ = Guid('{35007285-cf47-4bfe-b1bc-39c93af4ae80}')
 class ITextElementOverrides(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElementOverrides'
     _iid_ = Guid('{0ce21ee7-4f76-4dd9-bf91-163beccf84bc}')
     @winrt_commethod(6)
     def OnDisconnectVisualChildren(self) -> Void: ...
 class ITextElementStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElementStatics'
     _iid_ = Guid('{0a2f9b98-6c03-4470-a79b-3298a10482ce}')
     @winrt_commethod(6)
@@ -1352,14 +1350,14 @@ class ITextElementStatics(ComPtr):
     ForegroundProperty = property(get_ForegroundProperty, None)
     LanguageProperty = property(get_LanguageProperty, None)
 class ITextElementStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElementStatics2'
     _iid_ = Guid('{164297b2-982b-49e1-8c03-ca43bc4d5b6d}')
     @winrt_commethod(6)
     def get_IsTextScaleFactorEnabledProperty(self) -> win32more.Windows.UI.Xaml.DependencyProperty: ...
     IsTextScaleFactorEnabledProperty = property(get_IsTextScaleFactorEnabledProperty, None)
 class ITextElementStatics3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElementStatics3'
     _iid_ = Guid('{cfefcfaf-0fa1-45ec-9a4e-9b33664dc8b1}')
     @winrt_commethod(6)
@@ -1372,7 +1370,7 @@ class ITextElementStatics3(ComPtr):
     AllowFocusOnInteractionProperty = property(get_AllowFocusOnInteractionProperty, None)
     ExitDisplayModeOnAccessKeyInvokedProperty = property(get_ExitDisplayModeOnAccessKeyInvokedProperty, None)
 class ITextElementStatics4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextElementStatics4'
     _iid_ = Guid('{fd8f641e-6b12-40d5-b6ef-d1bd12ac9066}')
     @winrt_commethod(6)
@@ -1394,7 +1392,7 @@ class ITextElementStatics4(ComPtr):
     KeyTipVerticalOffsetProperty = property(get_KeyTipVerticalOffsetProperty, None)
     TextDecorationsProperty = property(get_TextDecorationsProperty, None)
 class ITextHighlighter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextHighlighter'
     _iid_ = Guid('{ba6cb54b-7d75-4535-b30d-a81a00b637a4}')
     @winrt_commethod(6)
@@ -1411,21 +1409,21 @@ class ITextHighlighter(ComPtr):
     Foreground = property(get_Foreground, put_Foreground)
     Ranges = property(get_Ranges, None)
 class ITextHighlighterBase(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextHighlighterBase'
     _iid_ = Guid('{d957601a-5f0d-4cdf-9758-97e0eb95c8fa}')
 class ITextHighlighterBaseFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextHighlighterBaseFactory'
     _iid_ = Guid('{9592b2d0-eadc-4c74-92c8-6e896e22506d}')
 class ITextHighlighterFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextHighlighterFactory'
     _iid_ = Guid('{70125461-9a8f-4fa0-b235-8ffaa507bef2}')
     @winrt_commethod(6)
-    def CreateInstance(self, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.TextHighlighter: ...
+    def CreateInstance(self, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.TextHighlighter: ...
 class ITextHighlighterStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextHighlighterStatics'
     _iid_ = Guid('{b3b009c4-3a7e-49cc-ab84-29c405488765}')
     @winrt_commethod(6)
@@ -1435,7 +1433,7 @@ class ITextHighlighterStatics(ComPtr):
     BackgroundProperty = property(get_BackgroundProperty, None)
     ForegroundProperty = property(get_ForegroundProperty, None)
 class ITextPointer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITextPointer'
     _iid_ = Guid('{ac687aa1-6a41-43ff-851e-45348aa2cf7b}')
     @winrt_commethod(6)
@@ -1455,11 +1453,11 @@ class ITextPointer(ComPtr):
     Parent = property(get_Parent, None)
     VisualParent = property(get_VisualParent, None)
 class ITypography(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITypography'
     _iid_ = Guid('{866f65d5-ea97-42ab-9288-9c01aebc7a97}')
 class ITypographyStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.ITypographyStatics'
     _iid_ = Guid('{67b9ec88-6c57-4ce0-95f1-d4b9ed632fb4}')
     @winrt_commethod(6)
@@ -1764,7 +1762,7 @@ class ITypographyStatics(ComPtr):
     StylisticSet9Property = property(get_StylisticSet9Property, None)
     VariantsProperty = property(get_VariantsProperty, None)
 class IUnderline(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Xaml.Documents.IUnderline'
     _iid_ = Guid('{a5fa8202-61c0-47d7-93ef-bc0b577c5f26}')
 class Inline(ComPtr):
@@ -1779,9 +1777,9 @@ class Inline(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.IInlineFactory, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Inline: ...
+    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.IInlineFactory, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Inline: ...
 class InlineCollection(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[SequenceProtocol[win32more.Windows.UI.Xaml.Documents.Inline]]
     default_interface: win32more.Windows.Foundation.Collections.IVector[win32more.Windows.UI.Xaml.Documents.Inline]
     _classid_ = 'Windows.UI.Xaml.Documents.InlineCollection'
@@ -1857,6 +1855,7 @@ class LineBreak(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.UI.Xaml.Documents.LineBreak: ...
 class LogicalDirection(Enum, Int32):
+    _name_ = 'Windows.UI.Xaml.Documents.LogicalDirection'
     Backward = 0
     Forward = 1
 class _Paragraph_Meta_(ComPtr.__class__):
@@ -1914,9 +1913,9 @@ class Run(ComPtr, metaclass=_Run_Meta_):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.UI.Xaml.Documents.Run: ...
     @winrt_mixinmethod
-    def get_Text(self: win32more.Windows.UI.Xaml.Documents.IRun) -> WinRT_String: ...
+    def get_Text(self: win32more.Windows.UI.Xaml.Documents.IRun) -> hstr: ...
     @winrt_mixinmethod
-    def put_Text(self: win32more.Windows.UI.Xaml.Documents.IRun, value: WinRT_String) -> Void: ...
+    def put_Text(self: win32more.Windows.UI.Xaml.Documents.IRun, value: hstr) -> Void: ...
     @winrt_mixinmethod
     def get_FlowDirection(self: win32more.Windows.UI.Xaml.Documents.IRun) -> win32more.Windows.UI.Xaml.FlowDirection: ...
     @winrt_mixinmethod
@@ -1938,7 +1937,7 @@ class Span(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.ISpanFactory, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Span: ...
+    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.ISpanFactory, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.Span: ...
     @winrt_mixinmethod
     def get_Inlines(self: win32more.Windows.UI.Xaml.Documents.ISpan) -> win32more.Windows.UI.Xaml.Documents.InlineCollection: ...
     @winrt_mixinmethod
@@ -1951,7 +1950,7 @@ class TextElement(ComPtr, metaclass=_TextElement_Meta_):
     default_interface: win32more.Windows.UI.Xaml.Documents.ITextElement
     _classid_ = 'Windows.UI.Xaml.Documents.TextElement'
     @winrt_mixinmethod
-    def get_Name(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> WinRT_String: ...
+    def get_Name(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> hstr: ...
     @winrt_mixinmethod
     def get_FontSize(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> Double: ...
     @winrt_mixinmethod
@@ -1981,9 +1980,9 @@ class TextElement(ComPtr, metaclass=_TextElement_Meta_):
     @winrt_mixinmethod
     def put_Foreground(self: win32more.Windows.UI.Xaml.Documents.ITextElement, value: win32more.Windows.UI.Xaml.Media.Brush) -> Void: ...
     @winrt_mixinmethod
-    def get_Language(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> WinRT_String: ...
+    def get_Language(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> hstr: ...
     @winrt_mixinmethod
-    def put_Language(self: win32more.Windows.UI.Xaml.Documents.ITextElement, value: WinRT_String) -> Void: ...
+    def put_Language(self: win32more.Windows.UI.Xaml.Documents.ITextElement, value: hstr) -> Void: ...
     @winrt_mixinmethod
     def get_ContentStart(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> win32more.Windows.UI.Xaml.Documents.TextPointer: ...
     @winrt_mixinmethod
@@ -1993,7 +1992,7 @@ class TextElement(ComPtr, metaclass=_TextElement_Meta_):
     @winrt_mixinmethod
     def get_ElementEnd(self: win32more.Windows.UI.Xaml.Documents.ITextElement) -> win32more.Windows.UI.Xaml.Documents.TextPointer: ...
     @winrt_mixinmethod
-    def FindName(self: win32more.Windows.UI.Xaml.Documents.ITextElement, name: WinRT_String) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def FindName(self: win32more.Windows.UI.Xaml.Documents.ITextElement, name: hstr) -> IInspectable: ...
     @winrt_mixinmethod
     def get_IsTextScaleFactorEnabled(self: win32more.Windows.UI.Xaml.Documents.ITextElement2) -> Boolean: ...
     @winrt_mixinmethod
@@ -2003,9 +2002,9 @@ class TextElement(ComPtr, metaclass=_TextElement_Meta_):
     @winrt_mixinmethod
     def put_AllowFocusOnInteraction(self: win32more.Windows.UI.Xaml.Documents.ITextElement3, value: Boolean) -> Void: ...
     @winrt_mixinmethod
-    def get_AccessKey(self: win32more.Windows.UI.Xaml.Documents.ITextElement3) -> WinRT_String: ...
+    def get_AccessKey(self: win32more.Windows.UI.Xaml.Documents.ITextElement3) -> hstr: ...
     @winrt_mixinmethod
-    def put_AccessKey(self: win32more.Windows.UI.Xaml.Documents.ITextElement3, value: WinRT_String) -> Void: ...
+    def put_AccessKey(self: win32more.Windows.UI.Xaml.Documents.ITextElement3, value: hstr) -> Void: ...
     @winrt_mixinmethod
     def get_ExitDisplayModeOnAccessKeyInvoked(self: win32more.Windows.UI.Xaml.Documents.ITextElement3) -> Boolean: ...
     @winrt_mixinmethod
@@ -2130,13 +2129,13 @@ class TextElement(ComPtr, metaclass=_TextElement_Meta_):
     _TextElement_Meta_.KeyTipVerticalOffsetProperty = property(get_KeyTipVerticalOffsetProperty, None)
     _TextElement_Meta_.LanguageProperty = property(get_LanguageProperty, None)
     _TextElement_Meta_.TextDecorationsProperty = property(get_TextDecorationsProperty, None)
-    AccessKeyDisplayRequested = event()
-    AccessKeyDisplayDismissed = event()
-    AccessKeyInvoked = event()
+    AccessKeyDisplayDismissed = event(add_AccessKeyDisplayDismissed, remove_AccessKeyDisplayDismissed)
+    AccessKeyDisplayRequested = event(add_AccessKeyDisplayRequested, remove_AccessKeyDisplayRequested)
+    AccessKeyInvoked = event(add_AccessKeyInvoked, remove_AccessKeyInvoked)
 class _TextHighlighter_Meta_(ComPtr.__class__):
     pass
 class TextHighlighter(ComPtr, metaclass=_TextHighlighter_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.UI.Xaml.Documents.ITextHighlighter
     _classid_ = 'Windows.UI.Xaml.Documents.TextHighlighter'
     def __init__(self, *args, **kwargs):
@@ -2147,7 +2146,7 @@ class TextHighlighter(ComPtr, metaclass=_TextHighlighter_Meta_):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.ITextHighlighterFactory, baseInterface: win32more.Windows.Win32.System.WinRT.IInspectable, innerInterface: POINTER(win32more.Windows.Win32.System.WinRT.IInspectable)) -> win32more.Windows.UI.Xaml.Documents.TextHighlighter: ...
+    def CreateInstance(cls: win32more.Windows.UI.Xaml.Documents.ITextHighlighterFactory, baseInterface: IInspectable, innerInterface: POINTER(IInspectable)) -> win32more.Windows.UI.Xaml.Documents.TextHighlighter: ...
     @winrt_mixinmethod
     def get_Ranges(self: win32more.Windows.UI.Xaml.Documents.ITextHighlighter) -> win32more.Windows.Foundation.Collections.IVector[win32more.Windows.UI.Xaml.Documents.TextRange]: ...
     @winrt_mixinmethod
@@ -2172,7 +2171,7 @@ class TextHighlighterBase(ComPtr):
     default_interface: win32more.Windows.UI.Xaml.Documents.ITextHighlighterBase
     _classid_ = 'Windows.UI.Xaml.Documents.TextHighlighterBase'
 class TextPointer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.UI.Xaml.Documents.ITextPointer
     _classid_ = 'Windows.UI.Xaml.Documents.TextPointer'
     @winrt_mixinmethod
@@ -2192,12 +2191,13 @@ class TextPointer(ComPtr):
     Parent = property(get_Parent, None)
     VisualParent = property(get_VisualParent, None)
 class TextRange(Structure):
+    _name_ = 'Windows.UI.Xaml.Documents.TextRange'
     StartIndex: Int32
     Length: Int32
 class _Typography_Meta_(ComPtr.__class__):
     pass
 class Typography(ComPtr, metaclass=_Typography_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.UI.Xaml.Documents.ITypography
     _classid_ = 'Windows.UI.Xaml.Documents.Typography'
     @winrt_classmethod
@@ -2515,6 +2515,7 @@ class Underline(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.UI.Xaml.Documents.Underline: ...
 class UnderlineStyle(Enum, Int32):
+    _name_ = 'Windows.UI.Xaml.Documents.UnderlineStyle'
     None_ = 0
     Single = 1
 

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.Variant
@@ -838,6 +838,8 @@ BulletStyle_Other: win32more.Windows.Win32.UI.Accessibility.BulletStyle = -1
 CAccPropServices = Guid('{b5f8350b-0548-48b1-a6ee-88bd00b4a5e7}')
 CUIAutomation = Guid('{ff48dba4-60ef-4201-aa87-54103eef594e}')
 CUIAutomation8 = Guid('{e22ad333-b25f-460c-83d0-0581107395c9}')
+CUIAutomationClientInfo = Guid('{c2d4f567-8a9b-4c3e-9f1a-2b5c7d8e0f3a}')
+CUIAutomationClientInfoSource = Guid('{a8d4f123-7b2c-4e5f-9a1b-3c8d6e9f0a2b}')
 CUIAutomationRegistrar = Guid('{6e29fabf-9977-42d1-8d0e-ca7e61ad87e6}')
 CapStyle = Int32
 CapStyle_None: win32more.Windows.Win32.UI.Accessibility.CapStyle = 0
@@ -1293,12 +1295,14 @@ class IRawElementProviderWindowlessSite(ComPtr):
     def GetRuntimeIdPrefix(self, pRetVal: POINTER(POINTER(win32more.Windows.Win32.System.Com.SAFEARRAY))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IRichEditUiaInformation(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{23969a9d-8546-4032-a1bb-73750cbf3333}')
     @commethod(3)
     def GetBoundaryRectangle(self, pUiaRect: POINTER(win32more.Windows.Win32.UI.Accessibility.UiaRect)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def IsVisible(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IRicheditWindowlessAccessibility(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{983e572d-20cd-460b-9104-83111592dd10}')
     @commethod(3)
     def CreateProvider(self, pSite: win32more.Windows.Win32.UI.Accessibility.IRawElementProviderWindowlessSite, ppProvider: POINTER(win32more.Windows.Win32.UI.Accessibility.IRawElementProviderSimple)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IScrollItemProvider(ComPtr):
@@ -1767,6 +1771,29 @@ class IUIAutomationChangesEventHandler(ComPtr):
     _iid_ = Guid('{58edca55-2c3e-4980-b1b9-56c17f27a2a0}')
     @commethod(3)
     def HandleChangesEvent(self, sender: win32more.Windows.Win32.UI.Accessibility.IUIAutomationElement, uiaChanges: POINTER(win32more.Windows.Win32.UI.Accessibility.UiaChangeInfo), changesCount: Int32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IUIAutomationClientConnectionCallback(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{5b8e8f2a-9c7d-4f3e-a1b2-8d6e9f4c0a1b}')
+    @commethod(3)
+    def OnConnected(self, clientInfo: win32more.Windows.Win32.UI.Accessibility.IUIAutomationClientInfo) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def OnDisconnected(self, clientInfo: win32more.Windows.Win32.UI.Accessibility.IUIAutomationClientInfo) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IUIAutomationClientInfo(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{b2e8a3f1-4c5d-4e7a-8f6b-3d2e1c9a0b8f}')
+    @commethod(3)
+    def get_ProcessId(self, processId: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def get_ProcessName(self, processName: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IUIAutomationClientInfoSource(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{f4b8a2e1-9c3d-4a7e-8f6b-2d5e4c1a9b8f}')
+    @commethod(3)
+    def RegisterClientConnectionCallback(self, callback: win32more.Windows.Win32.UI.Accessibility.IUIAutomationClientConnectionCallback, handle: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def UnregisterClientConnectionCallback(self, handle: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(5)
+    def GetConnectedClients(self, clients: POINTER(POINTER(win32more.Windows.Win32.System.Com.SAFEARRAY))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IUIAutomationCondition(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{352ffba8-0973-437c-a61f-f64cafd81df9}')
@@ -2876,6 +2903,7 @@ NotificationProcessing_ImportantMostRecent: win32more.Windows.Win32.UI.Accessibi
 NotificationProcessing_All: win32more.Windows.Win32.UI.Accessibility.NotificationProcessing = 2
 NotificationProcessing_MostRecent: win32more.Windows.Win32.UI.Accessibility.NotificationProcessing = 3
 NotificationProcessing_CurrentThenMostRecent: win32more.Windows.Win32.UI.Accessibility.NotificationProcessing = 4
+NotificationProcessing_ImportantCurrentThenMostRecent: win32more.Windows.Win32.UI.Accessibility.NotificationProcessing = 5
 OrientationType = Int32
 OrientationType_None: win32more.Windows.Win32.UI.Accessibility.OrientationType = 0
 OrientationType_Horizontal: win32more.Windows.Win32.UI.Accessibility.OrientationType = 1

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.WindowsFirewall
 import win32more.Windows.Win32.Security
@@ -188,6 +188,7 @@ class INET_FIREWALL_AC_CHANGE(Structure):
     userSid: POINTER(win32more.Windows.Win32.Security.SID)
     displayName: win32more.Windows.Win32.Foundation.PWSTR
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         capabilities: win32more.Windows.Win32.NetworkManagement.WindowsFirewall.INET_FIREWALL_AC_CAPABILITIES
         binaries: win32more.Windows.Win32.NetworkManagement.WindowsFirewall.INET_FIREWALL_AC_BINARIES

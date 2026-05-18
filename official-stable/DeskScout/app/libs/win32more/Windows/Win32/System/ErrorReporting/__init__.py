@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Diagnostics.Debug
 import win32more.Windows.Win32.System.ErrorReporting
@@ -30,6 +30,7 @@ WER_SUBMIT_BYPASS_NETWORK_COST_THROTTLING: UInt32 = 32768
 WER_DUMP_MASK_START: UInt32 = 1
 WER_DUMP_NOHEAP_ONQUEUE: UInt32 = 1
 WER_DUMP_AUXILIARY: UInt32 = 2
+WER_DUMP_AUX_PROMOTE: UInt32 = 4
 WER_MAX_REGISTERED_ENTRIES: UInt32 = 512
 WER_MAX_REGISTERED_METADATA: UInt32 = 8
 WER_MAX_REGISTERED_DUMPCOLLECTION: UInt32 = 4
@@ -235,7 +236,8 @@ WerFileTypeTriagedump: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TY
 WerFileTypeCustomDump: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TYPE = 7
 WerFileTypeAuxiliaryDump: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TYPE = 8
 WerFileTypeEtlTrace: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TYPE = 9
-WerFileTypeMax: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TYPE = 10
+WerFileTypeAuxiliaryHeapDump: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TYPE = 10
+WerFileTypeMax: win32more.Windows.Win32.System.ErrorReporting.WER_FILE_TYPE = 11
 WER_REGISTER_FILE_TYPE = Int32
 WerRegFileTypeUserDocument: win32more.Windows.Win32.System.ErrorReporting.WER_REGISTER_FILE_TYPE = 1
 WerRegFileTypeOther: win32more.Windows.Win32.System.ErrorReporting.WER_REGISTER_FILE_TYPE = 2

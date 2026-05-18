@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Devices.Bluetooth
 import win32more.Windows.Win32.Foundation
 AUTHENTICATION_REQUIREMENTS = Int32
@@ -691,6 +691,8 @@ BTH_LE_GAP_APPEARANCE_HID_SUBCATEGORY_DIGITIZER_TABLET: UInt32 = 5
 BTH_LE_GAP_APPEARANCE_HID_SUBCATEGORY_CARD_READER: UInt32 = 6
 BTH_LE_GAP_APPEARANCE_HID_SUBCATEGORY_DIGITAL_PEN: UInt32 = 7
 BTH_LE_GAP_APPEARANCE_HID_SUBCATEGORY_BARCODE_SCANNER: UInt32 = 8
+BTH_LE_GAP_APPEARANCE_HID_SUBCATEGORY_TOUCHPAD: UInt32 = 9
+BTH_LE_GAP_APPEARANCE_HID_SUBCATEGORY_PRESENTATION_REMOTE: UInt32 = 10
 BTH_LE_GAP_APPEARANCE_RUNNING_WALKING_SENSOR_SUBCATEGORY_IN_SHOE: UInt32 = 1
 BTH_LE_GAP_APPEARANCE_RUNNING_WALKING_SENSOR_SUBCATEGORY_ON_SHOE: UInt32 = 2
 BTH_LE_GAP_APPEARANCE_RUNNING_WALKING_SENSOR_SUBCATEGORY_ON_HIP: UInt32 = 3
@@ -935,6 +937,7 @@ def BluetoothGATTRegisterEvent(hService: win32more.Windows.Win32.Foundation.HAND
 def BluetoothGATTUnregisterEvent(EventHandle: IntPtr, Flags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class BLUETOOTH_ADDRESS(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ullLong: UInt64
         rgBytes: Byte * 6
@@ -943,6 +946,7 @@ class BLUETOOTH_AUTHENTICATE_RESPONSE(Structure):
     authMethod: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_AUTHENTICATION_METHOD
     Anonymous: _Anonymous_e__Union
     negativeResponse: Byte
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pinInfo: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_PIN_INFO
         oobInfo: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_OOB_DATA_INFO
@@ -954,6 +958,7 @@ class BLUETOOTH_AUTHENTICATION_CALLBACK_PARAMS(Structure):
     ioCapability: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_IO_CAPABILITY
     authenticationRequirements: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_AUTHENTICATION_REQUIREMENTS
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Numeric_Value: UInt32
         Passkey: UInt32
@@ -1001,7 +1006,7 @@ class BLUETOOTH_GATT_VALUE_CHANGED_EVENT(Structure):
     CharacteristicValue: POINTER(win32more.Windows.Win32.Devices.Bluetooth.BTH_LE_GATT_CHARACTERISTIC_VALUE)
 class BLUETOOTH_GATT_VALUE_CHANGED_EVENT_REGISTRATION(Structure):
     NumCharacteristics: UInt16
-    Characteristics: win32more.Windows.Win32.Devices.Bluetooth.BTH_LE_GATT_CHARACTERISTIC * 1
+    Characteristics: FlexibleArray[win32more.Windows.Win32.Devices.Bluetooth.BTH_LE_GATT_CHARACTERISTIC]
 BLUETOOTH_IO_CAPABILITY = Int32
 BLUETOOTH_IO_CAPABILITY_DISPLAYONLY: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_IO_CAPABILITY = 0
 BLUETOOTH_IO_CAPABILITY_DISPLAYYESNO: win32more.Windows.Win32.Devices.Bluetooth.BLUETOOTH_IO_CAPABILITY = 1
@@ -1063,6 +1068,7 @@ class BTH_INFO_RSP(Structure):
     result: UInt16
     dataLen: Byte
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         connectionlessMTU: UInt16
@@ -1088,7 +1094,7 @@ class BTH_LE_GATT_CHARACTERISTIC(Structure):
     HasExtendedProperties: win32more.Windows.Win32.Foundation.BOOLEAN
 class BTH_LE_GATT_CHARACTERISTIC_VALUE(Structure):
     DataSize: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 class BTH_LE_GATT_DESCRIPTOR(Structure):
     ServiceHandle: UInt16
     CharacteristicHandle: UInt16
@@ -1108,7 +1114,8 @@ class BTH_LE_GATT_DESCRIPTOR_VALUE(Structure):
     DescriptorUuid: win32more.Windows.Win32.Devices.Bluetooth.BTH_LE_UUID
     Anonymous: _Anonymous_e__Union
     DataSize: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         CharacteristicExtendedProperties: _CharacteristicExtendedProperties_e__Struct
         ClientCharacteristicConfiguration: _ClientCharacteristicConfiguration_e__Struct
@@ -1156,7 +1163,7 @@ class BTH_QUERY_SERVICE(Structure):
     serviceHandle: UInt32
     uuids: win32more.Windows.Win32.Devices.Bluetooth.SdpQueryUuid * 12
     numRange: UInt32
-    pRange: win32more.Windows.Win32.Devices.Bluetooth.SdpAttributeRange * 1
+    pRange: FlexibleArray[win32more.Windows.Win32.Devices.Bluetooth.SdpAttributeRange]
     _pack_ = 1
 class BTH_RADIO_IN_RANGE(Structure):
     deviceInfo: win32more.Windows.Win32.Devices.Bluetooth.BTH_DEVICE_INFO
@@ -1167,7 +1174,7 @@ class BTH_SET_SERVICE(Structure):
     fCodService: UInt32
     Reserved: UInt32 * 5
     ulRecordLength: UInt32
-    pRecord: Byte * 1
+    pRecord: FlexibleArray[Byte]
     _pack_ = 1
 HANDLE_SDP_TYPE = UInt64
 HBLUETOOTH_DEVICE_FIND = VoidPtr

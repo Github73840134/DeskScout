@@ -89,7 +89,7 @@ if not args.retainExtensions:
 	import subprocess
 	ring = []
 	for i in os.listdir("../data/basepkgs"):
-		ring.append(subprocess.Popen(f"pyw ExtensionTools/install.py localfs -src ../data/basepkgs/{i} -quiet -silent",shell=True))
+		ring.append(subprocess.Popen(f"../core/pythonw.exe ExtensionTools/install.py localfs -src ../data/basepkgs/{i} -quiet -silent",shell=True))
 	while ring:
 		xring = ring
 		y = 0
@@ -107,5 +107,5 @@ if not args.retainSounds:
 
 if args.autostart:
 	import subprocess
-	subprocess.Popen("pyw DeskScout.pyw",shell=True,start_new_session=True)
+	subprocess.Popen("../core/pythonw.exe DeskScout.pyw",shell=True,start_new_session=True)
 exit(0)

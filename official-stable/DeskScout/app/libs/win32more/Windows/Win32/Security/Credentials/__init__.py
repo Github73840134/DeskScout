@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Security.Credentials
@@ -131,8 +131,12 @@ CREDUI_MAX_CAPTION_LENGTH: UInt32 = 128
 CREDUI_MAX_GENERIC_TARGET_LENGTH: UInt32 = 32767
 CREDUI_MAX_DOMAIN_TARGET_LENGTH: UInt32 = 337
 CREDUI_MAX_USERNAME_LENGTH: UInt32 = 513
+CREDUIWIN_USE_V2: UInt32 = 64
 CREDUIWIN_IGNORE_CLOUDAUTHORITY_NAME: UInt32 = 262144
 CREDUIWIN_DOWNLEVEL_HELLO_AS_SMART_CARD: UInt32 = 2147483648
+BACK_BUTTON_IDENTIFY_AUTH_PACKAGE: UInt32 = 3402629121
+CREDUI_FOOTER_LINK_AUTHPACKAGE_ID: UInt32 = 212664322
+CREDUI_PICKERSCREEN_AUTHPACKAGE_ID: UInt32 = 212664323
 CRED_PRESERVE_CREDENTIAL_BLOB: UInt32 = 1
 CRED_CACHE_TARGET_INFORMATION: UInt32 = 1
 CRED_ALLOW_NAME_RESOLUTION: UInt32 = 1
@@ -792,6 +796,7 @@ class READER_SEL_REQUEST(Structure):
     dwPreferredProtocols: UInt32
     MatchType: win32more.Windows.Win32.Security.Credentials.READER_SEL_REQUEST_MATCH_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ReaderAndContainerParameter: _ReaderAndContainerParameter_e__Struct
         SerialNumberParameter: _SerialNumberParameter_e__Struct
@@ -863,6 +868,7 @@ class SCARD_T0_REQUEST(Structure):
     bSw1: Byte
     bSw2: Byte
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         CmdBytes: win32more.Windows.Win32.Security.Credentials.SCARD_T0_COMMAND
         rgbHeader: Byte * 5

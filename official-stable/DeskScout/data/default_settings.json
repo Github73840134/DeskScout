@@ -7,6 +7,7 @@
 	"enableNotify": true,
 	"gdrState":0,
 	"overlay":false,
+	"autostart":false,
 	"ns":{
 		"enabled":false,
 		"url":"",

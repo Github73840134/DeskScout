@@ -1,11 +1,9 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Graphics.Effects
 import win32more.Windows.UI.Composition.Effects
-import win32more.Windows.Win32.System.WinRT
 class ISceneLightingEffect(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Composition.Effects.ISceneLightingEffect'
     _iid_ = Guid('{91bb5e52-95d1-4f8b-9a5a-6408b24b8c6a}')
     @winrt_commethod(6)
@@ -34,7 +32,7 @@ class ISceneLightingEffect(ComPtr):
     SpecularAmount = property(get_SpecularAmount, put_SpecularAmount)
     SpecularShine = property(get_SpecularShine, put_SpecularShine)
 class ISceneLightingEffect2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.UI.Composition.Effects.ISceneLightingEffect2'
     _iid_ = Guid('{9e270e81-72f0-4c5c-95f8-8a6e0024f409}')
     @winrt_commethod(6)
@@ -43,7 +41,7 @@ class ISceneLightingEffect2(ComPtr):
     def put_ReflectanceModel(self, value: win32more.Windows.UI.Composition.Effects.SceneLightingEffectReflectanceModel) -> Void: ...
     ReflectanceModel = property(get_ReflectanceModel, put_ReflectanceModel)
 class SceneLightingEffect(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.UI.Composition.Effects.ISceneLightingEffect
     _classid_ = 'Windows.UI.Composition.Effects.SceneLightingEffect'
     def __init__(self, *args, **kwargs):
@@ -80,9 +78,9 @@ class SceneLightingEffect(ComPtr):
     @winrt_mixinmethod
     def put_ReflectanceModel(self: win32more.Windows.UI.Composition.Effects.ISceneLightingEffect2, value: win32more.Windows.UI.Composition.Effects.SceneLightingEffectReflectanceModel) -> Void: ...
     @winrt_mixinmethod
-    def get_Name(self: win32more.Windows.Graphics.Effects.IGraphicsEffect) -> WinRT_String: ...
+    def get_Name(self: win32more.Windows.Graphics.Effects.IGraphicsEffect) -> hstr: ...
     @winrt_mixinmethod
-    def put_Name(self: win32more.Windows.Graphics.Effects.IGraphicsEffect, name: WinRT_String) -> Void: ...
+    def put_Name(self: win32more.Windows.Graphics.Effects.IGraphicsEffect, name: hstr) -> Void: ...
     AmbientAmount = property(get_AmbientAmount, put_AmbientAmount)
     DiffuseAmount = property(get_DiffuseAmount, put_DiffuseAmount)
     Name = property(get_Name, put_Name)
@@ -91,6 +89,7 @@ class SceneLightingEffect(ComPtr):
     SpecularAmount = property(get_SpecularAmount, put_SpecularAmount)
     SpecularShine = property(get_SpecularShine, put_SpecularShine)
 class SceneLightingEffectReflectanceModel(Enum, Int32):
+    _name_ = 'Windows.UI.Composition.Effects.SceneLightingEffectReflectanceModel'
     BlinnPhong = 0
     PhysicallyBasedBlinnPhong = 1
 

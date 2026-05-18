@@ -2,9 +2,9 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "1.1.2"
-__build__ = "28"
-supported_service = ["24"]
+__version__ = "1.2"
+__build__ = "29"
+supported_service = ["22","23","24","25"]
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
@@ -61,7 +61,7 @@ except:
 boot.info("Starting imports")
 import requests
 boot.debug("Importing the hellscape that is win32more")
-from win32more.xaml import XamlApplication
+from win32more.winui3 import XamlApplication
 from win32more.Microsoft.UI.Xaml import Window, FrameworkElement
 from win32more.Microsoft.UI.Xaml.Media import MicaBackdrop,Imaging,FontFamily,CompositionTarget,VisualTreeHelper
 from win32more.Microsoft.UI.Xaml.Markup import XamlReader
@@ -508,6 +508,9 @@ class App(XamlApplication):
 		current_pid = os.getpid()
 		hwnd = get_hwnds_by_pid(current_pid)[0]
 		self.hwnd = hwnd
+
+		#resp = requests.get("http://127.0.0.1:49152/authenticate")
+
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import SendMessageW, WM_SETICON, ICON_SMALL, ICON_BIG
 		# Set the window icon
 		SendMessageW(hwnd, WM_SETICON, ICON_SMALL, hicon)
@@ -725,7 +728,7 @@ class App(XamlApplication):
 		)
 		self.state = AppState.LOGIN #This will stop the fetch stast
 		ShowWindow(self.hwnd, SW_HIDE)
-		resp = subprocess.run("pyw DeskScoutSetup.py signin")
+		resp = subprocess.run("../core/pythonw.exe DeskScoutSetup.py signin")
 		ShowWindow(self.hwnd, SW_SHOW)
 		SetForegroundWindow(self.hwnd)
 		if onFinish:
@@ -817,7 +820,7 @@ class App(XamlApplication):
 			except:
 				pass
 			import subprocess
-			subprocess.Popen("pyw DeskScout.pyw",start_new_session=True)
+			subprocess.Popen("../core/pythonw.exe DeskScout.pyw",start_new_session=True)
 			p = psutil.Process(os.getpid())
 			p.kill()
 	def update_Display(self,sender,args):
@@ -1353,6 +1356,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			root = self.document
 		
 		class Settings:
+			class general:
+				autostart = root.Content.as_(FrameworkElement).FindName("settings.autostart").as_(CheckBox)
 			class display:
 				units = root.Content.as_(FrameworkElement).FindName("settings.display_mmol").as_(CheckBox)
 			enable_alarms = root.Content.as_(FrameworkElement).FindName("settings.enable_alarms").as_(CheckBox)
@@ -1436,6 +1441,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 			# General Alarms
 			self.lsc = -1
+			self.changeSetting("autostart",not Settings.general.autostart.IsChecked)
 			self.changeSetting("useMGDL",not Settings.display.units.IsChecked)
 			self.changeSetting("enableNotify",Settings.enable_alarms.IsChecked)
 			# Urgent Low
@@ -1565,6 +1571,9 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		# Initiaize the settings view
 
 		# Check units
+		s = self.getSetting("autostart")
+		if self.validateSetting(s):
+			Settings.general.autostart.IsChecked = s
 		s = self.getSetting("useMGDL")
 		if self.validateSetting(s):
 			Settings.display.units.IsChecked = not s
@@ -1772,6 +1781,8 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			Settings.sharing.discord.IsChecked = s
 		Settings.overlay.enabled.Click += lambda sender,args: saveAll('auto')
 		Settings.sharing.discord.Click += lambda sender,args: saveAll('auto')
+		Settings.general.autostart.Click += lambda sender,args: saveAll('auto')
+
 
 		Settings.overlay.detect_steam.Click += lambda sender,args: saveAll('auto')
 		Settings.overlay.detect_process.Click += lambda sender,args: saveAll('auto')
@@ -1848,7 +1859,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			SW_SHOW
 			)
 			ShowWindow(self.hwnd, SW_HIDE)
-			resp = subprocess.run("pyw DeskScoutSetup.py setGDP")
+			resp = subprocess.run("../core/pythonw.exe DeskScoutSetup.py setGDP")
 			ShowWindow(self.hwnd, SW_SHOW)
 			SetForegroundWindow(self.hwnd)
 			try:
@@ -1961,7 +1972,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		
 		run = self.document.Content.as_(FrameworkElement).FindName("import.start").as_(Button)
 		def backupData():
-			subprocess.run("pyw DeskScoutSetup.py restore")
+			subprocess.run("../core/pythonw.exe DeskScoutSetup.py restore")
 
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
 		def start(sender,args):
@@ -1974,7 +1985,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		back = self.document.Content.as_(FrameworkElement).FindName("settings.back").as_(Button)
 		run = self.document.Content.as_(FrameworkElement).FindName("backup.start").as_(Button)
 		def backupData(path):
-			subprocess.run(f"pyw dataexport.py \"{path}\"")
+			subprocess.run(f"../core/pythonw.exe dataexport.py \"{path}\"")
 			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/data_manage.xaml", "r", encoding='utf-8').read()),self.initDataManagement)
 		def start(sender,args):
 			from tkinter import filedialog
@@ -2165,7 +2176,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			# So maybe we could, start all over, start all over again
 			import keyring,subprocess
 			self.NavView.put_IsPaneVisible(False)
-			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: subprocess.Popen("pyw resetApp.py -quiet -autostart",shell=True,start_new_session=True))
+			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: subprocess.Popen("../core/pythonw.exe resetApp.py -quiet -autostart",shell=True,start_new_session=True))
 			
 
 			

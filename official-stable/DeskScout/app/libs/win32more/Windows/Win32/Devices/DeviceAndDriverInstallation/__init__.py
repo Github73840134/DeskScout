@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Data.HtmlHelp
 import win32more.Windows.Win32.Devices.DeviceAndDriverInstallation
 import win32more.Windows.Win32.Devices.Properties
@@ -62,6 +62,7 @@ GUID_DEVCLASS_1394DEBUG: Guid = Guid('{66f250d6-7801-4a64-b139-eea80a450b24}')
 GUID_DEVCLASS_61883: Guid = Guid('{7ebefbc0-3200-11d2-b4c2-00a0c9697d07}')
 GUID_DEVCLASS_ADAPTER: Guid = Guid('{4d36e964-e325-11ce-bfc1-08002be10318}')
 GUID_DEVCLASS_APMSUPPORT: Guid = Guid('{d45b1c18-c8fa-11d1-9f77-0000f805f530}')
+GUID_DEVCLASS_AUDIOPROCESSINGOBJECT: Guid = Guid('{5989fce8-9cd0-467d-8a6a-5419e31529d4}')
 GUID_DEVCLASS_AVC: Guid = Guid('{c06ff265-ae09-48f0-812c-16753d7cba83}')
 GUID_DEVCLASS_BATTERY: Guid = Guid('{72631e54-78a4-11d0-bcf7-00aa00b7b32a}')
 GUID_DEVCLASS_BIOMETRIC: Guid = Guid('{53d29ef7-377c-4d14-864b-eb3a85769359}')
@@ -86,6 +87,7 @@ GUID_DEVCLASS_GPS: Guid = Guid('{6bdd1fc3-810f-11d0-bec7-08002be2092f}')
 GUID_DEVCLASS_HDC: Guid = Guid('{4d36e96a-e325-11ce-bfc1-08002be10318}')
 GUID_DEVCLASS_HIDCLASS: Guid = Guid('{745a17a0-74d3-11d0-b6fe-00a0c90f57da}')
 GUID_DEVCLASS_HOLOGRAPHIC: Guid = Guid('{d612553d-06b1-49ca-8938-e39ef80eb16f}')
+GUID_DEVCLASS_I3C: Guid = Guid('{13cfe1b1-6b17-424c-ac3f-16ace8733898}')
 GUID_DEVCLASS_IMAGE: Guid = Guid('{6bdd1fc6-810f-11d0-bec7-08002be2092f}')
 GUID_DEVCLASS_INFINIBAND: Guid = Guid('{30ef7132-d858-4a0c-ac24-b9028a5cca3f}')
 GUID_DEVCLASS_INFRARED: Guid = Guid('{6bdd1fc5-810f-11d0-bec7-08002be2092f}')
@@ -129,6 +131,7 @@ GUID_DEVCLASS_SOFTWARECOMPONENT: Guid = Guid('{5c4c3332-344d-483c-8739-259e934c9
 GUID_DEVCLASS_SOUND: Guid = Guid('{4d36e97c-e325-11ce-bfc1-08002be10318}')
 GUID_DEVCLASS_SYSTEM: Guid = Guid('{4d36e97d-e325-11ce-bfc1-08002be10318}')
 GUID_DEVCLASS_TAPEDRIVE: Guid = Guid('{6d807884-7d21-11cf-801c-08002be10318}')
+GUID_DEVCLASS_THERMAL: Guid = Guid('{ca301ce1-74fc-45ea-a557-461ef48b9e37}')
 GUID_DEVCLASS_UNKNOWN: Guid = Guid('{4d36e97e-e325-11ce-bfc1-08002be10318}')
 GUID_DEVCLASS_UCM: Guid = Guid('{e6f1aa1c-7f3b-4473-b2e8-c97d8ac71d53}')
 GUID_DEVCLASS_USB: Guid = Guid('{36fc9e60-c465-11cf-8056-444553540000}')
@@ -726,6 +729,8 @@ SZ_KEY_ADDPROP: String = 'AddProperty'
 SZ_KEY_DELPROP: String = 'DelProperty'
 SZ_KEY_FEATURESCORE: String = 'FeatureScore'
 SZ_KEY_ADDEVENTPROVIDER: String = 'AddEventProvider'
+SZ_KEY_ADDCOMSERVER: String = 'AddComServer'
+SZ_KEY_ADDCOMCLASS: String = 'AddComClass'
 SZ_KEY_ADDCHANNEL: String = 'AddChannel'
 SZ_KEY_IMPORTCHANNEL: String = 'ImportChannel'
 SZ_KEY_ADDAUTOLOGGER: String = 'AddAutoLogger'
@@ -734,6 +739,7 @@ SZ_KEY_ADDAUTOLOGGERPROVIDER: String = 'AddAutoLoggerProvider'
 SZ_KEY_ADDFILTER: String = 'AddFilter'
 SZ_KEY_FILTERLEVEL: String = 'FilterLevel'
 SZ_KEY_FILTERPOSITION: String = 'FilterPosition'
+SZ_KEY_ADDCOMPONENT: String = 'AddComponent'
 SZ_KEY_PHASE1: String = 'Phase1'
 SZ_KEY_HARDWARE: String = 'Hardware'
 INFSTR_KEY_CONFIGPRIORITY: String = 'ConfigPriority'
@@ -795,6 +801,7 @@ INFSTR_KEY_SECURITY: String = 'Security'
 INFSTR_KEY_DESCRIPTION: String = 'Description'
 INFSTR_KEY_SERVICESIDTYPE: String = 'ServiceSidType'
 INFSTR_KEY_DELAYEDAUTOSTART: String = 'DelayedAutoStart'
+INFSTR_KEY_BOOTFLAGS: String = 'BootFlags'
 INFSTR_KEY_TRIGGER_TYPE: String = 'TriggerType'
 INFSTR_KEY_ACTION: String = 'Action'
 INFSTR_KEY_SUB_TYPE: String = 'SubType'
@@ -806,6 +813,13 @@ INFSTR_KEY_PROVIDER_NAME: String = 'ProviderName'
 INFSTR_KEY_RESOURCE_FILE: String = 'ResourceFile'
 INFSTR_KEY_MESSAGE_FILE: String = 'MessageFile'
 INFSTR_KEY_PARAMETER_FILE: String = 'ParameterFile'
+INFSTR_KEY_COM_SERVER_TYPE: String = 'ServerType'
+INFSTR_KEY_COM_SERVER_BINARY: String = 'ServerBinary'
+INFSTR_KEY_COM_SERVER_BINARY_WOW64: String = 'ServerBinaryWow64'
+INFSTR_KEY_COM_SERVER_ADD_COM_CLASS: String = 'AddComClass'
+INFSTR_KEY_COM_CLASS_THREADING_MODEL: String = 'ThreadingModel'
+INFSTR_KEY_COM_CLASS_DESCRIPTION: String = 'Description'
+INFSTR_KEY_COMPONENTIDS: String = 'ComponentIds'
 INFSTR_KEY_CHANNEL_ACCESS: String = 'Access'
 INFSTR_KEY_CHANNEL_ISOLATION: String = 'Isolation'
 INFSTR_KEY_CHANNEL_ENABLED: String = 'Enabled'
@@ -870,7 +884,9 @@ INFSTR_SUBKEY_COINSTALLERS: String = 'CoInstallers'
 INFSTR_SUBKEY_LOGCONFIGOVERRIDE: String = 'LogConfigOverride'
 INFSTR_SUBKEY_WMI: String = 'WMI'
 INFSTR_SUBKEY_EVENTS: String = 'Events'
+INFSTR_SUBKEY_COM: String = 'COM'
 INFSTR_SUBKEY_FILTERS: String = 'Filters'
+INFSTR_SUBKEY_COMPONENTS: String = 'Components'
 INFSTR_CONTROLFLAGS_SECTION: String = 'ControlFlags'
 INFSTR_KEY_COPYFILESONLY: String = 'CopyFilesOnly'
 INFSTR_KEY_EXCLUDEFROMSELECT: String = 'ExcludeFromSelect'
@@ -941,6 +957,7 @@ GUID_KERNEL_SOFT_RESTART_CANCEL: Guid = Guid('{31d737e7-8c0b-468a-956e-9f433ec35
 GUID_RECOVERY_PCI_PREPARE_SHUTDOWN: Guid = Guid('{90d889de-8704-44cf-8115-ed8528d2b2da}')
 GUID_RECOVERY_NVMED_PREPARE_SHUTDOWN: Guid = Guid('{4b9770ea-bde7-400b-a9b9-4f684f54cc2a}')
 GUID_KERNEL_SOFT_RESTART_FINALIZE: Guid = Guid('{20e91abd-350a-4d4f-8577-99c81507473a}')
+GUID_KERNEL_SOFT_RESTART_PRE_COMPLETE: Guid = Guid('{af855082-530b-4a85-b5a6-120b63089451}')
 GUID_BUS_INTERFACE_STANDARD: Guid = Guid('{496b8280-6f25-11d0-beaf-08002be2092f}')
 GUID_PCI_BUS_INTERFACE_STANDARD: Guid = Guid('{496b8281-6f25-11d0-beaf-08002be2092f}')
 GUID_PCI_BUS_INTERFACE_STANDARD2: Guid = Guid('{de94e966-fdff-4c9c-9998-6747b150e74c}')
@@ -968,6 +985,8 @@ GUID_PCI_VIRTUALIZATION_INTERFACE: Guid = Guid('{64897b47-3a4a-4d75-bc74-89dd6c0
 GUID_PCC_INTERFACE_STANDARD: Guid = Guid('{3ee8ba63-0f59-4a24-8a45-35808bdd1249}')
 GUID_PCC_INTERFACE_INTERNAL: Guid = Guid('{7cce62ce-c189-4814-a6a7-12112089e938}')
 GUID_THERMAL_COOLING_INTERFACE: Guid = Guid('{ecbe47a8-c498-4bb9-bd70-e867e0940d22}')
+GUID_PCI_LINK_CONFIG_INTERFACE: Guid = Guid('{67593984-7cc0-4760-8d01-cbffd2d080f7}')
+GUID_POWER_LIMIT_INTERFACE: Guid = Guid('{3b96f4f2-ce49-44d1-91f8-652b8121e93a}')
 GUID_DMA_CACHE_COHERENCY_INTERFACE: Guid = Guid('{b520f7fa-8a5a-4e40-a3f6-6be1e162d935}')
 GUID_DEVICE_RESET_INTERFACE_STANDARD: Guid = Guid('{649fdf26-3bc0-4813-ad24-7e0c1eda3fa3}')
 GUID_IOMMU_BUS_INTERFACE: Guid = Guid('{1efee0b2-d278-4ae4-bddc-1b34dd648043}')
@@ -2357,7 +2376,7 @@ class BUSNUMBER_RANGE(Structure):
     _pack_ = 1
 class BUSNUMBER_RESOURCE(Structure):
     BusNumber_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.BUSNUMBER_DES
-    BusNumber_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.BUSNUMBER_RANGE * 1
+    BusNumber_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.BUSNUMBER_RANGE]
     _pack_ = 1
 if ARCH in 'X64,ARM64':
     class CABINET_INFO_A(Structure):
@@ -2505,14 +2524,14 @@ class CM_NOTIFY_EVENT_DATA(Structure):
         DeviceInstance: _DeviceInstance_e__Struct
         class _DeviceInterface_e__Struct(Structure):
             ClassGuid: Guid
-            SymbolicLink: Char * 1
+            SymbolicLink: FlexibleArray[Char]
         class _DeviceHandle_e__Struct(Structure):
             EventGuid: Guid
             NameOffset: Int32
             DataSize: UInt32
-            Data: Byte * 1
+            Data: FlexibleArray[Byte]
         class _DeviceInstance_e__Struct(Structure):
-            InstanceId: Char * 1
+            InstanceId: FlexibleArray[Char]
 class CM_NOTIFY_FILTER(Structure):
     cbSize: UInt32
     Flags: UInt32
@@ -2730,7 +2749,7 @@ class CS_DES(Structure):
     CSD_LegacyDataSize: UInt32
     CSD_Flags: UInt32
     CSD_ClassGuid: Guid
-    CSD_Signature: Byte * 1
+    CSD_Signature: FlexibleArray[Byte]
     _pack_ = 1
 class CS_RESOURCE(Structure):
     CS_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.CS_DES
@@ -2764,7 +2783,7 @@ class DEVPRIVATE_RANGE(Structure):
     _pack_ = 1
 class DEVPRIVATE_RESOURCE(Structure):
     PRV_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DEVPRIVATE_DES
-    PRV_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DEVPRIVATE_RANGE * 1
+    PRV_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DEVPRIVATE_RANGE]
     _pack_ = 1
 DIINSTALLDEVICE_FLAGS = UInt32
 DIIDFLAG_SHOWSEARCHUI: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DIINSTALLDEVICE_FLAGS = 1
@@ -2846,7 +2865,7 @@ class DMA_RANGE(Structure):
     _pack_ = 1
 class DMA_RESOURCE(Structure):
     DMA_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DMA_DES
-    DMA_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DMA_RANGE * 1
+    DMA_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.DMA_RANGE]
     _pack_ = 1
 if ARCH in 'X64,ARM64':
     class FILEPATHS_A(Structure):
@@ -3029,7 +3048,7 @@ class IO_RANGE(Structure):
     _pack_ = 1
 class IO_RESOURCE(Structure):
     IO_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IO_DES
-    IO_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IO_RANGE * 1
+    IO_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IO_RANGE]
 IRQD_FLAGS = UInt32
 mIRQD_Share: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQD_FLAGS = 1
 fIRQD_Exclusive: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQD_FLAGS = 0
@@ -3060,11 +3079,11 @@ class IRQ_RANGE(Structure):
     _pack_ = 1
 class IRQ_RESOURCE_32(Structure):
     IRQ_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQ_DES_32
-    IRQ_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQ_RANGE * 1
+    IRQ_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQ_RANGE]
     _pack_ = 1
 class IRQ_RESOURCE_64(Structure):
     IRQ_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQ_DES_64
-    IRQ_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQ_RANGE * 1
+    IRQ_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.IRQ_RANGE]
     _pack_ = 1
 MD_FLAGS = UInt32
 mMD_MemoryType: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MD_FLAGS = 1
@@ -3119,7 +3138,7 @@ class MEM_LARGE_RANGE(Structure):
     _pack_ = 1
 class MEM_LARGE_RESOURCE(Structure):
     MEM_LARGE_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MEM_LARGE_DES
-    MEM_LARGE_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MEM_LARGE_RANGE * 1
+    MEM_LARGE_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MEM_LARGE_RANGE]
     _pack_ = 1
 class MEM_RANGE(Structure):
     MR_Align: UInt64
@@ -3131,7 +3150,7 @@ class MEM_RANGE(Structure):
     _pack_ = 1
 class MEM_RESOURCE(Structure):
     MEM_Header: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MEM_DES
-    MEM_Data: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MEM_RANGE * 1
+    MEM_Data: FlexibleArray[win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.MEM_RANGE]
     _pack_ = 1
 class MFCARD_DES(Structure):
     PMF_Count: UInt32
@@ -3241,6 +3260,7 @@ SPQ_SCAN_PRUNE_DELREN: win32more.Windows.Win32.Devices.DeviceAndDriverInstallati
 SPQ_SCAN_FILE_PRESENCE_WITHOUT_SOURCE: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SETUPSCANFILEQUEUE_FLAGS = 256
 SPQ_SCAN_FILE_COMPARISON: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SETUPSCANFILEQUEUE_FLAGS = 512
 SPQ_SCAN_ACTIVATE_DRP: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SETUPSCANFILEQUEUE_FLAGS = 1024
+SPQ_SCAN_USE_OEM_CATALOGS: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SETUPSCANFILEQUEUE_FLAGS = 2048
 SETUP_DI_DEVICE_CONFIGURATION_FLAGS = UInt32
 CONFIGFLAG_DISABLED: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SETUP_DI_DEVICE_CONFIGURATION_FLAGS = 1
 CONFIGFLAG_REMOVED: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SETUP_DI_DEVICE_CONFIGURATION_FLAGS = 2
@@ -3487,6 +3507,7 @@ SPSVCINST_NOCLOBBER_SERVICESIDTYPE: win32more.Windows.Win32.Devices.DeviceAndDri
 SPSVCINST_NOCLOBBER_DELAYEDAUTOSTART: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SPSVCINST_FLAGS = 32768
 SPSVCINST_UNIQUE_NAME: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SPSVCINST_FLAGS = 65536
 SPSVCINST_NOCLOBBER_FAILUREACTIONS: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SPSVCINST_FLAGS = 131072
+SPSVCINST_NOCLOBBER_BOOTFLAGS: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.SPSVCINST_FLAGS = 262144
 if ARCH in 'X64,ARM64':
     class SP_ALTPLATFORM_INFO_V1(Structure):
         cbSize: UInt32
@@ -3514,6 +3535,7 @@ if ARCH in 'X64,ARM64':
         Anonymous: _Anonymous_e__Union
         FirstValidatedMajorVersion: UInt32
         FirstValidatedMinorVersion: UInt32
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             Reserved: UInt16
             Flags: UInt16
@@ -3527,6 +3549,7 @@ elif ARCH in 'X86':
         Anonymous: _Anonymous_e__Union
         FirstValidatedMajorVersion: UInt32
         FirstValidatedMinorVersion: UInt32
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Union(Union):
             Reserved: UInt16
@@ -3545,6 +3568,7 @@ if ARCH in 'X64,ARM64':
         ProductType: Byte
         SuiteMask: UInt16
         BuildNumber: UInt32
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             Reserved: UInt16
             Flags: UInt16
@@ -3561,6 +3585,7 @@ elif ARCH in 'X86':
         ProductType: Byte
         SuiteMask: UInt16
         BuildNumber: UInt32
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Union(Union):
             Reserved: UInt16
@@ -3698,20 +3723,20 @@ elif ARCH in 'X86':
 if ARCH in 'X64,ARM64':
     class SP_DEVICE_INTERFACE_DETAIL_DATA_A(Structure):
         cbSize: UInt32
-        DevicePath: win32more.Windows.Win32.Foundation.CHAR * 1
+        DevicePath: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 elif ARCH in 'X86':
     class SP_DEVICE_INTERFACE_DETAIL_DATA_A(Structure):
         cbSize: UInt32
-        DevicePath: win32more.Windows.Win32.Foundation.CHAR * 1
+        DevicePath: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
         _pack_ = 1
 if ARCH in 'X64,ARM64':
     class SP_DEVICE_INTERFACE_DETAIL_DATA_W(Structure):
         cbSize: UInt32
-        DevicePath: Char * 1
+        DevicePath: FlexibleArray[Char]
 elif ARCH in 'X86':
     class SP_DEVICE_INTERFACE_DETAIL_DATA_W(Structure):
         cbSize: UInt32
-        DevicePath: Char * 1
+        DevicePath: FlexibleArray[Char]
         _pack_ = 1
 if ARCH in 'X64,ARM64':
     SP_DEVICE_INTERFACE_DETAIL_DATA = UnicodeAlias('SP_DEVICE_INTERFACE_DETAIL_DATA_W')
@@ -3908,7 +3933,7 @@ if ARCH in 'X64,ARM64':
         SectionName: win32more.Windows.Win32.Foundation.CHAR * 256
         InfFileName: win32more.Windows.Win32.Foundation.CHAR * 260
         DrvDescription: win32more.Windows.Win32.Foundation.CHAR * 256
-        HardwareID: win32more.Windows.Win32.Foundation.CHAR * 1
+        HardwareID: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 elif ARCH in 'X86':
     class SP_DRVINFO_DETAIL_DATA_A(Structure):
         cbSize: UInt32
@@ -3919,7 +3944,7 @@ elif ARCH in 'X86':
         SectionName: win32more.Windows.Win32.Foundation.CHAR * 256
         InfFileName: win32more.Windows.Win32.Foundation.CHAR * 260
         DrvDescription: win32more.Windows.Win32.Foundation.CHAR * 256
-        HardwareID: win32more.Windows.Win32.Foundation.CHAR * 1
+        HardwareID: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
         _pack_ = 1
 if ARCH in 'X64,ARM64':
     class SP_DRVINFO_DETAIL_DATA_W(Structure):
@@ -3931,7 +3956,7 @@ if ARCH in 'X64,ARM64':
         SectionName: Char * 256
         InfFileName: Char * 260
         DrvDescription: Char * 256
-        HardwareID: Char * 1
+        HardwareID: FlexibleArray[Char]
 elif ARCH in 'X86':
     class SP_DRVINFO_DETAIL_DATA_W(Structure):
         cbSize: UInt32
@@ -3942,7 +3967,7 @@ elif ARCH in 'X86':
         SectionName: Char * 256
         InfFileName: Char * 260
         DrvDescription: Char * 256
-        HardwareID: Char * 1
+        HardwareID: FlexibleArray[Char]
         _pack_ = 1
 if ARCH in 'X64,ARM64':
     SP_DRVINFO_DETAIL_DATA = UnicodeAlias('SP_DRVINFO_DETAIL_DATA_W')
@@ -4040,12 +4065,12 @@ if ARCH in 'X64,ARM64':
     class SP_INF_INFORMATION(Structure):
         InfStyle: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.INF_STYLE
         InfCount: UInt32
-        VersionData: Byte * 1
+        VersionData: FlexibleArray[Byte]
 elif ARCH in 'X86':
     class SP_INF_INFORMATION(Structure):
         InfStyle: win32more.Windows.Win32.Devices.DeviceAndDriverInstallation.INF_STYLE
         InfCount: UInt32
-        VersionData: Byte * 1
+        VersionData: FlexibleArray[Byte]
         _pack_ = 1
 if ARCH in 'X64,ARM64':
     class SP_INF_SIGNER_INFO_V1_A(Structure):

@@ -13,10 +13,10 @@ if "update.zip" in os.listdir("../data"):
 	except:
 		pass
 
-	resp = subprocess.run("pyw updater.py")
+	resp = subprocess.run("../core/pythonw.exe updater.py")
 	if resp.returncode == 0:
 		os.remove("../data/update.zip")
-		subprocess.Popen("pyw DeskScout.pyw",start_new_session=True)
+		subprocess.Popen("../core/pythonw.exe DeskScout.pyw",start_new_session=True)
 		exit(0)
 		
 	else:
@@ -31,7 +31,7 @@ from win32more.Windows.UI.Xaml.Interop import TypeName
 from win32more.Windows.UI.Xaml import UIElement
 from win32more.Windows.Win32.System.Threading import Sleep
 from win32more import Windows
-from win32more.xaml import XamlApplication
+from win32more.winui3 import XamlApplication
 from win32more.Microsoft.UI.Xaml import Window, FrameworkElement
 from win32more.Microsoft.UI.Xaml.Media import MicaBackdrop,Imaging,FontFamily,CompositionTarget,VisualTreeHelper
 from win32more.Microsoft.UI.Xaml.Markup import XamlReader
@@ -152,10 +152,10 @@ class SplashApp(XamlApplication):
 		import psutil,time
 		try:
 			resp = requests.get("http://127.0.0.1:49152/",timeout=3)
-			subprocess.Popen("pyw DeskScoutApp.py",start_new_session=True)
+			subprocess.Popen("../core/pythonw.exe DeskScoutApp.py",start_new_session=True)
 			return
 		except:
-			subprocess.Popen("pyw DeskScoutService.py -fromDeskScoutPy",start_new_session=True)
+			subprocess.Popen("../core/pythonw.exe DeskScoutService.py -fromDeskScoutPy",start_new_session=True)
 		i = 0
 		while i != 20:
 			try:
@@ -166,9 +166,9 @@ class SplashApp(XamlApplication):
 				isSetup = self.getSetting("setup")
 				if isSetup == False:
 
-					subprocess.Popen("pyw DeskScoutSetup.py",start_new_session=True)
+					subprocess.Popen("../core/pythonw.exe DeskScoutSetup.py",start_new_session=True)
 				else:
-					subprocess.Popen("pyw DeskScoutApp.py",start_new_session=True)
+					subprocess.Popen("../core/pythonw.exe DeskScoutApp.py",start_new_session=True)
 
 				i = 20
 			except:

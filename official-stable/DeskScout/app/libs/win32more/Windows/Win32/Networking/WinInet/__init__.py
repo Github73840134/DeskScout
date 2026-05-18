@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Networking.WinHttp
@@ -1907,9 +1907,11 @@ class INTERNET_CACHE_CONFIG_INFOA(Structure):
     Anonymous: _Anonymous_e__Union
     dwNormalUsage: UInt32
     dwExemptUsage: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
-        CachePaths: win32more.Windows.Win32.Networking.WinInet.INTERNET_CACHE_CONFIG_PATH_ENTRYA * 1
+        CachePaths: FlexibleArray[win32more.Windows.Win32.Networking.WinInet.INTERNET_CACHE_CONFIG_PATH_ENTRYA]
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             CachePath: win32more.Windows.Win32.Foundation.CHAR * 260
             dwCacheSize: UInt32
@@ -1924,9 +1926,11 @@ class INTERNET_CACHE_CONFIG_INFOW(Structure):
     Anonymous: _Anonymous_e__Union
     dwNormalUsage: UInt32
     dwExemptUsage: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
-        CachePaths: win32more.Windows.Win32.Networking.WinInet.INTERNET_CACHE_CONFIG_PATH_ENTRYW * 1
+        CachePaths: FlexibleArray[win32more.Windows.Win32.Networking.WinInet.INTERNET_CACHE_CONFIG_PATH_ENTRYW]
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             CachePath: Char * 260
             dwCacheSize: UInt32
@@ -1968,6 +1972,7 @@ class INTERNET_CACHE_ENTRY_INFOA(Structure):
     dwHeaderInfoSize: UInt32
     lpszFileExtension: win32more.Windows.Win32.Foundation.PSTR
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwReserved: UInt32
         dwExemptDelta: UInt32
@@ -1988,6 +1993,7 @@ class INTERNET_CACHE_ENTRY_INFOW(Structure):
     dwHeaderInfoSize: UInt32
     lpszFileExtension: win32more.Windows.Win32.Foundation.PWSTR
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwReserved: UInt32
         dwExemptDelta: UInt32
@@ -2069,9 +2075,11 @@ class INTERNET_CREDENTIALS(Structure):
     lpcwszRealm: win32more.Windows.Win32.Foundation.PWSTR
     fAuthIdentity: win32more.Windows.Win32.Foundation.BOOL
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         pAuthIdentityOpaque: VoidPtr
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             lpcwszUserName: win32more.Windows.Win32.Foundation.PWSTR
             lpcwszPassword: win32more.Windows.Win32.Foundation.PWSTR
@@ -2189,6 +2197,18 @@ class IProofOfPossessionCookieInfoManager2(ComPtr):
     _iid_ = Guid('{15e41407-b42f-4ae7-9966-34a087b2d713}')
     @commethod(3)
     def GetCookieInfoWithUriForAccount(self, webAccount: win32more.Windows.Win32.System.WinRT.IInspectable, uri: win32more.Windows.Win32.Foundation.PWSTR, cookieInfoCount: POINTER(UInt32), cookieInfo: POINTER(POINTER(win32more.Windows.Win32.Networking.WinInet.ProofOfPossessionCookieInfo))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IProofOfPossessionCookieInfoManager3(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{c8891744-32bd-4a77-b92c-0e79a2823b96}')
+    @commethod(3)
+    def GetCookieInfoForUriWithOptions(self, uri: win32more.Windows.Win32.Foundation.PWSTR, options: UInt32, cookieInfoCount: POINTER(UInt32), cookieInfo: POINTER(POINTER(win32more.Windows.Win32.Networking.WinInet.ProofOfPossessionCookieInfo))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IProofOfPossessionCookieInfoManager4(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{3b74c75b-6e3f-494e-95ec-13174e12a89f}')
+    @commethod(3)
+    def GetCookieInfoForUriWithUserAgentId(self, uri: win32more.Windows.Win32.Foundation.PWSTR, uaClientId: win32more.Windows.Win32.Foundation.PWSTR, cookieInfoCount: POINTER(UInt32), cookieInfo: POINTER(POINTER(win32more.Windows.Win32.Networking.WinInet.ProofOfPossessionCookieInfo))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def GetCookieInfoWithUriAndUserAgentIdForAccount(self, webAccount: win32more.Windows.Win32.System.WinRT.IInspectable, uri: win32more.Windows.Win32.Foundation.PWSTR, uaClientId: win32more.Windows.Win32.Foundation.PWSTR, cookieInfoCount: POINTER(UInt32), cookieInfo: POINTER(POINTER(win32more.Windows.Win32.Networking.WinInet.ProofOfPossessionCookieInfo))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IncomingCookieState(Structure):
     cSession: Int32
     cPersistent: Int32
@@ -2220,6 +2240,9 @@ class OutgoingCookieState(Structure):
 def PFN_AUTH_NOTIFY(param0: UIntPtr, param1: UInt32, param2: VoidPtr) -> UInt32: ...
 @winfunctype_pointer
 def PFN_DIAL_HANDLER(param0: win32more.Windows.Win32.Foundation.HWND, param1: win32more.Windows.Win32.Foundation.PSTR, param2: UInt32, param3: POINTER(UInt32)) -> UInt32: ...
+PROOF_OF_POSSESSION_FLAGS = UInt32
+PROOF_OF_POSSESSION_DEFAULT: win32more.Windows.Win32.Networking.WinInet.PROOF_OF_POSSESSION_FLAGS = 0
+PROOF_OF_POSSESSION_ALLOW_SILENT_REQUESTS: win32more.Windows.Win32.Networking.WinInet.PROOF_OF_POSSESSION_FLAGS = 1
 PROXY_AUTO_DETECT_TYPE = UInt32
 PROXY_AUTO_DETECT_TYPE_DHCP: win32more.Windows.Win32.Networking.WinInet.PROXY_AUTO_DETECT_TYPE = 1
 PROXY_AUTO_DETECT_TYPE_DNS_A: win32more.Windows.Win32.Networking.WinInet.PROXY_AUTO_DETECT_TYPE = 2

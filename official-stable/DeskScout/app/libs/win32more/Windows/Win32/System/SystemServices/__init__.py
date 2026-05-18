@@ -1,10 +1,11 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.Diagnostics.Debug
+import win32more.Windows.Win32.System.Power
 import win32more.Windows.Win32.System.SystemServices
 ACCESS_REASON_TYPE = Int32
 AccessReasonNone: win32more.Windows.Win32.System.SystemServices.ACCESS_REASON_TYPE = 0
@@ -146,6 +147,9 @@ PdataPackedUnwindFragment: win32more.Windows.Win32.System.SystemServices.ARM64_F
 ATF_FLAGS = UInt32
 ATF_TIMEOUTON: win32more.Windows.Win32.System.SystemServices.ATF_FLAGS = 1
 ATF_ONOFFFEEDBACK: win32more.Windows.Win32.System.SystemServices.ATF_FLAGS = 2
+class ATTRIBUTES_AND_SID(Structure):
+    Attributes: UInt32
+    SidStart: UInt32
 _MM_HINT_T0: UInt32 = 1
 _MM_HINT_T1: UInt32 = 2
 _MM_HINT_T2: UInt32 = 3
@@ -198,83 +202,6 @@ VER_SUITE_STORAGE_SERVER: UInt32 = 8192
 VER_SUITE_COMPUTE_SERVER: UInt32 = 16384
 VER_SUITE_WH_SERVER: UInt32 = 32768
 VER_SUITE_MULTIUSERTS: UInt32 = 131072
-PRODUCT_STANDARD_SERVER_CORE: UInt32 = 13
-PRODUCT_SOLUTION_EMBEDDEDSERVER_CORE: UInt32 = 57
-PRODUCT_PROFESSIONAL_EMBEDDED: UInt32 = 58
-PRODUCT_EMBEDDED: UInt32 = 65
-PRODUCT_EMBEDDED_AUTOMOTIVE: UInt32 = 85
-PRODUCT_EMBEDDED_INDUSTRY_A: UInt32 = 86
-PRODUCT_THINPC: UInt32 = 87
-PRODUCT_EMBEDDED_A: UInt32 = 88
-PRODUCT_EMBEDDED_INDUSTRY: UInt32 = 89
-PRODUCT_EMBEDDED_E: UInt32 = 90
-PRODUCT_EMBEDDED_INDUSTRY_E: UInt32 = 91
-PRODUCT_EMBEDDED_INDUSTRY_A_E: UInt32 = 92
-PRODUCT_CORE_ARM: UInt32 = 97
-PRODUCT_EMBEDDED_INDUSTRY_EVAL: UInt32 = 105
-PRODUCT_EMBEDDED_INDUSTRY_E_EVAL: UInt32 = 106
-PRODUCT_EMBEDDED_EVAL: UInt32 = 107
-PRODUCT_EMBEDDED_E_EVAL: UInt32 = 108
-PRODUCT_NANO_SERVER: UInt32 = 109
-PRODUCT_CLOUD_STORAGE_SERVER: UInt32 = 110
-PRODUCT_CORE_CONNECTED: UInt32 = 111
-PRODUCT_PROFESSIONAL_STUDENT: UInt32 = 112
-PRODUCT_CORE_CONNECTED_N: UInt32 = 113
-PRODUCT_PROFESSIONAL_STUDENT_N: UInt32 = 114
-PRODUCT_CORE_CONNECTED_SINGLELANGUAGE: UInt32 = 115
-PRODUCT_CORE_CONNECTED_COUNTRYSPECIFIC: UInt32 = 116
-PRODUCT_CONNECTED_CAR: UInt32 = 117
-PRODUCT_INDUSTRY_HANDHELD: UInt32 = 118
-PRODUCT_PPI_PRO: UInt32 = 119
-PRODUCT_ARM64_SERVER: UInt32 = 120
-PRODUCT_CLOUD_HOST_INFRASTRUCTURE_SERVER: UInt32 = 124
-PRODUCT_PROFESSIONAL_S: UInt32 = 127
-PRODUCT_PROFESSIONAL_S_N: UInt32 = 128
-PRODUCT_HOLOGRAPHIC: UInt32 = 135
-PRODUCT_HOLOGRAPHIC_BUSINESS: UInt32 = 136
-PRODUCT_PRO_SINGLE_LANGUAGE: UInt32 = 138
-PRODUCT_PRO_CHINA: UInt32 = 139
-PRODUCT_ENTERPRISE_SUBSCRIPTION: UInt32 = 140
-PRODUCT_ENTERPRISE_SUBSCRIPTION_N: UInt32 = 141
-PRODUCT_DATACENTER_NANO_SERVER: UInt32 = 143
-PRODUCT_STANDARD_NANO_SERVER: UInt32 = 144
-PRODUCT_DATACENTER_WS_SERVER_CORE: UInt32 = 147
-PRODUCT_STANDARD_WS_SERVER_CORE: UInt32 = 148
-PRODUCT_UTILITY_VM: UInt32 = 149
-PRODUCT_DATACENTER_EVALUATION_SERVER_CORE: UInt32 = 159
-PRODUCT_STANDARD_EVALUATION_SERVER_CORE: UInt32 = 160
-PRODUCT_PRO_FOR_EDUCATION: UInt32 = 164
-PRODUCT_PRO_FOR_EDUCATION_N: UInt32 = 165
-PRODUCT_AZURE_SERVER_CORE: UInt32 = 168
-PRODUCT_AZURE_NANO_SERVER: UInt32 = 169
-PRODUCT_ENTERPRISEG: UInt32 = 171
-PRODUCT_ENTERPRISEGN: UInt32 = 172
-PRODUCT_SERVERRDSH: UInt32 = 175
-PRODUCT_CLOUD: UInt32 = 178
-PRODUCT_CLOUDN: UInt32 = 179
-PRODUCT_HUBOS: UInt32 = 180
-PRODUCT_ONECOREUPDATEOS: UInt32 = 182
-PRODUCT_CLOUDE: UInt32 = 183
-PRODUCT_IOTOS: UInt32 = 185
-PRODUCT_CLOUDEN: UInt32 = 186
-PRODUCT_IOTEDGEOS: UInt32 = 187
-PRODUCT_IOTENTERPRISE: UInt32 = 188
-PRODUCT_LITE: UInt32 = 189
-PRODUCT_IOTENTERPRISES: UInt32 = 191
-PRODUCT_XBOX_SYSTEMOS: UInt32 = 192
-PRODUCT_XBOX_GAMEOS: UInt32 = 194
-PRODUCT_XBOX_ERAOS: UInt32 = 195
-PRODUCT_XBOX_DURANGOHOSTOS: UInt32 = 196
-PRODUCT_XBOX_SCARLETTHOSTOS: UInt32 = 197
-PRODUCT_XBOX_KEYSTONE: UInt32 = 198
-PRODUCT_AZURE_SERVER_CLOUDHOST: UInt32 = 199
-PRODUCT_AZURE_SERVER_CLOUDMOS: UInt32 = 200
-PRODUCT_CLOUDEDITIONN: UInt32 = 202
-PRODUCT_CLOUDEDITION: UInt32 = 203
-PRODUCT_AZURESTACKHCI_SERVER_CORE: UInt32 = 406
-PRODUCT_DATACENTER_SERVER_AZURE_EDITION: UInt32 = 407
-PRODUCT_DATACENTER_SERVER_CORE_AZURE_EDITION: UInt32 = 408
-PRODUCT_UNLICENSED: UInt32 = 2882382797
 LANG_NEUTRAL: UInt32 = 0
 LANG_INVARIANT: UInt32 = 127
 LANG_AFRIKAANS: UInt32 = 54
@@ -683,8 +610,10 @@ LOCALE_TRANSIENT_KEYBOARD1: UInt32 = 8192
 LOCALE_TRANSIENT_KEYBOARD2: UInt32 = 9216
 LOCALE_TRANSIENT_KEYBOARD3: UInt32 = 10240
 LOCALE_TRANSIENT_KEYBOARD4: UInt32 = 11264
+LOCALE_UNASSIGNED_LCID: UInt32 = 4096
 MAXIMUM_WAIT_OBJECTS: UInt32 = 64
 MAXIMUM_SUSPEND_COUNT: UInt32 = 127
+XSTATE_CONTEXT_FLAG_LOOKASIDE: UInt32 = 1
 PF_TEMPORAL_LEVEL_1: UInt32 = 1
 PF_TEMPORAL_LEVEL_2: UInt32 = 2
 PF_TEMPORAL_LEVEL_3: UInt32 = 3
@@ -710,7 +639,7 @@ ARM64_PREFETCH_L2: UInt32 = 2
 ARM64_PREFETCH_L3: UInt32 = 4
 ARM64_PREFETCH_KEEP: UInt32 = 0
 ARM64_PREFETCH_STRM: UInt32 = 1
-ARM64_MULT_INTRINSICS_SUPPORTED: UInt32 = 1
+_ARM64_MULT_INTRINS_SUPPORTED: UInt32 = 0
 ARM64_MAX_BREAKPOINTS: UInt32 = 8
 ARM64_MAX_WATCHPOINTS: UInt32 = 2
 NONVOL_INT_NUMREG_ARM64: UInt32 = 11
@@ -804,7 +733,11 @@ SECURITY_WINRM_ID_BASE_RID: Int32 = 94
 SECURITY_WINRM_ID_RID_COUNT: Int32 = 6
 SECURITY_CCG_ID_BASE_RID: Int32 = 95
 SECURITY_UMFD_BASE_RID: Int32 = 96
+SECURITY_UNIQUIFIED_SERVICE_BASE_RID: Int32 = 97
 SECURITY_VIRTUALACCOUNT_ID_RID_COUNT: Int32 = 6
+SECURITY_EDGE_CLOUD_INFRASTRUCTURE_SERVICE_ID_BASE_RID: Int32 = 98
+SECURITY_RESTRICTED_SERVICES_BASE_RID: Int32 = 99
+SECURITY_RESTRICTED_SERVICES_RID_COUNT: Int32 = 6
 SECURITY_MAX_BASE_RID: Int32 = 111
 SECURITY_MAX_ALWAYS_FILTERED: Int32 = 999
 SECURITY_MIN_NEVER_FILTERED: Int32 = 1000
@@ -840,6 +773,8 @@ DOMAIN_GROUP_RID_CDC_RESERVED: Int32 = 524
 DOMAIN_GROUP_RID_PROTECTED_USERS: Int32 = 525
 DOMAIN_GROUP_RID_KEY_ADMINS: Int32 = 526
 DOMAIN_GROUP_RID_ENTERPRISE_KEY_ADMINS: Int32 = 527
+DOMAIN_GROUP_RID_FOREST_TRUSTS: Int32 = 528
+DOMAIN_GROUP_RID_EXTERNAL_TRUSTS: Int32 = 529
 DOMAIN_ALIAS_RID_ADMINS: Int32 = 544
 DOMAIN_ALIAS_RID_USERS: Int32 = 545
 DOMAIN_ALIAS_RID_GUESTS: Int32 = 546
@@ -874,6 +809,8 @@ DOMAIN_ALIAS_RID_REMOTE_MANAGEMENT_USERS: Int32 = 580
 DOMAIN_ALIAS_RID_DEFAULT_ACCOUNT: Int32 = 581
 DOMAIN_ALIAS_RID_STORAGE_REPLICA_ADMINS: Int32 = 582
 DOMAIN_ALIAS_RID_DEVICE_OWNERS: Int32 = 583
+DOMAIN_ALIAS_RID_USER_MODE_HARDWARE_OPERATORS: Int32 = 584
+DOMAIN_ALIAS_RID_OPENSSH_USERS: Int32 = 585
 SECURITY_APP_PACKAGE_BASE_RID: Int32 = 2
 SECURITY_BUILTIN_APP_PACKAGE_RID_COUNT: Int32 = 2
 SECURITY_APP_PACKAGE_RID_COUNT: Int32 = 8
@@ -906,6 +843,7 @@ SECURITY_MANDATORY_MEDIUM_PLUS_RID: UInt32 = 8448
 SECURITY_MANDATORY_HIGH_RID: Int32 = 12288
 SECURITY_MANDATORY_SYSTEM_RID: Int32 = 16384
 SECURITY_MANDATORY_PROTECTED_PROCESS_RID: Int32 = 20480
+SECURITY_MANDATORY_MEDIUM_PLUS_CREDUI_RID: UInt32 = 8202
 SECURITY_MANDATORY_MAXIMUM_USER_RID: Int32 = 16384
 SECURITY_AUTHENTICATION_AUTHORITY_RID_COUNT: Int32 = 1
 SECURITY_AUTHENTICATION_AUTHORITY_ASSERTED_RID: Int32 = 1
@@ -1015,8 +953,10 @@ SE_PERMISSIVE_LEARNING_MODE_CAPABILITY: String = 'permissiveLearningMode'
 SE_APP_SILO_VOLUME_ROOT_MINIMAL_CAPABILITY: String = 'isolatedWin32-volumeRootMinimal'
 SE_APP_SILO_PROFILES_ROOT_MINIMAL_CAPABILITY: String = 'isolatedWin32-profilesRootMinimal'
 SE_APP_SILO_USER_PROFILE_MINIMAL_CAPABILITY: String = 'isolatedWin32-userProfileMinimal'
+SE_APP_SILO_PROMPT_FOR_ACCESS_CAPABILITY: String = 'isolatedWin32-promptForAccess'
+SE_APP_SILO_ACCESS_TO_PUBLISHER_DIRECTORY_CAPABILITY: String = 'isolatedWin32-accessToPublisherDirectory'
 SE_APP_SILO_PRINT_CAPABILITY: String = 'isolatedWin32-print'
-POLICY_AUDIT_SUBCATEGORY_COUNT: UInt32 = 59
+POLICY_AUDIT_SUBCATEGORY_COUNT: UInt32 = 60
 TOKEN_SOURCE_LENGTH: UInt32 = 8
 CLAIM_SECURITY_ATTRIBUTE_TYPE_INVALID: UInt32 = 0
 CLAIM_SECURITY_ATTRIBUTE_CUSTOM_FLAGS: UInt32 = 4294901760
@@ -1081,8 +1021,10 @@ JOB_OBJECT_MSG_SILO_TERMINATED: UInt32 = 13
 JOB_OBJECT_MSG_MINIMUM: UInt32 = 1
 JOB_OBJECT_MSG_MAXIMUM: UInt32 = 13
 JOB_OBJECT_UILIMIT_IME: UInt32 = 256
-JOB_OBJECT_UILIMIT_ALL: UInt32 = 511
-JOB_OBJECT_UI_VALID_FLAGS: UInt32 = 511
+JOB_OBJECT_UILIMIT_INJECTION: UInt32 = 512
+JOB_OBJECT_UILIMIT_ALL: UInt32 = 1023
+JOB_OBJECT_UI_VALID_FLAGS: UInt32 = 1023
+JOB_OBJECT_CPU_RATE_CONTROL_PER_PROCESSOR_CAPS: UInt32 = 32
 MEMORY_PARTITION_QUERY_ACCESS: UInt32 = 1
 MEMORY_PARTITION_MODIFY_ACCESS: UInt32 = 2
 MUTANT_QUERY_STATE: UInt32 = 1
@@ -1131,12 +1073,21 @@ XSTATE_AMX_TILE_CONFIG: UInt32 = 17
 XSTATE_AMX_TILE_DATA: UInt32 = 18
 XSTATE_LWP: UInt32 = 62
 MAXIMUM_XSTATE_FEATURES: UInt32 = 64
+XSTATE_ARM64_SVE: UInt32 = 2
+XSTATE_FIRST_NON_LEGACY_FEATURE: UInt32 = 2
 XSTATE_COMPACTION_ENABLE: UInt32 = 63
 XSTATE_ALIGN_BIT: UInt32 = 1
 XSTATE_XFD_BIT: UInt32 = 2
 XSTATE_CONTROLFLAG_XSAVEOPT_MASK: UInt32 = 1
 XSTATE_CONTROLFLAG_XSAVEC_MASK: UInt32 = 2
 XSTATE_CONTROLFLAG_XFD_MASK: UInt32 = 4
+RUNTIME_REPORT_PACKAGE_MAGIC: UInt32 = 1381257808
+RUNTIME_REPORT_PACKAGE_VERSION_CURRENT: UInt32 = 1
+RUNTIME_REPORT_NONCE_SIZE: UInt32 = 32
+RUNTIME_REPORT_DIGEST_MAX_SIZE: UInt32 = 64
+RUNTIME_REPORT_SIGNATURE_SCHEME_SHA512_RSA_PSS_SHA512: UInt32 = 1
+DRIVER_REPORT_DIGEST_MAX_SIZE: UInt32 = 64
+DRIVER_REPORT_NAME_MAX_LENGTH: UInt32 = 32
 CFG_CALL_TARGET_VALID: UInt32 = 1
 CFG_CALL_TARGET_PROCESSED: UInt32 = 2
 CFG_CALL_TARGET_CONVERT_EXPORT_SUPPRESSED_TO_VALID: UInt32 = 4
@@ -1158,10 +1109,10 @@ MEM_EXTENDED_PARAMETER_NONPAGED_LARGE: UInt32 = 8
 MEM_EXTENDED_PARAMETER_NONPAGED_HUGE: UInt32 = 16
 MEM_EXTENDED_PARAMETER_SOFT_FAULT_PAGES: UInt32 = 32
 MEM_EXTENDED_PARAMETER_EC_CODE: UInt32 = 64
-MEM_EXTENDED_PARAMETER_IMAGE_NO_HPAT: UInt32 = 128
 MEM_EXTENDED_PARAMETER_TYPE_BITS: UInt32 = 8
 SEC_HUGE_PAGES: UInt32 = 131072
 WRITE_WATCH_FLAG_RESET: UInt32 = 1
+VM_PREFETCH_TO_WORKING_SET: UInt32 = 1
 ENCLAVE_TYPE_SGX: UInt32 = 1
 ENCLAVE_TYPE_SGX2: UInt32 = 2
 ENCLAVE_TYPE_VBS: UInt32 = 16
@@ -1215,10 +1166,16 @@ FILE_NAME_FLAG_NTFS: UInt32 = 1
 FILE_NAME_FLAG_DOS: UInt32 = 2
 FILE_NAME_FLAG_BOTH: UInt32 = 3
 FILE_NAME_FLAGS_UNSPECIFIED: UInt32 = 128
+LX_FILE_METADATA_HAS_UID: UInt32 = 1
+LX_FILE_METADATA_HAS_GID: UInt32 = 2
+LX_FILE_METADATA_HAS_MODE: UInt32 = 4
+LX_FILE_METADATA_HAS_DEVICE_ID: UInt32 = 8
+LX_FILE_CASE_SENSITIVE_DIR: UInt32 = 16
 FILE_CS_FLAG_CASE_SENSITIVE_DIR: UInt32 = 1
 FLUSH_FLAGS_FILE_DATA_ONLY: UInt32 = 1
 FLUSH_FLAGS_NO_SYNC: UInt32 = 2
 FLUSH_FLAGS_FILE_DATA_SYNC_ONLY: UInt32 = 4
+FLUSH_FLAGS_FLUSH_AND_PURGE: UInt32 = 8
 IO_REPARSE_TAG_RESERVED_ZERO: UInt32 = 0
 IO_REPARSE_TAG_RESERVED_ONE: UInt32 = 1
 IO_REPARSE_TAG_RESERVED_TWO: UInt32 = 2
@@ -1265,6 +1222,7 @@ IO_REPARSE_TAG_UNHANDLED: UInt32 = 2147483680
 IO_REPARSE_TAG_ONEDRIVE: UInt32 = 2147483681
 IO_REPARSE_TAG_PROJFS_TOMBSTONE: UInt32 = 2684354594
 IO_REPARSE_TAG_AF_UNIX: UInt32 = 2147483683
+IO_REPARSE_TAG_STORAGE_SYNC_FOLDER: Int32 = -1879048153
 IO_REPARSE_TAG_WCI_LINK: UInt32 = 2684354599
 IO_REPARSE_TAG_WCI_LINK_1: UInt32 = 2684358695
 IO_REPARSE_TAG_DATALESS_CIM: UInt32 = 2684354600
@@ -1290,6 +1248,10 @@ NO_SUBGROUP_GUID: Guid = Guid('{fea3413e-7e05-4911-9a71-700331f1c294}')
 ALL_POWERSCHEMES_GUID: Guid = Guid('{68a1e95e-13ea-41e1-8011-0c496ca490b0}')
 GUID_POWERSCHEME_PERSONALITY: Guid = Guid('{245d8541-3943-4422-b025-13a784f679b7}')
 GUID_ACTIVE_POWERSCHEME: Guid = Guid('{31f9f286-5084-42fe-b720-2b0264993763}')
+GUID_POWER_MODE_BEST_EFFICIENCY: Guid = Guid('{961cc777-2547-4f9d-8174-7d86181b8a7a}')
+GUID_POWER_MODE_NONE: Guid = Guid('{00000000-0000-0000-0000-000000000000}')
+GUID_POWER_MODE_PERFORMANCE: Guid = Guid('{3af9b8d9-7c97-431d-ad78-34a8bfea439f}')
+GUID_POWER_MODE_BEST_PERFORMANCE: Guid = Guid('{ded574b5-45a0-4f42-8737-46345c09c238}')
 GUID_IDLE_RESILIENCY_SUBGROUP: Guid = Guid('{2e601130-5351-4d9d-8e04-252966bad054}')
 GUID_IDLE_RESILIENCY_PERIOD: Guid = Guid('{c42b79aa-aa3a-484b-a98f-2cf32aa90a28}')
 GUID_DEEP_SLEEP_ENABLED: Guid = Guid('{d502f7ee-1dc7-4efd-a55d-f04b6f5c0545}')
@@ -1333,6 +1295,8 @@ GUID_ALLOW_AWAYMODE: Guid = Guid('{25dfa149-5dd1-4736-b5ab-e8a37b5b8187}')
 GUID_USER_PRESENCE_PREDICTION: Guid = Guid('{82011705-fb95-4d46-8d35-4042b1d20def}')
 GUID_STANDBY_BUDGET_GRACE_PERIOD: Guid = Guid('{60c07fe1-0556-45cf-9903-d56e32210242}')
 GUID_STANDBY_BUDGET_PERCENT: Guid = Guid('{9fe527be-1b70-48da-930d-7bcf17b44990}')
+GUID_STANDBY_BUDGET_REFRESH_COUNT: Guid = Guid('{aca8648e-c4b1-4baa-8cce-9390ad647f8c}')
+GUID_STANDBY_BUDGET_REFRESH_INTERVAL: Guid = Guid('{61f45dfe-1919-4180-bb46-8cc70e0b38f1}')
 GUID_STANDBY_RESERVE_GRACE_PERIOD: Guid = Guid('{c763ee92-71e8-4127-84eb-f6ed043a3e3d}')
 GUID_STANDBY_RESERVE_TIME: Guid = Guid('{468fe7e5-1158-46ec-88bc-5b96c9e44fd0}')
 GUID_STANDBY_RESET_PERCENT: Guid = Guid('{49cb11a5-56e2-4afb-9d38-3df47872e21b}')
@@ -1345,6 +1309,7 @@ GUID_ALLOW_RTC_WAKE: Guid = Guid('{bd3b718a-0680-4d9d-8ab2-e1d2b4ac806d}')
 GUID_LEGACY_RTC_MITIGATION: Guid = Guid('{1a34bdc3-7e6b-442e-a9d0-64b6ef378e84}')
 GUID_ALLOW_SYSTEM_REQUIRED: Guid = Guid('{a4b195f5-8225-47d8-8012-9d41369786e2}')
 GUID_POWER_SAVING_STATUS: Guid = Guid('{e00958c0-c213-4ace-ac77-fecced2eeea5}')
+GUID_ENERGY_SAVER_STATUS: Guid = Guid('{550e8400-e29b-41d4-a716-446655440000}')
 GUID_ENERGY_SAVER_SUBGROUP: Guid = Guid('{de830923-a562-41af-a086-e3a2c6bad2da}')
 GUID_ENERGY_SAVER_BATTERY_THRESHOLD: Guid = Guid('{e69653ca-cf7f-4f05-aa73-cb833fa90ad4}')
 GUID_ENERGY_SAVER_BRIGHTNESS: Guid = Guid('{13d09884-f74e-474a-a852-b6bde8ad03a8}')
@@ -1388,10 +1353,13 @@ PERFSTATE_POLICY_CHANGE_DECREASE_MAX: UInt32 = 2
 PERFSTATE_POLICY_CHANGE_INCREASE_MAX: UInt32 = 3
 GUID_PROCESSOR_THROTTLE_MAXIMUM: Guid = Guid('{bc5038f7-23e0-4960-96da-33abaf5935ec}')
 GUID_PROCESSOR_THROTTLE_MAXIMUM_1: Guid = Guid('{bc5038f7-23e0-4960-96da-33abaf5935ed}')
+GUID_PROCESSOR_THROTTLE_MAXIMUM_2: Guid = Guid('{bc5038f7-23e0-4960-96da-33abaf5935ee}')
 GUID_PROCESSOR_THROTTLE_MINIMUM: Guid = Guid('{893dee8e-2bef-41e0-89c6-b55d0929964c}')
 GUID_PROCESSOR_THROTTLE_MINIMUM_1: Guid = Guid('{893dee8e-2bef-41e0-89c6-b55d0929964d}')
+GUID_PROCESSOR_THROTTLE_MINIMUM_2: Guid = Guid('{893dee8e-2bef-41e0-89c6-b55d0929964e}')
 GUID_PROCESSOR_FREQUENCY_LIMIT: Guid = Guid('{75b0ae3f-bce0-45a7-8c89-c9611c25e100}')
 GUID_PROCESSOR_FREQUENCY_LIMIT_1: Guid = Guid('{75b0ae3f-bce0-45a7-8c89-c9611c25e101}')
+GUID_PROCESSOR_FREQUENCY_LIMIT_2: Guid = Guid('{75b0ae3f-bce0-45a7-8c89-c9611c25e102}')
 GUID_PROCESSOR_ALLOW_THROTTLING: Guid = Guid('{3b04d4fd-1cc7-4f23-ab1c-d1337819c4bb}')
 PROCESSOR_THROTTLE_DISABLED: UInt32 = 0
 PROCESSOR_THROTTLE_ENABLED: UInt32 = 1
@@ -1428,6 +1396,7 @@ PROCESSOR_PERF_AUTONOMOUS_MODE_DISABLED: UInt32 = 0
 PROCESSOR_PERF_AUTONOMOUS_MODE_ENABLED: UInt32 = 1
 GUID_PROCESSOR_PERF_ENERGY_PERFORMANCE_PREFERENCE: Guid = Guid('{36687f9e-e3a5-4dbf-b1dc-15eb381c6863}')
 GUID_PROCESSOR_PERF_ENERGY_PERFORMANCE_PREFERENCE_1: Guid = Guid('{36687f9e-e3a5-4dbf-b1dc-15eb381c6864}')
+GUID_PROCESSOR_PERF_ENERGY_PERFORMANCE_PREFERENCE_2: Guid = Guid('{36687f9e-e3a5-4dbf-b1dc-15eb381c6865}')
 PROCESSOR_PERF_PERFORMANCE_PREFERENCE: UInt32 = 255
 PROCESSOR_PERF_ENERGY_PREFERENCE: UInt32 = 0
 GUID_PROCESSOR_PERF_AUTONOMOUS_ACTIVITY_WINDOW: Guid = Guid('{cfeda3d0-7697-4566-a922-a9086cd49dfa}')
@@ -1479,6 +1448,10 @@ GUID_PROCESSOR_PERF_CORE_PARKING_HISTORY: Guid = Guid('{77d7f282-8f1a-42cd-8537-
 GUID_PROCESSOR_PERF_LATENCY_HINT: Guid = Guid('{0822df31-9c83-441c-a079-0de4cf009c7b}')
 GUID_PROCESSOR_PERF_LATENCY_HINT_PERF: Guid = Guid('{619b7505-003b-4e82-b7a6-4dd29c300971}')
 GUID_PROCESSOR_PERF_LATENCY_HINT_PERF_1: Guid = Guid('{619b7505-003b-4e82-b7a6-4dd29c300972}')
+GUID_PROCESSOR_PERF_LATENCY_HINT_PERF_2: Guid = Guid('{619b7505-003b-4e82-b7a6-4dd29c300973}')
+GUID_PROCESSOR_PERF_LATENCY_HINT_EPP: Guid = Guid('{4b70f900-cdd9-4e66-aa26-ae8417f98173}')
+GUID_PROCESSOR_PERF_LATENCY_HINT_EPP_1: Guid = Guid('{4b70f900-cdd9-4e66-aa26-ae8417f98174}')
+GUID_PROCESSOR_PERF_LATENCY_HINT_EPP_2: Guid = Guid('{4b70f900-cdd9-4e66-aa26-ae8417f98175}')
 GUID_PROCESSOR_LATENCY_HINT_MIN_UNPARK: Guid = Guid('{616cdaa5-695e-4545-97ad-97dc2d1bdd88}')
 GUID_PROCESSOR_LATENCY_HINT_MIN_UNPARK_1: Guid = Guid('{616cdaa5-695e-4545-97ad-97dc2d1bdd89}')
 GUID_PROCESSOR_MODULE_PARKING_POLICY: Guid = Guid('{b0deaf6b-59c0-4523-8a45-ca7f40244114}')
@@ -1491,10 +1464,22 @@ SMT_UNPARKING_POLICY_CORE: UInt32 = 0
 SMT_UNPARKING_POLICY_CORE_PER_THREAD: UInt32 = 1
 SMT_UNPARKING_POLICY_LP_ROUNDROBIN: UInt32 = 2
 SMT_UNPARKING_POLICY_LP_SEQUENTIAL: UInt32 = 3
+GUID_PROCESSOR_RESTRICTION_COUNT: Guid = Guid('{1a98ad09-af22-42ca-8e61-f0a5802c270a}')
 GUID_PROCESSOR_DISTRIBUTE_UTILITY: Guid = Guid('{e0007330-f589-42ed-a401-5ddb10e785d3}')
+GUID_PROCESSOR_RESOURCE_PRIORITY: Guid = Guid('{603fe9ce-8d01-4b48-a968-1d706c28fd5c}')
+GUID_PROCESSOR_RESOURCE_PRIORITY_1: Guid = Guid('{603fe9ce-8d01-4b48-a968-1d706c28fd5d}')
+GUID_PROCESSOR_RESOURCE_PRIORITY_2: Guid = Guid('{603fe9ce-8d01-4b48-a968-1d706c28fd5e}')
 GUID_PROCESSOR_HETEROGENEOUS_POLICY: Guid = Guid('{7f2f5cfa-f10c-4823-b5e1-e93ae85f46b5}')
 GUID_PROCESSOR_HETERO_DECREASE_TIME: Guid = Guid('{7f2492b6-60b1-45e5-ae55-773f8cd5caec}')
 GUID_PROCESSOR_HETERO_INCREASE_TIME: Guid = Guid('{4009efa7-e72d-4cba-9edf-91084ea8cbc3}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_DECREASE_TIME: Guid = Guid('{6ff13aeb-7897-4356-9999-dd9930af065f}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_INCREASE_TIME: Guid = Guid('{64fcee6b-5b1f-45a4-a76a-19b2c36ee290}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_EFFICIENCY_THRESHOLD: Guid = Guid('{69439b22-221b-4830-bd34-f7bcece24583}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_HYBRID_THRESHOLD: Guid = Guid('{6788488b-1b90-4d11-8fa7-973e470dff47}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_POLICY: Guid = Guid('{60fbe21b-efd9-49f2-b066-8674d8e9f423}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_EFFICIENCY_IMP_UTIL_THRESHOLD: Guid = Guid('{6ece9e1f-b6dd-42bf-b1b7-5a512b10c092}')
+GUID_PROCESSOR_HETERO_CONTAINMENT_HYBRID_IMP_UTIL_THRESHOLD: Guid = Guid('{12fd031f-53d2-4bf4-ac6d-c699fc9538c7}')
+GUID_PROCESSOR_WPS_MIN_EFFICIENCY_THRESHOLD: Guid = Guid('{5ba7419a-295c-4b02-841b-66799388d6da}')
 GUID_PROCESSOR_HETERO_DECREASE_THRESHOLD: Guid = Guid('{f8861c27-95e7-475c-865b-13c0cb3f9d6b}')
 GUID_PROCESSOR_HETERO_DECREASE_THRESHOLD_1: Guid = Guid('{f8861c27-95e7-475c-865b-13c0cb3f9d6c}')
 GUID_PROCESSOR_HETERO_INCREASE_THRESHOLD: Guid = Guid('{b000397d-9b0b-483d-98c9-692a6060cfbf}')
@@ -2024,12 +2009,19 @@ IMAGE_DYNAMIC_RELOCATION_GUARD_IMPORT_CONTROL_TRANSFER: UInt32 = 3
 IMAGE_DYNAMIC_RELOCATION_GUARD_INDIR_CONTROL_TRANSFER: UInt32 = 4
 IMAGE_DYNAMIC_RELOCATION_GUARD_SWITCHTABLE_BRANCH: UInt32 = 5
 IMAGE_DYNAMIC_RELOCATION_FUNCTION_OVERRIDE: UInt32 = 7
+IMAGE_DYNAMIC_RELOCATION_ARM64_KERNEL_IMPORT_CALL_TRANSFER: UInt32 = 8
+IMAGE_DYNAMIC_RELOCATION_IMPORT_CONTROL_TRANSFER: UInt32 = 3
 IMAGE_FUNCTION_OVERRIDE_INVALID: UInt32 = 0
 IMAGE_FUNCTION_OVERRIDE_X64_REL32: UInt32 = 1
 IMAGE_FUNCTION_OVERRIDE_ARM64_BRANCH26: UInt32 = 2
 IMAGE_FUNCTION_OVERRIDE_ARM64_THUNK: UInt32 = 3
+IMAGE_HOT_PATCH_INFO_FLAG_PATCHORDERCRITICAL: UInt32 = 1
+IMAGE_HOT_PATCH_INFO_FLAG_HOTSWAP: UInt32 = 2
 IMAGE_HOT_PATCH_BASE_OBLIGATORY: UInt32 = 1
 IMAGE_HOT_PATCH_BASE_CAN_ROLL_BACK: UInt32 = 2
+IMAGE_HOT_PATCH_BASE_MACHINE_I386: UInt32 = 4
+IMAGE_HOT_PATCH_BASE_MACHINE_ARM64: UInt32 = 8
+IMAGE_HOT_PATCH_BASE_MACHINE_AMD64: UInt32 = 16
 IMAGE_HOT_PATCH_CHUNK_INVERSE: UInt32 = 2147483648
 IMAGE_HOT_PATCH_CHUNK_OBLIGATORY: UInt32 = 1073741824
 IMAGE_HOT_PATCH_CHUNK_RESERVED: UInt32 = 1072705536
@@ -2071,6 +2063,7 @@ IMAGE_GUARD_FLAG_FID_XFG: UInt32 = 8
 IMAGE_ENCLAVE_LONG_ID_LENGTH: UInt32 = 32
 IMAGE_ENCLAVE_SHORT_ID_LENGTH: UInt32 = 16
 IMAGE_ENCLAVE_POLICY_DEBUGGABLE: UInt32 = 1
+IMAGE_ENCLAVE_POLICY_STRICT_MEMORY: UInt32 = 2
 IMAGE_ENCLAVE_FLAG_PRIMARY_IMAGE: UInt32 = 1
 IMAGE_ENCLAVE_IMPORT_MATCH_NONE: UInt32 = 0
 IMAGE_ENCLAVE_IMPORT_MATCH_UNIQUE_ID: UInt32 = 1
@@ -2169,6 +2162,13 @@ FAST_FAIL_KERNEL_CET_SHADOW_STACK_ASSIST: UInt32 = 67
 FAST_FAIL_PATCH_CALLBACK_FAILED: UInt32 = 68
 FAST_FAIL_NTDLL_PATCH_FAILED: UInt32 = 69
 FAST_FAIL_INVALID_FLS_DATA: UInt32 = 70
+FAST_FAIL_ASAN_ERROR: UInt32 = 71
+FAST_FAIL_CLR_EXCEPTION_AOT: UInt32 = 72
+FAST_FAIL_POINTER_AUTH_INVALID_RETURN_ADDRESS: UInt32 = 73
+FAST_FAIL_INVALID_THREAD_STATE: UInt32 = 74
+FAST_FAIL_CORRUPT_WOW64_STATE: UInt32 = 75
+FAST_FAIL_INVALID_EXTENDED_STATE: UInt32 = 76
+FAST_FAIL_KERNEL_POINTER_EXPECTED: UInt32 = 77
 FAST_FAIL_INVALID_FAST_FAIL_CODE: UInt32 = 4294967295
 IS_TEXT_UNICODE_DBCS_LEADBYTE: UInt32 = 1024
 IS_TEXT_UNICODE_UTF8: UInt32 = 2048
@@ -2230,8 +2230,6 @@ DLL_PROCESS_ATTACH: UInt32 = 1
 DLL_THREAD_ATTACH: UInt32 = 2
 DLL_THREAD_DETACH: UInt32 = 3
 DLL_PROCESS_DETACH: UInt32 = 0
-EVENTLOG_FORWARDS_READ: UInt32 = 4
-EVENTLOG_BACKWARDS_READ: UInt32 = 8
 EVENTLOG_START_PAIRED_EVENT: UInt32 = 1
 EVENTLOG_END_PAIRED_EVENT: UInt32 = 2
 EVENTLOG_END_ALL_PAIRED_EVENTS: UInt32 = 4
@@ -2388,9 +2386,48 @@ class COMPONENT_FILTER(Structure):
 class DISPATCHER_CONTEXT_NONVOLREG_ARM64(Union):
     Buffer: Byte * 152
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         GpNvRegs: UInt64 * 11
         FpNvRegs: Double * 8
+class DRIVER_INFO_ENTRY(Structure):
+    InternalName: win32more.Windows.Win32.Foundation.CHAR * 32
+    ImageHashAlgorithm: UInt16
+    PublisherThumbprintHashAlgorithm: UInt16
+    ImageHashOffset: UInt32
+    PublisherThumbprintOffset: UInt32
+    LoadCount: UInt16
+    OemNameSize: UInt16
+    OemNameOffset: UInt32
+    Flags: _Flags_e__Union
+    Padding: UInt16
+    class _Flags_e__Union(Union):
+        Anonymous: _Anonymous_e__Struct
+        AsUInt16: UInt16
+        _anonymous_ = ('Anonymous',)
+        class _Anonymous_e__Struct(Structure):
+            Unloaded: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            BootDriver: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            HotPatch: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt16, NativeBitfieldAttribute(13)]
+class DRIVER_RUNTIME_REPORT(Structure):
+    Header: win32more.Windows.Win32.System.SystemServices.RUNTIME_REPORT_HEADER
+    NumberOfDrivers: UInt16
+    Flags: _Flags_e__Union
+    DriverEntries: FlexibleArray[win32more.Windows.Win32.System.SystemServices.DRIVER_INFO_ENTRY]
+    class _Flags_e__Union(Union):
+        Anonymous: _Anonymous_e__Struct
+        AsUInt16: UInt16
+        _anonymous_ = ('Anonymous',)
+        class _Anonymous_e__Struct(Structure):
+            ReportOverflowed: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            PartialReport: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            IncludeBootDrivers: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt16, NativeBitfieldAttribute(13)]
+ENERGY_SAVER_STATUS = Int32
+ENERGY_SAVER_OFF: win32more.Windows.Win32.System.SystemServices.ENERGY_SAVER_STATUS = 0
+ENERGY_SAVER_STANDARD: win32more.Windows.Win32.System.SystemServices.ENERGY_SAVER_STATUS = 1
+ENERGY_SAVER_HIGH_SAVINGS: win32more.Windows.Win32.System.SystemServices.ENERGY_SAVER_STATUS = 2
 class ENLISTMENT_BASIC_INFORMATION(Structure):
     EnlistmentId: Guid
     TransactionId: Guid
@@ -2403,6 +2440,8 @@ ENLISTMENT_INFORMATION_CLASS = Int32
 EnlistmentBasicInformation: win32more.Windows.Win32.System.SystemServices.ENLISTMENT_INFORMATION_CLASS = 0
 EnlistmentRecoveryInformation: win32more.Windows.Win32.System.SystemServices.ENLISTMENT_INFORMATION_CLASS = 1
 EnlistmentCrmInformation: win32more.Windows.Win32.System.SystemServices.ENLISTMENT_INFORMATION_CLASS = 2
+class FILE_CASE_SENSITIVE_INFORMATION(Structure):
+    Flags: UInt32
 class FILE_NOTIFY_FULL_INFORMATION(Structure):
     NextEntryOffset: UInt32
     Action: UInt32
@@ -2419,10 +2458,41 @@ class FILE_NOTIFY_FULL_INFORMATION(Structure):
     FileNameLength: UInt16
     FileNameFlags: Byte
     Reserved: Byte
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ReparsePointTag: UInt32
         EaSize: UInt32
+class FILE_STAT_INFORMATION(Structure):
+    FileId: Int64
+    CreationTime: Int64
+    LastAccessTime: Int64
+    LastWriteTime: Int64
+    ChangeTime: Int64
+    AllocationSize: Int64
+    EndOfFile: Int64
+    FileAttributes: UInt32
+    ReparseTag: UInt32
+    NumberOfLinks: UInt32
+    EffectiveAccess: UInt32
+class FILE_STAT_LX_INFORMATION(Structure):
+    FileId: Int64
+    CreationTime: Int64
+    LastAccessTime: Int64
+    LastWriteTime: Int64
+    ChangeTime: Int64
+    AllocationSize: Int64
+    EndOfFile: Int64
+    FileAttributes: UInt32
+    ReparseTag: UInt32
+    NumberOfLinks: UInt32
+    EffectiveAccess: UInt32
+    LxFlags: UInt32
+    LxUid: UInt32
+    LxGid: UInt32
+    LxMode: UInt32
+    LxDeviceIdMajor: UInt32
+    LxDeviceIdMinor: UInt32
 class GDI_NONREMOTE(Structure):
     fContext: Int32
     u: _u_e__Struct
@@ -2481,10 +2551,10 @@ class IMAGE_ARCHITECTURE_ENTRY(Structure):
     FixupInstRVA: UInt32
     NewInst: UInt32
 class IMAGE_ARCHITECTURE_HEADER(Structure):
-    AmaskValue: Annotated[UInt32, 1]
-    Anonymous1: Annotated[UInt32, 7]
-    AmaskShift: Annotated[UInt32, 8]
-    Anonymous2: Annotated[UInt32, 16]
+    AmaskValue: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Anonymous1: Annotated[UInt32, NativeBitfieldAttribute(7)]
+    AmaskShift: Annotated[UInt32, NativeBitfieldAttribute(8)]
+    Anonymous2: Annotated[UInt32, NativeBitfieldAttribute(16)]
     FirstEntryRVA: UInt32
 class IMAGE_ARCHIVE_MEMBER_HEADER(Structure):
     Name: Byte * 16
@@ -2497,29 +2567,47 @@ class IMAGE_ARCHIVE_MEMBER_HEADER(Structure):
 class IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY_XDATA(Union):
     HeaderData: UInt32
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        FunctionLength: Annotated[UInt32, 18]
-        Version: Annotated[UInt32, 2]
-        ExceptionDataPresent: Annotated[UInt32, 1]
-        EpilogInHeader: Annotated[UInt32, 1]
-        EpilogCount: Annotated[UInt32, 5]
-        CodeWords: Annotated[UInt32, 5]
+        FunctionLength: Annotated[UInt32, NativeBitfieldAttribute(18)]
+        Version: Annotated[UInt32, NativeBitfieldAttribute(2)]
+        ExceptionDataPresent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        EpilogInHeader: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        EpilogCount: Annotated[UInt32, NativeBitfieldAttribute(5)]
+        CodeWords: Annotated[UInt32, NativeBitfieldAttribute(5)]
+class IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY_XDATA_EPILOG_SCOPE(Union):
+    EpilogScopeData: UInt32
+    Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        EpilogStartOffset: Annotated[UInt32, NativeBitfieldAttribute(18)]
+        Res0: Annotated[UInt32, NativeBitfieldAttribute(4)]
+        EpilogStartIndex: Annotated[UInt32, NativeBitfieldAttribute(10)]
+class IMAGE_ARM64_RUNTIME_FUNCTION_ENTRY_XDATA_EXTENDED(Union):
+    ExtendedHeaderData: UInt32
+    Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        ExtendedEpilogCount: Annotated[UInt32, NativeBitfieldAttribute(16)]
+        ExtendedCodeWords: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class IMAGE_ARM_RUNTIME_FUNCTION_ENTRY(Structure):
     BeginAddress: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         UnwindData: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Flag: Annotated[UInt32, 2]
-            FunctionLength: Annotated[UInt32, 11]
-            Ret: Annotated[UInt32, 2]
-            H: Annotated[UInt32, 1]
-            Reg: Annotated[UInt32, 3]
-            R: Annotated[UInt32, 1]
-            L: Annotated[UInt32, 1]
-            C: Annotated[UInt32, 1]
-            StackAdjust: Annotated[UInt32, 10]
+            Flag: Annotated[UInt32, NativeBitfieldAttribute(2)]
+            FunctionLength: Annotated[UInt32, NativeBitfieldAttribute(11)]
+            Ret: Annotated[UInt32, NativeBitfieldAttribute(2)]
+            H: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Reg: Annotated[UInt32, NativeBitfieldAttribute(3)]
+            R: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            L: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            C: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            StackAdjust: Annotated[UInt32, NativeBitfieldAttribute(10)]
 class IMAGE_AUX_SYMBOL(Union):
     Sym: _Sym_e__Struct
     File: _File_e__Struct
@@ -2570,6 +2658,7 @@ class IMAGE_AUX_SYMBOL_EX(Union):
     Section: _Section_e__Struct
     Anonymous: _Anonymous_e__Struct
     CRC: _CRC_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Sym_e__Struct(Structure):
         WeakDefaultSymIndex: UInt32
         WeakSearchType: UInt32
@@ -2625,16 +2714,16 @@ class IMAGE_BOUND_IMPORT_DESCRIPTOR(Structure):
     NumberOfModuleForwarderRefs: UInt16
 class IMAGE_CE_RUNTIME_FUNCTION_ENTRY(Structure):
     FuncStart: UInt32
-    PrologLen: Annotated[UInt32, 8]
-    FuncLen: Annotated[UInt32, 22]
-    ThirtyTwoBit: Annotated[UInt32, 1]
-    ExceptionFlag: Annotated[UInt32, 1]
+    PrologLen: Annotated[UInt32, NativeBitfieldAttribute(8)]
+    FuncLen: Annotated[UInt32, NativeBitfieldAttribute(22)]
+    ThirtyTwoBit: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    ExceptionFlag: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class IMAGE_DEBUG_MISC(Structure):
     DataType: UInt32
     Length: UInt32
     Unicode: win32more.Windows.Win32.Foundation.BOOLEAN
     Reserved: Byte * 3
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 class IMAGE_DOS_HEADER(Structure):
     e_magic: UInt16
     e_cblp: UInt16
@@ -2728,13 +2817,30 @@ class IMAGE_HOT_PATCH_INFO(Structure):
     BaseImageCount: UInt32
     BufferOffset: UInt32
     ExtraPatchSize: UInt32
+    MinSequenceNumber: UInt32
+    Flags: UInt32
+class IMAGE_HOT_PATCH_MACHINE(Structure):
+    Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        _x86: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Amd64: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Arm64: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Amd64EC: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class IMAGE_IMPORT_BY_NAME(Structure):
     Hint: UInt16
-    Name: win32more.Windows.Win32.Foundation.CHAR * 1
+    Name: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
+class IMAGE_IMPORT_CONTROL_TRANSFER_ARM64_RELOCATION(Structure):
+    PageRelativeOffset: Annotated[UInt32, NativeBitfieldAttribute(10)]
+    IndirectCall: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    RegisterIndex: Annotated[UInt32, NativeBitfieldAttribute(5)]
+    ImportType: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    IATIndex: Annotated[UInt32, NativeBitfieldAttribute(15)]
+    _pack_ = 1
 class IMAGE_IMPORT_CONTROL_TRANSFER_DYNAMIC_RELOCATION(Structure):
-    PageRelativeOffset: Annotated[UInt32, 12]
-    IndirectCall: Annotated[UInt32, 1]
-    IATIndex: Annotated[UInt32, 19]
+    PageRelativeOffset: Annotated[UInt32, NativeBitfieldAttribute(12)]
+    IndirectCall: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    IATIndex: Annotated[UInt32, NativeBitfieldAttribute(19)]
     _pack_ = 1
 class IMAGE_IMPORT_DESCRIPTOR(Structure):
     Anonymous: _Anonymous_e__Union
@@ -2742,15 +2848,16 @@ class IMAGE_IMPORT_DESCRIPTOR(Structure):
     ForwarderChain: UInt32
     Name: UInt32
     FirstThunk: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Characteristics: UInt32
         OriginalFirstThunk: UInt32
 class IMAGE_INDIR_CONTROL_TRANSFER_DYNAMIC_RELOCATION(Structure):
-    PageRelativeOffset: Annotated[UInt16, 12]
-    IndirectCall: Annotated[UInt16, 1]
-    RexWPrefix: Annotated[UInt16, 1]
-    CfgCheck: Annotated[UInt16, 1]
-    Reserved: Annotated[UInt16, 1]
+    PageRelativeOffset: Annotated[UInt16, NativeBitfieldAttribute(12)]
+    IndirectCall: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    RexWPrefix: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    CfgCheck: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt16, NativeBitfieldAttribute(1)]
     _pack_ = 1
 class IMAGE_LINENUMBER(Structure):
     Type: _Type_e__Union
@@ -2836,7 +2943,9 @@ ImagePolicyIdSvn: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID 
 ImagePolicyIdDeviceId: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 9
 ImagePolicyIdCapability: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 10
 ImagePolicyIdScenarioId: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 11
-ImagePolicyIdMaximum: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 12
+ImagePolicyIdCapabilityOverridable: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 12
+ImagePolicyIdTrustletIdOverridable: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 13
+ImagePolicyIdMaximum: win32more.Windows.Win32.System.SystemServices.IMAGE_POLICY_ID = 14
 class IMAGE_POLICY_METADATA(Structure):
     Version: Byte
     Reserved0: Byte * 7
@@ -2848,6 +2957,7 @@ class IMAGE_RELOCATION(Structure):
     Anonymous: _Anonymous_e__Union
     SymbolTableIndex: UInt32
     Type: UInt16
+    _anonymous_ = ('Anonymous',)
     _pack_ = 2
     class _Anonymous_e__Union(Union):
         VirtualAddress: UInt32
@@ -2868,25 +2978,28 @@ class IMAGE_RESOURCE_DIRECTORY(Structure):
 class IMAGE_RESOURCE_DIRECTORY_ENTRY(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         Name: UInt32
         Id: UInt16
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            NameOffset: Annotated[UInt32, 31]
-            NameIsString: Annotated[UInt32, 1]
+            NameOffset: Annotated[UInt32, NativeBitfieldAttribute(31)]
+            NameIsString: Annotated[UInt32, NativeBitfieldAttribute(1)]
     class _Anonymous2_e__Union(Union):
         OffsetToData: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            OffsetToDirectory: Annotated[UInt32, 31]
-            DataIsDirectory: Annotated[UInt32, 1]
+            OffsetToDirectory: Annotated[UInt32, NativeBitfieldAttribute(31)]
+            DataIsDirectory: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class IMAGE_RESOURCE_DIRECTORY_STRING(Structure):
     Length: UInt16
-    NameString: win32more.Windows.Win32.Foundation.CHAR * 1
+    NameString: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 class IMAGE_RESOURCE_DIR_STRING_U(Structure):
     Length: UInt16
-    NameString: Char * 1
+    NameString: FlexibleArray[Char]
 class IMAGE_SEPARATE_DEBUG_HEADER(Structure):
     Signature: UInt16
     Flags: UInt16
@@ -2902,8 +3015,8 @@ class IMAGE_SEPARATE_DEBUG_HEADER(Structure):
     SectionAlignment: UInt32
     Reserved: UInt32 * 2
 class IMAGE_SWITCHTABLE_BRANCH_DYNAMIC_RELOCATION(Structure):
-    PageRelativeOffset: Annotated[UInt16, 12]
-    RegisterNumber: Annotated[UInt16, 4]
+    PageRelativeOffset: Annotated[UInt16, NativeBitfieldAttribute(12)]
+    RegisterNumber: Annotated[UInt16, NativeBitfieldAttribute(4)]
     _pack_ = 1
 class IMAGE_SYMBOL(Structure):
     N: _N_e__Union
@@ -2946,13 +3059,15 @@ class IMAGE_TLS_DIRECTORY32(Structure):
     AddressOfCallBacks: UInt32
     SizeOfZeroFill: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Characteristics: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Reserved0: Annotated[UInt32, 20]
-            Alignment: Annotated[UInt32, 4]
-            Reserved1: Annotated[UInt32, 8]
+            Reserved0: Annotated[UInt32, NativeBitfieldAttribute(20)]
+            Alignment: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Reserved1: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class IMAGE_TLS_DIRECTORY64(Structure):
     StartAddressOfRawData: UInt64
     EndAddressOfRawData: UInt64
@@ -2960,14 +3075,16 @@ class IMAGE_TLS_DIRECTORY64(Structure):
     AddressOfCallBacks: UInt64
     SizeOfZeroFill: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 4
     class _Anonymous_e__Union(Union):
         Characteristics: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Reserved0: Annotated[UInt32, 20]
-            Alignment: Annotated[UInt32, 4]
-            Reserved1: Annotated[UInt32, 8]
+            Reserved0: Annotated[UInt32, NativeBitfieldAttribute(20)]
+            Alignment: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Reserved1: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class IMAGE_VXD_HEADER(Structure):
     e32_magic: UInt16
     e32_border: Byte
@@ -3029,9 +3146,10 @@ class IMPORT_OBJECT_HEADER(Structure):
     TimeDateStamp: UInt32
     SizeOfData: UInt32
     Anonymous: _Anonymous_e__Union
-    Type: Annotated[UInt16, 2]
-    NameType: Annotated[UInt16, 3]
-    Reserved: Annotated[UInt16, 11]
+    Type: Annotated[UInt16, NativeBitfieldAttribute(2)]
+    NameType: Annotated[UInt16, NativeBitfieldAttribute(3)]
+    Reserved: Annotated[UInt16, NativeBitfieldAttribute(11)]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Ordinal: UInt16
         Hint: UInt16
@@ -3045,23 +3163,28 @@ IMPORT_OBJECT_TYPE = Int32
 IMPORT_OBJECT_CODE: win32more.Windows.Win32.System.SystemServices.IMPORT_OBJECT_TYPE = 0
 IMPORT_OBJECT_DATA: win32more.Windows.Win32.System.SystemServices.IMPORT_OBJECT_TYPE = 1
 IMPORT_OBJECT_CONST: win32more.Windows.Win32.System.SystemServices.IMPORT_OBJECT_TYPE = 2
+class JOBOBJECT_NETWORK_ACCOUNTING_INFORMATION(Structure):
+    DataBytesIn: UInt64
+    DataBytesOut: UInt64
 class KERNEL_CET_CONTEXT(Structure):
     Ssp: UInt64
     Rip: UInt64
     SegCs: UInt16
     Anonymous: _Anonymous_e__Union
     Fill: UInt16 * 2
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         AllFlags: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            UseWrss: Annotated[UInt16, 1]
-            PopShadowStackOne: Annotated[UInt16, 1]
-            Unused: Annotated[UInt16, 14]
+            UseWrss: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            PopShadowStackOne: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            Unused: Annotated[UInt16, NativeBitfieldAttribute(14)]
 class KTMOBJECT_CURSOR(Structure):
     LastQuery: Guid
     ObjectIdCount: UInt32
-    ObjectIds: Guid * 1
+    ObjectIds: FlexibleArray[Guid]
 KTMOBJECT_TYPE = Int32
 KTMOBJECT_TRANSACTION: win32more.Windows.Win32.System.SystemServices.KTMOBJECT_TYPE = 0
 KTMOBJECT_TRANSACTION_MANAGER: win32more.Windows.Win32.System.SystemServices.KTMOBJECT_TYPE = 1
@@ -3106,6 +3229,7 @@ class NT_TIB32(Structure):
     Anonymous: _Anonymous_e__Union
     ArbitraryUserPointer: UInt32
     Self: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FiberData: UInt32
         Version: UInt32
@@ -3117,6 +3241,7 @@ class NT_TIB64(Structure):
     Anonymous: _Anonymous_e__Union
     ArbitraryUserPointer: UInt64
     Self: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FiberData: UInt64
         Version: UInt32
@@ -3135,6 +3260,39 @@ if ARCH in 'ARM64':
 elif ARCH in 'X64':
     @winfunctype_pointer
     def POUT_OF_PROCESS_FUNCTION_TABLE_CALLBACK(Process: win32more.Windows.Win32.Foundation.HANDLE, TableAddress: VoidPtr, Entries: POINTER(UInt32), Functions: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.IMAGE_RUNTIME_FUNCTION_ENTRY))) -> UInt32: ...
+class POWER_LIMIT_ATTRIBUTES(Structure):
+    Type: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES
+    DomainId: UInt32
+    MaxValue: UInt32
+    MinValue: UInt32
+    MinTimeParameter: UInt32
+    MaxTimeParameter: UInt32
+    DefaultACValue: UInt32
+    DefaultDCValue: UInt32
+    Flags: _Flags_e__Union
+    class _Flags_e__Union(Union):
+        Anonymous: _Anonymous_e__Struct
+        AsUlong: UInt32
+        _anonymous_ = ('Anonymous',)
+        class _Anonymous_e__Struct(Structure):
+            SupportTimeParameter: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt32, NativeBitfieldAttribute(31)]
+POWER_LIMIT_TYPES = Int32
+PowerLimitContinuous: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 0
+PowerLimitType1: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 0
+PowerLimitBurst: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 1
+PowerLimitType2: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 1
+PowerLimitRapid: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 2
+PowerLimitType3: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 2
+PowerLimitPreemptive: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 3
+PowerLimitType4: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 3
+PowerLimitPreemptiveOffset: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 4
+PowerLimitTypeMax: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES = 5
+class POWER_LIMIT_VALUE(Structure):
+    Type: win32more.Windows.Win32.System.SystemServices.POWER_LIMIT_TYPES
+    DomainId: UInt32
+    TargetValue: UInt32
+    TimeParameter: UInt32
 class PROCESSOR_IDLESTATE_INFO(Structure):
     TimeCheck: UInt32
     DemotePercent: Byte
@@ -3148,10 +3306,11 @@ class PROCESSOR_IDLESTATE_POLICY(Structure):
     class _Flags_e__Union(Union):
         AsWORD: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            AllowScaling: Annotated[UInt16, 1]
-            Disabled: Annotated[UInt16, 1]
-            Reserved: Annotated[UInt16, 14]
+            AllowScaling: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            Disabled: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt16, NativeBitfieldAttribute(14)]
 class PROCESSOR_PERFSTATE_POLICY(Structure):
     Revision: UInt32
     MaxThrottle: Byte
@@ -3163,221 +3322,254 @@ class PROCESSOR_PERFSTATE_POLICY(Structure):
     DecreaseTime: UInt32
     IncreasePercent: UInt32
     DecreasePercent: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Spare: Byte
         Flags: _Flags_e__Union
         class _Flags_e__Union(Union):
             AsBYTE: Byte
             Anonymous: _Anonymous_e__Struct
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
-                NoDomainAccounting: Annotated[Byte, 1]
-                IncreasePolicy: Annotated[Byte, 2]
-                DecreasePolicy: Annotated[Byte, 2]
-                Reserved: Annotated[Byte, 3]
-class PROCESS_MITIGATION_ACTIVATION_CONTEXT_TRUST_POLICY(Structure):
-    Anonymous: _Anonymous_e__Union
-    class _Anonymous_e__Union(Union):
-        Flags: UInt32
-        Anonymous: _Anonymous_e__Struct
-        class _Anonymous_e__Struct(Structure):
-            AssemblyManifestRedirectionTrust: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 31]
+                NoDomainAccounting: Annotated[Byte, NativeBitfieldAttribute(1)]
+                IncreasePolicy: Annotated[Byte, NativeBitfieldAttribute(2)]
+                DecreasePolicy: Annotated[Byte, NativeBitfieldAttribute(2)]
+                Reserved: Annotated[Byte, NativeBitfieldAttribute(3)]
 class PROCESS_MITIGATION_ASLR_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnableBottomUpRandomization: Annotated[UInt32, 1]
-            EnableForceRelocateImages: Annotated[UInt32, 1]
-            EnableHighEntropy: Annotated[UInt32, 1]
-            DisallowStrippedImages: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 28]
+            EnableBottomUpRandomization: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableForceRelocateImages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableHighEntropy: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            DisallowStrippedImages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(28)]
 class PROCESS_MITIGATION_BINARY_SIGNATURE_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            MicrosoftSignedOnly: Annotated[UInt32, 1]
-            StoreSignedOnly: Annotated[UInt32, 1]
-            MitigationOptIn: Annotated[UInt32, 1]
-            AuditMicrosoftSignedOnly: Annotated[UInt32, 1]
-            AuditStoreSignedOnly: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 27]
+            MicrosoftSignedOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            StoreSignedOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            MitigationOptIn: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditMicrosoftSignedOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditStoreSignedOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(27)]
 class PROCESS_MITIGATION_CHILD_PROCESS_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            NoChildProcessCreation: Annotated[UInt32, 1]
-            AuditNoChildProcessCreation: Annotated[UInt32, 1]
-            AllowSecureProcessCreation: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 29]
+            NoChildProcessCreation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditNoChildProcessCreation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AllowSecureProcessCreation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(29)]
 class PROCESS_MITIGATION_CONTROL_FLOW_GUARD_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnableControlFlowGuard: Annotated[UInt32, 1]
-            EnableExportSuppression: Annotated[UInt32, 1]
-            StrictMode: Annotated[UInt32, 1]
-            EnableXfg: Annotated[UInt32, 1]
-            EnableXfgAuditMode: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 27]
+            EnableControlFlowGuard: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableExportSuppression: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            StrictMode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableXfg: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableXfgAuditMode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(27)]
 class PROCESS_MITIGATION_DEP_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
     Permanent: win32more.Windows.Win32.Foundation.BOOLEAN
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Enable: Annotated[UInt32, 1]
-            DisableAtlThunkEmulation: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 30]
+            Enable: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            DisableAtlThunkEmulation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(30)]
 class PROCESS_MITIGATION_DYNAMIC_CODE_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            ProhibitDynamicCode: Annotated[UInt32, 1]
-            AllowThreadOptOut: Annotated[UInt32, 1]
-            AllowRemoteDowngrade: Annotated[UInt32, 1]
-            AuditProhibitDynamicCode: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 28]
+            ProhibitDynamicCode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AllowThreadOptOut: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AllowRemoteDowngrade: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditProhibitDynamicCode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(28)]
 class PROCESS_MITIGATION_EXTENSION_POINT_DISABLE_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            DisableExtensionPoints: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 31]
+            DisableExtensionPoints: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(31)]
 class PROCESS_MITIGATION_FONT_DISABLE_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            DisableNonSystemFonts: Annotated[UInt32, 1]
-            AuditNonSystemFontLoading: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 30]
+            DisableNonSystemFonts: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditNonSystemFontLoading: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(30)]
 class PROCESS_MITIGATION_IMAGE_LOAD_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            NoRemoteImages: Annotated[UInt32, 1]
-            NoLowMandatoryLabelImages: Annotated[UInt32, 1]
-            PreferSystem32Images: Annotated[UInt32, 1]
-            AuditNoRemoteImages: Annotated[UInt32, 1]
-            AuditNoLowMandatoryLabelImages: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 27]
+            NoRemoteImages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            NoLowMandatoryLabelImages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            PreferSystem32Images: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditNoRemoteImages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditNoLowMandatoryLabelImages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(27)]
 class PROCESS_MITIGATION_PAYLOAD_RESTRICTION_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnableExportAddressFilter: Annotated[UInt32, 1]
-            AuditExportAddressFilter: Annotated[UInt32, 1]
-            EnableExportAddressFilterPlus: Annotated[UInt32, 1]
-            AuditExportAddressFilterPlus: Annotated[UInt32, 1]
-            EnableImportAddressFilter: Annotated[UInt32, 1]
-            AuditImportAddressFilter: Annotated[UInt32, 1]
-            EnableRopStackPivot: Annotated[UInt32, 1]
-            AuditRopStackPivot: Annotated[UInt32, 1]
-            EnableRopCallerCheck: Annotated[UInt32, 1]
-            AuditRopCallerCheck: Annotated[UInt32, 1]
-            EnableRopSimExec: Annotated[UInt32, 1]
-            AuditRopSimExec: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 20]
+            EnableExportAddressFilter: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditExportAddressFilter: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableExportAddressFilterPlus: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditExportAddressFilterPlus: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableImportAddressFilter: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditImportAddressFilter: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableRopStackPivot: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditRopStackPivot: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableRopCallerCheck: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditRopCallerCheck: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableRopSimExec: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditRopSimExec: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(20)]
 class PROCESS_MITIGATION_REDIRECTION_TRUST_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnforceRedirectionTrust: Annotated[UInt32, 1]
-            AuditRedirectionTrust: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 30]
+            EnforceRedirectionTrust: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditRedirectionTrust: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(30)]
 class PROCESS_MITIGATION_SEHOP_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnableSehop: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 31]
+            EnableSehop: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(31)]
 class PROCESS_MITIGATION_SIDE_CHANNEL_ISOLATION_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            SmtBranchTargetIsolation: Annotated[UInt32, 1]
-            IsolateSecurityDomain: Annotated[UInt32, 1]
-            DisablePageCombine: Annotated[UInt32, 1]
-            SpeculativeStoreBypassDisable: Annotated[UInt32, 1]
-            RestrictCoreSharing: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 27]
+            SmtBranchTargetIsolation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            IsolateSecurityDomain: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            DisablePageCombine: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            SpeculativeStoreBypassDisable: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            RestrictCoreSharing: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(27)]
 class PROCESS_MITIGATION_STRICT_HANDLE_CHECK_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            RaiseExceptionOnInvalidHandleReference: Annotated[UInt32, 1]
-            HandleExceptionsPermanentlyEnabled: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 30]
+            RaiseExceptionOnInvalidHandleReference: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            HandleExceptionsPermanentlyEnabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(30)]
 class PROCESS_MITIGATION_SYSTEM_CALL_DISABLE_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            DisallowWin32kSystemCalls: Annotated[UInt32, 1]
-            AuditDisallowWin32kSystemCalls: Annotated[UInt32, 1]
-            DisallowFsctlSystemCalls: Annotated[UInt32, 1]
-            AuditDisallowFsctlSystemCalls: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 28]
+            DisallowWin32kSystemCalls: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditDisallowWin32kSystemCalls: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            DisallowFsctlSystemCalls: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditDisallowFsctlSystemCalls: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(28)]
 class PROCESS_MITIGATION_SYSTEM_CALL_FILTER_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            FilterId: Annotated[UInt32, 4]
-            ReservedFlags: Annotated[UInt32, 28]
+            FilterId: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(28)]
 class PROCESS_MITIGATION_USER_POINTER_AUTH_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnablePointerAuthUserIp: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 31]
+            EnablePointerAuthUserIp: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(31)]
 class PROCESS_MITIGATION_USER_SHADOW_STACK_POLICY(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EnableUserShadowStack: Annotated[UInt32, 1]
-            AuditUserShadowStack: Annotated[UInt32, 1]
-            SetContextIpValidation: Annotated[UInt32, 1]
-            AuditSetContextIpValidation: Annotated[UInt32, 1]
-            EnableUserShadowStackStrictMode: Annotated[UInt32, 1]
-            BlockNonCetBinaries: Annotated[UInt32, 1]
-            BlockNonCetBinariesNonEhcont: Annotated[UInt32, 1]
-            AuditBlockNonCetBinaries: Annotated[UInt32, 1]
-            CetDynamicApisOutOfProcOnly: Annotated[UInt32, 1]
-            SetContextIpValidationRelaxedMode: Annotated[UInt32, 1]
-            ReservedFlags: Annotated[UInt32, 22]
+            EnableUserShadowStack: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditUserShadowStack: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            SetContextIpValidation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditSetContextIpValidation: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            EnableUserShadowStackStrictMode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            BlockNonCetBinaries: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            BlockNonCetBinariesNonEhcont: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            AuditBlockNonCetBinaries: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            CetDynamicApisOutOfProcOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            SetContextIpValidationRelaxedMode: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedFlags: Annotated[UInt32, NativeBitfieldAttribute(22)]
+class PROCESS_NETWORK_COUNTERS(Structure):
+    BytesIn: UInt64
+    BytesOut: UInt64
 if ARCH in 'ARM64':
     @winfunctype_pointer
     def PTERMINATION_HANDLER(_abnormal_termination: win32more.Windows.Win32.Foundation.BOOLEAN, EstablisherFrame: UInt64) -> Void: ...
@@ -3402,9 +3594,10 @@ class QUOTA_LIMITS_EX(Structure):
 class RATE_QUOTA_LIMIT(Union):
     RateData: UInt32
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        RatePercent: Annotated[UInt32, 7]
-        Reserved0: Annotated[UInt32, 25]
+        RatePercent: Annotated[UInt32, NativeBitfieldAttribute(7)]
+        Reserved0: Annotated[UInt32, NativeBitfieldAttribute(25)]
 class REARRANGE_FILE_DATA(Structure):
     SourceStartingOffset: UInt64
     TargetOffset: UInt64
@@ -3432,7 +3625,7 @@ class REDBOOK_DIGITAL_AUDIO_EXTRACTION_INFO(Structure):
 class RESOURCEMANAGER_BASIC_INFORMATION(Structure):
     ResourceManagerId: Guid
     DescriptionLength: UInt32
-    Description: Char * 1
+    Description: FlexibleArray[Char]
 class RESOURCEMANAGER_COMPLETION_INFORMATION(Structure):
     IoCompletionPortHandle: win32more.Windows.Win32.Foundation.HANDLE
     CompletionKey: UIntPtr
@@ -3443,28 +3636,51 @@ RTL_UMS_SCHEDULER_REASON = Int32
 UmsSchedulerStartup: win32more.Windows.Win32.System.SystemServices.RTL_UMS_SCHEDULER_REASON = 0
 UmsSchedulerThreadBlocked: win32more.Windows.Win32.System.SystemServices.RTL_UMS_SCHEDULER_REASON = 1
 UmsSchedulerThreadYield: win32more.Windows.Win32.System.SystemServices.RTL_UMS_SCHEDULER_REASON = 2
+class RUNTIME_REPORT_DIGEST_HEADER(Structure):
+    ReportType: UInt16
+    Reserved: UInt16
+    ReportDigest: Byte * 64
+class RUNTIME_REPORT_HEADER(Structure):
+    ReportType: UInt16
+    Reserved: UInt16
+    ReportSize: UInt32
+class RUNTIME_REPORT_PACKAGE_HEADER(Structure):
+    Magic: UInt32
+    PackageVersion: UInt16
+    NumberOfReports: UInt16
+    ReportTypesBitmap: UInt64
+    PackageSize: UInt32
+    ReportDigestType: UInt16
+    TotalReportDigestsSize: UInt16
+    Reserved: UInt16
+    SignatureScheme: UInt16
+    SignatureSize: UInt32
+    TotalAuthenticatedReportsSize: UInt32
+RUNTIME_REPORT_TYPE = Int32
+RuntimeReportTypeDriver: win32more.Windows.Win32.System.SystemServices.RUNTIME_REPORT_TYPE = 0
+RuntimeReportTypeMax: win32more.Windows.Win32.System.SystemServices.RUNTIME_REPORT_TYPE = 1
 class RemHBITMAP(Structure):
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class RemHBRUSH(Structure):
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class RemHENHMETAFILE(Structure):
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class RemHGLOBAL(Structure):
     fNullHGlobal: Int32
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class RemHMETAFILEPICT(Structure):
     mm: Int32
     xExt: Int32
     yExt: Int32
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class RemHPALETTE(Structure):
     cbData: UInt32
-    data: Byte * 1
+    data: FlexibleArray[Byte]
 class RemotableHandle(Structure):
     fContext: Int32
     u: _u_e__Struct
@@ -3499,7 +3715,7 @@ MAX_CLASS_NAME: win32more.Windows.Win32.System.SystemServices.ReplacesCorHdrNume
 MAX_PACKAGE_NAME: win32more.Windows.Win32.System.SystemServices.ReplacesCorHdrNumericDefines = 1024
 class SCOPE_TABLE_AMD64(Structure):
     Count: UInt32
-    ScopeRecord: _Anonymous_e__Struct * 1
+    ScopeRecord: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         BeginAddress: UInt32
         EndAddress: UInt32
@@ -3507,7 +3723,7 @@ class SCOPE_TABLE_AMD64(Structure):
         JumpTarget: UInt32
 class SCOPE_TABLE_ARM(Structure):
     Count: UInt32
-    ScopeRecord: _Anonymous_e__Struct * 1
+    ScopeRecord: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         BeginAddress: UInt32
         EndAddress: UInt32
@@ -3515,7 +3731,7 @@ class SCOPE_TABLE_ARM(Structure):
         JumpTarget: UInt32
 class SCOPE_TABLE_ARM64(Structure):
     Count: UInt32
-    ScopeRecord: _Anonymous_e__Struct * 1
+    ScopeRecord: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         BeginAddress: UInt32
         EndAddress: UInt32
@@ -3526,7 +3742,9 @@ class SCRUB_DATA_INPUT(Structure):
     Flags: UInt32
     MaximumIos: UInt32
     ObjectId: UInt32 * 4
-    Reserved: UInt32 * 41
+    StartingByteOffset: UInt64
+    ByteCount: UInt64
+    Reserved: UInt32 * 36
     ResumeContext: Byte * 1040
 class SCRUB_DATA_OUTPUT(Structure):
     Size: UInt32
@@ -3539,7 +3757,9 @@ class SCRUB_DATA_OUTPUT(Structure):
     InternalFileReference: UInt64
     ResumeContextLength: UInt16
     ParityExtentDataOffset: UInt16
-    Reserved: UInt32 * 9
+    NextStartingByteOffset: UInt64
+    ValidDataLength: UInt64
+    Reserved: UInt32 * 4
     NumberOfMetadataBytesProcessed: UInt64
     NumberOfDataBytesProcessed: UInt64
     TotalNumberOfMetadataBytesInUse: UInt64
@@ -3561,7 +3781,7 @@ class SCRUB_PARITY_EXTENT_DATA(Structure):
     Flags: UInt16
     NumberOfParityExtents: UInt16
     MaximumNumberOfParityExtents: UInt16
-    ParityExtents: win32more.Windows.Win32.System.SystemServices.SCRUB_PARITY_EXTENT * 1
+    ParityExtents: FlexibleArray[win32more.Windows.Win32.System.SystemServices.SCRUB_PARITY_EXTENT]
 class SECURITY_OBJECT_AI_PARAMS(Structure):
     Size: UInt32
     ConstraintMask: UInt32
@@ -3569,9 +3789,15 @@ class SERVERSILO_BASIC_INFORMATION(Structure):
     ServiceSessionId: UInt32
     State: win32more.Windows.Win32.System.SystemServices.SERVERSILO_STATE
     ExitStatus: UInt32
-    IsDownlevelContainer: win32more.Windows.Win32.Foundation.BOOLEAN
+    Reserved: win32more.Windows.Win32.Foundation.BOOLEAN
     ApiSetSchema: VoidPtr
     HostApiSetSchema: VoidPtr
+    ContainerBuildNumber: UInt32
+    HostBuildNumber: UInt32
+class SERVERSILO_DIAGNOSTIC_INFORMATION(Structure):
+    ReportId: Guid
+    ExitStatus: UInt32
+    CriticalProcessName: Char * 15
 SERVERSILO_STATE = Int32
 SERVERSILO_INITING: win32more.Windows.Win32.System.SystemServices.SERVERSILO_STATE = 0
 SERVERSILO_STARTED: win32more.Windows.Win32.System.SystemServices.SERVERSILO_STATE = 1
@@ -3608,6 +3834,7 @@ SeImageSignaturePplMitigated: win32more.Windows.Win32.System.SystemServices.SE_I
 class SE_TOKEN_USER(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         TokenUser: win32more.Windows.Win32.Security.TOKEN_USER
         User: win32more.Windows.Win32.Security.SID_AND_ATTRIBUTES
@@ -3700,6 +3927,17 @@ SS_ELLIPSISMASK: win32more.Windows.Win32.System.SystemServices.STATIC_STYLES = 4
 class SUPPORTED_OS_INFO(Structure):
     MajorVersion: UInt16
     MinorVersion: UInt16
+class SYSTEM_POWER_SOURCE_STATE(Structure):
+    BatteryState: win32more.Windows.Win32.System.Power.SYSTEM_BATTERY_STATE
+    InstantaneousPeakPower: UInt32
+    InstantaneousPeakPeriod: UInt32
+    SustainablePeakPower: UInt32
+    SustainablePeakPeriod: UInt32
+    PeakPower: UInt32
+    MaxOutputPower: UInt32
+    MaxInputPower: UInt32
+    BatteryRateInCurrent: Int32
+    BatteryVoltage: UInt32
 SharedVirtualDiskHandleState = Int32
 SharedVirtualDiskHandleStateNone: win32more.Windows.Win32.System.SystemServices.SharedVirtualDiskHandleState = 0
 SharedVirtualDiskHandleStateFileShared: win32more.Windows.Win32.System.SystemServices.SharedVirtualDiskHandleState = 1
@@ -3791,6 +4029,20 @@ class TAPE_WMI_OPERATIONS(Structure):
 class TOKEN_BNO_ISOLATION_INFORMATION(Structure):
     IsolationPrefix: win32more.Windows.Win32.Foundation.PWSTR
     IsolationEnabled: win32more.Windows.Win32.Foundation.BOOLEAN
+class TOKEN_LOGGING_INFORMATION(Structure):
+    TokenType: win32more.Windows.Win32.Security.TOKEN_TYPE
+    TokenElevation: win32more.Windows.Win32.Security.TOKEN_ELEVATION
+    TokenElevationType: win32more.Windows.Win32.Security.TOKEN_ELEVATION_TYPE
+    ImpersonationLevel: win32more.Windows.Win32.Security.SECURITY_IMPERSONATION_LEVEL
+    IntegrityLevel: UInt32
+    User: win32more.Windows.Win32.Security.SID_AND_ATTRIBUTES
+    TrustLevelSid: win32more.Windows.Win32.Security.PSID
+    SessionId: UInt32
+    AppContainerNumber: UInt32
+    AuthenticationId: win32more.Windows.Win32.Foundation.LUID
+    GroupCount: UInt32
+    GroupsLength: UInt32
+    Groups: POINTER(win32more.Windows.Win32.Security.SID_AND_ATTRIBUTES)
 class TOKEN_SID_INFORMATION(Structure):
     Sid: win32more.Windows.Win32.Security.PSID
 class TRANSACTIONMANAGER_BASIC_INFORMATION(Structure):
@@ -3805,7 +4057,7 @@ TransactionManagerOnlineProbeInformation: win32more.Windows.Win32.System.SystemS
 TransactionManagerOldestTransactionInformation: win32more.Windows.Win32.System.SystemServices.TRANSACTIONMANAGER_INFORMATION_CLASS = 5
 class TRANSACTIONMANAGER_LOGPATH_INFORMATION(Structure):
     LogPathLength: UInt32
-    LogPath: Char * 1
+    LogPath: FlexibleArray[Char]
 class TRANSACTIONMANAGER_LOG_INFORMATION(Structure):
     LogIdentity: Guid
 class TRANSACTIONMANAGER_OLDEST_INFORMATION(Structure):
@@ -3820,7 +4072,7 @@ class TRANSACTION_BIND_INFORMATION(Structure):
     TmHandle: win32more.Windows.Win32.Foundation.HANDLE
 class TRANSACTION_ENLISTMENTS_INFORMATION(Structure):
     NumberOfEnlistments: UInt32
-    EnlistmentPair: win32more.Windows.Win32.System.SystemServices.TRANSACTION_ENLISTMENT_PAIR * 1
+    EnlistmentPair: FlexibleArray[win32more.Windows.Win32.System.SystemServices.TRANSACTION_ENLISTMENT_PAIR]
 class TRANSACTION_ENLISTMENT_PAIR(Structure):
     EnlistmentId: Guid
     ResourceManagerId: Guid
@@ -3835,14 +4087,14 @@ class TRANSACTION_LIST_ENTRY(Structure):
     UOW: Guid
 class TRANSACTION_LIST_INFORMATION(Structure):
     NumberOfTransactions: UInt32
-    TransactionInformation: win32more.Windows.Win32.System.SystemServices.TRANSACTION_LIST_ENTRY * 1
+    TransactionInformation: FlexibleArray[win32more.Windows.Win32.System.SystemServices.TRANSACTION_LIST_ENTRY]
 class TRANSACTION_PROPERTIES_INFORMATION(Structure):
     IsolationLevel: UInt32
     IsolationFlags: UInt32
     Timeout: Int64
     Outcome: UInt32
     DescriptionLength: UInt32
-    Description: Char * 1
+    Description: FlexibleArray[Char]
 TRANSACTION_STATE = Int32
 TransactionStateNormal: win32more.Windows.Win32.System.SystemServices.TRANSACTION_STATE = 1
 TransactionStateIndoubt: win32more.Windows.Win32.System.SystemServices.TRANSACTION_STATE = 2
@@ -3855,6 +4107,11 @@ class UMS_CREATE_THREAD_ATTRIBUTES(Structure):
     UmsCompletionList: VoidPtr
 WORD_WHEEL_OPEN_FLAGS = UInt32
 ITWW_OPEN_CONNECT: win32more.Windows.Win32.System.SystemServices.WORD_WHEEL_OPEN_FLAGS = 0
+class XSAVE_ARM64_SVE_HEADER(Structure):
+    VectorLength: UInt32
+    VectorRegisterOffset: UInt32
+    PredicateRegisterOffset: UInt32
+    Reserved: UInt32 * 5
 class XSAVE_CET_U_FORMAT(Structure):
     Ia32CetUMsr: UInt64
     Ia32Pl3SspMsr: UInt64
@@ -3871,7 +4128,7 @@ class userBITMAP(Structure):
     bmPlanes: UInt16
     bmBitsPixel: UInt16
     cbSize: UInt32
-    pBuffer: Byte * 1
+    pBuffer: FlexibleArray[Byte]
 class userCLIPFORMAT(Structure):
     fContext: Int32
     u: _u_e__Struct

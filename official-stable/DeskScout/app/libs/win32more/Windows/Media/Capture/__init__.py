@@ -1,6 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Devices.Enumeration
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
@@ -20,10 +19,8 @@ import win32more.Windows.Storage
 import win32more.Windows.Storage.Streams
 import win32more.Windows.System
 import win32more.Windows.UI.WindowManagement
-import win32more.Windows.Win32.System.Com
-import win32more.Windows.Win32.System.WinRT
 class AdvancedCapturedPhoto(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAdvancedCapturedPhoto
     _classid_ = 'Windows.Media.Capture.AdvancedCapturedPhoto'
     @winrt_mixinmethod
@@ -31,7 +28,7 @@ class AdvancedCapturedPhoto(ComPtr):
     @winrt_mixinmethod
     def get_Mode(self: win32more.Windows.Media.Capture.IAdvancedCapturedPhoto) -> win32more.Windows.Media.Devices.AdvancedPhotoMode: ...
     @winrt_mixinmethod
-    def get_Context(self: win32more.Windows.Media.Capture.IAdvancedCapturedPhoto) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def get_Context(self: win32more.Windows.Media.Capture.IAdvancedCapturedPhoto) -> IInspectable: ...
     @winrt_mixinmethod
     def get_FrameBoundsRelativeToReferencePhoto(self: win32more.Windows.Media.Capture.IAdvancedCapturedPhoto2) -> win32more.Windows.Foundation.IReference[win32more.Windows.Foundation.Rect]: ...
     Context = property(get_Context, None)
@@ -39,27 +36,27 @@ class AdvancedCapturedPhoto(ComPtr):
     FrameBoundsRelativeToReferencePhoto = property(get_FrameBoundsRelativeToReferencePhoto, None)
     Mode = property(get_Mode, None)
 class AdvancedPhotoCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAdvancedPhotoCapture
     _classid_ = 'Windows.Media.Capture.AdvancedPhotoCapture'
     @winrt_mixinmethod
     def CaptureAsync(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedCapturedPhoto]: ...
     @winrt_mixinmethod
-    def CaptureWithContextAsync(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, context: win32more.Windows.Win32.System.WinRT.IInspectable) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedCapturedPhoto]: ...
+    def CaptureWithContextAsync(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, context: IInspectable) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedCapturedPhoto]: ...
     @winrt_mixinmethod
     def add_OptionalReferencePhotoCaptured(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AdvancedPhotoCapture, win32more.Windows.Media.Capture.OptionalReferencePhotoCapturedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_OptionalReferencePhotoCaptured(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_AllPhotosCaptured(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AdvancedPhotoCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AllPhotosCaptured(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AdvancedPhotoCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_AllPhotosCaptured(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
     def FinishAsync(self: win32more.Windows.Media.Capture.IAdvancedPhotoCapture) -> win32more.Windows.Foundation.IAsyncAction: ...
-    OptionalReferencePhotoCaptured = event()
-    AllPhotosCaptured = event()
+    AllPhotosCaptured = event(add_AllPhotosCaptured, remove_AllPhotosCaptured)
+    OptionalReferencePhotoCaptured = event(add_OptionalReferencePhotoCaptured, remove_OptionalReferencePhotoCaptured)
 class AppBroadcastBackgroundService(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService
     _classid_ = 'Windows.Media.Capture.AppBroadcastBackgroundService'
     @winrt_mixinmethod
@@ -75,9 +72,9 @@ class AppBroadcastBackgroundService(ComPtr):
     @winrt_mixinmethod
     def get_StreamInfo(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo: ...
     @winrt_mixinmethod
-    def get_AppId(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> WinRT_String: ...
+    def get_AppId(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> hstr: ...
     @winrt_mixinmethod
-    def get_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> WinRT_String: ...
+    def get_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> hstr: ...
     @winrt_mixinmethod
     def put_ViewerCount(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService, value: UInt32) -> Void: ...
     @winrt_mixinmethod
@@ -89,27 +86,27 @@ class AppBroadcastBackgroundService(ComPtr):
     @winrt_mixinmethod
     def remove_HeartbeatRequested(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def get_TitleId(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> WinRT_String: ...
+    def get_TitleId(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService) -> hstr: ...
     @winrt_mixinmethod
-    def put_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, value: WinRT_String) -> Void: ...
+    def put_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2) -> WinRT_String: ...
+    def get_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2) -> hstr: ...
     @winrt_mixinmethod
-    def put_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, value: WinRT_String) -> Void: ...
+    def put_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_BroadcastChannel(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2) -> WinRT_String: ...
+    def get_BroadcastChannel(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2) -> hstr: ...
     @winrt_mixinmethod
-    def put_BroadcastChannel(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, value: WinRT_String) -> Void: ...
+    def put_BroadcastChannel(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def add_BroadcastTitleChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BroadcastTitleChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_BroadcastTitleChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_BroadcastLanguageChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BroadcastLanguageChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_BroadcastLanguageChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_BroadcastChannelChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BroadcastChannelChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_BroadcastChannelChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundService2, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AppId = property(get_AppId, None)
@@ -121,12 +118,12 @@ class AppBroadcastBackgroundService(ComPtr):
     StreamInfo = property(get_StreamInfo, put_StreamInfo)
     TitleId = property(get_TitleId, None)
     ViewerCount = property(get_ViewerCount, put_ViewerCount)
-    HeartbeatRequested = event()
-    BroadcastTitleChanged = event()
-    BroadcastLanguageChanged = event()
-    BroadcastChannelChanged = event()
+    BroadcastChannelChanged = event(add_BroadcastChannelChanged, remove_BroadcastChannelChanged)
+    BroadcastLanguageChanged = event(add_BroadcastLanguageChanged, remove_BroadcastLanguageChanged)
+    BroadcastTitleChanged = event(add_BroadcastTitleChanged, remove_BroadcastTitleChanged)
+    HeartbeatRequested = event(add_HeartbeatRequested, remove_HeartbeatRequested)
 class AppBroadcastBackgroundServiceSignInInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo
     _classid_ = 'Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo'
     @winrt_mixinmethod
@@ -142,15 +139,15 @@ class AppBroadcastBackgroundServiceSignInInfo(ComPtr):
     @winrt_mixinmethod
     def get_AuthenticationResult(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo) -> win32more.Windows.Security.Authentication.Web.WebAuthenticationResult: ...
     @winrt_mixinmethod
-    def put_UserName(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo, value: WinRT_String) -> Void: ...
+    def put_UserName(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_UserName(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo) -> WinRT_String: ...
+    def get_UserName(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo) -> hstr: ...
     @winrt_mixinmethod
     def add_SignInStateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo, win32more.Windows.Media.Capture.AppBroadcastSignInStateChangedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_SignInStateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_UserNameChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_UserNameChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo2, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_UserNameChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo2, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AuthenticationResult = property(get_AuthenticationResult, None)
@@ -158,10 +155,10 @@ class AppBroadcastBackgroundServiceSignInInfo(ComPtr):
     OAuthRequestUri = property(get_OAuthRequestUri, put_OAuthRequestUri)
     SignInState = property(get_SignInState, None)
     UserName = property(get_UserName, put_UserName)
-    SignInStateChanged = event()
-    UserNameChanged = event()
+    SignInStateChanged = event(add_SignInStateChanged, remove_SignInStateChanged)
+    UserNameChanged = event(add_UserNameChanged, remove_UserNameChanged)
 class AppBroadcastBackgroundServiceStreamInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo
     _classid_ = 'Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo'
     @winrt_mixinmethod
@@ -175,9 +172,9 @@ class AppBroadcastBackgroundServiceStreamInfo(ComPtr):
     @winrt_mixinmethod
     def get_BandwidthTestBitrate(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo) -> UInt64: ...
     @winrt_mixinmethod
-    def put_AudioCodec(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, value: WinRT_String) -> Void: ...
+    def put_AudioCodec(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_AudioCodec(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo) -> WinRT_String: ...
+    def get_AudioCodec(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo) -> hstr: ...
     @winrt_mixinmethod
     def get_BroadcastStreamReader(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo) -> win32more.Windows.Media.Capture.AppBroadcastStreamReader: ...
     @winrt_mixinmethod
@@ -185,11 +182,11 @@ class AppBroadcastBackgroundServiceStreamInfo(ComPtr):
     @winrt_mixinmethod
     def remove_StreamStateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_VideoEncodingResolutionChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoEncodingResolutionChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_VideoEncodingResolutionChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_VideoEncodingBitrateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoEncodingBitrateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_VideoEncodingBitrateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -199,15 +196,16 @@ class AppBroadcastBackgroundServiceStreamInfo(ComPtr):
     BroadcastStreamReader = property(get_BroadcastStreamReader, None)
     DesiredVideoEncodingBitrate = property(get_DesiredVideoEncodingBitrate, put_DesiredVideoEncodingBitrate)
     StreamState = property(get_StreamState, None)
-    StreamStateChanged = event()
-    VideoEncodingResolutionChanged = event()
-    VideoEncodingBitrateChanged = event()
+    StreamStateChanged = event(add_StreamStateChanged, remove_StreamStateChanged)
+    VideoEncodingBitrateChanged = event(add_VideoEncodingBitrateChanged, remove_VideoEncodingBitrateChanged)
+    VideoEncodingResolutionChanged = event(add_VideoEncodingResolutionChanged, remove_VideoEncodingResolutionChanged)
 class AppBroadcastCameraCaptureState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastCameraCaptureState'
     Stopped = 0
     Started = 1
     Failed = 2
 class AppBroadcastCameraCaptureStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastCameraCaptureStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastCameraCaptureStateChangedEventArgs'
     @winrt_mixinmethod
@@ -217,6 +215,7 @@ class AppBroadcastCameraCaptureStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class AppBroadcastCameraOverlayLocation(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastCameraOverlayLocation'
     TopLeft = 0
     TopCenter = 1
     TopRight = 2
@@ -227,20 +226,23 @@ class AppBroadcastCameraOverlayLocation(Enum, Int32):
     BottomCenter = 7
     BottomRight = 8
 class AppBroadcastCameraOverlaySize(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastCameraOverlaySize'
     Small = 0
     Medium = 1
     Large = 2
 class AppBroadcastCaptureTargetType(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastCaptureTargetType'
     AppView = 0
     EntireDisplay = 1
 AppBroadcastContract: UInt32 = 131072
 class AppBroadcastExitBroadcastModeReason(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastExitBroadcastModeReason'
     NormalExit = 0
     UserCanceled = 1
     AuthorizationFail = 2
     ForegroundAppActivated = 3
 class AppBroadcastGlobalSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings
     _classid_ = 'Windows.Media.Capture.AppBroadcastGlobalSettings'
     @winrt_mixinmethod
@@ -276,9 +278,9 @@ class AppBroadcastGlobalSettings(ComPtr):
     @winrt_mixinmethod
     def get_IsCameraCaptureEnabledByDefault(self: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings) -> Boolean: ...
     @winrt_mixinmethod
-    def put_SelectedCameraId(self: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings, value: WinRT_String) -> Void: ...
+    def put_SelectedCameraId(self: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_SelectedCameraId(self: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings) -> WinRT_String: ...
+    def get_SelectedCameraId(self: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings) -> hstr: ...
     @winrt_mixinmethod
     def put_CameraOverlayLocation(self: win32more.Windows.Media.Capture.IAppBroadcastGlobalSettings, value: win32more.Windows.Media.Capture.AppBroadcastCameraOverlayLocation) -> Void: ...
     @winrt_mixinmethod
@@ -306,7 +308,7 @@ class AppBroadcastGlobalSettings(ComPtr):
     SelectedCameraId = property(get_SelectedCameraId, put_SelectedCameraId)
     SystemAudioGain = property(get_SystemAudioGain, put_SystemAudioGain)
 class AppBroadcastHeartbeatRequestedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastHeartbeatRequestedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastHeartbeatRequestedEventArgs'
     @winrt_mixinmethod
@@ -315,7 +317,7 @@ class AppBroadcastHeartbeatRequestedEventArgs(ComPtr):
     def get_Handled(self: win32more.Windows.Media.Capture.IAppBroadcastHeartbeatRequestedEventArgs) -> Boolean: ...
     Handled = property(get_Handled, put_Handled)
 class AppBroadcastManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.AppBroadcastManager'
     @winrt_classmethod
     def GetGlobalSettings(cls: win32more.Windows.Media.Capture.IAppBroadcastManagerStatics) -> win32more.Windows.Media.Capture.AppBroadcastGlobalSettings: ...
@@ -326,11 +328,12 @@ class AppBroadcastManager(ComPtr):
     @winrt_classmethod
     def ApplyProviderSettings(cls: win32more.Windows.Media.Capture.IAppBroadcastManagerStatics, value: win32more.Windows.Media.Capture.AppBroadcastProviderSettings) -> Void: ...
 class AppBroadcastMicrophoneCaptureState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastMicrophoneCaptureState'
     Stopped = 0
     Started = 1
     Failed = 2
 class AppBroadcastMicrophoneCaptureStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastMicrophoneCaptureStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastMicrophoneCaptureStateChangedEventArgs'
     @winrt_mixinmethod
@@ -340,23 +343,23 @@ class AppBroadcastMicrophoneCaptureStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class AppBroadcastPlugIn(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPlugIn
     _classid_ = 'Windows.Media.Capture.AppBroadcastPlugIn'
     @winrt_mixinmethod
-    def get_AppId(self: win32more.Windows.Media.Capture.IAppBroadcastPlugIn) -> WinRT_String: ...
+    def get_AppId(self: win32more.Windows.Media.Capture.IAppBroadcastPlugIn) -> hstr: ...
     @winrt_mixinmethod
     def get_ProviderSettings(self: win32more.Windows.Media.Capture.IAppBroadcastPlugIn) -> win32more.Windows.Media.Capture.AppBroadcastProviderSettings: ...
     @winrt_mixinmethod
     def get_Logo(self: win32more.Windows.Media.Capture.IAppBroadcastPlugIn) -> win32more.Windows.Storage.Streams.IRandomAccessStreamReference: ...
     @winrt_mixinmethod
-    def get_DisplayName(self: win32more.Windows.Media.Capture.IAppBroadcastPlugIn) -> WinRT_String: ...
+    def get_DisplayName(self: win32more.Windows.Media.Capture.IAppBroadcastPlugIn) -> hstr: ...
     AppId = property(get_AppId, None)
     DisplayName = property(get_DisplayName, None)
     Logo = property(get_Logo, None)
     ProviderSettings = property(get_ProviderSettings, None)
 class AppBroadcastPlugInManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPlugInManager
     _classid_ = 'Windows.Media.Capture.AppBroadcastPlugInManager'
     @winrt_mixinmethod
@@ -375,6 +378,7 @@ class AppBroadcastPlugInManager(ComPtr):
     IsBroadcastProviderAvailable = property(get_IsBroadcastProviderAvailable, None)
     PlugInList = property(get_PlugInList, None)
 class AppBroadcastPlugInState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastPlugInState'
     Unknown = 0
     Initialized = 1
     MicrosoftSignInRequired = 2
@@ -383,14 +387,14 @@ class AppBroadcastPlugInState(Enum, Int32):
     InBandwidthTest = 5
     ReadyToBroadcast = 6
 class AppBroadcastPlugInStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPlugInStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastPlugInStateChangedEventArgs'
     @winrt_mixinmethod
     def get_PlugInState(self: win32more.Windows.Media.Capture.IAppBroadcastPlugInStateChangedEventArgs) -> win32more.Windows.Media.Capture.AppBroadcastPlugInState: ...
     PlugInState = property(get_PlugInState, None)
 class AppBroadcastPreview(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPreview
     _classid_ = 'Windows.Media.Capture.AppBroadcastPreview'
     @winrt_mixinmethod
@@ -408,13 +412,14 @@ class AppBroadcastPreview(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     PreviewState = property(get_PreviewState, None)
     PreviewStreamReader = property(get_PreviewStreamReader, None)
-    PreviewStateChanged = event()
+    PreviewStateChanged = event(add_PreviewStateChanged, remove_PreviewStateChanged)
 class AppBroadcastPreviewState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastPreviewState'
     Started = 0
     Stopped = 1
     Failed = 2
 class AppBroadcastPreviewStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPreviewStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastPreviewStateChangedEventArgs'
     @winrt_mixinmethod
@@ -424,7 +429,7 @@ class AppBroadcastPreviewStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     PreviewState = property(get_PreviewState, None)
 class AppBroadcastPreviewStreamReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamReader
     _classid_ = 'Windows.Media.Capture.AppBroadcastPreviewStreamReader'
     @winrt_mixinmethod
@@ -440,7 +445,7 @@ class AppBroadcastPreviewStreamReader(ComPtr):
     @winrt_mixinmethod
     def TryGetNextVideoFrame(self: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamReader) -> win32more.Windows.Media.Capture.AppBroadcastPreviewStreamVideoFrame: ...
     @winrt_mixinmethod
-    def add_VideoFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamReader, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastPreviewStreamReader, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamReader, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastPreviewStreamReader, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_VideoFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamReader, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     VideoBitmapAlphaMode = property(get_VideoBitmapAlphaMode, None)
@@ -448,9 +453,9 @@ class AppBroadcastPreviewStreamReader(ComPtr):
     VideoHeight = property(get_VideoHeight, None)
     VideoStride = property(get_VideoStride, None)
     VideoWidth = property(get_VideoWidth, None)
-    VideoFrameArrived = event()
+    VideoFrameArrived = event(add_VideoFrameArrived, remove_VideoFrameArrived)
 class AppBroadcastPreviewStreamVideoFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamVideoFrame
     _classid_ = 'Windows.Media.Capture.AppBroadcastPreviewStreamVideoFrame'
     @winrt_mixinmethod
@@ -460,7 +465,7 @@ class AppBroadcastPreviewStreamVideoFrame(ComPtr):
     VideoBuffer = property(get_VideoBuffer, None)
     VideoHeader = property(get_VideoHeader, None)
 class AppBroadcastPreviewStreamVideoHeader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastPreviewStreamVideoHeader
     _classid_ = 'Windows.Media.Capture.AppBroadcastPreviewStreamVideoHeader'
     @winrt_mixinmethod
@@ -476,13 +481,13 @@ class AppBroadcastPreviewStreamVideoHeader(ComPtr):
     FrameId = property(get_FrameId, None)
     RelativeTimestamp = property(get_RelativeTimestamp, None)
 class AppBroadcastProviderSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastProviderSettings
     _classid_ = 'Windows.Media.Capture.AppBroadcastProviderSettings'
     @winrt_mixinmethod
-    def put_DefaultBroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastProviderSettings, value: WinRT_String) -> Void: ...
+    def put_DefaultBroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastProviderSettings, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_DefaultBroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastProviderSettings) -> WinRT_String: ...
+    def get_DefaultBroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastProviderSettings) -> hstr: ...
     @winrt_mixinmethod
     def put_AudioEncodingBitrate(self: win32more.Windows.Media.Capture.IAppBroadcastProviderSettings, value: UInt32) -> Void: ...
     @winrt_mixinmethod
@@ -515,7 +520,7 @@ class AppBroadcastProviderSettings(ComPtr):
     VideoEncodingBitrateMode = property(get_VideoEncodingBitrateMode, put_VideoEncodingBitrateMode)
     VideoEncodingResolutionMode = property(get_VideoEncodingResolutionMode, put_VideoEncodingResolutionMode)
 class AppBroadcastServices(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastServices
     _classid_ = 'Windows.Media.Capture.AppBroadcastServices'
     @winrt_mixinmethod
@@ -523,15 +528,15 @@ class AppBroadcastServices(ComPtr):
     @winrt_mixinmethod
     def put_CaptureTargetType(self: win32more.Windows.Media.Capture.IAppBroadcastServices, value: win32more.Windows.Media.Capture.AppBroadcastCaptureTargetType) -> Void: ...
     @winrt_mixinmethod
-    def get_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> WinRT_String: ...
+    def get_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> hstr: ...
     @winrt_mixinmethod
-    def put_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastServices, value: WinRT_String) -> Void: ...
+    def put_BroadcastTitle(self: win32more.Windows.Media.Capture.IAppBroadcastServices, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> WinRT_String: ...
+    def get_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> hstr: ...
     @winrt_mixinmethod
-    def put_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastServices, value: WinRT_String) -> Void: ...
+    def put_BroadcastLanguage(self: win32more.Windows.Media.Capture.IAppBroadcastServices, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_UserName(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> WinRT_String: ...
+    def get_UserName(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> hstr: ...
     @winrt_mixinmethod
     def get_CanCapture(self: win32more.Windows.Media.Capture.IAppBroadcastServices) -> Boolean: ...
     @winrt_mixinmethod
@@ -555,19 +560,21 @@ class AppBroadcastServices(ComPtr):
     State = property(get_State, None)
     UserName = property(get_UserName, None)
 class AppBroadcastSignInResult(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastSignInResult'
     Success = 0
     AuthenticationFailed = 1
     Unauthorized = 2
     ServiceUnavailable = 3
     Unknown = 4
 class AppBroadcastSignInState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastSignInState'
     NotSignedIn = 0
     MicrosoftSignInInProgress = 1
     MicrosoftSignInComplete = 2
     OAuthSignInInProgress = 3
     OAuthSignInComplete = 4
 class AppBroadcastSignInStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastSignInStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastSignInStateChangedEventArgs'
     @winrt_mixinmethod
@@ -577,7 +584,7 @@ class AppBroadcastSignInStateChangedEventArgs(ComPtr):
     Result = property(get_Result, None)
     SignInState = property(get_SignInState, None)
 class AppBroadcastState(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastState
     _classid_ = 'Windows.Media.Capture.AppBroadcastState'
     @winrt_mixinmethod
@@ -647,7 +654,7 @@ class AppBroadcastState(ComPtr):
     @winrt_mixinmethod
     def remove_StreamStateChanged(self: win32more.Windows.Media.Capture.IAppBroadcastState, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_CaptureTargetClosed(self: win32more.Windows.Media.Capture.IAppBroadcastState, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastState, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CaptureTargetClosed(self: win32more.Windows.Media.Capture.IAppBroadcastState, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastState, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_CaptureTargetClosed(self: win32more.Windows.Media.Capture.IAppBroadcastState, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AuthenticationResult = property(get_AuthenticationResult, put_AuthenticationResult)
@@ -667,14 +674,14 @@ class AppBroadcastState(ComPtr):
     TerminationReason = property(get_TerminationReason, None)
     TerminationReasonPlugInSpecific = property(get_TerminationReasonPlugInSpecific, None)
     ViewerCount = property(get_ViewerCount, None)
-    ViewerCountChanged = event()
-    MicrophoneCaptureStateChanged = event()
-    CameraCaptureStateChanged = event()
-    PlugInStateChanged = event()
-    StreamStateChanged = event()
-    CaptureTargetClosed = event()
+    CameraCaptureStateChanged = event(add_CameraCaptureStateChanged, remove_CameraCaptureStateChanged)
+    CaptureTargetClosed = event(add_CaptureTargetClosed, remove_CaptureTargetClosed)
+    MicrophoneCaptureStateChanged = event(add_MicrophoneCaptureStateChanged, remove_MicrophoneCaptureStateChanged)
+    PlugInStateChanged = event(add_PlugInStateChanged, remove_PlugInStateChanged)
+    StreamStateChanged = event(add_StreamStateChanged, remove_StreamStateChanged)
+    ViewerCountChanged = event(add_ViewerCountChanged, remove_ViewerCountChanged)
 class AppBroadcastStreamAudioFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastStreamAudioFrame
     _classid_ = 'Windows.Media.Capture.AppBroadcastStreamAudioFrame'
     @winrt_mixinmethod
@@ -684,7 +691,7 @@ class AppBroadcastStreamAudioFrame(ComPtr):
     AudioBuffer = property(get_AudioBuffer, None)
     AudioHeader = property(get_AudioHeader, None)
 class AppBroadcastStreamAudioHeader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastStreamAudioHeader
     _classid_ = 'Windows.Media.Capture.AppBroadcastStreamAudioHeader'
     @winrt_mixinmethod
@@ -703,7 +710,7 @@ class AppBroadcastStreamAudioHeader(ComPtr):
     HasDiscontinuity = property(get_HasDiscontinuity, None)
     RelativeTimestamp = property(get_RelativeTimestamp, None)
 class AppBroadcastStreamReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastStreamReader
     _classid_ = 'Windows.Media.Capture.AppBroadcastStreamReader'
     @winrt_mixinmethod
@@ -725,11 +732,11 @@ class AppBroadcastStreamReader(ComPtr):
     @winrt_mixinmethod
     def TryGetNextVideoFrame(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader) -> win32more.Windows.Media.Capture.AppBroadcastStreamVideoFrame: ...
     @winrt_mixinmethod
-    def add_AudioFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AudioFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_AudioFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_VideoFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_VideoFrameArrived(self: win32more.Windows.Media.Capture.IAppBroadcastStreamReader, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AudioAacSequence = property(get_AudioAacSequence, None)
@@ -739,23 +746,24 @@ class AppBroadcastStreamReader(ComPtr):
     VideoBitrate = property(get_VideoBitrate, None)
     VideoHeight = property(get_VideoHeight, None)
     VideoWidth = property(get_VideoWidth, None)
-    AudioFrameArrived = event()
-    VideoFrameArrived = event()
+    AudioFrameArrived = event(add_AudioFrameArrived, remove_AudioFrameArrived)
+    VideoFrameArrived = event(add_VideoFrameArrived, remove_VideoFrameArrived)
 class AppBroadcastStreamState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastStreamState'
     Initializing = 0
     StreamReady = 1
     Started = 2
     Paused = 3
     Terminated = 4
 class AppBroadcastStreamStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastStreamStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastStreamStateChangedEventArgs'
     @winrt_mixinmethod
     def get_StreamState(self: win32more.Windows.Media.Capture.IAppBroadcastStreamStateChangedEventArgs) -> win32more.Windows.Media.Capture.AppBroadcastStreamState: ...
     StreamState = property(get_StreamState, None)
 class AppBroadcastStreamVideoFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastStreamVideoFrame
     _classid_ = 'Windows.Media.Capture.AppBroadcastStreamVideoFrame'
     @winrt_mixinmethod
@@ -765,7 +773,7 @@ class AppBroadcastStreamVideoFrame(ComPtr):
     VideoBuffer = property(get_VideoBuffer, None)
     VideoHeader = property(get_VideoHeader, None)
 class AppBroadcastStreamVideoHeader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastStreamVideoHeader
     _classid_ = 'Windows.Media.Capture.AppBroadcastStreamVideoHeader'
     @winrt_mixinmethod
@@ -787,6 +795,7 @@ class AppBroadcastStreamVideoHeader(ComPtr):
     IsKeyFrame = property(get_IsKeyFrame, None)
     RelativeTimestamp = property(get_RelativeTimestamp, None)
 class AppBroadcastTerminationReason(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastTerminationReason'
     NormalTermination = 0
     LostConnectionToService = 1
     NoNetworkConnectivity = 2
@@ -798,27 +807,29 @@ class AppBroadcastTerminationReason(Enum, Int32):
     BackgroundTaskTerminated = 8
     BackgroundTaskUnresponsive = 9
 class AppBroadcastTriggerDetails(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastTriggerDetails
     _classid_ = 'Windows.Media.Capture.AppBroadcastTriggerDetails'
     @winrt_mixinmethod
     def get_BackgroundService(self: win32more.Windows.Media.Capture.IAppBroadcastTriggerDetails) -> win32more.Windows.Media.Capture.AppBroadcastBackgroundService: ...
     BackgroundService = property(get_BackgroundService, None)
 class AppBroadcastVideoEncodingBitrateMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastVideoEncodingBitrateMode'
     Custom = 0
     Auto = 1
 class AppBroadcastVideoEncodingResolutionMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppBroadcastVideoEncodingResolutionMode'
     Custom = 0
     Auto = 1
 class AppBroadcastViewerCountChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppBroadcastViewerCountChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppBroadcastViewerCountChangedEventArgs'
     @winrt_mixinmethod
     def get_ViewerCount(self: win32more.Windows.Media.Capture.IAppBroadcastViewerCountChangedEventArgs) -> UInt32: ...
     ViewerCount = property(get_ViewerCount, None)
 class AppCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCapture
     _classid_ = 'Windows.Media.Capture.AppCapture'
     @winrt_mixinmethod
@@ -826,7 +837,7 @@ class AppCapture(ComPtr):
     @winrt_mixinmethod
     def get_IsCapturingVideo(self: win32more.Windows.Media.Capture.IAppCapture) -> Boolean: ...
     @winrt_mixinmethod
-    def add_CapturingChanged(self: win32more.Windows.Media.Capture.IAppCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CapturingChanged(self: win32more.Windows.Media.Capture.IAppCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_CapturingChanged(self: win32more.Windows.Media.Capture.IAppCapture, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
@@ -835,9 +846,9 @@ class AppCapture(ComPtr):
     def GetForCurrentView(cls: win32more.Windows.Media.Capture.IAppCaptureStatics) -> win32more.Windows.Media.Capture.AppCapture: ...
     IsCapturingAudio = property(get_IsCapturingAudio, None)
     IsCapturingVideo = property(get_IsCapturingVideo, None)
-    CapturingChanged = event()
+    CapturingChanged = event(add_CapturingChanged, remove_CapturingChanged)
 class AppCaptureAlternateShortcutKeys(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureAlternateShortcutKeys
     _classid_ = 'Windows.Media.Capture.AppCaptureAlternateShortcutKeys'
     @winrt_mixinmethod
@@ -922,24 +933,25 @@ class AppCaptureAlternateShortcutKeys(ComPtr):
     ToggleRecordingKeyModifiers = property(get_ToggleRecordingKeyModifiers, put_ToggleRecordingKeyModifiers)
 AppCaptureContract: UInt32 = 262144
 class AppCaptureDurationGeneratedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureDurationGeneratedEventArgs
     _classid_ = 'Windows.Media.Capture.AppCaptureDurationGeneratedEventArgs'
     @winrt_mixinmethod
     def get_Duration(self: win32more.Windows.Media.Capture.IAppCaptureDurationGeneratedEventArgs) -> win32more.Windows.Foundation.TimeSpan: ...
     Duration = property(get_Duration, None)
 class AppCaptureFileGeneratedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureFileGeneratedEventArgs
     _classid_ = 'Windows.Media.Capture.AppCaptureFileGeneratedEventArgs'
     @winrt_mixinmethod
     def get_File(self: win32more.Windows.Media.Capture.IAppCaptureFileGeneratedEventArgs) -> win32more.Windows.Storage.StorageFile: ...
     File = property(get_File, None)
 class AppCaptureHistoricalBufferLengthUnit(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureHistoricalBufferLengthUnit'
     Megabytes = 0
     Seconds = 1
 class AppCaptureManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.AppCaptureManager'
     @winrt_classmethod
     def GetCurrentSettings(cls: win32more.Windows.Media.Capture.IAppCaptureManagerStatics) -> win32more.Windows.Media.Capture.AppCaptureSettings: ...
@@ -947,10 +959,11 @@ class AppCaptureManager(ComPtr):
     def ApplySettings(cls: win32more.Windows.Media.Capture.IAppCaptureManagerStatics, appCaptureSettings: win32more.Windows.Media.Capture.AppCaptureSettings) -> Void: ...
 AppCaptureMetadataContract: UInt32 = 65536
 class AppCaptureMetadataPriority(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureMetadataPriority'
     Informational = 0
     Important = 1
 class AppCaptureMetadataWriter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter
     _classid_ = 'Windows.Media.Capture.AppCaptureMetadataWriter'
@@ -964,37 +977,38 @@ class AppCaptureMetadataWriter(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.Media.Capture.AppCaptureMetadataWriter: ...
     @winrt_mixinmethod
-    def AddStringEvent(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String, value: WinRT_String, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def AddStringEvent(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr, value: hstr, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_mixinmethod
-    def AddInt32Event(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def AddInt32Event(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_mixinmethod
-    def AddDoubleEvent(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def AddDoubleEvent(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_mixinmethod
-    def StartStringState(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String, value: WinRT_String, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def StartStringState(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr, value: hstr, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_mixinmethod
-    def StartInt32State(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def StartInt32State(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_mixinmethod
-    def StartDoubleState(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def StartDoubleState(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_mixinmethod
-    def StopState(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: WinRT_String) -> Void: ...
+    def StopState(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, name: hstr) -> Void: ...
     @winrt_mixinmethod
     def StopAllStates(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter) -> Void: ...
     @winrt_mixinmethod
     def get_RemainingStorageBytesAvailable(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter) -> UInt64: ...
     @winrt_mixinmethod
-    def add_MetadataPurged(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureMetadataWriter, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_MetadataPurged(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureMetadataWriter, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_MetadataPurged(self: win32more.Windows.Media.Capture.IAppCaptureMetadataWriter, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     RemainingStorageBytesAvailable = property(get_RemainingStorageBytesAvailable, None)
-    MetadataPurged = event()
+    MetadataPurged = event(add_MetadataPurged, remove_MetadataPurged)
 class AppCaptureMicrophoneCaptureState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureMicrophoneCaptureState'
     Stopped = 0
     Started = 1
     Failed = 2
 class AppCaptureMicrophoneCaptureStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureMicrophoneCaptureStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppCaptureMicrophoneCaptureStateChangedEventArgs'
     @winrt_mixinmethod
@@ -1004,7 +1018,7 @@ class AppCaptureMicrophoneCaptureStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class AppCaptureRecordOperation(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureRecordOperation
     _classid_ = 'Windows.Media.Capture.AppCaptureRecordOperation'
     @winrt_mixinmethod
@@ -1036,15 +1050,16 @@ class AppCaptureRecordOperation(ComPtr):
     File = property(get_File, None)
     IsFileTruncated = property(get_IsFileTruncated, None)
     State = property(get_State, None)
-    StateChanged = event()
-    DurationGenerated = event()
-    FileGenerated = event()
+    DurationGenerated = event(add_DurationGenerated, remove_DurationGenerated)
+    FileGenerated = event(add_FileGenerated, remove_FileGenerated)
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class AppCaptureRecordingState(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureRecordingState'
     InProgress = 0
     Completed = 1
     Failed = 2
 class AppCaptureRecordingStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureRecordingStateChangedEventArgs
     _classid_ = 'Windows.Media.Capture.AppCaptureRecordingStateChangedEventArgs'
     @winrt_mixinmethod
@@ -1054,7 +1069,7 @@ class AppCaptureRecordingStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class AppCaptureServices(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureServices
     _classid_ = 'Windows.Media.Capture.AppCaptureServices'
     @winrt_mixinmethod
@@ -1068,7 +1083,7 @@ class AppCaptureServices(ComPtr):
     CanCapture = property(get_CanCapture, None)
     State = property(get_State, None)
 class AppCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureSettings
     _classid_ = 'Windows.Media.Capture.AppCaptureSettings'
     @winrt_mixinmethod
@@ -1205,7 +1220,7 @@ class AppCaptureSettings(ComPtr):
     VideoEncodingFrameRateMode = property(get_VideoEncodingFrameRateMode, put_VideoEncodingFrameRateMode)
     VideoEncodingResolutionMode = property(get_VideoEncodingResolutionMode, put_VideoEncodingResolutionMode)
 class AppCaptureState(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IAppCaptureState
     _classid_ = 'Windows.Media.Capture.AppCaptureState'
     @winrt_mixinmethod
@@ -1227,7 +1242,7 @@ class AppCaptureState(ComPtr):
     @winrt_mixinmethod
     def remove_MicrophoneCaptureStateChanged(self: win32more.Windows.Media.Capture.IAppCaptureState, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_CaptureTargetClosed(self: win32more.Windows.Media.Capture.IAppCaptureState, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureState, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CaptureTargetClosed(self: win32more.Windows.Media.Capture.IAppCaptureState, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureState, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_CaptureTargetClosed(self: win32more.Windows.Media.Capture.IAppCaptureState, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     IsHistoricalCaptureEnabled = property(get_IsHistoricalCaptureEnabled, None)
@@ -1235,21 +1250,24 @@ class AppCaptureState(ComPtr):
     MicrophoneCaptureError = property(get_MicrophoneCaptureError, None)
     MicrophoneCaptureState = property(get_MicrophoneCaptureState, None)
     ShouldCaptureMicrophone = property(get_ShouldCaptureMicrophone, put_ShouldCaptureMicrophone)
-    MicrophoneCaptureStateChanged = event()
-    CaptureTargetClosed = event()
+    CaptureTargetClosed = event(add_CaptureTargetClosed, remove_CaptureTargetClosed)
+    MicrophoneCaptureStateChanged = event(add_MicrophoneCaptureStateChanged, remove_MicrophoneCaptureStateChanged)
 class AppCaptureVideoEncodingBitrateMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureVideoEncodingBitrateMode'
     Custom = 0
     High = 1
     Standard = 2
 class AppCaptureVideoEncodingFrameRateMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureVideoEncodingFrameRateMode'
     Standard = 0
     High = 1
 class AppCaptureVideoEncodingResolutionMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.AppCaptureVideoEncodingResolutionMode'
     Custom = 0
     High = 1
     Standard = 2
 class CameraCaptureUI(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ICameraCaptureUI
     _classid_ = 'Windows.Media.Capture.CameraCaptureUI'
     def __init__(self, *args, **kwargs):
@@ -1271,6 +1289,7 @@ class CameraCaptureUI(ComPtr):
     VideoSettings = property(get_VideoSettings, None)
 CameraCaptureUIContract: UInt32 = 65536
 class CameraCaptureUIMaxPhotoResolution(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution'
     HighestAvailable = 0
     VerySmallQvga = 1
     SmallVga = 2
@@ -1278,16 +1297,18 @@ class CameraCaptureUIMaxPhotoResolution(Enum, Int32):
     Large3M = 4
     VeryLarge5M = 5
 class CameraCaptureUIMaxVideoResolution(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.CameraCaptureUIMaxVideoResolution'
     HighestAvailable = 0
     LowDefinition = 1
     StandardDefinition = 2
     HighDefinition = 3
 class CameraCaptureUIMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.CameraCaptureUIMode'
     PhotoOrVideo = 0
     Photo = 1
     Video = 2
 class CameraCaptureUIPhotoCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ICameraCaptureUIPhotoCaptureSettings
     _classid_ = 'Windows.Media.Capture.CameraCaptureUIPhotoCaptureSettings'
     @winrt_mixinmethod
@@ -1316,11 +1337,12 @@ class CameraCaptureUIPhotoCaptureSettings(ComPtr):
     Format = property(get_Format, put_Format)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class CameraCaptureUIPhotoFormat(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.CameraCaptureUIPhotoFormat'
     Jpeg = 0
     Png = 1
     JpegXR = 2
 class CameraCaptureUIVideoCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ICameraCaptureUIVideoCaptureSettings
     _classid_ = 'Windows.Media.Capture.CameraCaptureUIVideoCaptureSettings'
     @winrt_mixinmethod
@@ -1344,15 +1366,16 @@ class CameraCaptureUIVideoCaptureSettings(ComPtr):
     MaxDurationInSeconds = property(get_MaxDurationInSeconds, put_MaxDurationInSeconds)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class CameraCaptureUIVideoFormat(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.CameraCaptureUIVideoFormat'
     Mp4 = 0
     Wmv = 1
 class CameraOptionsUI(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.CameraOptionsUI'
     @winrt_classmethod
     def Show(cls: win32more.Windows.Media.Capture.ICameraOptionsUIStatics, mediaCapture: win32more.Windows.Media.Capture.MediaCapture) -> Void: ...
 class CapturedFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.Capture.ICapturedFrame
     _classid_ = 'Windows.Media.Capture.CapturedFrame'
@@ -1387,7 +1410,7 @@ class CapturedFrame(ComPtr):
     @winrt_mixinmethod
     def FlushAsync(self: win32more.Windows.Storage.Streams.IOutputStream) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_mixinmethod
-    def get_ContentType(self: win32more.Windows.Storage.Streams.IContentTypeProvider) -> WinRT_String: ...
+    def get_ContentType(self: win32more.Windows.Storage.Streams.IContentTypeProvider) -> hstr: ...
     @winrt_mixinmethod
     def get_SoftwareBitmap(self: win32more.Windows.Media.Capture.ICapturedFrameWithSoftwareBitmap) -> win32more.Windows.Graphics.Imaging.SoftwareBitmap: ...
     @winrt_mixinmethod
@@ -1405,7 +1428,7 @@ class CapturedFrame(ComPtr):
     SoftwareBitmap = property(get_SoftwareBitmap, None)
     Width = property(get_Width, None)
 class CapturedFrameControlValues(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ICapturedFrameControlValues
     _classid_ = 'Windows.Media.Capture.CapturedFrameControlValues'
     @winrt_mixinmethod
@@ -1451,7 +1474,7 @@ class CapturedFrameControlValues(ComPtr):
     WhiteBalanceGain = property(get_WhiteBalanceGain, None)
     ZoomFactor = property(get_ZoomFactor, None)
 class CapturedPhoto(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ICapturedPhoto
     _classid_ = 'Windows.Media.Capture.CapturedPhoto'
     @winrt_mixinmethod
@@ -1461,9 +1484,11 @@ class CapturedPhoto(ComPtr):
     Frame = property(get_Frame, None)
     Thumbnail = property(get_Thumbnail, None)
 class ForegroundActivationArgument(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.ForegroundActivationArgument'
     SignInRequired = 0
     MoreSettings = 1
 class GameBarCommand(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.GameBarCommand'
     OpenGameBar = 0
     RecordHistoricalBuffer = 1
     ToggleStartStopRecord = 2
@@ -1479,12 +1504,13 @@ class GameBarCommand(Enum, Int32):
     ToggleCameraCapture = 12
     ToggleRecordingIndicator = 13
 class GameBarCommandOrigin(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.GameBarCommandOrigin'
     ShortcutKey = 0
     Cortana = 1
     AppCommand = 2
 GameBarContract: UInt32 = 65536
 class GameBarServices(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IGameBarServices
     _classid_ = 'Windows.Media.Capture.GameBarServices'
     @winrt_mixinmethod
@@ -1496,7 +1522,7 @@ class GameBarServices(ComPtr):
     @winrt_mixinmethod
     def get_TargetInfo(self: win32more.Windows.Media.Capture.IGameBarServices) -> win32more.Windows.Media.Capture.GameBarServicesTargetInfo: ...
     @winrt_mixinmethod
-    def get_SessionId(self: win32more.Windows.Media.Capture.IGameBarServices) -> WinRT_String: ...
+    def get_SessionId(self: win32more.Windows.Media.Capture.IGameBarServices) -> hstr: ...
     @winrt_mixinmethod
     def get_AppBroadcastServices(self: win32more.Windows.Media.Capture.IGameBarServices) -> win32more.Windows.Media.Capture.AppBroadcastServices: ...
     @winrt_mixinmethod
@@ -1510,9 +1536,9 @@ class GameBarServices(ComPtr):
     SessionId = property(get_SessionId, None)
     TargetCapturePolicy = property(get_TargetCapturePolicy, None)
     TargetInfo = property(get_TargetInfo, None)
-    CommandReceived = event()
+    CommandReceived = event(add_CommandReceived, remove_CommandReceived)
 class GameBarServicesCommandEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IGameBarServicesCommandEventArgs
     _classid_ = 'Windows.Media.Capture.GameBarServicesCommandEventArgs'
     @winrt_mixinmethod
@@ -1522,10 +1548,11 @@ class GameBarServicesCommandEventArgs(ComPtr):
     Command = property(get_Command, None)
     Origin = property(get_Origin, None)
 class GameBarServicesDisplayMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.GameBarServicesDisplayMode'
     Windowed = 0
     FullScreenExclusive = 1
 class GameBarServicesManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IGameBarServicesManager
     _classid_ = 'Windows.Media.Capture.GameBarServicesManager'
     @winrt_mixinmethod
@@ -1534,24 +1561,24 @@ class GameBarServicesManager(ComPtr):
     def remove_GameBarServicesCreated(self: win32more.Windows.Media.Capture.IGameBarServicesManager, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def GetDefault(cls: win32more.Windows.Media.Capture.IGameBarServicesManagerStatics) -> win32more.Windows.Media.Capture.GameBarServicesManager: ...
-    GameBarServicesCreated = event()
+    GameBarServicesCreated = event(add_GameBarServicesCreated, remove_GameBarServicesCreated)
 class GameBarServicesManagerGameBarServicesCreatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IGameBarServicesManagerGameBarServicesCreatedEventArgs
     _classid_ = 'Windows.Media.Capture.GameBarServicesManagerGameBarServicesCreatedEventArgs'
     @winrt_mixinmethod
     def get_GameBarServices(self: win32more.Windows.Media.Capture.IGameBarServicesManagerGameBarServicesCreatedEventArgs) -> win32more.Windows.Media.Capture.GameBarServices: ...
     GameBarServices = property(get_GameBarServices, None)
 class GameBarServicesTargetInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo
     _classid_ = 'Windows.Media.Capture.GameBarServicesTargetInfo'
     @winrt_mixinmethod
-    def get_DisplayName(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> WinRT_String: ...
+    def get_DisplayName(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> hstr: ...
     @winrt_mixinmethod
-    def get_AppId(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> WinRT_String: ...
+    def get_AppId(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> hstr: ...
     @winrt_mixinmethod
-    def get_TitleId(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> WinRT_String: ...
+    def get_TitleId(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> hstr: ...
     @winrt_mixinmethod
     def get_DisplayMode(self: win32more.Windows.Media.Capture.IGameBarServicesTargetInfo) -> win32more.Windows.Media.Capture.GameBarServicesDisplayMode: ...
     AppId = property(get_AppId, None)
@@ -1559,13 +1586,14 @@ class GameBarServicesTargetInfo(ComPtr):
     DisplayName = property(get_DisplayName, None)
     TitleId = property(get_TitleId, None)
 class GameBarTargetCapturePolicy(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.GameBarTargetCapturePolicy'
     EnabledBySystem = 0
     EnabledByUser = 1
     NotEnabled = 2
     ProhibitedBySystem = 3
     ProhibitedByPublisher = 4
 class IAdvancedCapturedPhoto(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAdvancedCapturedPhoto'
     _iid_ = Guid('{f072728b-b292-4491-9d41-99807a550bbf}')
     @winrt_commethod(6)
@@ -1573,39 +1601,39 @@ class IAdvancedCapturedPhoto(ComPtr):
     @winrt_commethod(7)
     def get_Mode(self) -> win32more.Windows.Media.Devices.AdvancedPhotoMode: ...
     @winrt_commethod(8)
-    def get_Context(self) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def get_Context(self) -> IInspectable: ...
     Context = property(get_Context, None)
     Frame = property(get_Frame, None)
     Mode = property(get_Mode, None)
 class IAdvancedCapturedPhoto2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAdvancedCapturedPhoto2'
     _iid_ = Guid('{18cf6cd8-cffe-42d8-8104-017bb318f4a1}')
     @winrt_commethod(6)
     def get_FrameBoundsRelativeToReferencePhoto(self) -> win32more.Windows.Foundation.IReference[win32more.Windows.Foundation.Rect]: ...
     FrameBoundsRelativeToReferencePhoto = property(get_FrameBoundsRelativeToReferencePhoto, None)
 class IAdvancedPhotoCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAdvancedPhotoCapture'
     _iid_ = Guid('{83ffaafa-6667-44dc-973c-a6bce596aa0f}')
     @winrt_commethod(6)
     def CaptureAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedCapturedPhoto]: ...
     @winrt_commethod(7)
-    def CaptureWithContextAsync(self, context: win32more.Windows.Win32.System.WinRT.IInspectable) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedCapturedPhoto]: ...
+    def CaptureWithContextAsync(self, context: IInspectable) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedCapturedPhoto]: ...
     @winrt_commethod(8)
     def add_OptionalReferencePhotoCaptured(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AdvancedPhotoCapture, win32more.Windows.Media.Capture.OptionalReferencePhotoCapturedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(9)
     def remove_OptionalReferencePhotoCaptured(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(10)
-    def add_AllPhotosCaptured(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AdvancedPhotoCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AllPhotosCaptured(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AdvancedPhotoCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_AllPhotosCaptured(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(12)
     def FinishAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
-    OptionalReferencePhotoCaptured = event()
-    AllPhotosCaptured = event()
+    AllPhotosCaptured = event(add_AllPhotosCaptured, remove_AllPhotosCaptured)
+    OptionalReferencePhotoCaptured = event(add_OptionalReferencePhotoCaptured, remove_OptionalReferencePhotoCaptured)
 class IAppBroadcastBackgroundService(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastBackgroundService'
     _iid_ = Guid('{bad1e72a-fa94-46f9-95fc-d71511cda70b}')
     @winrt_commethod(6)
@@ -1621,9 +1649,9 @@ class IAppBroadcastBackgroundService(ComPtr):
     @winrt_commethod(11)
     def get_StreamInfo(self) -> win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo: ...
     @winrt_commethod(12)
-    def get_AppId(self) -> WinRT_String: ...
+    def get_AppId(self) -> hstr: ...
     @winrt_commethod(13)
-    def get_BroadcastTitle(self) -> WinRT_String: ...
+    def get_BroadcastTitle(self) -> hstr: ...
     @winrt_commethod(14)
     def put_ViewerCount(self, value: UInt32) -> Void: ...
     @winrt_commethod(15)
@@ -1635,7 +1663,7 @@ class IAppBroadcastBackgroundService(ComPtr):
     @winrt_commethod(18)
     def remove_HeartbeatRequested(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(19)
-    def get_TitleId(self) -> WinRT_String: ...
+    def get_TitleId(self) -> hstr: ...
     AppId = property(get_AppId, None)
     BroadcastTitle = property(get_BroadcastTitle, None)
     PlugInState = property(get_PlugInState, put_PlugInState)
@@ -1643,41 +1671,41 @@ class IAppBroadcastBackgroundService(ComPtr):
     StreamInfo = property(get_StreamInfo, put_StreamInfo)
     TitleId = property(get_TitleId, None)
     ViewerCount = property(get_ViewerCount, put_ViewerCount)
-    HeartbeatRequested = event()
+    HeartbeatRequested = event(add_HeartbeatRequested, remove_HeartbeatRequested)
 class IAppBroadcastBackgroundService2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastBackgroundService2'
     _iid_ = Guid('{fc8ccbbf-5549-4b87-959f-23ca401fd473}')
     @winrt_commethod(6)
-    def put_BroadcastTitle(self, value: WinRT_String) -> Void: ...
+    def put_BroadcastTitle(self, value: hstr) -> Void: ...
     @winrt_commethod(7)
-    def get_BroadcastLanguage(self) -> WinRT_String: ...
+    def get_BroadcastLanguage(self) -> hstr: ...
     @winrt_commethod(8)
-    def put_BroadcastLanguage(self, value: WinRT_String) -> Void: ...
+    def put_BroadcastLanguage(self, value: hstr) -> Void: ...
     @winrt_commethod(9)
-    def get_BroadcastChannel(self) -> WinRT_String: ...
+    def get_BroadcastChannel(self) -> hstr: ...
     @winrt_commethod(10)
-    def put_BroadcastChannel(self, value: WinRT_String) -> Void: ...
+    def put_BroadcastChannel(self, value: hstr) -> Void: ...
     @winrt_commethod(11)
-    def add_BroadcastTitleChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BroadcastTitleChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(12)
     def remove_BroadcastTitleChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(13)
-    def add_BroadcastLanguageChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BroadcastLanguageChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(14)
     def remove_BroadcastLanguageChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(15)
-    def add_BroadcastChannelChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BroadcastChannelChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundService, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_BroadcastChannelChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     BroadcastChannel = property(get_BroadcastChannel, put_BroadcastChannel)
     BroadcastLanguage = property(get_BroadcastLanguage, put_BroadcastLanguage)
     BroadcastTitle = property(None, put_BroadcastTitle)
-    BroadcastTitleChanged = event()
-    BroadcastLanguageChanged = event()
-    BroadcastChannelChanged = event()
+    BroadcastChannelChanged = event(add_BroadcastChannelChanged, remove_BroadcastChannelChanged)
+    BroadcastLanguageChanged = event(add_BroadcastLanguageChanged, remove_BroadcastLanguageChanged)
+    BroadcastTitleChanged = event(add_BroadcastTitleChanged, remove_BroadcastTitleChanged)
 class IAppBroadcastBackgroundServiceSignInInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo'
     _iid_ = Guid('{5e735275-88c8-4eca-89ba-4825985db880}')
     @winrt_commethod(6)
@@ -1693,9 +1721,9 @@ class IAppBroadcastBackgroundServiceSignInInfo(ComPtr):
     @winrt_commethod(11)
     def get_AuthenticationResult(self) -> win32more.Windows.Security.Authentication.Web.WebAuthenticationResult: ...
     @winrt_commethod(12)
-    def put_UserName(self, value: WinRT_String) -> Void: ...
+    def put_UserName(self, value: hstr) -> Void: ...
     @winrt_commethod(13)
-    def get_UserName(self) -> WinRT_String: ...
+    def get_UserName(self) -> hstr: ...
     @winrt_commethod(14)
     def add_SignInStateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo, win32more.Windows.Media.Capture.AppBroadcastSignInStateChangedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
@@ -1705,18 +1733,18 @@ class IAppBroadcastBackgroundServiceSignInInfo(ComPtr):
     OAuthRequestUri = property(get_OAuthRequestUri, put_OAuthRequestUri)
     SignInState = property(get_SignInState, None)
     UserName = property(get_UserName, put_UserName)
-    SignInStateChanged = event()
+    SignInStateChanged = event(add_SignInStateChanged, remove_SignInStateChanged)
 class IAppBroadcastBackgroundServiceSignInInfo2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastBackgroundServiceSignInInfo2'
     _iid_ = Guid('{9104285c-62cf-4a3c-a7ee-aeb507404645}')
     @winrt_commethod(6)
-    def add_UserNameChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_UserNameChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceSignInInfo, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_UserNameChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    UserNameChanged = event()
+    UserNameChanged = event(add_UserNameChanged, remove_UserNameChanged)
 class IAppBroadcastBackgroundServiceStreamInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo'
     _iid_ = Guid('{31dc02bc-990a-4904-aa96-fe364381f136}')
     @winrt_commethod(6)
@@ -1730,9 +1758,9 @@ class IAppBroadcastBackgroundServiceStreamInfo(ComPtr):
     @winrt_commethod(10)
     def get_BandwidthTestBitrate(self) -> UInt64: ...
     @winrt_commethod(11)
-    def put_AudioCodec(self, value: WinRT_String) -> Void: ...
+    def put_AudioCodec(self, value: hstr) -> Void: ...
     @winrt_commethod(12)
-    def get_AudioCodec(self) -> WinRT_String: ...
+    def get_AudioCodec(self) -> hstr: ...
     @winrt_commethod(13)
     def get_BroadcastStreamReader(self) -> win32more.Windows.Media.Capture.AppBroadcastStreamReader: ...
     @winrt_commethod(14)
@@ -1740,11 +1768,11 @@ class IAppBroadcastBackgroundServiceStreamInfo(ComPtr):
     @winrt_commethod(15)
     def remove_StreamStateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
-    def add_VideoEncodingResolutionChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoEncodingResolutionChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
     def remove_VideoEncodingResolutionChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(18)
-    def add_VideoEncodingBitrateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoEncodingBitrateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastBackgroundServiceStreamInfo, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(19)
     def remove_VideoEncodingBitrateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AudioCodec = property(get_AudioCodec, put_AudioCodec)
@@ -1752,17 +1780,17 @@ class IAppBroadcastBackgroundServiceStreamInfo(ComPtr):
     BroadcastStreamReader = property(get_BroadcastStreamReader, None)
     DesiredVideoEncodingBitrate = property(get_DesiredVideoEncodingBitrate, put_DesiredVideoEncodingBitrate)
     StreamState = property(get_StreamState, None)
-    StreamStateChanged = event()
-    VideoEncodingResolutionChanged = event()
-    VideoEncodingBitrateChanged = event()
+    StreamStateChanged = event(add_StreamStateChanged, remove_StreamStateChanged)
+    VideoEncodingBitrateChanged = event(add_VideoEncodingBitrateChanged, remove_VideoEncodingBitrateChanged)
+    VideoEncodingResolutionChanged = event(add_VideoEncodingResolutionChanged, remove_VideoEncodingResolutionChanged)
 class IAppBroadcastBackgroundServiceStreamInfo2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastBackgroundServiceStreamInfo2'
     _iid_ = Guid('{bd1e9f6d-94dc-4fce-9541-a9f129596334}')
     @winrt_commethod(6)
     def ReportProblemWithStream(self) -> Void: ...
 class IAppBroadcastCameraCaptureStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastCameraCaptureStateChangedEventArgs'
     _iid_ = Guid('{1e334cd0-b882-4b88-8692-05999aceb70f}')
     @winrt_commethod(6)
@@ -1772,7 +1800,7 @@ class IAppBroadcastCameraCaptureStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class IAppBroadcastGlobalSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastGlobalSettings'
     _iid_ = Guid('{b2cb27a5-70fc-4e17-80bd-6ba0fd3ff3a0}')
     @winrt_commethod(6)
@@ -1808,9 +1836,9 @@ class IAppBroadcastGlobalSettings(ComPtr):
     @winrt_commethod(21)
     def get_IsCameraCaptureEnabledByDefault(self) -> Boolean: ...
     @winrt_commethod(22)
-    def put_SelectedCameraId(self, value: WinRT_String) -> Void: ...
+    def put_SelectedCameraId(self, value: hstr) -> Void: ...
     @winrt_commethod(23)
-    def get_SelectedCameraId(self) -> WinRT_String: ...
+    def get_SelectedCameraId(self) -> hstr: ...
     @winrt_commethod(24)
     def put_CameraOverlayLocation(self, value: win32more.Windows.Media.Capture.AppBroadcastCameraOverlayLocation) -> Void: ...
     @winrt_commethod(25)
@@ -1838,7 +1866,7 @@ class IAppBroadcastGlobalSettings(ComPtr):
     SelectedCameraId = property(get_SelectedCameraId, put_SelectedCameraId)
     SystemAudioGain = property(get_SystemAudioGain, put_SystemAudioGain)
 class IAppBroadcastHeartbeatRequestedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastHeartbeatRequestedEventArgs'
     _iid_ = Guid('{cea54283-ee51-4dbf-9472-79a9ed4e2165}')
     @winrt_commethod(6)
@@ -1847,7 +1875,7 @@ class IAppBroadcastHeartbeatRequestedEventArgs(ComPtr):
     def get_Handled(self) -> Boolean: ...
     Handled = property(get_Handled, put_Handled)
 class IAppBroadcastManagerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastManagerStatics'
     _iid_ = Guid('{364e018b-1e4e-411f-ab3e-92959844c156}')
     @winrt_commethod(6)
@@ -1859,7 +1887,7 @@ class IAppBroadcastManagerStatics(ComPtr):
     @winrt_commethod(9)
     def ApplyProviderSettings(self, value: win32more.Windows.Media.Capture.AppBroadcastProviderSettings) -> Void: ...
 class IAppBroadcastMicrophoneCaptureStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastMicrophoneCaptureStateChangedEventArgs'
     _iid_ = Guid('{a86ad5e9-9440-4908-9d09-65b7e315d795}')
     @winrt_commethod(6)
@@ -1869,23 +1897,23 @@ class IAppBroadcastMicrophoneCaptureStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class IAppBroadcastPlugIn(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPlugIn'
     _iid_ = Guid('{520c1e66-6513-4574-ac54-23b79729615b}')
     @winrt_commethod(6)
-    def get_AppId(self) -> WinRT_String: ...
+    def get_AppId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_ProviderSettings(self) -> win32more.Windows.Media.Capture.AppBroadcastProviderSettings: ...
     @winrt_commethod(8)
     def get_Logo(self) -> win32more.Windows.Storage.Streams.IRandomAccessStreamReference: ...
     @winrt_commethod(9)
-    def get_DisplayName(self) -> WinRT_String: ...
+    def get_DisplayName(self) -> hstr: ...
     AppId = property(get_AppId, None)
     DisplayName = property(get_DisplayName, None)
     Logo = property(get_Logo, None)
     ProviderSettings = property(get_ProviderSettings, None)
 class IAppBroadcastPlugInManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPlugInManager'
     _iid_ = Guid('{e550d979-27a1-49a7-bbf4-d7a9e9d07668}')
     @winrt_commethod(6)
@@ -1900,7 +1928,7 @@ class IAppBroadcastPlugInManager(ComPtr):
     IsBroadcastProviderAvailable = property(get_IsBroadcastProviderAvailable, None)
     PlugInList = property(get_PlugInList, None)
 class IAppBroadcastPlugInManagerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPlugInManagerStatics'
     _iid_ = Guid('{f2645c20-5c76-4cdc-9364-82fe9eb6534d}')
     @winrt_commethod(6)
@@ -1908,14 +1936,14 @@ class IAppBroadcastPlugInManagerStatics(ComPtr):
     @winrt_commethod(7)
     def GetForUser(self, user: win32more.Windows.System.User) -> win32more.Windows.Media.Capture.AppBroadcastPlugInManager: ...
 class IAppBroadcastPlugInStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPlugInStateChangedEventArgs'
     _iid_ = Guid('{4881d0f2-abc5-4fc6-84b0-89370bb47212}')
     @winrt_commethod(6)
     def get_PlugInState(self) -> win32more.Windows.Media.Capture.AppBroadcastPlugInState: ...
     PlugInState = property(get_PlugInState, None)
 class IAppBroadcastPreview(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPreview'
     _iid_ = Guid('{14b60f5a-6e4a-4b80-a14f-67ee77d153e7}')
     @winrt_commethod(6)
@@ -1933,9 +1961,9 @@ class IAppBroadcastPreview(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     PreviewState = property(get_PreviewState, None)
     PreviewStreamReader = property(get_PreviewStreamReader, None)
-    PreviewStateChanged = event()
+    PreviewStateChanged = event(add_PreviewStateChanged, remove_PreviewStateChanged)
 class IAppBroadcastPreviewStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPreviewStateChangedEventArgs'
     _iid_ = Guid('{5a57f2de-8dea-4e86-90ad-03fc26b9653c}')
     @winrt_commethod(6)
@@ -1945,7 +1973,7 @@ class IAppBroadcastPreviewStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     PreviewState = property(get_PreviewState, None)
 class IAppBroadcastPreviewStreamReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPreviewStreamReader'
     _iid_ = Guid('{92228d50-db3f-40a8-8cd4-f4e371ddab37}')
     @winrt_commethod(6)
@@ -1961,7 +1989,7 @@ class IAppBroadcastPreviewStreamReader(ComPtr):
     @winrt_commethod(11)
     def TryGetNextVideoFrame(self) -> win32more.Windows.Media.Capture.AppBroadcastPreviewStreamVideoFrame: ...
     @winrt_commethod(12)
-    def add_VideoFrameArrived(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastPreviewStreamReader, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoFrameArrived(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastPreviewStreamReader, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(13)
     def remove_VideoFrameArrived(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     VideoBitmapAlphaMode = property(get_VideoBitmapAlphaMode, None)
@@ -1969,9 +1997,9 @@ class IAppBroadcastPreviewStreamReader(ComPtr):
     VideoHeight = property(get_VideoHeight, None)
     VideoStride = property(get_VideoStride, None)
     VideoWidth = property(get_VideoWidth, None)
-    VideoFrameArrived = event()
+    VideoFrameArrived = event(add_VideoFrameArrived, remove_VideoFrameArrived)
 class IAppBroadcastPreviewStreamVideoFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPreviewStreamVideoFrame'
     _iid_ = Guid('{010fbea1-94fe-4499-b8c0-8d244279fb12}')
     @winrt_commethod(6)
@@ -1981,7 +2009,7 @@ class IAppBroadcastPreviewStreamVideoFrame(ComPtr):
     VideoBuffer = property(get_VideoBuffer, None)
     VideoHeader = property(get_VideoHeader, None)
 class IAppBroadcastPreviewStreamVideoHeader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastPreviewStreamVideoHeader'
     _iid_ = Guid('{8bef6113-da84-4499-a7ab-87118cb4a157}')
     @winrt_commethod(6)
@@ -1997,13 +2025,13 @@ class IAppBroadcastPreviewStreamVideoHeader(ComPtr):
     FrameId = property(get_FrameId, None)
     RelativeTimestamp = property(get_RelativeTimestamp, None)
 class IAppBroadcastProviderSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastProviderSettings'
     _iid_ = Guid('{c30bdf62-9948-458f-ad50-aa06ec03da08}')
     @winrt_commethod(6)
-    def put_DefaultBroadcastTitle(self, value: WinRT_String) -> Void: ...
+    def put_DefaultBroadcastTitle(self, value: hstr) -> Void: ...
     @winrt_commethod(7)
-    def get_DefaultBroadcastTitle(self) -> WinRT_String: ...
+    def get_DefaultBroadcastTitle(self) -> hstr: ...
     @winrt_commethod(8)
     def put_AudioEncodingBitrate(self, value: UInt32) -> Void: ...
     @winrt_commethod(9)
@@ -2036,7 +2064,7 @@ class IAppBroadcastProviderSettings(ComPtr):
     VideoEncodingBitrateMode = property(get_VideoEncodingBitrateMode, put_VideoEncodingBitrateMode)
     VideoEncodingResolutionMode = property(get_VideoEncodingResolutionMode, put_VideoEncodingResolutionMode)
 class IAppBroadcastServices(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastServices'
     _iid_ = Guid('{8660b4d6-969b-4e3c-ac3a-8b042ee4ee63}')
     @winrt_commethod(6)
@@ -2044,15 +2072,15 @@ class IAppBroadcastServices(ComPtr):
     @winrt_commethod(7)
     def put_CaptureTargetType(self, value: win32more.Windows.Media.Capture.AppBroadcastCaptureTargetType) -> Void: ...
     @winrt_commethod(8)
-    def get_BroadcastTitle(self) -> WinRT_String: ...
+    def get_BroadcastTitle(self) -> hstr: ...
     @winrt_commethod(9)
-    def put_BroadcastTitle(self, value: WinRT_String) -> Void: ...
+    def put_BroadcastTitle(self, value: hstr) -> Void: ...
     @winrt_commethod(10)
-    def get_BroadcastLanguage(self) -> WinRT_String: ...
+    def get_BroadcastLanguage(self) -> hstr: ...
     @winrt_commethod(11)
-    def put_BroadcastLanguage(self, value: WinRT_String) -> Void: ...
+    def put_BroadcastLanguage(self, value: hstr) -> Void: ...
     @winrt_commethod(12)
-    def get_UserName(self) -> WinRT_String: ...
+    def get_UserName(self) -> hstr: ...
     @winrt_commethod(13)
     def get_CanCapture(self) -> Boolean: ...
     @winrt_commethod(14)
@@ -2076,7 +2104,7 @@ class IAppBroadcastServices(ComPtr):
     State = property(get_State, None)
     UserName = property(get_UserName, None)
 class IAppBroadcastSignInStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastSignInStateChangedEventArgs'
     _iid_ = Guid('{02b692a4-5919-4a9e-8d5e-c9bb0dd3377a}')
     @winrt_commethod(6)
@@ -2086,7 +2114,7 @@ class IAppBroadcastSignInStateChangedEventArgs(ComPtr):
     Result = property(get_Result, None)
     SignInState = property(get_SignInState, None)
 class IAppBroadcastState(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastState'
     _iid_ = Guid('{ee08056d-8099-4ddd-922e-c56dac58abfb}')
     @winrt_commethod(6)
@@ -2156,7 +2184,7 @@ class IAppBroadcastState(ComPtr):
     @winrt_commethod(38)
     def remove_StreamStateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(39)
-    def add_CaptureTargetClosed(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastState, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CaptureTargetClosed(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastState, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(40)
     def remove_CaptureTargetClosed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AuthenticationResult = property(get_AuthenticationResult, put_AuthenticationResult)
@@ -2176,14 +2204,14 @@ class IAppBroadcastState(ComPtr):
     TerminationReason = property(get_TerminationReason, None)
     TerminationReasonPlugInSpecific = property(get_TerminationReasonPlugInSpecific, None)
     ViewerCount = property(get_ViewerCount, None)
-    ViewerCountChanged = event()
-    MicrophoneCaptureStateChanged = event()
-    CameraCaptureStateChanged = event()
-    PlugInStateChanged = event()
-    StreamStateChanged = event()
-    CaptureTargetClosed = event()
+    CameraCaptureStateChanged = event(add_CameraCaptureStateChanged, remove_CameraCaptureStateChanged)
+    CaptureTargetClosed = event(add_CaptureTargetClosed, remove_CaptureTargetClosed)
+    MicrophoneCaptureStateChanged = event(add_MicrophoneCaptureStateChanged, remove_MicrophoneCaptureStateChanged)
+    PlugInStateChanged = event(add_PlugInStateChanged, remove_PlugInStateChanged)
+    StreamStateChanged = event(add_StreamStateChanged, remove_StreamStateChanged)
+    ViewerCountChanged = event(add_ViewerCountChanged, remove_ViewerCountChanged)
 class IAppBroadcastStreamAudioFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastStreamAudioFrame'
     _iid_ = Guid('{efab4ac8-21ba-453f-8bb7-5e938a2e9a74}')
     @winrt_commethod(6)
@@ -2193,7 +2221,7 @@ class IAppBroadcastStreamAudioFrame(ComPtr):
     AudioBuffer = property(get_AudioBuffer, None)
     AudioHeader = property(get_AudioHeader, None)
 class IAppBroadcastStreamAudioHeader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastStreamAudioHeader'
     _iid_ = Guid('{bf21a570-6b78-4216-9f07-5aff5256f1b7}')
     @winrt_commethod(6)
@@ -2212,7 +2240,7 @@ class IAppBroadcastStreamAudioHeader(ComPtr):
     HasDiscontinuity = property(get_HasDiscontinuity, None)
     RelativeTimestamp = property(get_RelativeTimestamp, None)
 class IAppBroadcastStreamReader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastStreamReader'
     _iid_ = Guid('{b338bcf9-3364-4460-b5f1-3cc2796a8aa2}')
     @winrt_commethod(6)
@@ -2234,11 +2262,11 @@ class IAppBroadcastStreamReader(ComPtr):
     @winrt_commethod(14)
     def TryGetNextVideoFrame(self) -> win32more.Windows.Media.Capture.AppBroadcastStreamVideoFrame: ...
     @winrt_commethod(15)
-    def add_AudioFrameArrived(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AudioFrameArrived(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_AudioFrameArrived(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(17)
-    def add_VideoFrameArrived(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_VideoFrameArrived(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppBroadcastStreamReader, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(18)
     def remove_VideoFrameArrived(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     AudioAacSequence = property(get_AudioAacSequence, None)
@@ -2248,17 +2276,17 @@ class IAppBroadcastStreamReader(ComPtr):
     VideoBitrate = property(get_VideoBitrate, None)
     VideoHeight = property(get_VideoHeight, None)
     VideoWidth = property(get_VideoWidth, None)
-    AudioFrameArrived = event()
-    VideoFrameArrived = event()
+    AudioFrameArrived = event(add_AudioFrameArrived, remove_AudioFrameArrived)
+    VideoFrameArrived = event(add_VideoFrameArrived, remove_VideoFrameArrived)
 class IAppBroadcastStreamStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastStreamStateChangedEventArgs'
     _iid_ = Guid('{5108a733-d008-4a89-93be-58aed961374e}')
     @winrt_commethod(6)
     def get_StreamState(self) -> win32more.Windows.Media.Capture.AppBroadcastStreamState: ...
     StreamState = property(get_StreamState, None)
 class IAppBroadcastStreamVideoFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastStreamVideoFrame'
     _iid_ = Guid('{0f97cf2b-c9e4-4e88-8194-d814cbd585d8}')
     @winrt_commethod(6)
@@ -2268,7 +2296,7 @@ class IAppBroadcastStreamVideoFrame(ComPtr):
     VideoBuffer = property(get_VideoBuffer, None)
     VideoHeader = property(get_VideoHeader, None)
 class IAppBroadcastStreamVideoHeader(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastStreamVideoHeader'
     _iid_ = Guid('{0b9ebece-7e32-432d-8ca2-36bf10b9f462}')
     @winrt_commethod(6)
@@ -2290,21 +2318,21 @@ class IAppBroadcastStreamVideoHeader(ComPtr):
     IsKeyFrame = property(get_IsKeyFrame, None)
     RelativeTimestamp = property(get_RelativeTimestamp, None)
 class IAppBroadcastTriggerDetails(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastTriggerDetails'
     _iid_ = Guid('{deebab35-ec5e-4d8f-b1c0-5da6e8c75638}')
     @winrt_commethod(6)
     def get_BackgroundService(self) -> win32more.Windows.Media.Capture.AppBroadcastBackgroundService: ...
     BackgroundService = property(get_BackgroundService, None)
 class IAppBroadcastViewerCountChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppBroadcastViewerCountChangedEventArgs'
     _iid_ = Guid('{e6e11825-5401-4ade-8bd2-c14ecee6807d}')
     @winrt_commethod(6)
     def get_ViewerCount(self) -> UInt32: ...
     ViewerCount = property(get_ViewerCount, None)
 class IAppCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCapture'
     _iid_ = Guid('{9749d453-a29a-45ed-8f29-22d09942cff7}')
     @winrt_commethod(6)
@@ -2312,14 +2340,14 @@ class IAppCapture(ComPtr):
     @winrt_commethod(7)
     def get_IsCapturingVideo(self) -> Boolean: ...
     @winrt_commethod(8)
-    def add_CapturingChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CapturingChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(9)
     def remove_CapturingChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     IsCapturingAudio = property(get_IsCapturingAudio, None)
     IsCapturingVideo = property(get_IsCapturingVideo, None)
-    CapturingChanged = event()
+    CapturingChanged = event(add_CapturingChanged, remove_CapturingChanged)
 class IAppCaptureAlternateShortcutKeys(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureAlternateShortcutKeys'
     _iid_ = Guid('{19e8e0ef-236c-40f9-b38f-9b7dd65d1ccc}')
     @winrt_commethod(6)
@@ -2373,7 +2401,7 @@ class IAppCaptureAlternateShortcutKeys(ComPtr):
     ToggleRecordingKey = property(get_ToggleRecordingKey, put_ToggleRecordingKey)
     ToggleRecordingKeyModifiers = property(get_ToggleRecordingKeyModifiers, put_ToggleRecordingKeyModifiers)
 class IAppCaptureAlternateShortcutKeys2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureAlternateShortcutKeys2'
     _iid_ = Guid('{c3669090-dd17-47f0-95e5-ce42286cf338}')
     @winrt_commethod(6)
@@ -2387,7 +2415,7 @@ class IAppCaptureAlternateShortcutKeys2(ComPtr):
     ToggleMicrophoneCaptureKey = property(get_ToggleMicrophoneCaptureKey, put_ToggleMicrophoneCaptureKey)
     ToggleMicrophoneCaptureKeyModifiers = property(get_ToggleMicrophoneCaptureKeyModifiers, put_ToggleMicrophoneCaptureKeyModifiers)
 class IAppCaptureAlternateShortcutKeys3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureAlternateShortcutKeys3'
     _iid_ = Guid('{7b81448c-418e-469c-a49a-45b597c826b6}')
     @winrt_commethod(6)
@@ -2411,21 +2439,21 @@ class IAppCaptureAlternateShortcutKeys3(ComPtr):
     ToggleCameraCaptureKey = property(get_ToggleCameraCaptureKey, put_ToggleCameraCaptureKey)
     ToggleCameraCaptureKeyModifiers = property(get_ToggleCameraCaptureKeyModifiers, put_ToggleCameraCaptureKeyModifiers)
 class IAppCaptureDurationGeneratedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureDurationGeneratedEventArgs'
     _iid_ = Guid('{c1f5563b-ffa1-44c9-975f-27fbeb553b35}')
     @winrt_commethod(6)
     def get_Duration(self) -> win32more.Windows.Foundation.TimeSpan: ...
     Duration = property(get_Duration, None)
 class IAppCaptureFileGeneratedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureFileGeneratedEventArgs'
     _iid_ = Guid('{4189fbf4-465e-45bf-907f-165b3fb23758}')
     @winrt_commethod(6)
     def get_File(self) -> win32more.Windows.Storage.StorageFile: ...
     File = property(get_File, None)
 class IAppCaptureManagerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureManagerStatics'
     _iid_ = Guid('{7d9e3ea7-6282-4735-8d4e-aa45f90f6723}')
     @winrt_commethod(6)
@@ -2433,35 +2461,35 @@ class IAppCaptureManagerStatics(ComPtr):
     @winrt_commethod(7)
     def ApplySettings(self, appCaptureSettings: win32more.Windows.Media.Capture.AppCaptureSettings) -> Void: ...
 class IAppCaptureMetadataWriter(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureMetadataWriter'
     _iid_ = Guid('{e0ce4877-9aaf-46b4-ad31-6a60b441c780}')
     @winrt_commethod(6)
-    def AddStringEvent(self, name: WinRT_String, value: WinRT_String, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def AddStringEvent(self, name: hstr, value: hstr, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_commethod(7)
-    def AddInt32Event(self, name: WinRT_String, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def AddInt32Event(self, name: hstr, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_commethod(8)
-    def AddDoubleEvent(self, name: WinRT_String, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def AddDoubleEvent(self, name: hstr, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_commethod(9)
-    def StartStringState(self, name: WinRT_String, value: WinRT_String, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def StartStringState(self, name: hstr, value: hstr, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_commethod(10)
-    def StartInt32State(self, name: WinRT_String, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def StartInt32State(self, name: hstr, value: Int32, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_commethod(11)
-    def StartDoubleState(self, name: WinRT_String, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
+    def StartDoubleState(self, name: hstr, value: Double, priority: win32more.Windows.Media.Capture.AppCaptureMetadataPriority) -> Void: ...
     @winrt_commethod(12)
-    def StopState(self, name: WinRT_String) -> Void: ...
+    def StopState(self, name: hstr) -> Void: ...
     @winrt_commethod(13)
     def StopAllStates(self) -> Void: ...
     @winrt_commethod(14)
     def get_RemainingStorageBytesAvailable(self) -> UInt64: ...
     @winrt_commethod(15)
-    def add_MetadataPurged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureMetadataWriter, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_MetadataPurged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureMetadataWriter, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_MetadataPurged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     RemainingStorageBytesAvailable = property(get_RemainingStorageBytesAvailable, None)
-    MetadataPurged = event()
+    MetadataPurged = event(add_MetadataPurged, remove_MetadataPurged)
 class IAppCaptureMicrophoneCaptureStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureMicrophoneCaptureStateChangedEventArgs'
     _iid_ = Guid('{324d249e-45bc-4c35-bc35-e469fc7a69e0}')
     @winrt_commethod(6)
@@ -2471,7 +2499,7 @@ class IAppCaptureMicrophoneCaptureStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class IAppCaptureRecordOperation(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureRecordOperation'
     _iid_ = Guid('{c66020a9-1538-495c-9bbb-2ba870ec5861}')
     @winrt_commethod(6)
@@ -2503,11 +2531,11 @@ class IAppCaptureRecordOperation(ComPtr):
     File = property(get_File, None)
     IsFileTruncated = property(get_IsFileTruncated, None)
     State = property(get_State, None)
-    StateChanged = event()
-    DurationGenerated = event()
-    FileGenerated = event()
+    DurationGenerated = event(add_DurationGenerated, remove_DurationGenerated)
+    FileGenerated = event(add_FileGenerated, remove_FileGenerated)
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class IAppCaptureRecordingStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureRecordingStateChangedEventArgs'
     _iid_ = Guid('{24fc8712-e305-490d-b415-6b1c9049736b}')
     @winrt_commethod(6)
@@ -2517,7 +2545,7 @@ class IAppCaptureRecordingStateChangedEventArgs(ComPtr):
     ErrorCode = property(get_ErrorCode, None)
     State = property(get_State, None)
 class IAppCaptureServices(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureServices'
     _iid_ = Guid('{44fec0b5-34f5-4f18-ae8c-b9123abbfc0d}')
     @winrt_commethod(6)
@@ -2531,7 +2559,7 @@ class IAppCaptureServices(ComPtr):
     CanCapture = property(get_CanCapture, None)
     State = property(get_State, None)
 class IAppCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureSettings'
     _iid_ = Guid('{14683a86-8807-48d3-883a-970ee4532a39}')
     @winrt_commethod(6)
@@ -2627,7 +2655,7 @@ class IAppCaptureSettings(ComPtr):
     VideoEncodingBitrateMode = property(get_VideoEncodingBitrateMode, put_VideoEncodingBitrateMode)
     VideoEncodingResolutionMode = property(get_VideoEncodingResolutionMode, put_VideoEncodingResolutionMode)
 class IAppCaptureSettings2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureSettings2'
     _iid_ = Guid('{fcb8cee7-e26b-476f-9b1a-ec342d2a8fde}')
     @winrt_commethod(6)
@@ -2637,7 +2665,7 @@ class IAppCaptureSettings2(ComPtr):
     AlternateShortcutKeys = property(get_AlternateShortcutKeys, None)
     IsGpuConstrained = property(get_IsGpuConstrained, None)
 class IAppCaptureSettings3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureSettings3'
     _iid_ = Guid('{a93502fe-88c2-42d6-aaaa-40feffd75aec}')
     @winrt_commethod(6)
@@ -2646,7 +2674,7 @@ class IAppCaptureSettings3(ComPtr):
     def get_IsMicrophoneCaptureEnabled(self) -> Boolean: ...
     IsMicrophoneCaptureEnabled = property(get_IsMicrophoneCaptureEnabled, put_IsMicrophoneCaptureEnabled)
 class IAppCaptureSettings4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureSettings4'
     _iid_ = Guid('{07c2774c-1a81-482f-a244-049d95f25b0b}')
     @winrt_commethod(6)
@@ -2670,7 +2698,7 @@ class IAppCaptureSettings4(ComPtr):
     SystemAudioGain = property(get_SystemAudioGain, put_SystemAudioGain)
     VideoEncodingFrameRateMode = property(get_VideoEncodingFrameRateMode, put_VideoEncodingFrameRateMode)
 class IAppCaptureSettings5(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureSettings5'
     _iid_ = Guid('{18894522-b0e8-4ba0-8f13-3eaa5fa4013b}')
     @winrt_commethod(6)
@@ -2684,7 +2712,7 @@ class IAppCaptureSettings5(ComPtr):
     IsCursorImageCaptureEnabled = property(get_IsCursorImageCaptureEnabled, put_IsCursorImageCaptureEnabled)
     IsEchoCancellationEnabled = property(get_IsEchoCancellationEnabled, put_IsEchoCancellationEnabled)
 class IAppCaptureState(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureState'
     _iid_ = Guid('{73134372-d4eb-44ce-9538-465f506ac4ea}')
     @winrt_commethod(6)
@@ -2706,7 +2734,7 @@ class IAppCaptureState(ComPtr):
     @winrt_commethod(14)
     def remove_MicrophoneCaptureStateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(15)
-    def add_CaptureTargetClosed(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureState, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CaptureTargetClosed(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.AppCaptureState, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_CaptureTargetClosed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     IsHistoricalCaptureEnabled = property(get_IsHistoricalCaptureEnabled, None)
@@ -2714,22 +2742,22 @@ class IAppCaptureState(ComPtr):
     MicrophoneCaptureError = property(get_MicrophoneCaptureError, None)
     MicrophoneCaptureState = property(get_MicrophoneCaptureState, None)
     ShouldCaptureMicrophone = property(get_ShouldCaptureMicrophone, put_ShouldCaptureMicrophone)
-    MicrophoneCaptureStateChanged = event()
-    CaptureTargetClosed = event()
+    CaptureTargetClosed = event(add_CaptureTargetClosed, remove_CaptureTargetClosed)
+    MicrophoneCaptureStateChanged = event(add_MicrophoneCaptureStateChanged, remove_MicrophoneCaptureStateChanged)
 class IAppCaptureStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureStatics'
     _iid_ = Guid('{f922dd6c-0a7e-4e74-8b20-9c1f902d08a1}')
     @winrt_commethod(6)
     def GetForCurrentView(self) -> win32more.Windows.Media.Capture.AppCapture: ...
 class IAppCaptureStatics2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IAppCaptureStatics2'
     _iid_ = Guid('{b2d881d4-836c-4da4-afd7-facc041e1cf3}')
     @winrt_commethod(6)
     def SetAllowedAsync(self, allowed: Boolean) -> win32more.Windows.Foundation.IAsyncAction: ...
 class ICameraCaptureUI(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICameraCaptureUI'
     _iid_ = Guid('{48587540-6f93-4bb4-b8f3-e89e48948c91}')
     @winrt_commethod(6)
@@ -2741,7 +2769,7 @@ class ICameraCaptureUI(ComPtr):
     PhotoSettings = property(get_PhotoSettings, None)
     VideoSettings = property(get_VideoSettings, None)
 class ICameraCaptureUIPhotoCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICameraCaptureUIPhotoCaptureSettings'
     _iid_ = Guid('{b9f5be97-3472-46a8-8a9e-04ce42ccc97d}')
     @winrt_commethod(6)
@@ -2770,7 +2798,7 @@ class ICameraCaptureUIPhotoCaptureSettings(ComPtr):
     Format = property(get_Format, put_Format)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class ICameraCaptureUIVideoCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICameraCaptureUIVideoCaptureSettings'
     _iid_ = Guid('{64e92d1f-a28d-425a-b84f-e568335ff24e}')
     @winrt_commethod(6)
@@ -2794,13 +2822,13 @@ class ICameraCaptureUIVideoCaptureSettings(ComPtr):
     MaxDurationInSeconds = property(get_MaxDurationInSeconds, put_MaxDurationInSeconds)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class ICameraOptionsUIStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICameraOptionsUIStatics'
     _iid_ = Guid('{3b0d5e34-3906-4b7d-946c-7bde844499ae}')
     @winrt_commethod(6)
     def Show(self, mediaCapture: win32more.Windows.Media.Capture.MediaCapture) -> Void: ...
 class ICapturedFrame(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Media.Capture.ICapturedFrame'
     _iid_ = Guid('{1dd2de1f-571b-44d8-8e80-a08a1578766e}')
@@ -2811,7 +2839,7 @@ class ICapturedFrame(ComPtr):
     Height = property(get_Height, None)
     Width = property(get_Width, None)
 class ICapturedFrame2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICapturedFrame2'
     _iid_ = Guid('{543fa6d1-bd78-4866-adda-24314bc65dea}')
     @winrt_commethod(6)
@@ -2821,7 +2849,7 @@ class ICapturedFrame2(ComPtr):
     BitmapProperties = property(get_BitmapProperties, None)
     ControlValues = property(get_ControlValues, None)
 class ICapturedFrameControlValues(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICapturedFrameControlValues'
     _iid_ = Guid('{90c65b7f-4e0d-4ca4-882d-7a144fed0a90}')
     @winrt_commethod(6)
@@ -2852,7 +2880,7 @@ class ICapturedFrameControlValues(ComPtr):
     WhiteBalance = property(get_WhiteBalance, None)
     ZoomFactor = property(get_ZoomFactor, None)
 class ICapturedFrameControlValues2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICapturedFrameControlValues2'
     _iid_ = Guid('{500b2b88-06d2-4aa7-a7db-d37af73321d8}')
     @winrt_commethod(6)
@@ -2871,14 +2899,14 @@ class ICapturedFrameControlValues2(ComPtr):
     SensorFrameRate = property(get_SensorFrameRate, None)
     WhiteBalanceGain = property(get_WhiteBalanceGain, None)
 class ICapturedFrameWithSoftwareBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICapturedFrameWithSoftwareBitmap'
     _iid_ = Guid('{b58e8b6e-8503-49b5-9e86-897d26a3ff3d}')
     @winrt_commethod(6)
     def get_SoftwareBitmap(self) -> win32more.Windows.Graphics.Imaging.SoftwareBitmap: ...
     SoftwareBitmap = property(get_SoftwareBitmap, None)
 class ICapturedPhoto(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ICapturedPhoto'
     _iid_ = Guid('{b0ce7e5a-cfcc-4d6c-8ad1-0869208aca16}')
     @winrt_commethod(6)
@@ -2888,7 +2916,7 @@ class ICapturedPhoto(ComPtr):
     Frame = property(get_Frame, None)
     Thumbnail = property(get_Thumbnail, None)
 class IGameBarServices(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IGameBarServices'
     _iid_ = Guid('{2dbead57-50a6-499e-8c6c-d330a7311796}')
     @winrt_commethod(6)
@@ -2900,7 +2928,7 @@ class IGameBarServices(ComPtr):
     @winrt_commethod(9)
     def get_TargetInfo(self) -> win32more.Windows.Media.Capture.GameBarServicesTargetInfo: ...
     @winrt_commethod(10)
-    def get_SessionId(self) -> WinRT_String: ...
+    def get_SessionId(self) -> hstr: ...
     @winrt_commethod(11)
     def get_AppBroadcastServices(self) -> win32more.Windows.Media.Capture.AppBroadcastServices: ...
     @winrt_commethod(12)
@@ -2914,9 +2942,9 @@ class IGameBarServices(ComPtr):
     SessionId = property(get_SessionId, None)
     TargetCapturePolicy = property(get_TargetCapturePolicy, None)
     TargetInfo = property(get_TargetInfo, None)
-    CommandReceived = event()
+    CommandReceived = event(add_CommandReceived, remove_CommandReceived)
 class IGameBarServicesCommandEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IGameBarServicesCommandEventArgs'
     _iid_ = Guid('{a74226b2-f176-4fcf-8fbb-cf698b2eb8e0}')
     @winrt_commethod(6)
@@ -2926,37 +2954,37 @@ class IGameBarServicesCommandEventArgs(ComPtr):
     Command = property(get_Command, None)
     Origin = property(get_Origin, None)
 class IGameBarServicesManager(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IGameBarServicesManager'
     _iid_ = Guid('{3a4b9cfa-7f8b-4c60-9dbb-0bcd262dffc6}')
     @winrt_commethod(6)
     def add_GameBarServicesCreated(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.GameBarServicesManager, win32more.Windows.Media.Capture.GameBarServicesManagerGameBarServicesCreatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_GameBarServicesCreated(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    GameBarServicesCreated = event()
+    GameBarServicesCreated = event(add_GameBarServicesCreated, remove_GameBarServicesCreated)
 class IGameBarServicesManagerGameBarServicesCreatedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IGameBarServicesManagerGameBarServicesCreatedEventArgs'
     _iid_ = Guid('{ededbd9c-143e-49a3-a5ea-0b1995c8d46e}')
     @winrt_commethod(6)
     def get_GameBarServices(self) -> win32more.Windows.Media.Capture.GameBarServices: ...
     GameBarServices = property(get_GameBarServices, None)
 class IGameBarServicesManagerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IGameBarServicesManagerStatics'
     _iid_ = Guid('{34c1b616-ff25-4792-98f2-d3753f15ac13}')
     @winrt_commethod(6)
     def GetDefault(self) -> win32more.Windows.Media.Capture.GameBarServicesManager: ...
 class IGameBarServicesTargetInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IGameBarServicesTargetInfo'
     _iid_ = Guid('{b4202f92-1611-4e05-b6ef-dfd737ae33b0}')
     @winrt_commethod(6)
-    def get_DisplayName(self) -> WinRT_String: ...
+    def get_DisplayName(self) -> hstr: ...
     @winrt_commethod(7)
-    def get_AppId(self) -> WinRT_String: ...
+    def get_AppId(self) -> hstr: ...
     @winrt_commethod(8)
-    def get_TitleId(self) -> WinRT_String: ...
+    def get_TitleId(self) -> hstr: ...
     @winrt_commethod(9)
     def get_DisplayMode(self) -> win32more.Windows.Media.Capture.GameBarServicesDisplayMode: ...
     AppId = property(get_AppId, None)
@@ -2964,7 +2992,7 @@ class IGameBarServicesTargetInfo(ComPtr):
     DisplayName = property(get_DisplayName, None)
     TitleId = property(get_TitleId, None)
 class ILowLagMediaRecording(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ILowLagMediaRecording'
     _iid_ = Guid('{41c8baf7-ff3f-49f0-a477-f195e3ce5108}')
     @winrt_commethod(6)
@@ -2974,7 +3002,7 @@ class ILowLagMediaRecording(ComPtr):
     @winrt_commethod(8)
     def FinishAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
 class ILowLagMediaRecording2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ILowLagMediaRecording2'
     _iid_ = Guid('{6369c758-5644-41e2-97af-8ef56a25e225}')
     @winrt_commethod(6)
@@ -2982,7 +3010,7 @@ class ILowLagMediaRecording2(ComPtr):
     @winrt_commethod(7)
     def ResumeAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
 class ILowLagMediaRecording3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ILowLagMediaRecording3'
     _iid_ = Guid('{5c33ab12-48f7-47da-b41e-90880a5fe0ec}')
     @winrt_commethod(6)
@@ -2990,7 +3018,7 @@ class ILowLagMediaRecording3(ComPtr):
     @winrt_commethod(7)
     def StopWithResultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.MediaCaptureStopResult]: ...
 class ILowLagPhotoCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ILowLagPhotoCapture'
     _iid_ = Guid('{a37251b7-6b44-473d-8f24-f703d6c0ec44}')
     @winrt_commethod(6)
@@ -2998,7 +3026,7 @@ class ILowLagPhotoCapture(ComPtr):
     @winrt_commethod(7)
     def FinishAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
 class ILowLagPhotoSequenceCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.ILowLagPhotoSequenceCapture'
     _iid_ = Guid('{7cc346bb-b9a9-4c91-8ffa-287e9c668669}')
     @winrt_commethod(6)
@@ -3011,9 +3039,9 @@ class ILowLagPhotoSequenceCapture(ComPtr):
     def add_PhotoCaptured(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.LowLagPhotoSequenceCapture, win32more.Windows.Media.Capture.PhotoCapturedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(10)
     def remove_PhotoCaptured(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    PhotoCaptured = event()
+    PhotoCaptured = event(add_PhotoCaptured, remove_PhotoCaptured)
 class IMediaCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture'
     _iid_ = Guid('{c61afbb4-fb10-4a34-ac18-ca80d9c8e7ee}')
     @winrt_commethod(6)
@@ -3027,7 +3055,7 @@ class IMediaCapture(ComPtr):
     @winrt_commethod(10)
     def StartRecordToCustomSinkAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customMediaSink: win32more.Windows.Media.IMediaExtension) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(11)
-    def StartRecordToCustomSinkIdAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: WinRT_String, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def StartRecordToCustomSinkIdAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: hstr, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(12)
     def StopRecordAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(13)
@@ -3035,13 +3063,13 @@ class IMediaCapture(ComPtr):
     @winrt_commethod(14)
     def CapturePhotoToStreamAsync(self, type: win32more.Windows.Media.MediaProperties.ImageEncodingProperties, stream: win32more.Windows.Storage.Streams.IRandomAccessStream) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(15)
-    def AddEffectAsync(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, effectActivationID: WinRT_String, effectSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def AddEffectAsync(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, effectActivationID: hstr, effectSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(16)
     def ClearEffectsAsync(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(17)
-    def SetEncoderProperty(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid, propertyValue: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
+    def SetEncoderProperty(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid, propertyValue: IInspectable) -> Void: ...
     @winrt_commethod(18)
-    def GetEncoderProperty(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def GetEncoderProperty(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid) -> IInspectable: ...
     @winrt_commethod(19)
     def add_Failed(self, errorEventHandler: win32more.Windows.Media.Capture.MediaCaptureFailedEventHandler) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(20)
@@ -3071,10 +3099,10 @@ class IMediaCapture(ComPtr):
     AudioDeviceController = property(get_AudioDeviceController, None)
     MediaCaptureSettings = property(get_MediaCaptureSettings, None)
     VideoDeviceController = property(get_VideoDeviceController, None)
-    Failed = event()
-    RecordLimitationExceeded = event()
+    Failed = event(add_Failed, remove_Failed)
+    RecordLimitationExceeded = event(add_RecordLimitationExceeded, remove_RecordLimitationExceeded)
 class IMediaCapture2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture2'
     _iid_ = Guid('{9cc68260-7da1-4043-b652-21b8878daff9}')
     @winrt_commethod(6)
@@ -3084,7 +3112,7 @@ class IMediaCapture2(ComPtr):
     @winrt_commethod(8)
     def PrepareLowLagRecordToCustomSinkAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customMediaSink: win32more.Windows.Media.IMediaExtension) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagMediaRecording]: ...
     @winrt_commethod(9)
-    def PrepareLowLagRecordToCustomSinkIdAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: WinRT_String, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagMediaRecording]: ...
+    def PrepareLowLagRecordToCustomSinkIdAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: hstr, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagMediaRecording]: ...
     @winrt_commethod(10)
     def PrepareLowLagPhotoCaptureAsync(self, type: win32more.Windows.Media.MediaProperties.ImageEncodingProperties) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagPhotoCapture]: ...
     @winrt_commethod(11)
@@ -3092,7 +3120,7 @@ class IMediaCapture2(ComPtr):
     @winrt_commethod(12)
     def SetEncodingPropertiesAsync(self, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, mediaEncodingProperties: win32more.Windows.Media.MediaProperties.IMediaEncodingProperties, encoderProperties: win32more.Windows.Media.MediaProperties.MediaPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
 class IMediaCapture3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture3'
     _iid_ = Guid('{d4136f30-1564-466e-bc0a-af94e02ab016}')
     @winrt_commethod(6)
@@ -3105,10 +3133,10 @@ class IMediaCapture3(ComPtr):
     def add_PhotoConfirmationCaptured(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, win32more.Windows.Media.Capture.PhotoConfirmationCapturedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(10)
     def remove_PhotoConfirmationCaptured(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    FocusChanged = event()
-    PhotoConfirmationCaptured = event()
+    FocusChanged = event(add_FocusChanged, remove_FocusChanged)
+    PhotoConfirmationCaptured = event(add_PhotoConfirmationCaptured, remove_PhotoConfirmationCaptured)
 class IMediaCapture4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture4'
     _iid_ = Guid('{bacd6fd6-fb08-4947-aea2-ce14eff0ce13}')
     @winrt_commethod(6)
@@ -3120,7 +3148,7 @@ class IMediaCapture4(ComPtr):
     @winrt_commethod(9)
     def ResumeRecordAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(10)
-    def add_CameraStreamStateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CameraStreamStateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_CameraStreamStateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(12)
@@ -3130,7 +3158,7 @@ class IMediaCapture4(ComPtr):
     @winrt_commethod(14)
     def GetPreviewFrameCopyAsync(self, destination: win32more.Windows.Media.VideoFrame) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.VideoFrame]: ...
     @winrt_commethod(15)
-    def add_ThermalStatusChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ThermalStatusChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(16)
     def remove_ThermalStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(17)
@@ -3139,10 +3167,10 @@ class IMediaCapture4(ComPtr):
     def PrepareAdvancedPhotoCaptureAsync(self, encodingProperties: win32more.Windows.Media.MediaProperties.ImageEncodingProperties) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.AdvancedPhotoCapture]: ...
     CameraStreamState = property(get_CameraStreamState, None)
     ThermalStatus = property(get_ThermalStatus, None)
-    CameraStreamStateChanged = event()
-    ThermalStatusChanged = event()
+    CameraStreamStateChanged = event(add_CameraStreamStateChanged, remove_CameraStreamStateChanged)
+    ThermalStatusChanged = event(add_ThermalStatusChanged, remove_ThermalStatusChanged)
 class IMediaCapture5(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture5'
     _iid_ = Guid('{da787c22-3a9b-4720-a71e-97900a316e5a}')
     @winrt_commethod(6)
@@ -3152,16 +3180,16 @@ class IMediaCapture5(ComPtr):
     @winrt_commethod(8)
     def StopRecordWithResultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.MediaCaptureStopResult]: ...
     @winrt_commethod(9)
-    def get_FrameSources(self) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, win32more.Windows.Media.Capture.Frames.MediaFrameSource]: ...
+    def get_FrameSources(self) -> win32more.Windows.Foundation.Collections.IMapView[hstr, win32more.Windows.Media.Capture.Frames.MediaFrameSource]: ...
     @winrt_commethod(10)
     def CreateFrameReaderAsync(self, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
     @winrt_commethod(11)
-    def CreateFrameReaderWithSubtypeAsync(self, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
+    def CreateFrameReaderWithSubtypeAsync(self, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
     @winrt_commethod(12)
-    def CreateFrameReaderWithSubtypeAndSizeAsync(self, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: WinRT_String, outputSize: win32more.Windows.Graphics.Imaging.BitmapSize) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
+    def CreateFrameReaderWithSubtypeAndSizeAsync(self, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: hstr, outputSize: win32more.Windows.Graphics.Imaging.BitmapSize) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
     FrameSources = property(get_FrameSources, None)
 class IMediaCapture6(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture6'
     _iid_ = Guid('{228948bd-4b20-4bb1-9fd6-a583212a1012}')
     @winrt_commethod(6)
@@ -3170,52 +3198,52 @@ class IMediaCapture6(ComPtr):
     def remove_CaptureDeviceExclusiveControlStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(8)
     def CreateMultiSourceFrameReaderAsync(self, inputSources: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Media.Capture.Frames.MediaFrameSource]) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MultiSourceMediaFrameReader]: ...
-    CaptureDeviceExclusiveControlStatusChanged = event()
+    CaptureDeviceExclusiveControlStatusChanged = event(add_CaptureDeviceExclusiveControlStatusChanged, remove_CaptureDeviceExclusiveControlStatusChanged)
 class IMediaCapture7(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapture7'
     _iid_ = Guid('{9169f102-8888-541a-95bc-24e4d462542a}')
     @winrt_commethod(6)
     def CreateRelativePanelWatcher(self, captureMode: win32more.Windows.Media.Capture.StreamingCaptureMode, displayRegion: win32more.Windows.UI.WindowManagement.DisplayRegion) -> win32more.Windows.Media.Capture.MediaCaptureRelativePanelWatcher: ...
 class IMediaCaptureDeviceExclusiveControlStatusChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureDeviceExclusiveControlStatusChangedEventArgs'
     _iid_ = Guid('{9d2f920d-a588-43c6-89d6-5ad322af006a}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Status(self) -> win32more.Windows.Media.Capture.MediaCaptureDeviceExclusiveControlStatus: ...
     DeviceId = property(get_DeviceId, None)
     Status = property(get_Status, None)
 class IMediaCaptureFailedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureFailedEventArgs'
     _iid_ = Guid('{80fde3f4-54c4-42c0-8d19-cea1a87ca18b}')
     @winrt_commethod(6)
-    def get_Message(self) -> WinRT_String: ...
+    def get_Message(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Code(self) -> UInt32: ...
     Code = property(get_Code, None)
     Message = property(get_Message, None)
 class IMediaCaptureFocusChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureFocusChangedEventArgs'
     _iid_ = Guid('{81e1bc7f-2277-493e-abee-d3f44ff98c04}')
     @winrt_commethod(6)
     def get_FocusState(self) -> win32more.Windows.Media.Devices.MediaCaptureFocusState: ...
     FocusState = property(get_FocusState, None)
 class IMediaCaptureInitializationSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings'
     _iid_ = Guid('{9782ba70-ea65-4900-9356-8ca887726884}')
     @winrt_commethod(6)
-    def put_AudioDeviceId(self, value: WinRT_String) -> Void: ...
+    def put_AudioDeviceId(self, value: hstr) -> Void: ...
     @winrt_commethod(7)
-    def get_AudioDeviceId(self) -> WinRT_String: ...
+    def get_AudioDeviceId(self) -> hstr: ...
     @winrt_commethod(8)
-    def put_VideoDeviceId(self, value: WinRT_String) -> Void: ...
+    def put_VideoDeviceId(self, value: hstr) -> Void: ...
     @winrt_commethod(9)
-    def get_VideoDeviceId(self) -> WinRT_String: ...
+    def get_VideoDeviceId(self) -> hstr: ...
     @winrt_commethod(10)
     def put_StreamingCaptureMode(self, value: win32more.Windows.Media.Capture.StreamingCaptureMode) -> Void: ...
     @winrt_commethod(11)
@@ -3229,7 +3257,7 @@ class IMediaCaptureInitializationSettings(ComPtr):
     StreamingCaptureMode = property(get_StreamingCaptureMode, put_StreamingCaptureMode)
     VideoDeviceId = property(get_VideoDeviceId, put_VideoDeviceId)
 class IMediaCaptureInitializationSettings2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings2'
     _iid_ = Guid('{404e0626-c9dc-43e9-aee4-e6bf1b57b44c}')
     @winrt_commethod(6)
@@ -3243,7 +3271,7 @@ class IMediaCaptureInitializationSettings2(ComPtr):
     AudioProcessing = property(get_AudioProcessing, put_AudioProcessing)
     MediaCategory = property(get_MediaCategory, put_MediaCategory)
 class IMediaCaptureInitializationSettings3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings3'
     _iid_ = Guid('{4160519d-be48-4730-8104-0cf6e9e97948}')
     @winrt_commethod(6)
@@ -3257,7 +3285,7 @@ class IMediaCaptureInitializationSettings3(ComPtr):
     AudioSource = property(get_AudioSource, put_AudioSource)
     VideoSource = property(get_VideoSource, put_VideoSource)
 class IMediaCaptureInitializationSettings4(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings4'
     _iid_ = Guid('{f502a537-4cb7-4d28-95ed-4f9f012e0518}')
     @winrt_commethod(6)
@@ -3281,7 +3309,7 @@ class IMediaCaptureInitializationSettings4(ComPtr):
     RecordMediaDescription = property(get_RecordMediaDescription, put_RecordMediaDescription)
     VideoProfile = property(get_VideoProfile, put_VideoProfile)
 class IMediaCaptureInitializationSettings5(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings5'
     _iid_ = Guid('{d5a2e3b8-2626-4e94-b7b3-5308a0f64b1a}')
     @winrt_commethod(6)
@@ -3300,7 +3328,7 @@ class IMediaCaptureInitializationSettings5(ComPtr):
     SharingMode = property(get_SharingMode, put_SharingMode)
     SourceGroup = property(get_SourceGroup, put_SourceGroup)
 class IMediaCaptureInitializationSettings6(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings6'
     _iid_ = Guid('{b2e26b47-3db1-4d33-ab63-0ffa09056585}')
     @winrt_commethod(6)
@@ -3309,7 +3337,7 @@ class IMediaCaptureInitializationSettings6(ComPtr):
     def put_AlwaysPlaySystemShutterSound(self, value: Boolean) -> Void: ...
     AlwaysPlaySystemShutterSound = property(get_AlwaysPlaySystemShutterSound, put_AlwaysPlaySystemShutterSound)
 class IMediaCaptureInitializationSettings7(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureInitializationSettings7'
     _iid_ = Guid('{41546967-f58a-5d82-9ef4-ed572fb5e34e}')
     @winrt_commethod(6)
@@ -3323,7 +3351,7 @@ class IMediaCaptureInitializationSettings7(ComPtr):
     DeviceUri = property(get_DeviceUri, put_DeviceUri)
     DeviceUriPasswordCredential = property(get_DeviceUriPasswordCredential, put_DeviceUriPasswordCredential)
 class IMediaCapturePauseResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCapturePauseResult'
     _iid_ = Guid('{aec47ca3-4477-4b04-a06f-2c1c5182fe9d}')
     @winrt_commethod(6)
@@ -3333,13 +3361,13 @@ class IMediaCapturePauseResult(ComPtr):
     LastFrame = property(get_LastFrame, None)
     RecordDuration = property(get_RecordDuration, None)
 class IMediaCaptureRelativePanelWatcher(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureRelativePanelWatcher'
     _iid_ = Guid('{7d896566-04be-5b89-b30e-bd34a9f12db0}')
     @winrt_commethod(6)
     def get_RelativePanel(self) -> win32more.Windows.Devices.Enumeration.Panel: ...
     @winrt_commethod(7)
-    def add_Changed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCaptureRelativePanelWatcher, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_Changed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCaptureRelativePanelWatcher, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(8)
     def remove_Changed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(9)
@@ -3347,15 +3375,15 @@ class IMediaCaptureRelativePanelWatcher(ComPtr):
     @winrt_commethod(10)
     def Stop(self) -> Void: ...
     RelativePanel = property(get_RelativePanel, None)
-    Changed = event()
+    Changed = event(add_Changed, remove_Changed)
 class IMediaCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureSettings'
     _iid_ = Guid('{1d83aafe-6d45-4477-8dc4-ac5bc01c4091}')
     @winrt_commethod(6)
-    def get_AudioDeviceId(self) -> WinRT_String: ...
+    def get_AudioDeviceId(self) -> hstr: ...
     @winrt_commethod(7)
-    def get_VideoDeviceId(self) -> WinRT_String: ...
+    def get_VideoDeviceId(self) -> hstr: ...
     @winrt_commethod(8)
     def get_StreamingCaptureMode(self) -> win32more.Windows.Media.Capture.StreamingCaptureMode: ...
     @winrt_commethod(9)
@@ -3368,7 +3396,7 @@ class IMediaCaptureSettings(ComPtr):
     VideoDeviceCharacteristic = property(get_VideoDeviceCharacteristic, None)
     VideoDeviceId = property(get_VideoDeviceId, None)
 class IMediaCaptureSettings2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureSettings2'
     _iid_ = Guid('{6f9e7cfb-fa9f-4b13-9cbe-5ab94f1f3493}')
     @winrt_commethod(6)
@@ -3396,26 +3424,26 @@ class IMediaCaptureSettings2(ComPtr):
     PitchOffsetDegrees = property(get_PitchOffsetDegrees, None)
     Vertical35mmEquivalentFocalLength = property(get_Vertical35mmEquivalentFocalLength, None)
 class IMediaCaptureSettings3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureSettings3'
     _iid_ = Guid('{303c67c2-8058-4b1b-b877-8c2ef3528440}')
     @winrt_commethod(6)
     def get_Direct3D11Device(self) -> win32more.Windows.Graphics.DirectX.Direct3D11.IDirect3DDevice: ...
     Direct3D11Device = property(get_Direct3D11Device, None)
 class IMediaCaptureStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureStatics'
     _iid_ = Guid('{acef81ff-99ed-4645-965e-1925cfc63834}')
     @winrt_commethod(6)
-    def IsVideoProfileSupported(self, videoDeviceId: WinRT_String) -> Boolean: ...
+    def IsVideoProfileSupported(self, videoDeviceId: hstr) -> Boolean: ...
     @winrt_commethod(7)
-    def FindAllVideoProfiles(self, videoDeviceId: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
+    def FindAllVideoProfiles(self, videoDeviceId: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
     @winrt_commethod(8)
-    def FindConcurrentProfiles(self, videoDeviceId: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
+    def FindConcurrentProfiles(self, videoDeviceId: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
     @winrt_commethod(9)
-    def FindKnownVideoProfiles(self, videoDeviceId: WinRT_String, name: win32more.Windows.Media.Capture.KnownVideoProfile) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
+    def FindKnownVideoProfiles(self, videoDeviceId: hstr, name: win32more.Windows.Media.Capture.KnownVideoProfile) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
 class IMediaCaptureStopResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureStopResult'
     _iid_ = Guid('{f9db6a2a-a092-4ad1-97d4-f201f9d082db}')
     @winrt_commethod(6)
@@ -3425,7 +3453,7 @@ class IMediaCaptureStopResult(ComPtr):
     LastFrame = property(get_LastFrame, None)
     RecordDuration = property(get_RecordDuration, None)
 class IMediaCaptureVideoPreview(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureVideoPreview'
     _iid_ = Guid('{27727073-549e-447f-a20a-4f03c479d8c0}')
     @winrt_commethod(6)
@@ -3433,17 +3461,17 @@ class IMediaCaptureVideoPreview(ComPtr):
     @winrt_commethod(7)
     def StartPreviewToCustomSinkAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customMediaSink: win32more.Windows.Media.IMediaExtension) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(8)
-    def StartPreviewToCustomSinkIdAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: WinRT_String, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def StartPreviewToCustomSinkIdAsync(self, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: hstr, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(9)
     def StopPreviewAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
 class IMediaCaptureVideoProfile(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureVideoProfile'
     _iid_ = Guid('{21a073bf-a3ee-4ecf-9ef6-50b0bc4e1305}')
     @winrt_commethod(6)
-    def get_Id(self) -> WinRT_String: ...
+    def get_Id(self) -> hstr: ...
     @winrt_commethod(7)
-    def get_VideoDeviceId(self) -> WinRT_String: ...
+    def get_VideoDeviceId(self) -> hstr: ...
     @winrt_commethod(8)
     def get_SupportedPreviewMediaDescription(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfileMediaDescription]: ...
     @winrt_commethod(9)
@@ -3458,17 +3486,17 @@ class IMediaCaptureVideoProfile(ComPtr):
     SupportedRecordMediaDescription = property(get_SupportedRecordMediaDescription, None)
     VideoDeviceId = property(get_VideoDeviceId, None)
 class IMediaCaptureVideoProfile2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureVideoProfile2'
     _iid_ = Guid('{97ddc95f-94ce-468f-9316-fc5bc2638f6b}')
     @winrt_commethod(6)
     def get_FrameSourceInfos(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.Frames.MediaFrameSourceInfo]: ...
     @winrt_commethod(7)
-    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[Guid, win32more.Windows.Win32.System.WinRT.IInspectable]: ...
+    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[Guid, IInspectable]: ...
     FrameSourceInfos = property(get_FrameSourceInfos, None)
     Properties = property(get_Properties, None)
 class IMediaCaptureVideoProfileMediaDescription(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription'
     _iid_ = Guid('{8012afef-b691-49ff-83f2-c1e76eaaea1b}')
     @winrt_commethod(6)
@@ -3487,27 +3515,27 @@ class IMediaCaptureVideoProfileMediaDescription(ComPtr):
     IsVariablePhotoSequenceSupported = property(get_IsVariablePhotoSequenceSupported, None)
     Width = property(get_Width, None)
 class IMediaCaptureVideoProfileMediaDescription2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription2'
     _iid_ = Guid('{c6a6ef13-322d-413a-b85a-68a88e02f4e9}')
     @winrt_commethod(6)
-    def get_Subtype(self) -> WinRT_String: ...
+    def get_Subtype(self) -> hstr: ...
     @winrt_commethod(7)
-    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[Guid, win32more.Windows.Win32.System.WinRT.IInspectable]: ...
+    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[Guid, IInspectable]: ...
     Properties = property(get_Properties, None)
     Subtype = property(get_Subtype, None)
 class IOptionalReferencePhotoCapturedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IOptionalReferencePhotoCapturedEventArgs'
     _iid_ = Guid('{470f88b3-1e6d-4051-9c8b-f1d85af047b7}')
     @winrt_commethod(6)
     def get_Frame(self) -> win32more.Windows.Media.Capture.CapturedFrame: ...
     @winrt_commethod(7)
-    def get_Context(self) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def get_Context(self) -> IInspectable: ...
     Context = property(get_Context, None)
     Frame = property(get_Frame, None)
 class IPhotoCapturedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IPhotoCapturedEventArgs'
     _iid_ = Guid('{373bfbc1-984e-4ff0-bf85-1c00aabc5a45}')
     @winrt_commethod(6)
@@ -3520,7 +3548,7 @@ class IPhotoCapturedEventArgs(ComPtr):
     Frame = property(get_Frame, None)
     Thumbnail = property(get_Thumbnail, None)
 class IPhotoConfirmationCapturedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IPhotoConfirmationCapturedEventArgs'
     _iid_ = Guid('{ab473672-c28a-4827-8f8d-3636d3beb51e}')
     @winrt_commethod(6)
@@ -3529,45 +3557,8 @@ class IPhotoConfirmationCapturedEventArgs(ComPtr):
     def get_CaptureTimeOffset(self) -> win32more.Windows.Foundation.TimeSpan: ...
     CaptureTimeOffset = property(get_CaptureTimeOffset, None)
     Frame = property(get_Frame, None)
-class IScreenCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
-    _classid_ = 'Windows.Media.Capture.IScreenCapture'
-    _iid_ = Guid('{89179ef7-cd12-4e0e-a6d4-5b3de98b2e9b}')
-    @winrt_commethod(6)
-    def get_AudioSource(self) -> win32more.Windows.Media.Core.IMediaSource: ...
-    @winrt_commethod(7)
-    def get_VideoSource(self) -> win32more.Windows.Media.Core.IMediaSource: ...
-    @winrt_commethod(8)
-    def get_IsAudioSuspended(self) -> Boolean: ...
-    @winrt_commethod(9)
-    def get_IsVideoSuspended(self) -> Boolean: ...
-    @winrt_commethod(10)
-    def add_SourceSuspensionChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.ScreenCapture, win32more.Windows.Media.Capture.SourceSuspensionChangedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_commethod(11)
-    def remove_SourceSuspensionChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    AudioSource = property(get_AudioSource, None)
-    IsAudioSuspended = property(get_IsAudioSuspended, None)
-    IsVideoSuspended = property(get_IsVideoSuspended, None)
-    VideoSource = property(get_VideoSource, None)
-    SourceSuspensionChanged = event()
-class IScreenCaptureStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
-    _classid_ = 'Windows.Media.Capture.IScreenCaptureStatics'
-    _iid_ = Guid('{c898c3b0-c8a5-11e2-8b8b-0800200c9a66}')
-    @winrt_commethod(6)
-    def GetForCurrentView(self) -> win32more.Windows.Media.Capture.ScreenCapture: ...
-class ISourceSuspensionChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
-    _classid_ = 'Windows.Media.Capture.ISourceSuspensionChangedEventArgs'
-    _iid_ = Guid('{2ece7b5e-d49b-4394-bc32-f97d6cedec1c}')
-    @winrt_commethod(6)
-    def get_IsAudioSuspended(self) -> Boolean: ...
-    @winrt_commethod(7)
-    def get_IsVideoSuspended(self) -> Boolean: ...
-    IsAudioSuspended = property(get_IsAudioSuspended, None)
-    IsVideoSuspended = property(get_IsVideoSuspended, None)
 class IVideoStreamConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Media.Capture.IVideoStreamConfiguration'
     _iid_ = Guid('{d8770a6f-4390-4b5e-ad3e-0f8af0963490}')
     @winrt_commethod(6)
@@ -3577,6 +3568,7 @@ class IVideoStreamConfiguration(ComPtr):
     InputProperties = property(get_InputProperties, None)
     OutputProperties = property(get_OutputProperties, None)
 class KnownVideoProfile(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.KnownVideoProfile'
     VideoRecording = 0
     HighQualityPhoto = 1
     BalancedVideoAndPhoto = 2
@@ -3589,7 +3581,7 @@ class KnownVideoProfile(Enum, Int32):
     VideoHdr8 = 9
     CompressedCamera = 10
 class LowLagMediaRecording(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ILowLagMediaRecording
     _classid_ = 'Windows.Media.Capture.LowLagMediaRecording'
     @winrt_mixinmethod
@@ -3607,7 +3599,7 @@ class LowLagMediaRecording(ComPtr):
     @winrt_mixinmethod
     def StopWithResultAsync(self: win32more.Windows.Media.Capture.ILowLagMediaRecording3) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.MediaCaptureStopResult]: ...
 class LowLagPhotoCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ILowLagPhotoCapture
     _classid_ = 'Windows.Media.Capture.LowLagPhotoCapture'
     @winrt_mixinmethod
@@ -3615,7 +3607,7 @@ class LowLagPhotoCapture(ComPtr):
     @winrt_mixinmethod
     def FinishAsync(self: win32more.Windows.Media.Capture.ILowLagPhotoCapture) -> win32more.Windows.Foundation.IAsyncAction: ...
 class LowLagPhotoSequenceCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.ILowLagPhotoSequenceCapture
     _classid_ = 'Windows.Media.Capture.LowLagPhotoSequenceCapture'
     @winrt_mixinmethod
@@ -3628,9 +3620,9 @@ class LowLagPhotoSequenceCapture(ComPtr):
     def add_PhotoCaptured(self: win32more.Windows.Media.Capture.ILowLagPhotoSequenceCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.LowLagPhotoSequenceCapture, win32more.Windows.Media.Capture.PhotoCapturedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_PhotoCaptured(self: win32more.Windows.Media.Capture.ILowLagPhotoSequenceCapture, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    PhotoCaptured = event()
+    PhotoCaptured = event(add_PhotoCaptured, remove_PhotoCaptured)
 class MediaCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.Capture.IMediaCapture
     _classid_ = 'Windows.Media.Capture.MediaCapture'
@@ -3654,7 +3646,7 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def StartRecordToCustomSinkAsync(self: win32more.Windows.Media.Capture.IMediaCapture, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customMediaSink: win32more.Windows.Media.IMediaExtension) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def StartRecordToCustomSinkIdAsync(self: win32more.Windows.Media.Capture.IMediaCapture, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: WinRT_String, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def StartRecordToCustomSinkIdAsync(self: win32more.Windows.Media.Capture.IMediaCapture, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: hstr, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
     def StopRecordAsync(self: win32more.Windows.Media.Capture.IMediaCapture) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
@@ -3662,13 +3654,13 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def CapturePhotoToStreamAsync(self: win32more.Windows.Media.Capture.IMediaCapture, type: win32more.Windows.Media.MediaProperties.ImageEncodingProperties, stream: win32more.Windows.Storage.Streams.IRandomAccessStream) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def AddEffectAsync(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, effectActivationID: WinRT_String, effectSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def AddEffectAsync(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, effectActivationID: hstr, effectSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
     def ClearEffectsAsync(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def SetEncoderProperty(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid, propertyValue: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
+    def SetEncoderProperty(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid, propertyValue: IInspectable) -> Void: ...
     @winrt_mixinmethod
-    def GetEncoderProperty(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def GetEncoderProperty(self: win32more.Windows.Media.Capture.IMediaCapture, mediaStreamType: win32more.Windows.Media.Capture.MediaStreamType, propertyId: Guid) -> IInspectable: ...
     @winrt_mixinmethod
     def add_Failed(self: win32more.Windows.Media.Capture.IMediaCapture, errorEventHandler: win32more.Windows.Media.Capture.MediaCaptureFailedEventHandler) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -3700,7 +3692,7 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def StartPreviewToCustomSinkAsync(self: win32more.Windows.Media.Capture.IMediaCaptureVideoPreview, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customMediaSink: win32more.Windows.Media.IMediaExtension) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def StartPreviewToCustomSinkIdAsync(self: win32more.Windows.Media.Capture.IMediaCaptureVideoPreview, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: WinRT_String, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def StartPreviewToCustomSinkIdAsync(self: win32more.Windows.Media.Capture.IMediaCaptureVideoPreview, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: hstr, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
     def StopPreviewAsync(self: win32more.Windows.Media.Capture.IMediaCaptureVideoPreview) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
@@ -3710,7 +3702,7 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def PrepareLowLagRecordToCustomSinkAsync(self: win32more.Windows.Media.Capture.IMediaCapture2, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customMediaSink: win32more.Windows.Media.IMediaExtension) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagMediaRecording]: ...
     @winrt_mixinmethod
-    def PrepareLowLagRecordToCustomSinkIdAsync(self: win32more.Windows.Media.Capture.IMediaCapture2, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: WinRT_String, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagMediaRecording]: ...
+    def PrepareLowLagRecordToCustomSinkIdAsync(self: win32more.Windows.Media.Capture.IMediaCapture2, encodingProfile: win32more.Windows.Media.MediaProperties.MediaEncodingProfile, customSinkActivationId: hstr, customSinkSettings: win32more.Windows.Foundation.Collections.IPropertySet) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagMediaRecording]: ...
     @winrt_mixinmethod
     def PrepareLowLagPhotoCaptureAsync(self: win32more.Windows.Media.Capture.IMediaCapture2, type: win32more.Windows.Media.MediaProperties.ImageEncodingProperties) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.LowLagPhotoCapture]: ...
     @winrt_mixinmethod
@@ -3738,7 +3730,7 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def ResumeRecordAsync(self: win32more.Windows.Media.Capture.IMediaCapture4) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def add_CameraStreamStateChanged(self: win32more.Windows.Media.Capture.IMediaCapture4, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CameraStreamStateChanged(self: win32more.Windows.Media.Capture.IMediaCapture4, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_CameraStreamStateChanged(self: win32more.Windows.Media.Capture.IMediaCapture4, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -3748,7 +3740,7 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def GetPreviewFrameCopyAsync(self: win32more.Windows.Media.Capture.IMediaCapture4, destination: win32more.Windows.Media.VideoFrame) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.VideoFrame]: ...
     @winrt_mixinmethod
-    def add_ThermalStatusChanged(self: win32more.Windows.Media.Capture.IMediaCapture4, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ThermalStatusChanged(self: win32more.Windows.Media.Capture.IMediaCapture4, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_ThermalStatusChanged(self: win32more.Windows.Media.Capture.IMediaCapture4, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -3762,13 +3754,13 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def StopRecordWithResultAsync(self: win32more.Windows.Media.Capture.IMediaCapture5) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.MediaCaptureStopResult]: ...
     @winrt_mixinmethod
-    def get_FrameSources(self: win32more.Windows.Media.Capture.IMediaCapture5) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, win32more.Windows.Media.Capture.Frames.MediaFrameSource]: ...
+    def get_FrameSources(self: win32more.Windows.Media.Capture.IMediaCapture5) -> win32more.Windows.Foundation.Collections.IMapView[hstr, win32more.Windows.Media.Capture.Frames.MediaFrameSource]: ...
     @winrt_mixinmethod
     def CreateFrameReaderAsync(self: win32more.Windows.Media.Capture.IMediaCapture5, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
     @winrt_mixinmethod
-    def CreateFrameReaderWithSubtypeAsync(self: win32more.Windows.Media.Capture.IMediaCapture5, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
+    def CreateFrameReaderWithSubtypeAsync(self: win32more.Windows.Media.Capture.IMediaCapture5, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
     @winrt_mixinmethod
-    def CreateFrameReaderWithSubtypeAndSizeAsync(self: win32more.Windows.Media.Capture.IMediaCapture5, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: WinRT_String, outputSize: win32more.Windows.Graphics.Imaging.BitmapSize) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
+    def CreateFrameReaderWithSubtypeAndSizeAsync(self: win32more.Windows.Media.Capture.IMediaCapture5, inputSource: win32more.Windows.Media.Capture.Frames.MediaFrameSource, outputSubtype: hstr, outputSize: win32more.Windows.Graphics.Imaging.BitmapSize) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Media.Capture.Frames.MediaFrameReader]: ...
     @winrt_mixinmethod
     def add_CaptureDeviceExclusiveControlStatusChanged(self: win32more.Windows.Media.Capture.IMediaCapture6, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCapture, win32more.Windows.Media.Capture.MediaCaptureDeviceExclusiveControlStatusChangedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
@@ -3778,66 +3770,68 @@ class MediaCapture(ComPtr):
     @winrt_mixinmethod
     def CreateRelativePanelWatcher(self: win32more.Windows.Media.Capture.IMediaCapture7, captureMode: win32more.Windows.Media.Capture.StreamingCaptureMode, displayRegion: win32more.Windows.UI.WindowManagement.DisplayRegion) -> win32more.Windows.Media.Capture.MediaCaptureRelativePanelWatcher: ...
     @winrt_classmethod
-    def IsVideoProfileSupported(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: WinRT_String) -> Boolean: ...
+    def IsVideoProfileSupported(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: hstr) -> Boolean: ...
     @winrt_classmethod
-    def FindAllVideoProfiles(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
+    def FindAllVideoProfiles(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
     @winrt_classmethod
-    def FindConcurrentProfiles(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
+    def FindConcurrentProfiles(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
     @winrt_classmethod
-    def FindKnownVideoProfiles(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: WinRT_String, name: win32more.Windows.Media.Capture.KnownVideoProfile) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
+    def FindKnownVideoProfiles(cls: win32more.Windows.Media.Capture.IMediaCaptureStatics, videoDeviceId: hstr, name: win32more.Windows.Media.Capture.KnownVideoProfile) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfile]: ...
     AudioDeviceController = property(get_AudioDeviceController, None)
     CameraStreamState = property(get_CameraStreamState, None)
     FrameSources = property(get_FrameSources, None)
     MediaCaptureSettings = property(get_MediaCaptureSettings, None)
     ThermalStatus = property(get_ThermalStatus, None)
     VideoDeviceController = property(get_VideoDeviceController, None)
-    Failed = event()
-    RecordLimitationExceeded = event()
-    FocusChanged = event()
-    PhotoConfirmationCaptured = event()
-    CameraStreamStateChanged = event()
-    ThermalStatusChanged = event()
-    CaptureDeviceExclusiveControlStatusChanged = event()
+    CameraStreamStateChanged = event(add_CameraStreamStateChanged, remove_CameraStreamStateChanged)
+    CaptureDeviceExclusiveControlStatusChanged = event(add_CaptureDeviceExclusiveControlStatusChanged, remove_CaptureDeviceExclusiveControlStatusChanged)
+    Failed = event(add_Failed, remove_Failed)
+    FocusChanged = event(add_FocusChanged, remove_FocusChanged)
+    PhotoConfirmationCaptured = event(add_PhotoConfirmationCaptured, remove_PhotoConfirmationCaptured)
+    RecordLimitationExceeded = event(add_RecordLimitationExceeded, remove_RecordLimitationExceeded)
+    ThermalStatusChanged = event(add_ThermalStatusChanged, remove_ThermalStatusChanged)
 class MediaCaptureDeviceExclusiveControlReleaseMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaCaptureDeviceExclusiveControlReleaseMode'
     OnDispose = 0
     OnAllStreamsStopped = 1
 class MediaCaptureDeviceExclusiveControlStatus(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaCaptureDeviceExclusiveControlStatus'
     ExclusiveControlAvailable = 0
     SharedReadOnlyAvailable = 1
 class MediaCaptureDeviceExclusiveControlStatusChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureDeviceExclusiveControlStatusChangedEventArgs
     _classid_ = 'Windows.Media.Capture.MediaCaptureDeviceExclusiveControlStatusChangedEventArgs'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureDeviceExclusiveControlStatusChangedEventArgs) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureDeviceExclusiveControlStatusChangedEventArgs) -> hstr: ...
     @winrt_mixinmethod
     def get_Status(self: win32more.Windows.Media.Capture.IMediaCaptureDeviceExclusiveControlStatusChangedEventArgs) -> win32more.Windows.Media.Capture.MediaCaptureDeviceExclusiveControlStatus: ...
     DeviceId = property(get_DeviceId, None)
     Status = property(get_Status, None)
 class MediaCaptureFailedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureFailedEventArgs
     _classid_ = 'Windows.Media.Capture.MediaCaptureFailedEventArgs'
     @winrt_mixinmethod
-    def get_Message(self: win32more.Windows.Media.Capture.IMediaCaptureFailedEventArgs) -> WinRT_String: ...
+    def get_Message(self: win32more.Windows.Media.Capture.IMediaCaptureFailedEventArgs) -> hstr: ...
     @winrt_mixinmethod
     def get_Code(self: win32more.Windows.Media.Capture.IMediaCaptureFailedEventArgs) -> UInt32: ...
     Code = property(get_Code, None)
     Message = property(get_Message, None)
 class MediaCaptureFailedEventHandler(MulticastDelegate):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
+    extends: IUnknown
     _iid_ = Guid('{2014effb-5cd8-4f08-a314-0d360da59f14}')
     @winrt_commethod(3)
     def Invoke(self, sender: win32more.Windows.Media.Capture.MediaCapture, errorEventArgs: win32more.Windows.Media.Capture.MediaCaptureFailedEventArgs) -> Void: ...
 class MediaCaptureFocusChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureFocusChangedEventArgs
     _classid_ = 'Windows.Media.Capture.MediaCaptureFocusChangedEventArgs'
     @winrt_mixinmethod
     def get_FocusState(self: win32more.Windows.Media.Capture.IMediaCaptureFocusChangedEventArgs) -> win32more.Windows.Media.Devices.MediaCaptureFocusState: ...
     FocusState = property(get_FocusState, None)
 class MediaCaptureInitializationSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings
     _classid_ = 'Windows.Media.Capture.MediaCaptureInitializationSettings'
     def __init__(self, *args, **kwargs):
@@ -3850,13 +3844,13 @@ class MediaCaptureInitializationSettings(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.Media.Capture.MediaCaptureInitializationSettings: ...
     @winrt_mixinmethod
-    def put_AudioDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings, value: WinRT_String) -> Void: ...
+    def put_AudioDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_AudioDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings) -> WinRT_String: ...
+    def get_AudioDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings) -> hstr: ...
     @winrt_mixinmethod
-    def put_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings, value: WinRT_String) -> Void: ...
+    def put_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings, value: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings) -> WinRT_String: ...
+    def get_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings) -> hstr: ...
     @winrt_mixinmethod
     def put_StreamingCaptureMode(self: win32more.Windows.Media.Capture.IMediaCaptureInitializationSettings, value: win32more.Windows.Media.Capture.StreamingCaptureMode) -> Void: ...
     @winrt_mixinmethod
@@ -3940,10 +3934,11 @@ class MediaCaptureInitializationSettings(ComPtr):
     VideoProfile = property(get_VideoProfile, put_VideoProfile)
     VideoSource = property(get_VideoSource, put_VideoSource)
 class MediaCaptureMemoryPreference(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaCaptureMemoryPreference'
     Auto = 0
     Cpu = 1
 class MediaCapturePauseResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.Capture.IMediaCapturePauseResult
     _classid_ = 'Windows.Media.Capture.MediaCapturePauseResult'
@@ -3956,14 +3951,14 @@ class MediaCapturePauseResult(ComPtr):
     LastFrame = property(get_LastFrame, None)
     RecordDuration = property(get_RecordDuration, None)
 class MediaCaptureRelativePanelWatcher(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureRelativePanelWatcher
     _classid_ = 'Windows.Media.Capture.MediaCaptureRelativePanelWatcher'
     @winrt_mixinmethod
     def get_RelativePanel(self: win32more.Windows.Media.Capture.IMediaCaptureRelativePanelWatcher) -> win32more.Windows.Devices.Enumeration.Panel: ...
     @winrt_mixinmethod
-    def add_Changed(self: win32more.Windows.Media.Capture.IMediaCaptureRelativePanelWatcher, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCaptureRelativePanelWatcher, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_Changed(self: win32more.Windows.Media.Capture.IMediaCaptureRelativePanelWatcher, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.MediaCaptureRelativePanelWatcher, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_Changed(self: win32more.Windows.Media.Capture.IMediaCaptureRelativePanelWatcher, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -3973,15 +3968,15 @@ class MediaCaptureRelativePanelWatcher(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     RelativePanel = property(get_RelativePanel, None)
-    Changed = event()
+    Changed = event(add_Changed, remove_Changed)
 class MediaCaptureSettings(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureSettings
     _classid_ = 'Windows.Media.Capture.MediaCaptureSettings'
     @winrt_mixinmethod
-    def get_AudioDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureSettings) -> WinRT_String: ...
+    def get_AudioDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureSettings) -> hstr: ...
     @winrt_mixinmethod
-    def get_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureSettings) -> WinRT_String: ...
+    def get_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureSettings) -> hstr: ...
     @winrt_mixinmethod
     def get_StreamingCaptureMode(self: win32more.Windows.Media.Capture.IMediaCaptureSettings) -> win32more.Windows.Media.Capture.StreamingCaptureMode: ...
     @winrt_mixinmethod
@@ -4021,10 +4016,11 @@ class MediaCaptureSettings(ComPtr):
     VideoDeviceCharacteristic = property(get_VideoDeviceCharacteristic, None)
     VideoDeviceId = property(get_VideoDeviceId, None)
 class MediaCaptureSharingMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaCaptureSharingMode'
     ExclusiveControl = 0
     SharedReadOnly = 1
 class MediaCaptureStopResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureStopResult
     _classid_ = 'Windows.Media.Capture.MediaCaptureStopResult'
@@ -4037,16 +4033,17 @@ class MediaCaptureStopResult(ComPtr):
     LastFrame = property(get_LastFrame, None)
     RecordDuration = property(get_RecordDuration, None)
 class MediaCaptureThermalStatus(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaCaptureThermalStatus'
     Normal = 0
     Overheated = 1
 class MediaCaptureVideoProfile(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile
     _classid_ = 'Windows.Media.Capture.MediaCaptureVideoProfile'
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile) -> WinRT_String: ...
+    def get_Id(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile) -> hstr: ...
     @winrt_mixinmethod
-    def get_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile) -> WinRT_String: ...
+    def get_VideoDeviceId(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile) -> hstr: ...
     @winrt_mixinmethod
     def get_SupportedPreviewMediaDescription(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.MediaCaptureVideoProfileMediaDescription]: ...
     @winrt_mixinmethod
@@ -4058,7 +4055,7 @@ class MediaCaptureVideoProfile(ComPtr):
     @winrt_mixinmethod
     def get_FrameSourceInfos(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile2) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.Capture.Frames.MediaFrameSourceInfo]: ...
     @winrt_mixinmethod
-    def get_Properties(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile2) -> win32more.Windows.Foundation.Collections.IMapView[Guid, win32more.Windows.Win32.System.WinRT.IInspectable]: ...
+    def get_Properties(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfile2) -> win32more.Windows.Foundation.Collections.IMapView[Guid, IInspectable]: ...
     FrameSourceInfos = property(get_FrameSourceInfos, None)
     Id = property(get_Id, None)
     Properties = property(get_Properties, None)
@@ -4067,7 +4064,7 @@ class MediaCaptureVideoProfile(ComPtr):
     SupportedRecordMediaDescription = property(get_SupportedRecordMediaDescription, None)
     VideoDeviceId = property(get_VideoDeviceId, None)
 class MediaCaptureVideoProfileMediaDescription(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription
     _classid_ = 'Windows.Media.Capture.MediaCaptureVideoProfileMediaDescription'
     @winrt_mixinmethod
@@ -4081,9 +4078,9 @@ class MediaCaptureVideoProfileMediaDescription(ComPtr):
     @winrt_mixinmethod
     def get_IsHdrVideoSupported(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription) -> Boolean: ...
     @winrt_mixinmethod
-    def get_Subtype(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription2) -> WinRT_String: ...
+    def get_Subtype(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription2) -> hstr: ...
     @winrt_mixinmethod
-    def get_Properties(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription2) -> win32more.Windows.Foundation.Collections.IMapView[Guid, win32more.Windows.Win32.System.WinRT.IInspectable]: ...
+    def get_Properties(self: win32more.Windows.Media.Capture.IMediaCaptureVideoProfileMediaDescription2) -> win32more.Windows.Foundation.Collections.IMapView[Guid, IInspectable]: ...
     FrameRate = property(get_FrameRate, None)
     Height = property(get_Height, None)
     IsHdrVideoSupported = property(get_IsHdrVideoSupported, None)
@@ -4092,6 +4089,7 @@ class MediaCaptureVideoProfileMediaDescription(ComPtr):
     Subtype = property(get_Subtype, None)
     Width = property(get_Width, None)
 class MediaCategory(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaCategory'
     Other = 0
     Communications = 1
     Media = 2
@@ -4101,27 +4099,29 @@ class MediaCategory(Enum, Int32):
     UniformSpeech = 6
     VoiceTyping = 7
 class MediaStreamType(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.MediaStreamType'
     VideoPreview = 0
     VideoRecord = 1
     Audio = 2
     Photo = 3
     Metadata = 4
 class OptionalReferencePhotoCapturedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IOptionalReferencePhotoCapturedEventArgs
     _classid_ = 'Windows.Media.Capture.OptionalReferencePhotoCapturedEventArgs'
     @winrt_mixinmethod
     def get_Frame(self: win32more.Windows.Media.Capture.IOptionalReferencePhotoCapturedEventArgs) -> win32more.Windows.Media.Capture.CapturedFrame: ...
     @winrt_mixinmethod
-    def get_Context(self: win32more.Windows.Media.Capture.IOptionalReferencePhotoCapturedEventArgs) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
+    def get_Context(self: win32more.Windows.Media.Capture.IOptionalReferencePhotoCapturedEventArgs) -> IInspectable: ...
     Context = property(get_Context, None)
     Frame = property(get_Frame, None)
 class PhotoCaptureSource(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.PhotoCaptureSource'
     Auto = 0
     VideoPreview = 1
     Photo = 2
 class PhotoCapturedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IPhotoCapturedEventArgs
     _classid_ = 'Windows.Media.Capture.PhotoCapturedEventArgs'
     @winrt_mixinmethod
@@ -4134,7 +4134,7 @@ class PhotoCapturedEventArgs(ComPtr):
     Frame = property(get_Frame, None)
     Thumbnail = property(get_Thumbnail, None)
 class PhotoConfirmationCapturedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IPhotoConfirmationCapturedEventArgs
     _classid_ = 'Windows.Media.Capture.PhotoConfirmationCapturedEventArgs'
     @winrt_mixinmethod
@@ -4144,65 +4144,36 @@ class PhotoConfirmationCapturedEventArgs(ComPtr):
     CaptureTimeOffset = property(get_CaptureTimeOffset, None)
     Frame = property(get_Frame, None)
 class PowerlineFrequency(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.PowerlineFrequency'
     Disabled = 0
     FiftyHertz = 1
     SixtyHertz = 2
     Auto = 3
 class RecordLimitationExceededEventHandler(MulticastDelegate):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
+    extends: IUnknown
     _iid_ = Guid('{3fae8f2e-4fe1-4ffd-aaba-e1f1337d4e53}')
     @winrt_commethod(3)
     def Invoke(self, sender: win32more.Windows.Media.Capture.MediaCapture) -> Void: ...
-class ScreenCapture(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
-    default_interface: win32more.Windows.Media.Capture.IScreenCapture
-    _classid_ = 'Windows.Media.Capture.ScreenCapture'
-    @winrt_mixinmethod
-    def get_AudioSource(self: win32more.Windows.Media.Capture.IScreenCapture) -> win32more.Windows.Media.Core.IMediaSource: ...
-    @winrt_mixinmethod
-    def get_VideoSource(self: win32more.Windows.Media.Capture.IScreenCapture) -> win32more.Windows.Media.Core.IMediaSource: ...
-    @winrt_mixinmethod
-    def get_IsAudioSuspended(self: win32more.Windows.Media.Capture.IScreenCapture) -> Boolean: ...
-    @winrt_mixinmethod
-    def get_IsVideoSuspended(self: win32more.Windows.Media.Capture.IScreenCapture) -> Boolean: ...
-    @winrt_mixinmethod
-    def add_SourceSuspensionChanged(self: win32more.Windows.Media.Capture.IScreenCapture, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.Capture.ScreenCapture, win32more.Windows.Media.Capture.SourceSuspensionChangedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_mixinmethod
-    def remove_SourceSuspensionChanged(self: win32more.Windows.Media.Capture.IScreenCapture, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_classmethod
-    def GetForCurrentView(cls: win32more.Windows.Media.Capture.IScreenCaptureStatics) -> win32more.Windows.Media.Capture.ScreenCapture: ...
-    AudioSource = property(get_AudioSource, None)
-    IsAudioSuspended = property(get_IsAudioSuspended, None)
-    IsVideoSuspended = property(get_IsVideoSuspended, None)
-    VideoSource = property(get_VideoSource, None)
-    SourceSuspensionChanged = event()
-class SourceSuspensionChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
-    default_interface: win32more.Windows.Media.Capture.ISourceSuspensionChangedEventArgs
-    _classid_ = 'Windows.Media.Capture.SourceSuspensionChangedEventArgs'
-    @winrt_mixinmethod
-    def get_IsAudioSuspended(self: win32more.Windows.Media.Capture.ISourceSuspensionChangedEventArgs) -> Boolean: ...
-    @winrt_mixinmethod
-    def get_IsVideoSuspended(self: win32more.Windows.Media.Capture.ISourceSuspensionChangedEventArgs) -> Boolean: ...
-    IsAudioSuspended = property(get_IsAudioSuspended, None)
-    IsVideoSuspended = property(get_IsVideoSuspended, None)
 class StreamingCaptureMode(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.StreamingCaptureMode'
     AudioAndVideo = 0
     Audio = 1
     Video = 2
 class VideoDeviceCharacteristic(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.VideoDeviceCharacteristic'
     AllStreamsIndependent = 0
     PreviewRecordStreamsIdentical = 1
     PreviewPhotoStreamsIdentical = 2
     RecordPhotoStreamsIdentical = 3
     AllStreamsIdentical = 4
 class VideoRotation(Enum, Int32):
+    _name_ = 'Windows.Media.Capture.VideoRotation'
     None_ = 0
     Clockwise90Degrees = 1
     Clockwise180Degrees = 2
     Clockwise270Degrees = 3
 class VideoStreamConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Media.Capture.IVideoStreamConfiguration
     _classid_ = 'Windows.Media.Capture.VideoStreamConfiguration'
     @winrt_mixinmethod
@@ -4212,6 +4183,7 @@ class VideoStreamConfiguration(ComPtr):
     InputProperties = property(get_InputProperties, None)
     OutputProperties = property(get_OutputProperties, None)
 class WhiteBalanceGain(Structure):
+    _name_ = 'Windows.Media.Capture.WhiteBalanceGain'
     R: Double
     G: Double
     B: Double
