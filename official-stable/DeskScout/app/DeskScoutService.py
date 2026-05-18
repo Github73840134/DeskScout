@@ -1249,7 +1249,7 @@ def openDeskScout(icon,item):
 	isOpen = None
 	for proc in psutil.process_iter(['pid', 'name','cmdline','exe']):
 		if proc.info['name'] in ["pythonw.exe","python.exe","py","pyw"]:
-			for i in ["DeskScoutApp.py"]:
+			for i in ["DeskScoutApp.py","DeskScoutSetup.py"]:
 				if i in proc.info['cmdline'][1]:
 					isOpen = proc.pid
 	if isOpen != None:
