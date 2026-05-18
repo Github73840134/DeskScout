@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security.Cryptography
 import win32more.Windows.Win32.Security.Cryptography.Catalog
@@ -14,7 +14,6 @@ MSSIP_ADDINFO_NONE: UInt32 = 0
 MSSIP_ADDINFO_FLAT: UInt32 = 1
 MSSIP_ADDINFO_CATMEMBER: UInt32 = 2
 MSSIP_ADDINFO_BLOB: UInt32 = 3
-MSSIP_ADDINFO_DETACHEDSIG: UInt32 = 4
 MSSIP_ADDINFO_NONMSSIP: UInt32 = 500
 SIP_CAP_SET_VERSION_2: UInt32 = 2
 SIP_CAP_SET_VERSION_3: UInt32 = 3
@@ -51,11 +50,6 @@ class MS_ADDINFO_BLOB(Structure):
     pbMemObject: POINTER(Byte)
     cbMemSignedMsg: UInt32
     pbMemSignedMsg: POINTER(Byte)
-class MS_ADDINFO_DETACHEDSIG(Structure):
-    cbStruct: UInt32
-    hSignatureFile: win32more.Windows.Win32.Foundation.HANDLE
-    cbSignatureObject: UInt32
-    pbSignatureObject: POINTER(Byte)
 class MS_ADDINFO_FLAT(Structure):
     cbStruct: UInt32
     pIndirectData: POINTER(win32more.Windows.Win32.Security.Cryptography.Sip.SIP_INDIRECT_DATA)
@@ -82,7 +76,6 @@ class SIP_CAP_SET_V3(Structure):
     dwVersion: UInt32
     isMultiSign: win32more.Windows.Win32.Foundation.BOOL
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwFlags: UInt32
         dwReserved: UInt32
@@ -117,12 +110,10 @@ class SIP_SUBJECTINFO(Structure):
     dwUnionChoice: UInt32
     Anonymous: _Anonymous_e__Union
     pClientData: VoidPtr
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         psFlat: POINTER(win32more.Windows.Win32.Security.Cryptography.Sip.MS_ADDINFO_FLAT)
         psCatMember: POINTER(win32more.Windows.Win32.Security.Cryptography.Catalog.MS_ADDINFO_CATALOGMEMBER)
         psBlob: POINTER(win32more.Windows.Win32.Security.Cryptography.Sip.MS_ADDINFO_BLOB)
-        psDetachedSig: POINTER(win32more.Windows.Win32.Security.Cryptography.Sip.MS_ADDINFO_DETACHEDSIG)
 @winfunctype_pointer
 def pCryptSIPCreateIndirectData(pSubjectInfo: POINTER(win32more.Windows.Win32.Security.Cryptography.Sip.SIP_SUBJECTINFO), pcbIndirectData: POINTER(UInt32), pIndirectData: POINTER(win32more.Windows.Win32.Security.Cryptography.Sip.SIP_INDIRECT_DATA)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype_pointer

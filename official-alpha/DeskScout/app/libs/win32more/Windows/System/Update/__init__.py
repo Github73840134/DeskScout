@@ -1,20 +1,22 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.System.Update
+import win32more.Windows.Win32.System.WinRT
 class ISystemUpdateItem(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Update.ISystemUpdateItem'
     _iid_ = Guid('{779740eb-5624-519e-a8e2-09e9173b3fb7}')
     @winrt_commethod(6)
     def get_State(self) -> win32more.Windows.System.Update.SystemUpdateItemState: ...
     @winrt_commethod(7)
-    def get_Title(self) -> hstr: ...
+    def get_Title(self) -> WinRT_String: ...
     @winrt_commethod(8)
-    def get_Description(self) -> hstr: ...
+    def get_Description(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def get_Id(self) -> hstr: ...
+    def get_Id(self) -> WinRT_String: ...
     @winrt_commethod(10)
     def get_Revision(self) -> UInt32: ...
     @winrt_commethod(11)
@@ -32,7 +34,7 @@ class ISystemUpdateItem(ComPtr):
     State = property(get_State, None)
     Title = property(get_Title, None)
 class ISystemUpdateLastErrorInfo(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Update.ISystemUpdateLastErrorInfo'
     _iid_ = Guid('{7ee887f7-8a44-5b6e-bd07-7aece4116ea9}')
     @winrt_commethod(6)
@@ -45,7 +47,7 @@ class ISystemUpdateLastErrorInfo(ComPtr):
     IsInteractive = property(get_IsInteractive, None)
     State = property(get_State, None)
 class ISystemUpdateManagerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Update.ISystemUpdateManagerStatics'
     _iid_ = Guid('{b2d3fcef-2971-51be-b41a-8bd703bb701a}')
     @winrt_commethod(6)
@@ -53,7 +55,7 @@ class ISystemUpdateManagerStatics(ComPtr):
     @winrt_commethod(7)
     def get_State(self) -> win32more.Windows.System.Update.SystemUpdateManagerState: ...
     @winrt_commethod(8)
-    def add_StateChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StateChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(9)
     def remove_StateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(10)
@@ -75,11 +77,11 @@ class ISystemUpdateManagerStatics(ComPtr):
     @winrt_commethod(18)
     def get_LastErrorInfo(self) -> win32more.Windows.System.Update.SystemUpdateLastErrorInfo: ...
     @winrt_commethod(19)
-    def GetAutomaticRebootBlockIds(self) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
+    def GetAutomaticRebootBlockIds(self) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
     @winrt_commethod(20)
-    def BlockAutomaticRebootAsync(self, lockId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def BlockAutomaticRebootAsync(self, lockId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(21)
-    def UnblockAutomaticRebootAsync(self, lockId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def UnblockAutomaticRebootAsync(self, lockId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_commethod(22)
     def get_ExtendedError(self) -> win32more.Windows.Foundation.HResult: ...
     @winrt_commethod(23)
@@ -87,9 +89,9 @@ class ISystemUpdateManagerStatics(ComPtr):
     @winrt_commethod(24)
     def get_AttentionRequiredReason(self) -> win32more.Windows.System.Update.SystemUpdateAttentionRequiredReason: ...
     @winrt_commethod(25)
-    def SetFlightRing(self, flightRing: hstr) -> Boolean: ...
+    def SetFlightRing(self, flightRing: WinRT_String) -> Boolean: ...
     @winrt_commethod(26)
-    def GetFlightRing(self) -> hstr: ...
+    def GetFlightRing(self) -> WinRT_String: ...
     @winrt_commethod(27)
     def StartInstall(self, action: win32more.Windows.System.Update.SystemUpdateStartInstallAction) -> Void: ...
     @winrt_commethod(28)
@@ -107,26 +109,25 @@ class ISystemUpdateManagerStatics(ComPtr):
     UserActiveHoursEnd = property(get_UserActiveHoursEnd, None)
     UserActiveHoursMax = property(get_UserActiveHoursMax, None)
     UserActiveHoursStart = property(get_UserActiveHoursStart, None)
-    StateChanged = event(add_StateChanged, remove_StateChanged)
+    StateChanged = event()
 class SystemUpdateAttentionRequiredReason(Enum, Int32):
-    _name_ = 'Windows.System.Update.SystemUpdateAttentionRequiredReason'
     None_ = 0
     NetworkRequired = 1
     InsufficientDiskSpace = 2
     InsufficientBattery = 3
     UpdateBlocked = 4
 class SystemUpdateItem(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.System.Update.ISystemUpdateItem
     _classid_ = 'Windows.System.Update.SystemUpdateItem'
     @winrt_mixinmethod
     def get_State(self: win32more.Windows.System.Update.ISystemUpdateItem) -> win32more.Windows.System.Update.SystemUpdateItemState: ...
     @winrt_mixinmethod
-    def get_Title(self: win32more.Windows.System.Update.ISystemUpdateItem) -> hstr: ...
+    def get_Title(self: win32more.Windows.System.Update.ISystemUpdateItem) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_Description(self: win32more.Windows.System.Update.ISystemUpdateItem) -> hstr: ...
+    def get_Description(self: win32more.Windows.System.Update.ISystemUpdateItem) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.System.Update.ISystemUpdateItem) -> hstr: ...
+    def get_Id(self: win32more.Windows.System.Update.ISystemUpdateItem) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_Revision(self: win32more.Windows.System.Update.ISystemUpdateItem) -> UInt32: ...
     @winrt_mixinmethod
@@ -144,7 +145,6 @@ class SystemUpdateItem(ComPtr):
     State = property(get_State, None)
     Title = property(get_Title, None)
 class SystemUpdateItemState(Enum, Int32):
-    _name_ = 'Windows.System.Update.SystemUpdateItemState'
     NotStarted = 0
     Initializing = 1
     Preparing = 2
@@ -155,7 +155,7 @@ class SystemUpdateItemState(Enum, Int32):
     RebootRequired = 7
     Error = 8
 class SystemUpdateLastErrorInfo(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.System.Update.ISystemUpdateLastErrorInfo
     _classid_ = 'Windows.System.Update.SystemUpdateLastErrorInfo'
     @winrt_mixinmethod
@@ -170,14 +170,14 @@ class SystemUpdateLastErrorInfo(ComPtr):
 class _SystemUpdateManager_Meta_(ComPtr.__class__):
     pass
 class SystemUpdateManager(ComPtr, metaclass=_SystemUpdateManager_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Update.SystemUpdateManager'
     @winrt_classmethod
     def IsSupported(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> Boolean: ...
     @winrt_classmethod
     def get_State(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> win32more.Windows.System.Update.SystemUpdateManagerState: ...
     @winrt_classmethod
-    def add_StateChanged(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StateChanged(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_StateChanged(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
@@ -199,11 +199,11 @@ class SystemUpdateManager(ComPtr, metaclass=_SystemUpdateManager_Meta_):
     @winrt_classmethod
     def get_LastErrorInfo(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> win32more.Windows.System.Update.SystemUpdateLastErrorInfo: ...
     @winrt_classmethod
-    def GetAutomaticRebootBlockIds(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
+    def GetAutomaticRebootBlockIds(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
     @winrt_classmethod
-    def BlockAutomaticRebootAsync(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, lockId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def BlockAutomaticRebootAsync(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, lockId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_classmethod
-    def UnblockAutomaticRebootAsync(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, lockId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
+    def UnblockAutomaticRebootAsync(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, lockId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_classmethod
     def get_ExtendedError(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> win32more.Windows.Foundation.HResult: ...
     @winrt_classmethod
@@ -211,9 +211,9 @@ class SystemUpdateManager(ComPtr, metaclass=_SystemUpdateManager_Meta_):
     @winrt_classmethod
     def get_AttentionRequiredReason(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> win32more.Windows.System.Update.SystemUpdateAttentionRequiredReason: ...
     @winrt_classmethod
-    def SetFlightRing(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, flightRing: hstr) -> Boolean: ...
+    def SetFlightRing(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, flightRing: WinRT_String) -> Boolean: ...
     @winrt_classmethod
-    def GetFlightRing(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> hstr: ...
+    def GetFlightRing(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics) -> WinRT_String: ...
     @winrt_classmethod
     def StartInstall(cls: win32more.Windows.System.Update.ISystemUpdateManagerStatics, action: win32more.Windows.System.Update.SystemUpdateStartInstallAction) -> Void: ...
     @winrt_classmethod
@@ -231,9 +231,7 @@ class SystemUpdateManager(ComPtr, metaclass=_SystemUpdateManager_Meta_):
     _SystemUpdateManager_Meta_.UserActiveHoursEnd = property(get_UserActiveHoursEnd, None)
     _SystemUpdateManager_Meta_.UserActiveHoursMax = property(get_UserActiveHoursMax, None)
     _SystemUpdateManager_Meta_.UserActiveHoursStart = property(get_UserActiveHoursStart, None)
-    _SystemUpdateManager_Meta_.StateChanged = event(add_StateChanged, remove_StateChanged)
 class SystemUpdateManagerState(Enum, Int32):
-    _name_ = 'Windows.System.Update.SystemUpdateManagerState'
     Idle = 0
     Detecting = 1
     ReadyToDownload = 2
@@ -247,7 +245,6 @@ class SystemUpdateManagerState(Enum, Int32):
     AttentionRequired = 10
     Error = 11
 class SystemUpdateStartInstallAction(Enum, Int32):
-    _name_ = 'Windows.System.Update.SystemUpdateStartInstallAction'
     UpToReboot = 0
     AllowReboot = 1
 

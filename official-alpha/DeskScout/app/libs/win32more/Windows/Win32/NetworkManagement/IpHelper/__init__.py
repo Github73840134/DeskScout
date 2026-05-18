@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.IpHelper
 import win32more.Windows.Win32.NetworkManagement.Ndis
@@ -310,39 +310,20 @@ DNS_SETTING_DOH: UInt32 = 4096
 DNS_SETTING_DOH_PROFILE: UInt32 = 8192
 DNS_SETTING_ENCRYPTED_DNS_ADAPTER_FLAGS: UInt32 = 16384
 DNS_SETTING_DDR: UInt32 = 32768
-DNS_SETTING_DOT: UInt32 = 65536
-DNS_SETTING_DOT_PROFILE: UInt32 = 131072
 DNS_ENABLE_DOH: UInt32 = 1
 DNS_DOH_POLICY_NOT_CONFIGURED: UInt32 = 4
 DNS_DOH_POLICY_DISABLE: UInt32 = 8
 DNS_DOH_POLICY_AUTO: UInt32 = 16
 DNS_DOH_POLICY_REQUIRED: UInt32 = 32
-DNS_ENCRYPTION_POLICY_NOT_CONFIGURED: UInt32 = 4
-DNS_ENCRYPTION_POLICY_DISABLE: UInt32 = 8
-DNS_ENCRYPTION_POLICY_AUTO: UInt32 = 16
-DNS_ENCRYPTION_POLICY_REQUIRED: UInt32 = 32
 DNS_ENABLE_DDR: UInt32 = 64
-DNS_ENABLE_DOT: UInt32 = 128
-DNS_DOT_POLICY_BLOCK: UInt32 = 256
-DNS_DOH_POLICY_BLOCK: UInt32 = 512
-DNS_ENABLE_DNR: UInt32 = 1024
 DNS_SERVER_PROPERTY_VERSION1: UInt32 = 1
 DNS_DOH_SERVER_SETTINGS_ENABLE_AUTO: UInt32 = 1
 DNS_DOH_SERVER_SETTINGS_ENABLE: UInt32 = 2
 DNS_DOH_SERVER_SETTINGS_FALLBACK_TO_UDP: UInt32 = 4
 DNS_DOH_AUTO_UPGRADE_SERVER: UInt32 = 8
 DNS_DOH_SERVER_SETTINGS_ENABLE_DDR: UInt32 = 16
-DNS_DOH_SERVER_SETTINGS_MAKE_DDR_NON_BLOCKING: UInt32 = 32
-DNS_DOT_SERVER_SETTINGS_ENABLE: UInt32 = 1
-DNS_DOT_SERVER_SETTINGS_FALLBACK_TO_UDP: UInt32 = 2
-DNS_DOT_AUTO_UPGRADE_SERVER: UInt32 = 4
-DNS_DOT_SERVER_SETTINGS_ENABLE_AUTO: UInt32 = 8
-DNS_DOT_SERVER_SETTINGS_ENABLE_DDR: UInt32 = 16
-DNS_DOT_SERVER_SETTINGS_MAKE_DDR_NON_BLOCKING: UInt32 = 32
 DNS_DDR_ADAPTER_ENABLE_DOH: UInt32 = 1
-DNS_DDR_ADAPTER_ENABLE: UInt32 = 1
 DNS_DDR_ADAPTER_ENABLE_UDP_FALLBACK: UInt32 = 2
-DNS_DDR_ADAPTER_MAKE_DDR_NON_BLOCKING: UInt32 = 4
 TCPIP_OWNING_MODULE_SIZE: UInt32 = 16
 FILTER_ICMP_TYPE_ANY: Byte = 255
 FILTER_ICMP_CODE_ANY: Byte = 255
@@ -855,18 +836,6 @@ def GetNetworkConnectivityHint(ConnectivityHint: POINTER(win32more.Windows.Win32
 def GetNetworkConnectivityHintForInterface(InterfaceIndex: UInt32, ConnectivityHint: POINTER(win32more.Windows.Win32.Networking.WinSock.NL_NETWORK_CONNECTIVITY_HINT)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('IPHLPAPI.dll')
 def NotifyNetworkConnectivityHintChange(Callback: win32more.Windows.Win32.NetworkManagement.IpHelper.PNETWORK_CONNECTIVITY_HINT_CHANGE_CALLBACK, CallerContext: VoidPtr, InitialNotification: win32more.Windows.Win32.Foundation.BOOLEAN, NotificationHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
-@winfunctype('IPHLPAPI.DLL')
-def CreateFlVirtualInterface(Row: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_ROW)) -> UInt32: ...
-@winfunctype('IPHLPAPI.DLL')
-def DeleteFlVirtualInterface(Row: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_ROW)) -> UInt32: ...
-@winfunctype('IPHLPAPI.DLL')
-def InitializeFlVirtualInterfaceEntry(Row: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_ROW)) -> Void: ...
-@winfunctype('IPHLPAPI.DLL')
-def SetFlVirtualInterface(Row: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_ROW)) -> UInt32: ...
-@winfunctype('IPHLPAPI.DLL')
-def GetFlVirtualInterface(Row: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_ROW)) -> UInt32: ...
-@winfunctype('IPHLPAPI.DLL')
-def GetFlVirtualInterfaceTable(Family: win32more.Windows.Win32.Networking.WinSock.ADDRESS_FAMILY, Table: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_TABLE))) -> UInt32: ...
 @winfunctype('IPHLPAPI.dll')
 def PfCreateInterface(dwName: UInt32, inAction: win32more.Windows.Win32.NetworkManagement.IpHelper.PFFORWARD_ACTION, outAction: win32more.Windows.Win32.NetworkManagement.IpHelper.PFFORWARD_ACTION, bUseLog: win32more.Windows.Win32.Foundation.BOOL, bMustBeUnique: win32more.Windows.Win32.Foundation.BOOL, ppInterface: POINTER(VoidPtr)) -> UInt32: ...
 @winfunctype('IPHLPAPI.dll')
@@ -902,10 +871,6 @@ def PfTestPacket(pInInterface: VoidPtr, pOutInterface: VoidPtr, cBytes: UInt32, 
 class DNS_DOH_SERVER_SETTINGS(Structure):
     Template: win32more.Windows.Win32.Foundation.PWSTR
     Flags: UInt64
-class DNS_DOT_SERVER_SETTINGS(Structure):
-    Hostname: win32more.Windows.Win32.Foundation.PWSTR
-    Flags: UInt64
-    Port: UInt16
 class DNS_INTERFACE_SETTINGS(Structure):
     Version: UInt32
     Flags: UInt64
@@ -964,10 +929,8 @@ class DNS_SERVER_PROPERTY(Structure):
 DNS_SERVER_PROPERTY_TYPE = Int32
 DnsServerInvalidProperty: win32more.Windows.Win32.NetworkManagement.IpHelper.DNS_SERVER_PROPERTY_TYPE = 0
 DnsServerDohProperty: win32more.Windows.Win32.NetworkManagement.IpHelper.DNS_SERVER_PROPERTY_TYPE = 1
-DnsServerDotProperty: win32more.Windows.Win32.NetworkManagement.IpHelper.DNS_SERVER_PROPERTY_TYPE = 2
 class DNS_SERVER_PROPERTY_TYPES(Union):
     DohSettings: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.DNS_DOH_SERVER_SETTINGS)
-    DotSettings: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.DNS_DOT_SERVER_SETTINGS)
 class DNS_SETTINGS(Structure):
     Version: UInt32
     Flags: UInt64
@@ -1141,29 +1104,26 @@ class IP_ADAPTER_ADDRESSES_LH(Structure):
     Dhcpv6ClientDuidLength: UInt32
     Dhcpv6Iaid: UInt32
     FirstDnsSuffix: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_DNS_SUFFIX)
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             IfIndex: UInt32
     class _Anonymous2_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            DdnsEnabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            RegisterAdapterSuffix: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Dhcpv4Enabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            ReceiveOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            NoMulticast: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Ipv6OtherStatefulConfig: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            NetbiosOverTcpipEnabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Ipv4Enabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Ipv6Enabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Ipv6ManagedAddressConfigurationSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            DdnsEnabled: Annotated[UInt32, 1]
+            RegisterAdapterSuffix: Annotated[UInt32, 1]
+            Dhcpv4Enabled: Annotated[UInt32, 1]
+            ReceiveOnly: Annotated[UInt32, 1]
+            NoMulticast: Annotated[UInt32, 1]
+            Ipv6OtherStatefulConfig: Annotated[UInt32, 1]
+            NetbiosOverTcpipEnabled: Annotated[UInt32, 1]
+            Ipv4Enabled: Annotated[UInt32, 1]
+            Ipv6Enabled: Annotated[UInt32, 1]
+            Ipv6ManagedAddressConfigurationSupported: Annotated[UInt32, 1]
 class IP_ADAPTER_ADDRESSES_XP(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_ADDRESSES_XP)
@@ -1184,11 +1144,9 @@ class IP_ADAPTER_ADDRESSES_XP(Structure):
     Ipv6IfIndex: UInt32
     ZoneIndices: UInt32 * 16
     FirstPrefix: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_PREFIX_XP)
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             IfIndex: UInt32
@@ -1196,11 +1154,9 @@ class IP_ADAPTER_ANYCAST_ADDRESS_XP(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_ANYCAST_ADDRESS_XP)
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Flags: UInt32
@@ -1208,11 +1164,9 @@ class IP_ADAPTER_DNS_SERVER_ADDRESS_XP(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_DNS_SERVER_ADDRESS_XP)
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Reserved: UInt32
@@ -1223,11 +1177,9 @@ class IP_ADAPTER_GATEWAY_ADDRESS_LH(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_GATEWAY_ADDRESS_LH)
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Reserved: UInt32
@@ -1257,27 +1209,23 @@ class IP_ADAPTER_MULTICAST_ADDRESS_XP(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_MULTICAST_ADDRESS_XP)
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Flags: UInt32
 class IP_ADAPTER_ORDER_MAP(Structure):
     NumAdapters: UInt32
-    AdapterOrder: FlexibleArray[UInt32]
+    AdapterOrder: UInt32 * 1
 class IP_ADAPTER_PREFIX_XP(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_PREFIX_XP)
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS
     PrefixLength: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Flags: UInt32
@@ -1292,11 +1240,9 @@ class IP_ADAPTER_UNICAST_ADDRESS_LH(Structure):
     PreferredLifetime: UInt32
     LeaseLifetime: UInt32
     OnLinkPrefixLength: Byte
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Flags: UInt32
@@ -1310,11 +1256,9 @@ class IP_ADAPTER_UNICAST_ADDRESS_XP(Structure):
     ValidLifetime: UInt32
     PreferredLifetime: UInt32
     LeaseLifetime: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Flags: UInt32
@@ -1322,11 +1266,9 @@ class IP_ADAPTER_WINS_SERVER_ADDRESS_LH(Structure):
     Anonymous: _Anonymous_e__Union
     Next: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_WINS_SERVER_ADDRESS_LH)
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Alignment: UInt64
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Length: UInt32
             Reserved: UInt32
@@ -1342,7 +1284,7 @@ class IP_ADDR_STRING(Structure):
     Context: UInt32
 class IP_INTERFACE_INFO(Structure):
     NumAdapters: Int32
-    Adapter: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_INDEX_MAP]
+    Adapter: win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADAPTER_INDEX_MAP * 1
 class IP_INTERFACE_NAME_INFO_W2KSP1(Structure):
     Index: UInt32
     MediaType: UInt32
@@ -1375,7 +1317,7 @@ class IP_PER_ADAPTER_INFO_W2KSP1(Structure):
     DnsServerList: win32more.Windows.Win32.NetworkManagement.IpHelper.IP_ADDR_STRING
 class IP_UNIDIRECTIONAL_ADAPTER_ADDRESS(Structure):
     NumAdapters: UInt32
-    Address: FlexibleArray[UInt32]
+    Address: UInt32 * 1
 class MIBICMPINFO(Structure):
     icmpInStats: win32more.Windows.Win32.NetworkManagement.IpHelper.MIBICMPSTATS
     icmpOutStats: win32more.Windows.Win32.NetworkManagement.IpHelper.MIBICMPSTATS
@@ -1404,43 +1346,13 @@ class MIB_ANYCASTIPADDRESS_ROW(Structure):
     ScopeId: win32more.Windows.Win32.Networking.WinSock.SCOPE_ID
 class MIB_ANYCASTIPADDRESS_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_ANYCASTIPADDRESS_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_ANYCASTIPADDRESS_ROW * 1
 class MIB_BEST_IF(Structure):
     dwDestAddr: UInt32
     dwIfIndex: UInt32
 class MIB_BOUNDARYROW(Structure):
     dwGroupAddress: UInt32
     dwGroupMask: UInt32
-class MIB_FL_VIRTUAL_INTERFACE_ROW(Structure):
-    Family: win32more.Windows.Win32.Networking.WinSock.ADDRESS_FAMILY
-    IfLuid: win32more.Windows.Win32.NetworkManagement.Ndis.NET_LUID_LH
-    VirtualIfId: UInt32
-    CompartmentGuid: Guid
-    IsolationMode: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_ISOLATION_MODE
-    Origin: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_VIRTUAL_INTERFACE_ORIGIN
-    VirtualIfLuid: win32more.Windows.Win32.NetworkManagement.Ndis.NET_LUID_LH
-    VirtualIfIndex: UInt32
-    AllowLocalNd: win32more.Windows.Win32.Foundation.BOOLEAN
-    AttachedFlsnpiClients: UInt32
-    FlsnpiClientConfigErrors: UInt32
-    FlsnpiClientInjectErrors: UInt64
-    FlsnpiClientCloneErrors: UInt64
-    InFlsnpiIndicatedPackets: UInt64
-    InFlsnpiClientReturnedPackets: UInt64
-    InFlsnpiClientSilentlyDroppedPackets: UInt64
-    InFlsnpiClientDroppedPackets: UInt64
-    InFlsnpiClientInjectedPackets: UInt64
-    InFlsnpiClientClonedPackets: UInt64
-    OutFlsnpiIndicatedPackets: UInt64
-    OutFlsnpiClientReturnedPackets: UInt64
-    OutFlsnpiClientDroppedPackets: UInt64
-    OutFlsnpiClientSilentlyDroppedPackets: UInt64
-    OutFlsnpiClientInjectedPackets: UInt64
-    OutFlsnpiClientClonedPackets: UInt64
-    OutFlsnpiClientClonedPacketsForNbSplit: UInt64
-class MIB_FL_VIRTUAL_INTERFACE_TABLE(Structure):
-    NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_FL_VIRTUAL_INTERFACE_ROW]
 class MIB_ICMP(Structure):
     stats: win32more.Windows.Win32.NetworkManagement.IpHelper.MIBICMPINFO
 class MIB_ICMP_EX_XPSP1(Structure):
@@ -1478,7 +1390,7 @@ class MIB_IFSTACK_ROW(Structure):
     LowerLayerInterfaceIndex: UInt32
 class MIB_IFSTACK_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IFSTACK_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IFSTACK_ROW * 1
 class MIB_IFSTATUS(Structure):
     dwIfIndex: UInt32
     dwAdminStatus: UInt32
@@ -1487,7 +1399,7 @@ class MIB_IFSTATUS(Structure):
     bMHbeatAlive: win32more.Windows.Win32.Foundation.BOOL
 class MIB_IFTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IFROW]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IFROW * 1
 MIB_IF_ENTRY_LEVEL = Int32
 MibIfEntryNormal: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IF_ENTRY_LEVEL = 0
 MibIfEntryNormalWithoutStatistics: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IF_ENTRY_LEVEL = 2
@@ -1534,17 +1446,17 @@ class MIB_IF_ROW2(Structure):
     OutBroadcastOctets: UInt64
     OutQLen: UInt64
     class _InterfaceAndOperStatusFlags_e__Struct(Structure):
-        HardwareInterface: Annotated[Byte, NativeBitfieldAttribute(1)]
-        FilterInterface: Annotated[Byte, NativeBitfieldAttribute(1)]
-        ConnectorPresent: Annotated[Byte, NativeBitfieldAttribute(1)]
-        NotAuthenticated: Annotated[Byte, NativeBitfieldAttribute(1)]
-        NotMediaConnected: Annotated[Byte, NativeBitfieldAttribute(1)]
-        Paused: Annotated[Byte, NativeBitfieldAttribute(1)]
-        LowPower: Annotated[Byte, NativeBitfieldAttribute(1)]
-        EndPointInterface: Annotated[Byte, NativeBitfieldAttribute(1)]
+        HardwareInterface: Annotated[Byte, 1]
+        FilterInterface: Annotated[Byte, 1]
+        ConnectorPresent: Annotated[Byte, 1]
+        NotAuthenticated: Annotated[Byte, 1]
+        NotMediaConnected: Annotated[Byte, 1]
+        Paused: Annotated[Byte, 1]
+        LowPower: Annotated[Byte, 1]
+        EndPointInterface: Annotated[Byte, 1]
 class MIB_IF_TABLE2(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IF_ROW2]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IF_ROW2 * 1
 MIB_IF_TABLE_LEVEL = Int32
 MibIfTableNormal: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IF_TABLE_LEVEL = 0
 MibIfTableRaw: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IF_TABLE_LEVEL = 1
@@ -1554,7 +1466,7 @@ class MIB_INVERTEDIFSTACK_ROW(Structure):
     HigherLayerInterfaceIndex: UInt32
 class MIB_INVERTEDIFSTACK_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_INVERTEDIFSTACK_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_INVERTEDIFSTACK_ROW * 1
 class MIB_IPADDRROW_W2K(Structure):
     dwAddr: UInt32
     dwIndex: UInt32
@@ -1573,14 +1485,14 @@ class MIB_IPADDRROW_XP(Structure):
     wType: UInt16
 class MIB_IPADDRTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPADDRROW_XP]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPADDRROW_XP * 1
 class MIB_IPDESTROW(Structure):
     ForwardRow: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARDROW
     dwForwardPreference: UInt32
     dwForwardViewSet: UInt32
 class MIB_IPDESTTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPDESTROW]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPDESTROW * 1
 class MIB_IPFORWARDNUMBER(Structure):
     dwValue: UInt32
 class MIB_IPFORWARDROW(Structure):
@@ -1598,7 +1510,6 @@ class MIB_IPFORWARDROW(Structure):
     dwForwardMetric3: UInt32
     dwForwardMetric4: UInt32
     dwForwardMetric5: UInt32
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         dwForwardType: UInt32
         ForwardType: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARD_TYPE
@@ -1607,7 +1518,7 @@ class MIB_IPFORWARDROW(Structure):
         ForwardProto: win32more.Windows.Win32.Networking.WinSock.NL_ROUTE_PROTOCOL
 class MIB_IPFORWARDTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARDROW]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARDROW * 1
 class MIB_IPFORWARD_ROW2(Structure):
     InterfaceLuid: win32more.Windows.Win32.NetworkManagement.Ndis.NET_LUID_LH
     InterfaceIndex: UInt32
@@ -1626,7 +1537,7 @@ class MIB_IPFORWARD_ROW2(Structure):
     Origin: win32more.Windows.Win32.Networking.WinSock.NL_ROUTE_ORIGIN
 class MIB_IPFORWARD_TABLE2(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARD_ROW2]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARD_ROW2 * 1
 MIB_IPFORWARD_TYPE = Int32
 MIB_IPROUTE_TYPE_OTHER: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARD_TYPE = 1
 MIB_IPROUTE_TYPE_INVALID: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPFORWARD_TYPE = 2
@@ -1670,7 +1581,7 @@ class MIB_IPINTERFACE_ROW(Structure):
     DisableDefaultRoutes: win32more.Windows.Win32.Foundation.BOOLEAN
 class MIB_IPINTERFACE_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPINTERFACE_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPINTERFACE_ROW * 1
 class MIB_IPMCAST_BOUNDARY(Structure):
     dwIfIndex: UInt32
     dwGroupAddress: UInt32
@@ -1678,7 +1589,7 @@ class MIB_IPMCAST_BOUNDARY(Structure):
     dwStatus: UInt32
 class MIB_IPMCAST_BOUNDARY_TABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_BOUNDARY]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_BOUNDARY * 1
 class MIB_IPMCAST_GLOBAL(Structure):
     dwEnable: UInt32
 class MIB_IPMCAST_IF_ENTRY(Structure):
@@ -1690,7 +1601,7 @@ class MIB_IPMCAST_IF_ENTRY(Structure):
     ulOutMcastOctets: UInt32
 class MIB_IPMCAST_IF_TABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_IF_ENTRY]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_IF_ENTRY * 1
 class MIB_IPMCAST_MFE(Structure):
     dwGroup: UInt32
     dwSource: UInt32
@@ -1707,7 +1618,7 @@ class MIB_IPMCAST_MFE(Structure):
     ulNumOutIf: UInt32
     fFlags: UInt32
     dwReserved: UInt32
-    rgmioOutInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_OIF_XP]
+    rgmioOutInfo: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_OIF_XP * 1
 class MIB_IPMCAST_MFE_STATS(Structure):
     dwGroup: UInt32
     dwSource: UInt32
@@ -1725,7 +1636,7 @@ class MIB_IPMCAST_MFE_STATS(Structure):
     ulInOctets: UInt32
     ulPktsDifferentIf: UInt32
     ulQueueOverflow: UInt32
-    rgmiosOutStats: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_OIF_STATS_LH]
+    rgmiosOutStats: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_OIF_STATS_LH * 1
 class MIB_IPMCAST_MFE_STATS_EX_XP(Structure):
     dwGroup: UInt32
     dwSource: UInt32
@@ -1748,7 +1659,7 @@ class MIB_IPMCAST_MFE_STATS_EX_XP(Structure):
     ulInDiscards: UInt32
     ulInHdrErrors: UInt32
     ulTotalOutPackets: UInt32
-    rgmiosOutStats: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_OIF_STATS_LH]
+    rgmiosOutStats: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_OIF_STATS_LH * 1
 class MIB_IPMCAST_OIF_STATS_LH(Structure):
     dwOutIfIndex: UInt32
     dwNextHopAddr: UInt32
@@ -1786,7 +1697,6 @@ class MIB_IPNETROW_LH(Structure):
     bPhysAddr: Byte * 8
     dwAddr: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwType: UInt32
         Type: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNET_TYPE
@@ -1798,7 +1708,7 @@ class MIB_IPNETROW_W2K(Structure):
     dwType: UInt32
 class MIB_IPNETTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNETROW_LH]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNETROW_LH * 1
 class MIB_IPNET_ROW2(Structure):
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_INET
     InterfaceIndex: UInt32
@@ -1808,20 +1718,18 @@ class MIB_IPNET_ROW2(Structure):
     State: win32more.Windows.Win32.Networking.WinSock.NL_NEIGHBOR_STATE
     Anonymous: _Anonymous_e__Union
     ReachabilityTime: _ReachabilityTime_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         Flags: Byte
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            IsRouter: Annotated[Byte, NativeBitfieldAttribute(1)]
-            IsUnreachable: Annotated[Byte, NativeBitfieldAttribute(1)]
+            IsRouter: Annotated[Byte, 1]
+            IsUnreachable: Annotated[Byte, 1]
     class _ReachabilityTime_e__Union(Union):
         LastReachable: UInt32
         LastUnreachable: UInt32
 class MIB_IPNET_TABLE2(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNET_ROW2]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNET_ROW2 * 1
 MIB_IPNET_TYPE = Int32
 MIB_IPNET_TYPE_OTHER: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNET_TYPE = 1
 MIB_IPNET_TYPE_INVALID: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPNET_TYPE = 2
@@ -1840,13 +1748,12 @@ class MIB_IPPATH_ROW(Structure):
     IsReachable: win32more.Windows.Win32.Foundation.BOOLEAN
     LinkTransmitSpeed: UInt64
     LinkReceiveSpeed: UInt64
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         LastReachable: UInt32
         LastUnreachable: UInt32
 class MIB_IPPATH_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPPATH_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPPATH_ROW * 1
 MIB_IPSTATS_FORWARDING = Int32
 MIB_IP_FORWARDING: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPSTATS_FORWARDING = 1
 MIB_IP_NOT_FORWARDING: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPSTATS_FORWARDING = 2
@@ -1874,7 +1781,6 @@ class MIB_IPSTATS_LH(Structure):
     dwNumIf: UInt32
     dwNumAddr: UInt32
     dwNumRoutes: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwForwarding: UInt32
         Forwarding: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPSTATS_FORWARDING
@@ -1910,13 +1816,13 @@ class MIB_MCAST_LIMIT_ROW(Structure):
     dwRateLimit: UInt32
 class MIB_MFE_STATS_TABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_MFE_STATS]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_MFE_STATS * 1
 class MIB_MFE_STATS_TABLE_EX_XP(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_MFE_STATS_EX_XP)]
+    table: POINTER(win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_MFE_STATS_EX_XP) * 1
 class MIB_MFE_TABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_MFE]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_IPMCAST_MFE * 1
 class MIB_MULTICASTIPADDRESS_ROW(Structure):
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_INET
     InterfaceIndex: UInt32
@@ -1924,7 +1830,7 @@ class MIB_MULTICASTIPADDRESS_ROW(Structure):
     ScopeId: win32more.Windows.Win32.Networking.WinSock.SCOPE_ID
 class MIB_MULTICASTIPADDRESS_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_MULTICASTIPADDRESS_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_MULTICASTIPADDRESS_ROW * 1
 MIB_NOTIFICATION_TYPE = Int32
 MibParameterNotification: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_NOTIFICATION_TYPE = 0
 MibAddInstance: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_NOTIFICATION_TYPE = 1
@@ -1933,13 +1839,12 @@ MibInitialNotification: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_N
 class MIB_OPAQUE_INFO(Structure):
     dwId: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ullAlign: UInt64
-        rgbyData: FlexibleArray[Byte]
+        rgbyData: Byte * 1
 class MIB_OPAQUE_QUERY(Structure):
     dwVarId: UInt32
-    rgdwVarIndex: FlexibleArray[UInt32]
+    rgdwVarIndex: UInt32 * 1
 class MIB_PROXYARP(Structure):
     dwAddress: UInt32
     dwMask: UInt32
@@ -1986,16 +1891,16 @@ class MIB_TCP6ROW_OWNER_PID(Structure):
     dwOwningPid: UInt32
 class MIB_TCP6TABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW * 1
 class MIB_TCP6TABLE2(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW2]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW2 * 1
 class MIB_TCP6TABLE_OWNER_MODULE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW_OWNER_MODULE]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW_OWNER_MODULE * 1
 class MIB_TCP6TABLE_OWNER_PID(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW_OWNER_PID]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP6ROW_OWNER_PID * 1
 class MIB_TCPROW2(Structure):
     dwState: UInt32
     dwLocalAddr: UInt32
@@ -2010,7 +1915,6 @@ class MIB_TCPROW_LH(Structure):
     dwLocalPort: UInt32
     dwRemoteAddr: UInt32
     dwRemotePort: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwState: UInt32
         State: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP_STATE
@@ -2068,7 +1972,6 @@ class MIB_TCPSTATS_LH(Structure):
     dwInErrs: UInt32
     dwOutRsts: UInt32
     dwNumConns: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwRtoAlgorithm: UInt32
         RtoAlgorithm: win32more.Windows.Win32.NetworkManagement.IpHelper.TCP_RTO_ALGORITHM
@@ -2090,16 +1993,16 @@ class MIB_TCPSTATS_W2K(Structure):
     dwNumConns: UInt32
 class MIB_TCPTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW_LH]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW_LH * 1
 class MIB_TCPTABLE2(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW2]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW2 * 1
 class MIB_TCPTABLE_OWNER_MODULE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW_OWNER_MODULE]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW_OWNER_MODULE * 1
 class MIB_TCPTABLE_OWNER_PID(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW_OWNER_PID]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCPROW_OWNER_PID * 1
 MIB_TCP_STATE = Int32
 MIB_TCP_STATE_CLOSED: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP_STATE = 1
 MIB_TCP_STATE_LISTEN: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_TCP_STATE = 2
@@ -2129,13 +2032,11 @@ class MIB_UDP6ROW2(Structure):
     ucRemoteAddr: Byte * 16
     dwRemoteScopeId: UInt32
     dwRemotePort: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         dwFlags: Int32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            SpecificPortBind: Annotated[Int32, NativeBitfieldAttribute(1)]
+            SpecificPortBind: Annotated[Int32, 1]
 class MIB_UDP6ROW_OWNER_MODULE(Structure):
     ucLocalAddr: Byte * 16
     dwLocalScopeId: UInt32
@@ -2144,13 +2045,11 @@ class MIB_UDP6ROW_OWNER_MODULE(Structure):
     liCreateTimestamp: Int64
     Anonymous: _Anonymous_e__Union
     OwningModuleInfo: UInt64 * 16
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         dwFlags: Int32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            SpecificPortBind: Annotated[Int32, NativeBitfieldAttribute(1)]
+            SpecificPortBind: Annotated[Int32, 1]
 class MIB_UDP6ROW_OWNER_PID(Structure):
     ucLocalAddr: Byte * 16
     dwLocalScopeId: UInt32
@@ -2158,16 +2057,16 @@ class MIB_UDP6ROW_OWNER_PID(Structure):
     dwOwningPid: UInt32
 class MIB_UDP6TABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW * 1
 class MIB_UDP6TABLE2(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW2]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW2 * 1
 class MIB_UDP6TABLE_OWNER_MODULE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW_OWNER_MODULE]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW_OWNER_MODULE * 1
 class MIB_UDP6TABLE_OWNER_PID(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW_OWNER_PID]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDP6ROW_OWNER_PID * 1
 class MIB_UDPROW(Structure):
     dwLocalAddr: UInt32
     dwLocalPort: UInt32
@@ -2180,13 +2079,11 @@ class MIB_UDPROW2(Structure):
     OwningModuleInfo: UInt64 * 16
     dwRemoteAddr: UInt32
     dwRemotePort: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         dwFlags: Int32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            SpecificPortBind: Annotated[Int32, NativeBitfieldAttribute(1)]
+            SpecificPortBind: Annotated[Int32, 1]
 class MIB_UDPROW_OWNER_MODULE(Structure):
     dwLocalAddr: UInt32
     dwLocalPort: UInt32
@@ -2194,13 +2091,11 @@ class MIB_UDPROW_OWNER_MODULE(Structure):
     liCreateTimestamp: Int64
     Anonymous: _Anonymous_e__Union
     OwningModuleInfo: UInt64 * 16
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         dwFlags: Int32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            SpecificPortBind: Annotated[Int32, NativeBitfieldAttribute(1)]
+            SpecificPortBind: Annotated[Int32, 1]
 class MIB_UDPROW_OWNER_PID(Structure):
     dwLocalAddr: UInt32
     dwLocalPort: UInt32
@@ -2219,16 +2114,16 @@ class MIB_UDPSTATS2(Structure):
     dwNumAddrs: UInt32
 class MIB_UDPTABLE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW * 1
 class MIB_UDPTABLE2(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW2]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW2 * 1
 class MIB_UDPTABLE_OWNER_MODULE(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW_OWNER_MODULE]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW_OWNER_MODULE * 1
 class MIB_UDPTABLE_OWNER_PID(Structure):
     dwNumEntries: UInt32
-    table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW_OWNER_PID]
+    table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UDPROW_OWNER_PID * 1
 class MIB_UNICASTIPADDRESS_ROW(Structure):
     Address: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_INET
     InterfaceLuid: win32more.Windows.Win32.NetworkManagement.Ndis.NET_LUID_LH
@@ -2244,7 +2139,7 @@ class MIB_UNICASTIPADDRESS_ROW(Structure):
     CreationTimeStamp: Int64
 class MIB_UNICASTIPADDRESS_TABLE(Structure):
     NumEntries: UInt32
-    Table: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UNICASTIPADDRESS_ROW]
+    Table: win32more.Windows.Win32.NetworkManagement.IpHelper.MIB_UNICASTIPADDRESS_ROW * 1
 NET_ADDRESS_FORMAT = Int32
 NET_ADDRESS_FORMAT_UNSPECIFIED: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_ADDRESS_FORMAT = 0
 NET_ADDRESS_DNS_NAME: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_ADDRESS_FORMAT = 1
@@ -2253,7 +2148,6 @@ NET_ADDRESS_IPV6: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_ADDRESS
 class NET_ADDRESS_INFO(Structure):
     Format: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_ADDRESS_FORMAT
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         NamedAddress: _NamedAddress_e__Struct
         Ipv4Address: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_IN
@@ -2262,14 +2156,6 @@ class NET_ADDRESS_INFO(Structure):
         class _NamedAddress_e__Struct(Structure):
             Address: Char * 256
             Port: Char * 6
-NET_FL_ISOLATION_MODE = Int32
-NetFlIsolationModeNone: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_ISOLATION_MODE = 0
-NetFlIsolationModeVlan: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_ISOLATION_MODE = 1
-NetFlIsolationModeVsid: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_ISOLATION_MODE = 2
-NET_FL_VIRTUAL_INTERFACE_ORIGIN = Int32
-NetFlVirtualInterfaceOriginOid: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_VIRTUAL_INTERFACE_ORIGIN = 0
-NetFlVirtualInterfaceOriginApi: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_VIRTUAL_INTERFACE_ORIGIN = 1
-NetFlVirtualInterfaceOriginDefault: win32more.Windows.Win32.NetworkManagement.IpHelper.NET_FL_VIRTUAL_INTERFACE_ORIGIN = 2
 PFADDRESSTYPE = Int32
 PF_IPV4: win32more.Windows.Win32.NetworkManagement.IpHelper.PFADDRESSTYPE = 0
 PF_IPV6: win32more.Windows.Win32.NetworkManagement.IpHelper.PFADDRESSTYPE = 1
@@ -2289,7 +2175,7 @@ class PFLOGFRAME(Structure):
     wSizeOfIpHeader: UInt16
     dwInterfaceName: UInt32
     dwIPIndex: UInt32
-    bPacketData: FlexibleArray[Byte]
+    bPacketData: Byte * 1
 class PF_FILTER_DESCRIPTOR(Structure):
     dwFilterFlags: UInt32
     dwRule: UInt32
@@ -2323,7 +2209,7 @@ class PF_INTERFACE_STATS(Structure):
     liSYN: Int64
     liTotalLogged: Int64
     dwLostLogEntries: UInt32
-    FilterInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.IpHelper.PF_FILTER_STATS]
+    FilterInfo: win32more.Windows.Win32.NetworkManagement.IpHelper.PF_FILTER_STATS * 1
 class PF_LATEBIND_INFO(Structure):
     SrcAddr: POINTER(Byte)
     DstAddr: POINTER(Byte)

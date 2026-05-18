@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.Ndis
 import win32more.Windows.Win32.NetworkManagement.QoS
@@ -8,6 +8,9 @@ import win32more.Windows.Win32.System.IO
 class ADDRESS_LIST_DESCRIPTOR(Structure):
     MediaType: UInt32
     AddressList: win32more.Windows.Win32.NetworkManagement.Ndis.NETWORK_ADDRESS_LIST
+class ADSPEC(Structure):
+    adspec_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    adspec_body: win32more.Windows.Win32.NetworkManagement.QoS.IS_ADSPEC_BODY
 class AD_GENERAL_PARAMS(Structure):
     IntServAwareHopCount: UInt32
     PathBandwidthEstimate: UInt32
@@ -44,6 +47,195 @@ TC_NONCONF_BORROW: UInt32 = 0
 TC_NONCONF_SHAPE: UInt32 = 1
 TC_NONCONF_DISCARD: UInt32 = 2
 TC_NONCONF_BORROW_PLUS: UInt32 = 3
+class_NULL: UInt32 = 0
+class_SESSION: UInt32 = 1
+class_SESSION_GROUP: UInt32 = 2
+class_RSVP_HOP: UInt32 = 3
+class_INTEGRITY: UInt32 = 4
+class_TIME_VALUES: UInt32 = 5
+class_ERROR_SPEC: UInt32 = 6
+class_SCOPE: UInt32 = 7
+class_STYLE: UInt32 = 8
+class_FLOWSPEC: UInt32 = 9
+class_IS_FLOWSPEC: UInt32 = 9
+class_FILTER_SPEC: UInt32 = 10
+class_SENDER_TEMPLATE: UInt32 = 11
+class_SENDER_TSPEC: UInt32 = 12
+class_ADSPEC: UInt32 = 13
+class_POLICY_DATA: UInt32 = 14
+class_CONFIRM: UInt32 = 15
+class_MAX: UInt32 = 15
+ctype_SESSION_ipv4: UInt32 = 1
+ctype_SESSION_ipv4GPI: UInt32 = 3
+SESSFLG_E_Police: UInt32 = 1
+ctype_RSVP_HOP_ipv4: UInt32 = 1
+Opt_Share_mask: UInt32 = 24
+Opt_Distinct: UInt32 = 8
+Opt_Shared: UInt32 = 16
+Opt_SndSel_mask: UInt32 = 7
+Opt_Wildcard: UInt32 = 1
+Opt_Explicit: UInt32 = 2
+ctype_STYLE: UInt32 = 1
+ctype_FILTER_SPEC_ipv4: UInt32 = 1
+ctype_FILTER_SPEC_ipv4GPI: UInt32 = 4
+ctype_SENDER_TEMPLATE_ipv4: UInt32 = 1
+ctype_SENDER_TEMPLATE_ipv4GPI: UInt32 = 4
+ctype_SCOPE_list_ipv4: UInt32 = 1
+ctype_ERROR_SPEC_ipv4: UInt32 = 1
+ERROR_SPECF_InPlace: UInt32 = 1
+ERROR_SPECF_NotGuilty: UInt32 = 2
+ERR_FORWARD_OK: UInt32 = 32768
+ERR_Usage_globl: UInt32 = 0
+ERR_Usage_local: UInt32 = 16
+ERR_Usage_serv: UInt32 = 17
+ERR_global_mask: UInt32 = 4095
+ctype_POLICY_DATA: UInt32 = 1
+GENERAL_INFO: UInt32 = 1
+GUARANTEED_SERV: UInt32 = 2
+PREDICTIVE_SERV: UInt32 = 3
+CONTROLLED_DELAY_SERV: UInt32 = 4
+CONTROLLED_LOAD_SERV: UInt32 = 5
+QUALITATIVE_SERV: UInt32 = 6
+INTSERV_VERS_MASK: UInt32 = 240
+INTSERV_VERSION0: UInt32 = 0
+ISSH_BREAK_BIT: UInt32 = 128
+ISPH_FLG_INV: UInt32 = 128
+ctype_SENDER_TSPEC: UInt32 = 2
+ctype_FLOWSPEC_Intserv0: UInt32 = 2
+ctype_ADSPEC_INTSERV: UInt32 = 2
+RSVP_PATH: UInt32 = 1
+RSVP_RESV: UInt32 = 2
+RSVP_PATH_ERR: UInt32 = 3
+RSVP_RESV_ERR: UInt32 = 4
+RSVP_PATH_TEAR: UInt32 = 5
+RSVP_RESV_TEAR: UInt32 = 6
+RSVP_Err_NONE: UInt32 = 0
+RSVP_Erv_Nonev: UInt32 = 0
+RSVP_Err_ADMISSION: UInt32 = 1
+RSVP_Erv_Other: UInt32 = 0
+RSVP_Erv_DelayBnd: UInt32 = 1
+RSVP_Erv_Bandwidth: UInt32 = 2
+RSVP_Erv_MTU: UInt32 = 3
+RSVP_Erv_Flow_Rate: UInt32 = 32769
+RSVP_Erv_Bucket_szie: UInt32 = 32770
+RSVP_Erv_Peak_Rate: UInt32 = 32771
+RSVP_Erv_Min_Policied_size: UInt32 = 32772
+RSVP_Err_POLICY: UInt32 = 2
+POLICY_ERRV_NO_MORE_INFO: UInt32 = 1
+POLICY_ERRV_UNSUPPORTED_CREDENTIAL_TYPE: UInt32 = 2
+POLICY_ERRV_INSUFFICIENT_PRIVILEGES: UInt32 = 3
+POLICY_ERRV_EXPIRED_CREDENTIALS: UInt32 = 4
+POLICY_ERRV_IDENTITY_CHANGED: UInt32 = 5
+POLICY_ERRV_UNKNOWN: UInt32 = 0
+POLICY_ERRV_GLOBAL_DEF_FLOW_COUNT: UInt32 = 1
+POLICY_ERRV_GLOBAL_GRP_FLOW_COUNT: UInt32 = 2
+POLICY_ERRV_GLOBAL_USER_FLOW_COUNT: UInt32 = 3
+POLICY_ERRV_GLOBAL_UNAUTH_USER_FLOW_COUNT: UInt32 = 4
+POLICY_ERRV_SUBNET_DEF_FLOW_COUNT: UInt32 = 5
+POLICY_ERRV_SUBNET_GRP_FLOW_COUNT: UInt32 = 6
+POLICY_ERRV_SUBNET_USER_FLOW_COUNT: UInt32 = 7
+POLICY_ERRV_SUBNET_UNAUTH_USER_FLOW_COUNT: UInt32 = 8
+POLICY_ERRV_GLOBAL_DEF_FLOW_DURATION: UInt32 = 9
+POLICY_ERRV_GLOBAL_GRP_FLOW_DURATION: UInt32 = 10
+POLICY_ERRV_GLOBAL_USER_FLOW_DURATION: UInt32 = 11
+POLICY_ERRV_GLOBAL_UNAUTH_USER_FLOW_DURATION: UInt32 = 12
+POLICY_ERRV_SUBNET_DEF_FLOW_DURATION: UInt32 = 13
+POLICY_ERRV_SUBNET_GRP_FLOW_DURATION: UInt32 = 14
+POLICY_ERRV_SUBNET_USER_FLOW_DURATION: UInt32 = 15
+POLICY_ERRV_SUBNET_UNAUTH_USER_FLOW_DURATION: UInt32 = 16
+POLICY_ERRV_GLOBAL_DEF_FLOW_RATE: UInt32 = 17
+POLICY_ERRV_GLOBAL_GRP_FLOW_RATE: UInt32 = 18
+POLICY_ERRV_GLOBAL_USER_FLOW_RATE: UInt32 = 19
+POLICY_ERRV_GLOBAL_UNAUTH_USER_FLOW_RATE: UInt32 = 20
+POLICY_ERRV_SUBNET_DEF_FLOW_RATE: UInt32 = 21
+POLICY_ERRV_SUBNET_GRP_FLOW_RATE: UInt32 = 22
+POLICY_ERRV_SUBNET_USER_FLOW_RATE: UInt32 = 23
+POLICY_ERRV_SUBNET_UNAUTH_USER_FLOW_RATE: UInt32 = 24
+POLICY_ERRV_GLOBAL_DEF_PEAK_RATE: UInt32 = 25
+POLICY_ERRV_GLOBAL_GRP_PEAK_RATE: UInt32 = 26
+POLICY_ERRV_GLOBAL_USER_PEAK_RATE: UInt32 = 27
+POLICY_ERRV_GLOBAL_UNAUTH_USER_PEAK_RATE: UInt32 = 28
+POLICY_ERRV_SUBNET_DEF_PEAK_RATE: UInt32 = 29
+POLICY_ERRV_SUBNET_GRP_PEAK_RATE: UInt32 = 30
+POLICY_ERRV_SUBNET_USER_PEAK_RATE: UInt32 = 31
+POLICY_ERRV_SUBNET_UNAUTH_USER_PEAK_RATE: UInt32 = 32
+POLICY_ERRV_GLOBAL_DEF_SUM_FLOW_RATE: UInt32 = 33
+POLICY_ERRV_GLOBAL_GRP_SUM_FLOW_RATE: UInt32 = 34
+POLICY_ERRV_GLOBAL_USER_SUM_FLOW_RATE: UInt32 = 35
+POLICY_ERRV_GLOBAL_UNAUTH_USER_SUM_FLOW_RATE: UInt32 = 36
+POLICY_ERRV_SUBNET_DEF_SUM_FLOW_RATE: UInt32 = 37
+POLICY_ERRV_SUBNET_GRP_SUM_FLOW_RATE: UInt32 = 38
+POLICY_ERRV_SUBNET_USER_SUM_FLOW_RATE: UInt32 = 39
+POLICY_ERRV_SUBNET_UNAUTH_USER_SUM_FLOW_RATE: UInt32 = 40
+POLICY_ERRV_GLOBAL_DEF_SUM_PEAK_RATE: UInt32 = 41
+POLICY_ERRV_GLOBAL_GRP_SUM_PEAK_RATE: UInt32 = 42
+POLICY_ERRV_GLOBAL_USER_SUM_PEAK_RATE: UInt32 = 43
+POLICY_ERRV_GLOBAL_UNAUTH_USER_SUM_PEAK_RATE: UInt32 = 44
+POLICY_ERRV_SUBNET_DEF_SUM_PEAK_RATE: UInt32 = 45
+POLICY_ERRV_SUBNET_GRP_SUM_PEAK_RATE: UInt32 = 46
+POLICY_ERRV_SUBNET_USER_SUM_PEAK_RATE: UInt32 = 47
+POLICY_ERRV_SUBNET_UNAUTH_USER_SUM_PEAK_RATE: UInt32 = 48
+POLICY_ERRV_UNKNOWN_USER: UInt32 = 49
+POLICY_ERRV_NO_PRIVILEGES: UInt32 = 50
+POLICY_ERRV_EXPIRED_USER_TOKEN: UInt32 = 51
+POLICY_ERRV_NO_RESOURCES: UInt32 = 52
+POLICY_ERRV_PRE_EMPTED: UInt32 = 53
+POLICY_ERRV_USER_CHANGED: UInt32 = 54
+POLICY_ERRV_NO_ACCEPTS: UInt32 = 55
+POLICY_ERRV_NO_MEMORY: UInt32 = 56
+POLICY_ERRV_CRAZY_FLOWSPEC: UInt32 = 57
+RSVP_Err_NO_PATH: UInt32 = 3
+RSVP_Err_NO_SENDER: UInt32 = 4
+RSVP_Err_BAD_STYLE: UInt32 = 5
+RSVP_Err_UNKNOWN_STYLE: UInt32 = 6
+RSVP_Err_BAD_DSTPORT: UInt32 = 7
+RSVP_Err_BAD_SNDPORT: UInt32 = 8
+RSVP_Err_AMBIG_FILTER: UInt32 = 9
+RSVP_Err_PREEMPTED: UInt32 = 12
+RSVP_Err_UNKN_OBJ_CLASS: UInt32 = 13
+RSVP_Err_UNKNOWN_CTYPE: UInt32 = 14
+RSVP_Err_API_ERROR: UInt32 = 20
+RSVP_Err_TC_ERROR: UInt32 = 21
+RSVP_Erv_Conflict_Serv: UInt32 = 1
+RSVP_Erv_No_Serv: UInt32 = 2
+RSVP_Erv_Crazy_Flowspec: UInt32 = 3
+RSVP_Erv_Crazy_Tspec: UInt32 = 4
+RSVP_Err_TC_SYS_ERROR: UInt32 = 22
+RSVP_Err_RSVP_SYS_ERROR: UInt32 = 23
+RSVP_Erv_MEMORY: UInt32 = 1
+RSVP_Erv_API: UInt32 = 2
+LPM_PE_USER_IDENTITY: UInt32 = 2
+LPM_PE_APP_IDENTITY: UInt32 = 3
+ERROR_NO_MORE_INFO: UInt32 = 1
+UNSUPPORTED_CREDENTIAL_TYPE: UInt32 = 2
+INSUFFICIENT_PRIVILEGES: UInt32 = 3
+EXPIRED_CREDENTIAL: UInt32 = 4
+IDENTITY_CHANGED: UInt32 = 5
+LPM_OK: UInt32 = 0
+INV_LPM_HANDLE: UInt32 = 1
+LPM_TIME_OUT: UInt32 = 2
+INV_REQ_HANDLE: UInt32 = 3
+DUP_RESULTS: UInt32 = 4
+INV_RESULTS: UInt32 = 5
+LPM_PE_ALL_TYPES: UInt32 = 0
+LPM_API_VERSION_1: UInt32 = 1
+PCM_VERSION_1: UInt32 = 1
+LPV_RESERVED: UInt32 = 0
+LPV_MIN_PRIORITY: UInt32 = 1
+LPV_MAX_PRIORITY: UInt32 = 65280
+LPV_DROP_MSG: UInt32 = 65533
+LPV_DONT_CARE: UInt32 = 65534
+LPV_REJECT: UInt32 = 65535
+FORCE_IMMEDIATE_REFRESH: UInt32 = 1
+LPM_RESULT_READY: UInt32 = 0
+LPM_RESULT_DEFER: UInt32 = 1
+RCVD_PATH_TEAR: UInt32 = 1
+RCVD_RESV_TEAR: UInt32 = 2
+ADM_CTRL_FAILED: UInt32 = 3
+STATE_TIMEOUT: UInt32 = 4
+FLOW_DURATION: UInt32 = 5
+RESOURCES_ALLOCATED: UInt32 = 1
+RESOURCES_MODIFIED: UInt32 = 2
 CURRENT_TCI_VERSION: UInt32 = 2
 TC_NOTIFY_IFC_UP: UInt32 = 1
 TC_NOTIFY_IFC_CLOSE: UInt32 = 2
@@ -213,131 +405,6 @@ SIPAEV_AMD_SL_PUB_KEY: UInt32 = 32772
 SIPAEV_AMD_SL_SVN: UInt32 = 32773
 SIPAEV_AMD_SL_LOAD_1: UInt32 = 32774
 SIPAEV_AMD_SL_SEPARATOR: UInt32 = 32775
-SIPAEV_AMD_NO_ACTION: UInt32 = 3
-SIPAEV_AMD_BASE_2: UInt32 = 33280
-SIPAEV_AMD_SPL_TABLE_ROM: UInt32 = 33281
-SIPAEV_AMD_PSP_BL_STAGE_1: UInt32 = 33282
-SIPAEV_AMD_PSP_KEYDB: UInt32 = 33283
-SIPAEV_AMD_SPL_TABLE_FW: UInt32 = 33284
-SIPAEV_AMD_PSP_BL_STAGE_2: UInt32 = 33285
-SIPAEV_AMD_PSP_L0_SEC_POL: UInt32 = 33286
-SIPAEV_AMD_PMFW0: UInt32 = 33287
-SIPAEV_AMD_MP2_CONFIG: UInt32 = 33288
-SIPAEV_AMD_MP2_FW: UInt32 = 33289
-SIPAEV_AMD_ABL_1: UInt32 = 33290
-SIPAEV_AMD_ABL_2: UInt32 = 33291
-SIPAEV_AMD_ABL_3: UInt32 = 33292
-SIPAEV_AMD_ABL_4: UInt32 = 33293
-SIPAEV_AMD_ABL_5: UInt32 = 33294
-SIPAEV_AMD_ABL_6: UInt32 = 33295
-SIPAEV_AMD_ABL_7: UInt32 = 33296
-SIPAEV_AMD_ABL_8: UInt32 = 33297
-SIPAEV_AMD_ABL_9: UInt32 = 33298
-SIPAEV_AMD_ABL_10: UInt32 = 33299
-SIPAEV_AMD_ABL_11: UInt32 = 33300
-SIPAEV_AMD_ABL_12: UInt32 = 33301
-SIPAEV_AMD_ABL_13: UInt32 = 33302
-SIPAEV_AMD_ABL_14: UInt32 = 33303
-SIPAEV_AMD_ABL_15: UInt32 = 33304
-SIPAEV_AMD_ABL_16: UInt32 = 33305
-SIPAEV_AMD_ABL_17: UInt32 = 33306
-SIPAEV_AMD_ABL_18: UInt32 = 33307
-SIPAEV_AMD_ABL_19: UInt32 = 33308
-SIPAEV_AMD_ABL_20: UInt32 = 33309
-SIPAEV_AMD_ABL_21: UInt32 = 33310
-SIPAEV_AMD_ABL_22: UInt32 = 33311
-SIPAEV_AMD_ABL_23: UInt32 = 33312
-SIPAEV_AMD_ABL_24: UInt32 = 33313
-SIPAEV_AMD_ABL_25: UInt32 = 33314
-SIPAEV_AMD_ABL_26: UInt32 = 33315
-SIPAEV_AMD_ABL_27: UInt32 = 33316
-SIPAEV_AMD_ABL_28: UInt32 = 33317
-SIPAEV_AMD_ABL_29: UInt32 = 33318
-SIPAEV_AMD_ABL_30: UInt32 = 33319
-SIPAEV_AMD_ABL_31: UInt32 = 33320
-SIPAEV_AMD_ABL_32: UInt32 = 33321
-SIPAEV_AMD_ABL_33: UInt32 = 33322
-SIPAEV_AMD_ABL_34: UInt32 = 33323
-SIPAEV_AMD_ABL_35: UInt32 = 33324
-SIPAEV_AMD_ABL_36: UInt32 = 33325
-SIPAEV_AMD_ABL_37: UInt32 = 33326
-SIPAEV_AMD_ABL_38: UInt32 = 33327
-SIPAEV_AMD_ABL_39: UInt32 = 33328
-SIPAEV_AMD_ABL_40: UInt32 = 33329
-SIPAEV_AMD_ABL_41: UInt32 = 33330
-SIPAEV_AMD_ABL_42: UInt32 = 33331
-SIPAEV_AMD_ABL_43: UInt32 = 33332
-SIPAEV_AMD_ABL_44: UInt32 = 33333
-SIPAEV_AMD_ABL_45: UInt32 = 33334
-SIPAEV_AMD_ABL_46: UInt32 = 33335
-SIPAEV_AMD_ABL_47: UInt32 = 33336
-SIPAEV_AMD_ABL_48: UInt32 = 33337
-SIPAEV_AMD_MID_SMU: UInt32 = 33338
-SIPAEV_AMD_PM_FW1: UInt32 = 33339
-SIPAEV_AMD_VBL_1: UInt32 = 33340
-SIPAEV_AMD_VBL_2: UInt32 = 33341
-SIPAEV_AMD_VBL_3: UInt32 = 33342
-SIPAEV_AMD_VBL_4: UInt32 = 33343
-SIPAEV_AMD_VBL_5: UInt32 = 33344
-SIPAEV_AMD_VBL_6: UInt32 = 33345
-SIPAEV_AMD_VBL_7: UInt32 = 33346
-SIPAEV_AMD_VBL_8: UInt32 = 33347
-SIPAEV_AMD_VBL_9: UInt32 = 33348
-SIPAEV_AMD_VBL_10: UInt32 = 33349
-SIPAEV_AMD_PSP_L1_SEC_POL: UInt32 = 33350
-SIPAEV_AMD_IP_DISCOVERY: UInt32 = 33351
-SIPAEV_AMD_SYS_DRV: UInt32 = 33352
-SIPAEV_AMD_TOS: UInt32 = 33353
-SIPAEV_AMD_PSP_TOS_KEYDB: UInt32 = 33354
-SIPAEV_AMD_ABL_TOC: UInt32 = 33355
-SIPAEV_AMD_PMU1_DATA: UInt32 = 33356
-SIPAEV_AMD_PMU2_DATA: UInt32 = 33357
-SIPAEV_AMD_PMU1: UInt32 = 33358
-SIPAEV_AMD_PMU2: UInt32 = 33359
-SIPAEV_AMD_MPIO_FW: UInt32 = 33360
-SIPAEV_AMD_MP5: UInt32 = 33361
-SIPAEV_AMD_MPCCX: UInt32 = 33362
-SIPAEV_AMD_GMI3: UInt32 = 33363
-SIPAEV_AMD_TPMLITE: UInt32 = 33364
-SIPAEV_AMD_PSP_SPIROM_CONFIG: UInt32 = 33365
-SIPAEV_AMD_PSP_DF_RIB_TOC: UInt32 = 33366
-SIPAEV_AMD_PSP_DF_RIB0: UInt32 = 33367
-SIPAEV_AMD_PSP_DF_RIB1: UInt32 = 33368
-SIPAEV_AMD_PSP_DF_RIB2: UInt32 = 33369
-SIPAEV_AMD_PSP_DF_RIB3: UInt32 = 33370
-SIPAEV_AMD_PSP_DF_RIB4: UInt32 = 33371
-SIPAEV_AMD_PSP_DF_RIB5: UInt32 = 33372
-SIPAEV_AMD_PSP_DF_RIB6: UInt32 = 33373
-SIPAEV_AMD_PSP_DF_RIB7: UInt32 = 33374
-SIPAEV_AMD_PSP_DF_RIB8: UInt32 = 33375
-SIPAEV_AMD_PSP_DF_RIB9: UInt32 = 33376
-SIPAEV_AMD_PSP_DF_RIB10: UInt32 = 33377
-SIPAEV_AMD_PSP_DF_RIB11: UInt32 = 33378
-SIPAEV_AMD_PSP_DF_RIB12: UInt32 = 33379
-SIPAEV_AMD_PSP_DF_RIB13: UInt32 = 33380
-SIPAEV_AMD_PSP_DF_RIB14: UInt32 = 33381
-SIPAEV_AMD_PSP_DF_RIB15: UInt32 = 33382
-SIPAEV_AMD_SECURE_DEBUG_UNLOCK: UInt32 = 33383
-SIPAEV_AMD_PSP_BL_END: UInt32 = 33535
-SIPAEV_AMD_FTPM_DRV: UInt32 = 33536
-SIPAEV_AMD_DRTM_DRV: UInt32 = 33537
-SIPAEV_AMD_AGESA_DRV: UInt32 = 33538
-SIPAEV_AMD_PSP_END: UInt32 = 33791
-SIPAEV_ARM_BASE: UInt32 = 36864
-SIPAEV_ARM_PCR_SCHEMA: UInt32 = 36865
-SIPAEV_ARM_DCE: UInt32 = 36866
-SIPAEV_ARM_DCE_PUBKEY: UInt32 = 36867
-SIPAEV_ARM_DLME: UInt32 = 36868
-SIPAEV_ARM_DLME_ENTRY_POINT: UInt32 = 36869
-SIPAEV_ARM_DEBUG_CONFIG: UInt32 = 36870
-SIPAEV_ARM_NONSECURE_CONFIG: UInt32 = 36871
-SIPAEV_ARM_DCE_SECONDARY: UInt32 = 36872
-SIPAEV_ARM_TZFW: UInt32 = 36873
-SIPAEV_ARM_SEPARATOR: UInt32 = 36874
-SIPAEV_ARM_DLME_PUBKEY: UInt32 = 36875
-SIPAEV_ARM_DLME_SVN: UInt32 = 36876
-SIPAEV_ARM_NO_ACTION: UInt32 = 36877
-SIPAEV_ARM_SECURE_INT_DISABLE: UInt32 = 36878
 SIPAEVENTTYPE_NONMEASURED: UInt32 = 2147483648
 SIPAEVENTTYPE_AGGREGATION: UInt32 = 1073741824
 SIPAEVENTTYPE_CONTAINER: UInt32 = 65536
@@ -354,7 +421,6 @@ SIPAEVENTTYPE_KSR: UInt32 = 720896
 SIPAEVENTTYPE_DRTM: UInt32 = 786432
 SIPAERROR_FIRMWAREFAILURE: UInt32 = 196609
 SIPAERROR_INTERNALFAILURE: UInt32 = 196611
-SIPAERROR_HYPERVISORFAILURE: UInt32 = 196613
 SIPAEVENT_INFORMATION: UInt32 = 131073
 SIPAEVENT_BOOTCOUNTER: UInt32 = 131074
 SIPAEVENT_TRANSFER_CONTROL: UInt32 = 131075
@@ -365,7 +431,6 @@ SIPAEVENT_COUNTERID: UInt32 = 131079
 SIPAEVENT_MORBIT_NOT_CANCELABLE: UInt32 = 131080
 SIPAEVENT_APPLICATION_SVN: UInt32 = 131081
 SIPAEVENT_SVN_CHAIN_STATUS: UInt32 = 131082
-SIPAEVENT_IDK_GENERATION_STATUS: UInt32 = 131084
 SIPAEVENT_MORBIT_API_STATUS: UInt32 = 131083
 SIPAEVENT_BOOTDEBUGGING: UInt32 = 262145
 SIPAEVENT_BOOT_REVOCATION_LIST: UInt32 = 262146
@@ -400,18 +465,6 @@ SIPAEVENT_DUMP_ENCRYPTION_KEY_DIGEST: UInt32 = 327719
 SIPAEVENT_LSAISO_CONFIG: UInt32 = 327720
 SIPAEVENT_SBCP_INFO: UInt32 = 327721
 SIPAEVENT_HYPERVISOR_BOOT_DMA_PROTECTION: UInt32 = 327728
-SIPAEVENT_SI_POLICY_SIGNER: UInt32 = 327729
-SIPAEVENT_SI_POLICY_UPDATE_SIGNER: UInt32 = 327730
-SIPAEVENT_REFS_VOLUME_CHECKPOINT_RECORD_CHECKSUM: UInt32 = 327731
-SIPAEVENT_REFS_ROLLBACK_PROTECTION_FROZEN_VOLUME_CHECKSUM: UInt32 = 327732
-SIPAEVENT_REFS_ROLLBACK_PROTECTION_USER_PAYLOAD_HASH: UInt32 = 327733
-SIPAEVENT_REFS_ROLLBACK_PROTECTION_VERIFICATION_SUCCEEDED: UInt32 = 327734
-SIPAEVENT_REFS_ROLLBACK_PROTECTION_VOLUME_FIRST_EVER_MOUNT: UInt32 = 327735
-SIPAEVENT_VSM_SEALED_SI_POLICY: UInt32 = 327738
-SIPAEVENT_VSM_DRTM_KEYROLL_DETECTED: UInt32 = 327739
-SIPAEVENT_VSM_SRTM_UNSEAL_POLICY: UInt32 = 327740
-SIPAEVENT_VSM_SRTM_ANTI_ROLLBACK_COUNTER: UInt32 = 327741
-SIPAEVENT_VTL1_DUMP_CONFIG: UInt32 = 327744
 SIPAEVENT_NOAUTHORITY: UInt32 = 393217
 SIPAEVENT_AUTHORITYPUBKEY: UInt32 = 393218
 SIPAEVENT_FILEPATH: UInt32 = 458753
@@ -425,10 +478,7 @@ SIPAEVENT_AUTHORITYPUBLISHER: UInt32 = 458760
 SIPAEVENT_AUTHORITYSHA1THUMBPRINT: UInt32 = 458761
 SIPAEVENT_IMAGEVALIDATED: UInt32 = 458762
 SIPAEVENT_MODULE_SVN: UInt32 = 458763
-SIPAEVENT_MODULE_PLUTON: UInt32 = 458764
-SIPAEVENT_MODULE_ORIGINAL_FILENAME: UInt32 = 458765
-SIPAEVENT_MODULE_VERSION: UInt32 = 458766
-SIPAEVENT_PUBLISHER_OEMNAME: UInt32 = 458767
+SIPAEVENT_MODULE_HSP: UInt32 = 458764
 SIPAEVENT_ELAM_KEYNAME: UInt32 = 589825
 SIPAEVENT_ELAM_CONFIGURATION: UInt32 = 589826
 SIPAEVENT_ELAM_POLICY: UInt32 = 589827
@@ -490,9 +540,16 @@ WBCL_DIGEST_ALG_BITMAP_SM3_256: UInt32 = 16
 WBCL_DIGEST_ALG_BITMAP_SHA3_256: UInt32 = 32
 WBCL_DIGEST_ALG_BITMAP_SHA3_384: UInt32 = 64
 WBCL_DIGEST_ALG_BITMAP_SHA3_512: UInt32 = 128
-MAX_PLUTON_UPGRADE_FILENAME_LENGTH: UInt32 = 64
-WBCL_MAX_PLUTON_UPGRADE_HASH_LEN: UInt32 = 64
+MAX_HSP_UPGRADE_FILENAME_LENGTH: UInt32 = 64
+WBCL_MAX_HSP_UPGRADE_HASH_LEN: UInt32 = 64
 WBCL_HASH_LEN_SHA1: UInt32 = 20
+IS_GUAR_RSPEC: Int32 = 130
+GUAR_ADSPARM_C: Int32 = 131
+GUAR_ADSPARM_D: Int32 = 132
+GUAR_ADSPARM_Ctot: Int32 = 133
+GUAR_ADSPARM_Dtot: Int32 = 134
+GUAR_ADSPARM_Csum: Int32 = 135
+GUAR_ADSPARM_Dsum: Int32 = 136
 @winfunctype('qwave.dll')
 def QOSCreateHandle(Version: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.QOS_VERSION), QOSHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('qwave.dll')
@@ -559,15 +616,22 @@ def TcDeleteFlow(FlowHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt3
 def TcDeleteFilter(FilterHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('TRAFFIC.dll')
 def TcEnumerateFlows(IfcHandle: win32more.Windows.Win32.Foundation.HANDLE, pEnumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE), pFlowCount: POINTER(UInt32), pBufSize: POINTER(UInt32), Buffer: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.ENUMERATION_BUFFER)) -> UInt32: ...
+@winfunctype_pointer
+def CBADMITRESULT(LpmHandle: win32more.Windows.Win32.NetworkManagement.QoS.LPM_HANDLE, RequestHandle: win32more.Windows.Win32.NetworkManagement.QoS.RHANDLE, ulPcmActionFlags: UInt32, LpmError: Int32, PolicyDecisionsCount: Int32, pPolicyDecisions: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.POLICY_DECISION)) -> POINTER(UInt32): ...
+@winfunctype_pointer
+def CBGETRSVPOBJECTS(LpmHandle: win32more.Windows.Win32.NetworkManagement.QoS.LPM_HANDLE, RequestHandle: win32more.Windows.Win32.NetworkManagement.QoS.RHANDLE, LpmError: Int32, RsvpObjectsCount: Int32, ppRsvpObjects: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr))) -> POINTER(UInt32): ...
 class CONTROL_SERVICE(Structure):
     Length: UInt32
     Service: UInt32
     Overrides: win32more.Windows.Win32.NetworkManagement.QoS.AD_GENERAL_PARAMS
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Guaranteed: win32more.Windows.Win32.NetworkManagement.QoS.AD_GUARANTEED
-        ParamBuffer: FlexibleArray[win32more.Windows.Win32.NetworkManagement.QoS.PARAM_BUFFER]
+        ParamBuffer: win32more.Windows.Win32.NetworkManagement.QoS.PARAM_BUFFER * 1
+class CtrlLoadFlowspec(Structure):
+    CL_spec_serv_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    CL_spec_parm_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    CL_spec_parms: win32more.Windows.Win32.NetworkManagement.QoS.GenTspecParms
 class ENUMERATION_BUFFER(Structure):
     Length: UInt32
     OwnerProcessId: UInt32
@@ -575,11 +639,36 @@ class ENUMERATION_BUFFER(Structure):
     FlowName: Char * 256
     pFlow: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.TC_GEN_FLOW)
     NumberOfFilters: UInt32
-    GenericFilter: FlexibleArray[win32more.Windows.Win32.NetworkManagement.QoS.TC_GEN_FILTER]
+    GenericFilter: win32more.Windows.Win32.NetworkManagement.QoS.TC_GEN_FILTER * 1
+class ERROR_SPEC(Structure):
+    errs_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    errs_u: _errs_u_e__Union
+    class _errs_u_e__Union(Union):
+        errs_ipv4: win32more.Windows.Win32.NetworkManagement.QoS.Error_Spec_IPv4
+class Error_Spec_IPv4(Structure):
+    errs_errnode: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    errs_flags: Byte
+    errs_code: Byte
+    errs_value: UInt16
+class FILTER_SPEC(Structure):
+    filt_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    filt_u: _filt_u_e__Union
+    class _filt_u_e__Union(Union):
+        filt_ipv4: win32more.Windows.Win32.NetworkManagement.QoS.Filter_Spec_IPv4
+        filt_ipv4gpi: win32more.Windows.Win32.NetworkManagement.QoS.Filter_Spec_IPv4GPI
 class FLOWDESCRIPTOR(Structure):
     FlowSpec: win32more.Windows.Win32.Networking.WinSock.FLOWSPEC
     NumFilters: UInt32
     FilterList: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RSVP_FILTERSPEC)
+class FLOW_DESC(Structure):
+    u1: _u1_e__Union
+    u2: _u2_e__Union
+    class _u1_e__Union(Union):
+        stspec: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.SENDER_TSPEC)
+        isflow: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.IS_FLOWSPEC)
+    class _u2_e__Union(Union):
+        stemp: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.FILTER_SPEC)
+        fspec: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.FILTER_SPEC)
 FilterType = Int32
 FILTERSPECV4: win32more.Windows.Win32.NetworkManagement.QoS.FilterType = 1
 FILTERSPECV6: win32more.Windows.Win32.NetworkManagement.QoS.FilterType = 2
@@ -587,11 +676,70 @@ FILTERSPECV6_FLOW: win32more.Windows.Win32.NetworkManagement.QoS.FilterType = 3
 FILTERSPECV4_GPI: win32more.Windows.Win32.NetworkManagement.QoS.FilterType = 4
 FILTERSPECV6_GPI: win32more.Windows.Win32.NetworkManagement.QoS.FilterType = 5
 FILTERSPEC_END: win32more.Windows.Win32.NetworkManagement.QoS.FilterType = 6
+class Filter_Spec_IPv4(Structure):
+    filt_ipaddr: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    filt_unused: UInt16
+    filt_port: UInt16
+class Filter_Spec_IPv4GPI(Structure):
+    filt_ipaddr: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    filt_gpi: UInt32
+class Gads_parms_t(Structure):
+    Gads_serv_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    Gads_Ctot_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Gads_Ctot: UInt32
+    Gads_Dtot_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Gads_Dtot: UInt32
+    Gads_Csum_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Gads_Csum: UInt32
+    Gads_Dsum_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Gads_Dsum: UInt32
+class GenAdspecParams(Structure):
+    gen_parm_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    gen_parm_hopcnt_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    gen_parm_hopcnt: UInt32
+    gen_parm_pathbw_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    gen_parm_path_bw: Single
+    gen_parm_minlat_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    gen_parm_min_latency: UInt32
+    gen_parm_compmtu_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    gen_parm_composed_MTU: UInt32
+class GenTspec(Structure):
+    gen_Tspec_serv_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    gen_Tspec_parm_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    gen_Tspec_parms: win32more.Windows.Win32.NetworkManagement.QoS.GenTspecParms
+class GenTspecParms(Structure):
+    TB_Tspec_r: Single
+    TB_Tspec_b: Single
+    TB_Tspec_p: Single
+    TB_Tspec_m: UInt32
+    TB_Tspec_M: UInt32
+class GuarFlowSpec(Structure):
+    Guar_serv_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    Guar_Tspec_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Guar_Tspec_parms: win32more.Windows.Win32.NetworkManagement.QoS.GenTspecParms
+    Guar_Rspec_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Guar_Rspec: win32more.Windows.Win32.NetworkManagement.QoS.GuarRspec
+class GuarRspec(Structure):
+    Guar_R: Single
+    Guar_S: UInt32
+class HSP_UPGRADE_IMAGEDATA(Structure):
+    hashAlgID: UInt16
+    digestSize: UInt16
+    digest: Byte * 64
+    fileName: Char * 64
+    _pack_ = 1
 class IDPE_ATTR(Structure):
     PeAttribLength: UInt16
     PeAttribType: Byte
     PeAttribSubType: Byte
     PeAttribValue: Byte * 4
+class ID_ERROR_OBJECT(Structure):
+    usIdErrLength: UInt16
+    ucAType: Byte
+    ucSubType: Byte
+    usReserved: UInt16
+    usIdErrorValue: UInt16
+    ucIdErrData: Byte * 4
 class IN_ADDR_IPV4(Union):
     Addr: UInt32
     AddrBytes: Byte * 4
@@ -623,16 +771,71 @@ class IP_PATTERN(Structure):
             s_type: Byte
             s_code: Byte
             filler: UInt16
+class IS_ADSPEC_BODY(Structure):
+    adspec_mh: win32more.Windows.Win32.NetworkManagement.QoS.IntServMainHdr
+    adspec_genparms: win32more.Windows.Win32.NetworkManagement.QoS.GenAdspecParams
+class IS_FLOWSPEC(Structure):
+    flow_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    flow_body: win32more.Windows.Win32.NetworkManagement.QoS.IntServFlowSpec
+class IntServFlowSpec(Structure):
+    spec_mh: win32more.Windows.Win32.NetworkManagement.QoS.IntServMainHdr
+    spec_u: _spec_u_e__Union
+    class _spec_u_e__Union(Union):
+        CL_spec: win32more.Windows.Win32.NetworkManagement.QoS.CtrlLoadFlowspec
+        G_spec: win32more.Windows.Win32.NetworkManagement.QoS.GuarFlowSpec
+        Q_spec: win32more.Windows.Win32.NetworkManagement.QoS.QualAppFlowSpec
+class IntServMainHdr(Structure):
+    ismh_version: Byte
+    ismh_unused: Byte
+    ismh_len32b: UInt16
+class IntServParmHdr(Structure):
+    isph_parm_num: Byte
+    isph_flags: Byte
+    isph_len32b: UInt16
+class IntServServiceHdr(Structure):
+    issh_service: Byte
+    issh_flags: Byte
+    issh_len32b: UInt16
+class IntServTspecBody(Structure):
+    st_mh: win32more.Windows.Win32.NetworkManagement.QoS.IntServMainHdr
+    tspec_u: _tspec_u_e__Union
+    class _tspec_u_e__Union(Union):
+        gen_stspec: win32more.Windows.Win32.NetworkManagement.QoS.GenTspec
+        qual_stspec: win32more.Windows.Win32.NetworkManagement.QoS.QualTspec
+class LPMIPTABLE(Structure):
+    ulIfIndex: UInt32
+    MediaType: UInt32
+    IfIpAddr: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    IfNetMask: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+LPM_HANDLE = VoidPtr
+class LPM_INIT_INFO(Structure):
+    PcmVersionNumber: UInt32
+    ResultTimeLimit: UInt32
+    ConfiguredLpmCount: Int32
+    AllocMemory: win32more.Windows.Win32.NetworkManagement.QoS.PALLOCMEM
+    FreeMemory: win32more.Windows.Win32.NetworkManagement.QoS.PFREEMEM
+    PcmAdmitResultCallback: win32more.Windows.Win32.NetworkManagement.QoS.CBADMITRESULT
+    GetRsvpObjectsCallback: win32more.Windows.Win32.NetworkManagement.QoS.CBGETRSVPOBJECTS
+@winfunctype_pointer
+def PALLOCMEM(Size: UInt32) -> VoidPtr: ...
 class PARAM_BUFFER(Structure):
     ParameterId: UInt32
     Length: UInt32
-    Buffer: FlexibleArray[Byte]
-class PLUTON_UPGRADE_IMAGEDATA(Structure):
-    hashAlgID: UInt16
-    digestSize: UInt16
-    digest: Byte * 64
-    fileName: Char * 64
-    _pack_ = 1
+    Buffer: Byte * 1
+@winfunctype_pointer
+def PFREEMEM(pv: VoidPtr) -> Void: ...
+class POLICY_DATA(Structure):
+    PolicyObjHdr: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    usPeOffset: UInt16
+    usReserved: UInt16
+class POLICY_DECISION(Structure):
+    lpvResult: UInt32
+    wPolicyErrCode: UInt16
+    wPolicyErrValue: UInt16
+class POLICY_ELEMENT(Structure):
+    usPeLength: UInt16
+    usPeType: UInt16
+    ucPeData: Byte * 4
 class QOS_DESTADDR(Structure):
     ObjectHdr: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR
     SocketAddress: POINTER(win32more.Windows.Win32.Networking.WinSock.SOCKADDR)
@@ -640,7 +843,7 @@ class QOS_DESTADDR(Structure):
 class QOS_DIFFSERV(Structure):
     ObjectHdr: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR
     DSFieldCount: UInt32
-    DiffservRule: FlexibleArray[Byte]
+    DiffservRule: Byte * 1
 class QOS_DIFFSERV_RULE(Structure):
     InboundDSField: Byte
     ConformingOutboundDSField: Byte
@@ -715,16 +918,28 @@ QOSTrafficTypeControl: win32more.Windows.Win32.NetworkManagement.QoS.QOS_TRAFFIC
 class QOS_VERSION(Structure):
     MajorVersion: UInt16
     MinorVersion: UInt16
+class QualAppFlowSpec(Structure):
+    Q_spec_serv_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    Q_spec_parm_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    Q_spec_parms: win32more.Windows.Win32.NetworkManagement.QoS.QualTspecParms
+class QualTspec(Structure):
+    qual_Tspec_serv_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServServiceHdr
+    qual_Tspec_parm_hdr: win32more.Windows.Win32.NetworkManagement.QoS.IntServParmHdr
+    qual_Tspec_parms: win32more.Windows.Win32.NetworkManagement.QoS.QualTspecParms
+class QualTspecParms(Structure):
+    TB_Tspec_M: UInt32
+class RESV_STYLE(Structure):
+    style_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    style_word: UInt32
 RHANDLE = VoidPtr
 class RSVP_ADSPEC(Structure):
     ObjectHdr: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR
     GeneralParams: win32more.Windows.Win32.NetworkManagement.QoS.AD_GENERAL_PARAMS
     NumberOfServices: UInt32
-    Services: FlexibleArray[win32more.Windows.Win32.NetworkManagement.QoS.CONTROL_SERVICE]
+    Services: win32more.Windows.Win32.NetworkManagement.QoS.CONTROL_SERVICE * 1
 class RSVP_FILTERSPEC(Structure):
     Type: win32more.Windows.Win32.NetworkManagement.QoS.FilterType
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FilterSpecV4: win32more.Windows.Win32.NetworkManagement.QoS.RSVP_FILTERSPEC_V4
         FilterSpecV6: win32more.Windows.Win32.NetworkManagement.QoS.RSVP_FILTERSPEC_V6
@@ -749,6 +964,24 @@ class RSVP_FILTERSPEC_V6_FLOW(Structure):
 class RSVP_FILTERSPEC_V6_GPI(Structure):
     Address: win32more.Windows.Win32.NetworkManagement.QoS.IN_ADDR_IPV6
     GeneralPortId: UInt32
+class RSVP_HOP(Structure):
+    hop_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    hop_u: _hop_u_e__Union
+    class _hop_u_e__Union(Union):
+        hop_ipv4: win32more.Windows.Win32.NetworkManagement.QoS.Rsvp_Hop_IPv4
+class RSVP_MSG_OBJS(Structure):
+    RsvpMsgType: Int32
+    pRsvpSession: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RSVP_SESSION)
+    pRsvpFromHop: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RSVP_HOP)
+    pRsvpToHop: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RSVP_HOP)
+    pResvStyle: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RESV_STYLE)
+    pRsvpScope: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RSVP_SCOPE)
+    FlowDescCount: Int32
+    pFlowDescs: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.FLOW_DESC)
+    PdObjectCount: Int32
+    ppPdObjects: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.QoS.POLICY_DATA))
+    pErrorSpec: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.ERROR_SPEC)
+    pAdspec: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.ADSPEC)
 class RSVP_POLICY(Structure):
     Len: UInt16
     Type: UInt16
@@ -756,7 +989,7 @@ class RSVP_POLICY(Structure):
 class RSVP_POLICY_INFO(Structure):
     ObjectHdr: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR
     NumPolicyElement: UInt32
-    PolicyElement: FlexibleArray[win32more.Windows.Win32.NetworkManagement.QoS.RSVP_POLICY]
+    PolicyElement: win32more.Windows.Win32.NetworkManagement.QoS.RSVP_POLICY * 1
 class RSVP_RESERVE_INFO(Structure):
     ObjectHdr: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR
     Style: UInt32
@@ -764,24 +997,41 @@ class RSVP_RESERVE_INFO(Structure):
     PolicyElementList: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.RSVP_POLICY_INFO)
     NumFlowDesc: UInt32
     FlowDescList: POINTER(win32more.Windows.Win32.NetworkManagement.QoS.FLOWDESCRIPTOR)
+class RSVP_SCOPE(Structure):
+    scopl_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    scope_u: _scope_u_e__Union
+    class _scope_u_e__Union(Union):
+        scopl_ipv4: win32more.Windows.Win32.NetworkManagement.QoS.Scope_list_ipv4
+class RSVP_SESSION(Structure):
+    sess_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    sess_u: _sess_u_e__Union
+    class _sess_u_e__Union(Union):
+        sess_ipv4: win32more.Windows.Win32.NetworkManagement.QoS.Session_IPv4
 class RSVP_STATUS_INFO(Structure):
     ObjectHdr: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR
     StatusCode: UInt32
     ExtendedStatus1: UInt32
     ExtendedStatus2: UInt32
+class RsvpObjHdr(Structure):
+    obj_length: UInt16
+    obj_class: Byte
+    obj_ctype: Byte
+class Rsvp_Hop_IPv4(Structure):
+    hop_ipaddr: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    hop_LIH: UInt32
+class SENDER_TSPEC(Structure):
+    stspec_header: win32more.Windows.Win32.NetworkManagement.QoS.RsvpObjHdr
+    stspec_body: win32more.Windows.Win32.NetworkManagement.QoS.IntServTspecBody
 class SIPAEVENT_KSR_SIGNATURE_PAYLOAD(Structure):
     SignAlgID: UInt32
     SignatureLength: UInt32
-    Signature: FlexibleArray[Byte]
+    Signature: Byte * 1
     _pack_ = 1
-class SIPAEVENT_REFS_ROLLBACK_PROTECTION_USER_PAYLOAD_HASH_DATA(Structure):
-    ChecksumType: UInt16
-    ChecksumBuffer: FlexibleArray[Byte]
 class SIPAEVENT_REVOCATION_LIST_PAYLOAD(Structure):
     CreationTime: Int64
     DigestLength: UInt32
     HashAlgID: UInt16
-    Digest: FlexibleArray[Byte]
+    Digest: Byte * 1
     _pack_ = 1
 class SIPAEVENT_SBCP_INFO_PAYLOAD_V1(Structure):
     PayloadVersion: UInt32
@@ -790,35 +1040,18 @@ class SIPAEVENT_SBCP_INFO_PAYLOAD_V1(Structure):
     DigestLength: UInt16
     Options: UInt32
     SignersCount: UInt32
-    VarData: FlexibleArray[Byte]
-    _pack_ = 1
-class SIPAEVENT_SI_POLICY_CERTIFICATE_PAYLOAD(Structure):
-    PublisherCommonNameLength: UInt16
-    IssuerCommonNameLength: UInt16
-    HashAlgID: UInt32
-    DigestLength: UInt16
-    VarLengthData: FlexibleArray[Byte]
+    VarData: Byte * 1
     _pack_ = 1
 class SIPAEVENT_SI_POLICY_PAYLOAD(Structure):
     PolicyVersion: UInt64
     PolicyNameLength: UInt16
     HashAlgID: UInt16
     DigestLength: UInt32
-    VarLengthData: FlexibleArray[Byte]
-    _pack_ = 1
-class SIPAEVENT_SI_POLICY_SIGNER_PAYLOAD(Structure):
-    RootID: UInt32
-    CertificatesLength: UInt32
-    CertificatesCount: UInt16
-    PolicyNameLength: UInt16
-    EKUsLength: UInt16
-    EKUsCount: UInt16
-    VarLengthData: FlexibleArray[Byte]
+    VarLengthData: Byte * 1
     _pack_ = 1
 class SIPAEVENT_VSM_IDK_INFO_PAYLOAD(Structure):
     KeyAlgID: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         RsaKeyInfo: win32more.Windows.Win32.NetworkManagement.QoS.SIPAEVENT_VSM_IDK_RSA_INFO
@@ -826,19 +1059,26 @@ class SIPAEVENT_VSM_IDK_RSA_INFO(Structure):
     KeyBitLength: UInt32
     PublicExpLengthBytes: UInt32
     ModulusSizeBytes: UInt32
-    PublicKeyData: FlexibleArray[Byte]
+    PublicKeyData: Byte * 1
     _pack_ = 1
+class Scope_list_ipv4(Structure):
+    scopl_ipaddr: win32more.Windows.Win32.Networking.WinSock.IN_ADDR * 1
+class Session_IPv4(Structure):
+    sess_destaddr: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    sess_protid: Byte
+    sess_flags: Byte
+    sess_destport: UInt16
 class TCG_PCClientPCREventStruct(Structure):
     pcrIndex: UInt32
     eventType: UInt32
     digest: Byte * 20
     eventDataSize: UInt32
-    event: FlexibleArray[Byte]
+    event: Byte * 1
     _pack_ = 1
 class TCG_PCClientTaggedEventStruct(Structure):
     EventID: UInt32
     EventDataSize: UInt32
-    EventData: FlexibleArray[Byte]
+    EventData: Byte * 1
     _pack_ = 1
 @winfunctype_pointer
 def TCI_ADD_FLOW_COMPLETE_HANDLER(ClFlowCtx: win32more.Windows.Win32.Foundation.HANDLE, Status: UInt32) -> Void: ...
@@ -862,7 +1102,7 @@ class TC_GEN_FLOW(Structure):
     SendingFlowspec: win32more.Windows.Win32.Networking.WinSock.FLOWSPEC
     ReceivingFlowspec: win32more.Windows.Win32.Networking.WinSock.FLOWSPEC
     TcObjectsLength: UInt32
-    TcObjects: FlexibleArray[win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR]
+    TcObjects: win32more.Windows.Win32.NetworkManagement.QoS.QOS_OBJECT_HDR * 1
 class TC_IFC_DESCRIPTOR(Structure):
     Length: UInt32
     pInterfaceName: win32more.Windows.Win32.Foundation.PWSTR
@@ -891,6 +1131,13 @@ class WBCL_LogHdr(Structure):
     entries: UInt32
     length: UInt32
     _pack_ = 1
+int_serv_wkp = Int32
+IS_WKP_HOP_CNT: win32more.Windows.Win32.NetworkManagement.QoS.int_serv_wkp = 4
+IS_WKP_PATH_BW: win32more.Windows.Win32.NetworkManagement.QoS.int_serv_wkp = 6
+IS_WKP_MIN_LATENCY: win32more.Windows.Win32.NetworkManagement.QoS.int_serv_wkp = 8
+IS_WKP_COMPOSED_MTU: win32more.Windows.Win32.NetworkManagement.QoS.int_serv_wkp = 10
+IS_WKP_TB_TSPEC: win32more.Windows.Win32.NetworkManagement.QoS.int_serv_wkp = 127
+IS_WKP_Q_TSPEC: win32more.Windows.Win32.NetworkManagement.QoS.int_serv_wkp = 128
 
 
 make_ready(__name__)

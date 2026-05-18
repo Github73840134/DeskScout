@@ -1,79 +1,73 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.Dns
 SIZEOF_IP4_ADDRESS: UInt32 = 4
 IP4_ADDRESS_STRING_LENGTH: UInt32 = 16
 IP4_ADDRESS_STRING_BUFFER_LENGTH: UInt32 = 16
 DNS_ADDR_MAX_SOCKADDR_LENGTH: UInt32 = 32
-DNS_TYPE_ZERO: UInt32 = 0
-DNS_TYPE_A: UInt32 = 1
-DNS_TYPE_NS: UInt32 = 2
-DNS_TYPE_MD: UInt32 = 3
-DNS_TYPE_MF: UInt32 = 4
-DNS_TYPE_CNAME: UInt32 = 5
-DNS_TYPE_SOA: UInt32 = 6
-DNS_TYPE_MB: UInt32 = 7
-DNS_TYPE_MG: UInt32 = 8
-DNS_TYPE_MR: UInt32 = 9
-DNS_TYPE_NULL: UInt32 = 10
-DNS_TYPE_WKS: UInt32 = 11
-DNS_TYPE_PTR: UInt32 = 12
-DNS_TYPE_HINFO: UInt32 = 13
-DNS_TYPE_MINFO: UInt32 = 14
-DNS_TYPE_MX: UInt32 = 15
-DNS_TYPE_TEXT: UInt32 = 16
-DNS_TYPE_RP: UInt32 = 17
-DNS_TYPE_AFSDB: UInt32 = 18
-DNS_TYPE_X25: UInt32 = 19
-DNS_TYPE_ISDN: UInt32 = 20
-DNS_TYPE_RT: UInt32 = 21
-DNS_TYPE_NSAP: UInt32 = 22
-DNS_TYPE_NSAPPTR: UInt32 = 23
-DNS_TYPE_SIG: UInt32 = 24
-DNS_TYPE_KEY: UInt32 = 25
-DNS_TYPE_PX: UInt32 = 26
-DNS_TYPE_GPOS: UInt32 = 27
-DNS_TYPE_AAAA: UInt32 = 28
-DNS_TYPE_LOC: UInt32 = 29
-DNS_TYPE_NXT: UInt32 = 30
-DNS_TYPE_EID: UInt32 = 31
-DNS_TYPE_NIMLOC: UInt32 = 32
-DNS_TYPE_SRV: UInt32 = 33
-DNS_TYPE_ATMA: UInt32 = 34
-DNS_TYPE_NAPTR: UInt32 = 35
-DNS_TYPE_KX: UInt32 = 36
-DNS_TYPE_CERT: UInt32 = 37
-DNS_TYPE_A6: UInt32 = 38
-DNS_TYPE_DNAME: UInt32 = 39
-DNS_TYPE_SINK: UInt32 = 40
-DNS_TYPE_OPT: UInt32 = 41
-DNS_TYPE_DS: UInt32 = 43
-DNS_TYPE_RRSIG: UInt32 = 46
-DNS_TYPE_NSEC: UInt32 = 47
-DNS_TYPE_DNSKEY: UInt32 = 48
-DNS_TYPE_DHCID: UInt32 = 49
-DNS_TYPE_NSEC3: UInt32 = 50
-DNS_TYPE_NSEC3PARAM: UInt32 = 51
-DNS_TYPE_TLSA: UInt32 = 52
-DNS_TYPE_SVCB: UInt32 = 64
-DNS_TYPE_HTTPS: UInt32 = 65
-DNS_TYPE_UINFO: UInt32 = 100
-DNS_TYPE_UID: UInt32 = 101
-DNS_TYPE_GID: UInt32 = 102
-DNS_TYPE_UNSPEC: UInt32 = 103
-DNS_TYPE_ADDRS: UInt32 = 248
-DNS_TYPE_TKEY: UInt32 = 249
-DNS_TYPE_TSIG: UInt32 = 250
-DNS_TYPE_IXFR: UInt32 = 251
-DNS_TYPE_AXFR: UInt32 = 252
-DNS_TYPE_MAILB: UInt32 = 253
-DNS_TYPE_MAILA: UInt32 = 254
-DNS_TYPE_ALL: UInt32 = 255
-DNS_TYPE_ANY: UInt32 = 255
-DNS_TYPE_WINS: UInt32 = 65281
-DNS_TYPE_WINSR: UInt32 = 65282
-DNS_TYPE_NBSTAT: UInt32 = 65282
+IP6_ADDRESS_STRING_LENGTH: UInt32 = 65
+IP6_ADDRESS_STRING_BUFFER_LENGTH: UInt32 = 65
+DNS_ADDRESS_STRING_LENGTH: UInt32 = 65
+DNS_PORT_HOST_ORDER: UInt32 = 53
+DNS_PORT_NET_ORDER: UInt32 = 13568
+DNS_RFC_MAX_UDP_PACKET_LENGTH: UInt32 = 512
+DNS_MAX_NAME_LENGTH: UInt32 = 255
+DNS_MAX_LABEL_LENGTH: UInt32 = 63
+DNS_MAX_NAME_BUFFER_LENGTH: UInt32 = 256
+DNS_MAX_LABEL_BUFFER_LENGTH: UInt32 = 64
+DNS_MAX_IP4_REVERSE_NAME_LENGTH: UInt32 = 31
+DNS_MAX_IP6_REVERSE_NAME_LENGTH: UInt32 = 75
+DNS_MAX_REVERSE_NAME_LENGTH: UInt32 = 75
+DNS_MAX_IP4_REVERSE_NAME_BUFFER_LENGTH: UInt32 = 31
+DNS_MAX_IP6_REVERSE_NAME_BUFFER_LENGTH: UInt32 = 75
+DNS_MAX_REVERSE_NAME_BUFFER_LENGTH: UInt32 = 75
+DNS_MAX_TEXT_STRING_LENGTH: UInt32 = 255
+DNS_COMPRESSED_QUESTION_NAME: UInt32 = 49164
+DNS_OPCODE_QUERY: UInt32 = 0
+DNS_OPCODE_IQUERY: UInt32 = 1
+DNS_OPCODE_SERVER_STATUS: UInt32 = 2
+DNS_OPCODE_UNKNOWN: UInt32 = 3
+DNS_OPCODE_NOTIFY: UInt32 = 4
+DNS_OPCODE_UPDATE: UInt32 = 5
+DNS_RCODE_NOERROR: UInt32 = 0
+DNS_RCODE_FORMERR: UInt32 = 1
+DNS_RCODE_SERVFAIL: UInt32 = 2
+DNS_RCODE_NXDOMAIN: UInt32 = 3
+DNS_RCODE_NOTIMPL: UInt32 = 4
+DNS_RCODE_REFUSED: UInt32 = 5
+DNS_RCODE_YXDOMAIN: UInt32 = 6
+DNS_RCODE_YXRRSET: UInt32 = 7
+DNS_RCODE_NXRRSET: UInt32 = 8
+DNS_RCODE_NOTAUTH: UInt32 = 9
+DNS_RCODE_NOTZONE: UInt32 = 10
+DNS_RCODE_MAX: UInt32 = 15
+DNS_RCODE_BADVERS: UInt32 = 16
+DNS_RCODE_BADSIG: UInt32 = 16
+DNS_RCODE_BADKEY: UInt32 = 17
+DNS_RCODE_BADTIME: UInt32 = 18
+DNS_RCODE_NO_ERROR: UInt32 = 0
+DNS_RCODE_FORMAT_ERROR: UInt32 = 1
+DNS_RCODE_SERVER_FAILURE: UInt32 = 2
+DNS_RCODE_NAME_ERROR: UInt32 = 3
+DNS_RCODE_NOT_IMPLEMENTED: UInt32 = 4
+DNS_CLASS_INTERNET: UInt32 = 1
+DNS_CLASS_CSNET: UInt32 = 2
+DNS_CLASS_CHAOS: UInt32 = 3
+DNS_CLASS_HESIOD: UInt32 = 4
+DNS_CLASS_NONE: UInt32 = 254
+DNS_CLASS_ALL: UInt32 = 255
+DNS_CLASS_ANY: UInt32 = 255
+DNS_CLASS_UNICAST_RESPONSE: UInt32 = 32768
+DNS_RCLASS_INTERNET: UInt32 = 256
+DNS_RCLASS_CSNET: UInt32 = 512
+DNS_RCLASS_CHAOS: UInt32 = 768
+DNS_RCLASS_HESIOD: UInt32 = 1024
+DNS_RCLASS_NONE: UInt32 = 65024
+DNS_RCLASS_ALL: UInt32 = 65280
+DNS_RCLASS_ANY: UInt32 = 65280
+DNS_RCLASS_UNICAST_RESPONSE: UInt32 = 128
+DNS_RCLASS_MDNS_CACHE_FLUSH: UInt32 = 128
 DNS_RTYPE_A: UInt32 = 256
 DNS_RTYPE_NS: UInt32 = 512
 DNS_RTYPE_MD: UInt32 = 768
@@ -193,6 +187,9 @@ DNS_TKEY_MODE_SERVER_ASSIGN: UInt32 = 1
 DNS_TKEY_MODE_DIFFIE_HELLMAN: UInt32 = 2
 DNS_TKEY_MODE_GSS: UInt32 = 3
 DNS_TKEY_MODE_RESOLVER_ASSIGN: UInt32 = 4
+DNS_WINS_FLAG_SCOPE: UInt32 = 2147483648
+DNS_WINS_FLAG_LOCAL: UInt32 = 65536
+DNS_CONFIG_FLAG_ALLOC: UInt32 = 1
 DDR_MAX_IP_HINTS: UInt32 = 4
 DNSREC_SECTION: UInt32 = 3
 DNSREC_QUESTION: UInt32 = 0
@@ -204,85 +201,15 @@ DNSREC_PREREQ: UInt32 = 1
 DNSREC_UPDATE: UInt32 = 2
 DNSREC_DELETE: UInt32 = 4
 DNSREC_NOEXIST: UInt32 = 4
-DNS_RFC_MAX_UDP_PACKET_LENGTH: UInt32 = 512
-DNS_MAX_NAME_LENGTH: UInt32 = 255
-DNS_MAX_LABEL_LENGTH: UInt32 = 63
-DNS_MAX_NAME_BUFFER_LENGTH: UInt32 = 256
-DNS_MAX_LABEL_BUFFER_LENGTH: UInt32 = 64
 DNS_CUSTOM_SERVER_TYPE_UDP: UInt32 = 1
 DNS_CUSTOM_SERVER_TYPE_DOH: UInt32 = 2
-DNS_CUSTOM_SERVER_TYPE_DOT: UInt32 = 3
 DNS_CUSTOM_SERVER_UDP_FALLBACK: UInt32 = 1
-DNS_CUSTOM_SERVER_UPGRADE_FROM_WELL_KNOWN_SERVERS: UInt32 = 2
-IP6_ADDRESS_STRING_LENGTH: UInt32 = 65
-IP6_ADDRESS_STRING_BUFFER_LENGTH: UInt32 = 65
-DNS_ADDRESS_STRING_LENGTH: UInt32 = 65
-DNS_PORT_HOST_ORDER: UInt32 = 53
-DNS_PORT_NET_ORDER: UInt32 = 13568
-INTERNET_DEFAULT_DNS_PORT: UInt32 = 53
-INTERNET_DEFAULT_DOT_PORT: UInt32 = 853
-DNS_MAX_IP4_REVERSE_NAME_LENGTH: UInt32 = 31
-DNS_MAX_IP6_REVERSE_NAME_LENGTH: UInt32 = 75
-DNS_MAX_REVERSE_NAME_LENGTH: UInt32 = 75
-DNS_MAX_IP4_REVERSE_NAME_BUFFER_LENGTH: UInt32 = 31
-DNS_MAX_IP6_REVERSE_NAME_BUFFER_LENGTH: UInt32 = 75
-DNS_MAX_REVERSE_NAME_BUFFER_LENGTH: UInt32 = 75
-DNS_MAX_TEXT_STRING_LENGTH: UInt32 = 255
-DNS_COMPRESSED_QUESTION_NAME: UInt32 = 49164
-DNS_OPCODE_QUERY: UInt32 = 0
-DNS_OPCODE_IQUERY: UInt32 = 1
-DNS_OPCODE_SERVER_STATUS: UInt32 = 2
-DNS_OPCODE_UNKNOWN: UInt32 = 3
-DNS_OPCODE_NOTIFY: UInt32 = 4
-DNS_OPCODE_UPDATE: UInt32 = 5
-DNS_RCODE_NOERROR: UInt32 = 0
-DNS_RCODE_FORMERR: UInt32 = 1
-DNS_RCODE_SERVFAIL: UInt32 = 2
-DNS_RCODE_NXDOMAIN: UInt32 = 3
-DNS_RCODE_NOTIMPL: UInt32 = 4
-DNS_RCODE_REFUSED: UInt32 = 5
-DNS_RCODE_YXDOMAIN: UInt32 = 6
-DNS_RCODE_YXRRSET: UInt32 = 7
-DNS_RCODE_NXRRSET: UInt32 = 8
-DNS_RCODE_NOTAUTH: UInt32 = 9
-DNS_RCODE_NOTZONE: UInt32 = 10
-DNS_RCODE_MAX: UInt32 = 15
-DNS_RCODE_BADVERS: UInt32 = 16
-DNS_RCODE_BADSIG: UInt32 = 16
-DNS_RCODE_BADKEY: UInt32 = 17
-DNS_RCODE_BADTIME: UInt32 = 18
-DNS_RCODE_NO_ERROR: UInt32 = 0
-DNS_RCODE_FORMAT_ERROR: UInt32 = 1
-DNS_RCODE_SERVER_FAILURE: UInt32 = 2
-DNS_RCODE_NAME_ERROR: UInt32 = 3
-DNS_RCODE_NOT_IMPLEMENTED: UInt32 = 4
-DNS_CLASS_INTERNET: UInt32 = 1
-DNS_CLASS_CSNET: UInt32 = 2
-DNS_CLASS_CHAOS: UInt32 = 3
-DNS_CLASS_HESIOD: UInt32 = 4
-DNS_CLASS_NONE: UInt32 = 254
-DNS_CLASS_ALL: UInt32 = 255
-DNS_CLASS_ANY: UInt32 = 255
-DNS_CLASS_UNICAST_RESPONSE: UInt32 = 32768
-DNS_RCLASS_INTERNET: UInt32 = 256
-DNS_RCLASS_CSNET: UInt32 = 512
-DNS_RCLASS_CHAOS: UInt32 = 768
-DNS_RCLASS_HESIOD: UInt32 = 1024
-DNS_RCLASS_NONE: UInt32 = 65024
-DNS_RCLASS_ALL: UInt32 = 65280
-DNS_RCLASS_ANY: UInt32 = 65280
-DNS_RCLASS_UNICAST_RESPONSE: UInt32 = 128
-DNS_RCLASS_MDNS_CACHE_FLUSH: UInt32 = 128
-DNS_WINS_FLAG_SCOPE: UInt32 = 2147483648
-DNS_WINS_FLAG_LOCAL: UInt32 = 65536
-DNS_CONFIG_FLAG_ALLOC: UInt32 = 1
 DNS_APP_SETTINGS_VERSION1: UInt32 = 1
 DNS_APP_SETTINGS_EXCLUSIVE_SERVERS: UInt32 = 1
 DNS_PROTOCOL_UNSPECIFIED: UInt32 = 0
 DNS_PROTOCOL_UDP: UInt32 = 1
 DNS_PROTOCOL_TCP: UInt32 = 2
 DNS_PROTOCOL_DOH: UInt32 = 3
-DNS_PROTOCOL_DOT: UInt32 = 4
 DNS_PROTOCOL_NO_WIRE: UInt32 = 5
 DNS_UPDATE_SECURITY_USE_DEFAULT: UInt32 = 0
 DNS_UPDATE_SECURITY_OFF: UInt32 = 16
@@ -329,13 +256,11 @@ def DnsRecordSetDetach(pRecordList: POINTER(win32more.Windows.Win32.NetworkManag
 @winfunctype('DNSAPI.dll')
 def DnsFree(pData: VoidPtr, FreeType: win32more.Windows.Win32.NetworkManagement.Dns.DNS_FREE_TYPE) -> Void: ...
 @winfunctype('DNSAPI.dll')
-def DnsIsFlatRecord(pRecord: POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA), ullFlags: UInt64, pfFlat: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> Int32: ...
+def DnsQuery_A(pszName: win32more.Windows.Win32.Foundation.PSTR, wType: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE, Options: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS, pExtra: VoidPtr, ppQueryResults: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)), pReserved: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('DNSAPI.dll')
-def DnsQuery_A(pszName: win32more.Windows.Win32.Foundation.PSTR, wType: UInt16, Options: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS, pExtra: VoidPtr, ppQueryResults: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)), pReserved: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def DnsQuery_UTF8(pszName: win32more.Windows.Win32.Foundation.PSTR, wType: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE, Options: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS, pExtra: VoidPtr, ppQueryResults: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)), pReserved: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('DNSAPI.dll')
-def DnsQuery_UTF8(pszName: win32more.Windows.Win32.Foundation.PSTR, wType: UInt16, Options: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS, pExtra: VoidPtr, ppQueryResults: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)), pReserved: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
-@winfunctype('DNSAPI.dll')
-def DnsQuery_W(pszName: win32more.Windows.Win32.Foundation.PWSTR, wType: UInt16, Options: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS, pExtra: VoidPtr, ppQueryResults: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)), pReserved: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def DnsQuery_W(pszName: win32more.Windows.Win32.Foundation.PWSTR, wType: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE, Options: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS, pExtra: VoidPtr, ppQueryResults: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)), pReserved: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 DnsQuery = UnicodeAlias('DnsQuery_W')
 @winfunctype('DNSAPI.dll')
 def DnsFreeCustomServers(pcServers: POINTER(UInt32), ppServers: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_CUSTOM_SERVER))) -> Void: ...
@@ -468,7 +393,7 @@ class DNS_ADDR_ARRAY(Structure):
     MatchFlag: UInt32
     Reserved1: UInt32
     Reserved2: UInt32
-    AddrArray: FlexibleArray[win32more.Windows.Win32.NetworkManagement.Dns.DNS_ADDR]
+    AddrArray: win32more.Windows.Win32.NetworkManagement.Dns.DNS_ADDR * 1
     _pack_ = 1
 class DNS_APPLICATION_SETTINGS(Structure):
     Version: UInt32
@@ -538,7 +463,6 @@ class DNS_CONNECTION_PROXY_INFO(Structure):
     Flags: UInt32
     Switch: win32more.Windows.Win32.NetworkManagement.Dns.DNS_CONNECTION_PROXY_INFO_SWITCH
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Config: _DNS_CONNECTION_PROXY_INFO_CONFIG
         Script: _DNS_CONNECTION_PROXY_INFO_SCRIPT
@@ -577,55 +501,54 @@ class DNS_CUSTOM_SERVER(Structure):
     ullFlags: UInt64
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pwszTemplate: win32more.Windows.Win32.Foundation.PWSTR
-        pwszHostname: win32more.Windows.Win32.Foundation.PWSTR
     class _Anonymous2_e__Union(Union):
         MaxSa: win32more.Windows.Win32.Foundation.CHAR * 32
 class DNS_DHCID_DATA(Structure):
     dwByteCount: UInt32
-    DHCID: FlexibleArray[Byte]
+    DHCID: Byte * 1
 class DNS_DS_DATA(Structure):
     wKeyTag: UInt16
     chAlgorithm: Byte
     chDigestType: Byte
     wDigestLength: UInt16
     wPad: UInt16
-    Digest: FlexibleArray[Byte]
+    Digest: Byte * 1
 DNS_FREE_TYPE = Int32
 DnsFreeFlat: win32more.Windows.Win32.NetworkManagement.Dns.DNS_FREE_TYPE = 0
 DnsFreeRecordList: win32more.Windows.Win32.NetworkManagement.Dns.DNS_FREE_TYPE = 1
 DnsFreeParsedMessageFields: win32more.Windows.Win32.NetworkManagement.Dns.DNS_FREE_TYPE = 2
 class DNS_HEADER(Structure):
     Xid: UInt16
-    RecursionDesired: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Truncation: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Authoritative: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Opcode: Annotated[Byte, NativeBitfieldAttribute(4)]
-    IsResponse: Annotated[Byte, NativeBitfieldAttribute(1)]
-    ResponseCode: Annotated[Byte, NativeBitfieldAttribute(4)]
-    CheckingDisabled: Annotated[Byte, NativeBitfieldAttribute(1)]
-    AuthenticatedData: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Reserved: Annotated[Byte, NativeBitfieldAttribute(1)]
-    RecursionAvailable: Annotated[Byte, NativeBitfieldAttribute(1)]
+    RecursionDesired: Annotated[Byte, 1]
+    Truncation: Annotated[Byte, 1]
+    Authoritative: Annotated[Byte, 1]
+    Opcode: Annotated[Byte, 4]
+    IsResponse: Annotated[Byte, 1]
+    ResponseCode: Annotated[Byte, 4]
+    CheckingDisabled: Annotated[Byte, 1]
+    AuthenticatedData: Annotated[Byte, 1]
+    Reserved: Annotated[Byte, 1]
+    RecursionAvailable: Annotated[Byte, 1]
     QuestionCount: UInt16
     AnswerCount: UInt16
     NameServerCount: UInt16
     AdditionalCount: UInt16
     _pack_ = 1
 class DNS_HEADER_EXT(Structure):
-    Reserved: Annotated[UInt16, NativeBitfieldAttribute(15)]
-    DnssecOk: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt16, 15]
+    DnssecOk: Annotated[UInt16, 1]
     chRcode: Byte
     chVersion: Byte
+    _pack_ = 1
 class DNS_KEY_DATA(Structure):
     wFlags: UInt16
     chProtocol: Byte
     chAlgorithm: Byte
     wKeyLength: UInt16
     wPad: UInt16
-    Key: FlexibleArray[Byte]
+    Key: Byte * 1
 class DNS_LOC_DATA(Structure):
     wVersion: UInt16
     wSize: UInt16
@@ -636,7 +559,7 @@ class DNS_LOC_DATA(Structure):
     dwAltitude: UInt32
 class DNS_MESSAGE_BUFFER(Structure):
     MessageHead: win32more.Windows.Win32.NetworkManagement.Dns.DNS_HEADER
-    MessageBody: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
+    MessageBody: win32more.Windows.Win32.Foundation.CHAR * 1
 class DNS_MINFO_DATAA(Structure):
     pNameMailbox: win32more.Windows.Win32.Foundation.PSTR
     pNameErrorsMailbox: win32more.Windows.Win32.Foundation.PSTR
@@ -682,7 +605,7 @@ class DNS_NSEC3PARAM_DATA(Structure):
     wIterations: UInt16
     bSaltLength: Byte
     bPad: Byte * 3
-    pbSalt: FlexibleArray[Byte]
+    pbSalt: Byte * 1
 class DNS_NSEC3_DATA(Structure):
     chAlgorithm: Byte
     bFlags: Byte
@@ -690,34 +613,34 @@ class DNS_NSEC3_DATA(Structure):
     bSaltLength: Byte
     bHashLength: Byte
     wTypeBitMapsLength: UInt16
-    chData: FlexibleArray[Byte]
+    chData: Byte * 1
 class DNS_NSEC_DATAA(Structure):
     pNextDomainName: win32more.Windows.Win32.Foundation.PSTR
     wTypeBitMapsLength: UInt16
     wPad: UInt16
-    TypeBitMaps: FlexibleArray[Byte]
+    TypeBitMaps: Byte * 1
 class DNS_NSEC_DATAW(Structure):
     pNextDomainName: win32more.Windows.Win32.Foundation.PWSTR
     wTypeBitMapsLength: UInt16
     wPad: UInt16
-    TypeBitMaps: FlexibleArray[Byte]
+    TypeBitMaps: Byte * 1
 DNS_NSEC_DATA = UnicodeAlias('DNS_NSEC_DATAW')
 class DNS_NULL_DATA(Structure):
     dwByteCount: UInt32
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class DNS_NXT_DATAA(Structure):
     pNameNext: win32more.Windows.Win32.Foundation.PSTR
     wNumTypes: UInt16
-    wTypes: FlexibleArray[UInt16]
+    wTypes: UInt16 * 1
 class DNS_NXT_DATAW(Structure):
     pNameNext: win32more.Windows.Win32.Foundation.PWSTR
     wNumTypes: UInt16
-    wTypes: FlexibleArray[UInt16]
+    wTypes: UInt16 * 1
 DNS_NXT_DATA = UnicodeAlias('DNS_NXT_DATAW')
 class DNS_OPT_DATA(Structure):
     wDataLength: UInt16
     wPad: UInt16
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 @winfunctype_pointer
 def DNS_PROXY_COMPLETION_ROUTINE(completionContext: VoidPtr, status: Int32) -> Void: ...
 class DNS_PROXY_INFORMATION(Structure):
@@ -737,7 +660,6 @@ DNS_PTR_DATA = UnicodeAlias('DNS_PTR_DATAW')
 class DNS_QUERY_CANCEL(Structure):
     Reserved: win32more.Windows.Win32.Foundation.CHAR * 32
 DNS_QUERY_OPTIONS = UInt32
-DNS_QUERY_PARSE_ALL_RECORDS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 0
 DNS_QUERY_STANDARD: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 0
 DNS_QUERY_ACCEPT_TRUNCATED_RESPONSE: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 1
 DNS_QUERY_USE_TCP_ONLY: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 2
@@ -759,7 +681,6 @@ DNS_QUERY_DISABLE_IDN_ENCODING: win32more.Windows.Win32.NetworkManagement.Dns.DN
 DNS_QUERY_APPEND_MULTILABEL: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 8388608
 DNS_QUERY_DNSSEC_OK: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 16777216
 DNS_QUERY_DNSSEC_CHECKING_DISABLED: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 33554432
-DNS_QUERY_DNSSEC_REQUIRED: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 67108864
 DNS_QUERY_RESERVED: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 4026531840
 DNS_QUERY_CACHE_ONLY: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 16
 DNS_QUERY_REQUEST_VERSION1: win32more.Windows.Win32.NetworkManagement.Dns.DNS_QUERY_OPTIONS = 1
@@ -789,7 +710,6 @@ class DNS_QUERY_RAW_REQUEST(Structure):
     customServers: POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_CUSTOM_SERVER)
     protocol: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         maxSa: win32more.Windows.Win32.Foundation.CHAR * 32
 class DNS_QUERY_RAW_RESULT(Structure):
@@ -803,7 +723,6 @@ class DNS_QUERY_RAW_RESULT(Structure):
     queryRecords: POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDA)
     protocol: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         maxSa: win32more.Windows.Win32.Foundation.CHAR * 32
 class DNS_QUERY_REQUEST(Structure):
@@ -1034,11 +953,11 @@ class DNS_RECORDW(Structure):
         pDataPtr: POINTER(Byte)
 DNS_RECORD = UnicodeAlias('DNS_RECORDW')
 class DNS_RECORD_FLAGS(Structure):
-    Section: Annotated[UInt32, NativeBitfieldAttribute(2)]
-    Delete: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    CharSet: Annotated[UInt32, NativeBitfieldAttribute(2)]
-    Unused: Annotated[UInt32, NativeBitfieldAttribute(3)]
-    Reserved: Annotated[UInt32, NativeBitfieldAttribute(24)]
+    Section: Annotated[UInt32, 2]
+    Delete: Annotated[UInt32, 1]
+    CharSet: Annotated[UInt32, 2]
+    Unused: Annotated[UInt32, 3]
+    Reserved: Annotated[UInt32, 24]
 class DNS_RECORD_OPTW(Structure):
     pNext: POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_RECORDW)
     pName: win32more.Windows.Win32.Foundation.PWSTR
@@ -1069,7 +988,6 @@ class DNS_SERVICE_BROWSE_REQUEST(Structure):
     QueryName: win32more.Windows.Win32.Foundation.PWSTR
     Anonymous: _Anonymous_e__Union
     pQueryContext: VoidPtr
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pBrowseCallback: win32more.Windows.Win32.NetworkManagement.Dns.PDNS_SERVICE_BROWSE_CALLBACK
         pBrowseCallbackV2: win32more.Windows.Win32.NetworkManagement.Dns.PDNS_QUERY_COMPLETION_ROUTINE
@@ -1111,7 +1029,7 @@ class DNS_SIG_DATAA(Structure):
     wKeyTag: UInt16
     wSignatureLength: UInt16
     pNameSigner: win32more.Windows.Win32.Foundation.PSTR
-    Signature: FlexibleArray[Byte]
+    Signature: Byte * 1
 class DNS_SIG_DATAW(Structure):
     wTypeCovered: UInt16
     chAlgorithm: Byte
@@ -1122,7 +1040,7 @@ class DNS_SIG_DATAW(Structure):
     wKeyTag: UInt16
     wSignatureLength: UInt16
     pNameSigner: win32more.Windows.Win32.Foundation.PWSTR
-    Signature: FlexibleArray[Byte]
+    Signature: Byte * 1
 DNS_SIG_DATA = UnicodeAlias('DNS_SIG_DATAW')
 class DNS_SOA_DATAA(Structure):
     pNamePrimaryServer: win32more.Windows.Win32.Foundation.PSTR
@@ -1162,7 +1080,6 @@ class DNS_SVCB_DATA(Structure):
 class DNS_SVCB_PARAM(Structure):
     wSvcParamKey: UInt16
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pIpv4Hints: POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_IPV4)
         pIpv6Hints: POINTER(win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_IPV6)
@@ -1174,19 +1091,19 @@ class DNS_SVCB_PARAM(Structure):
         pReserved: VoidPtr
 class DNS_SVCB_PARAM_ALPN(Structure):
     cIds: UInt16
-    rgIds: FlexibleArray[win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_ALPN_ID]
+    rgIds: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_ALPN_ID * 1
 class DNS_SVCB_PARAM_ALPN_ID(Structure):
     cBytes: Byte
     pbId: POINTER(Byte)
 class DNS_SVCB_PARAM_IPV4(Structure):
     cIps: UInt16
-    rgIps: FlexibleArray[UInt32]
+    rgIps: UInt32 * 1
 class DNS_SVCB_PARAM_IPV6(Structure):
     cIps: UInt16
-    rgIps: FlexibleArray[win32more.Windows.Win32.NetworkManagement.Dns.IP6_ADDRESS]
+    rgIps: win32more.Windows.Win32.NetworkManagement.Dns.IP6_ADDRESS * 1
 class DNS_SVCB_PARAM_MANDATORY(Structure):
     cMandatoryKeys: UInt16
-    rgwMandatoryKeys: FlexibleArray[UInt16]
+    rgwMandatoryKeys: UInt16 * 1
 DNS_SVCB_PARAM_TYPE = Int32
 DnsSvcbParamMandatory: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 0
 DnsSvcbParamAlpn: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 1
@@ -1196,10 +1113,11 @@ DnsSvcbParamIpv4Hint: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PAR
 DnsSvcbParamEch: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 5
 DnsSvcbParamIpv6Hint: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 6
 DnsSvcbParamDohPath: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 7
+DnsSvcbParamDohPathQuad9: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 65380
 DnsSvcbParamDohPathOpenDns: win32more.Windows.Win32.NetworkManagement.Dns.DNS_SVCB_PARAM_TYPE = 65432
 class DNS_SVCB_PARAM_UNKNOWN(Structure):
     cBytes: UInt16
-    pbSvcParamValue: FlexibleArray[Byte]
+    pbSvcParamValue: Byte * 1
 class DNS_TKEY_DATAA(Structure):
     pNameAlgorithm: win32more.Windows.Win32.Foundation.PSTR
     pAlgorithmPacket: POINTER(Byte)
@@ -1233,7 +1151,7 @@ class DNS_TLSA_DATA(Structure):
     bMatchingType: Byte
     bCertificateAssociationDataLength: UInt16
     bPad: Byte * 3
-    bCertificateAssociationData: FlexibleArray[Byte]
+    bCertificateAssociationData: Byte * 1
 class DNS_TSIG_DATAA(Structure):
     pNameAlgorithm: win32more.Windows.Win32.Foundation.PSTR
     pAlgorithmPacket: POINTER(Byte)
@@ -1263,14 +1181,83 @@ class DNS_TSIG_DATAW(Structure):
 DNS_TSIG_DATA = UnicodeAlias('DNS_TSIG_DATAW')
 class DNS_TXT_DATAA(Structure):
     dwStringCount: UInt32
-    pStringArray: FlexibleArray[win32more.Windows.Win32.Foundation.PSTR]
+    pStringArray: win32more.Windows.Win32.Foundation.PSTR * 1
 class DNS_TXT_DATAW(Structure):
     dwStringCount: UInt32
-    pStringArray: FlexibleArray[win32more.Windows.Win32.Foundation.PWSTR]
+    pStringArray: win32more.Windows.Win32.Foundation.PWSTR * 1
 DNS_TXT_DATA = UnicodeAlias('DNS_TXT_DATAW')
+DNS_TYPE = UInt16
+DNS_TYPE_ZERO: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 0
+DNS_TYPE_A: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 1
+DNS_TYPE_NS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 2
+DNS_TYPE_MD: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 3
+DNS_TYPE_MF: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 4
+DNS_TYPE_CNAME: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 5
+DNS_TYPE_SOA: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 6
+DNS_TYPE_MB: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 7
+DNS_TYPE_MG: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 8
+DNS_TYPE_MR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 9
+DNS_TYPE_NULL: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 10
+DNS_TYPE_WKS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 11
+DNS_TYPE_PTR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 12
+DNS_TYPE_HINFO: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 13
+DNS_TYPE_MINFO: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 14
+DNS_TYPE_MX: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 15
+DNS_TYPE_TEXT: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 16
+DNS_TYPE_RP: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 17
+DNS_TYPE_AFSDB: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 18
+DNS_TYPE_X25: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 19
+DNS_TYPE_ISDN: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 20
+DNS_TYPE_RT: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 21
+DNS_TYPE_NSAP: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 22
+DNS_TYPE_NSAPPTR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 23
+DNS_TYPE_SIG: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 24
+DNS_TYPE_KEY: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 25
+DNS_TYPE_PX: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 26
+DNS_TYPE_GPOS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 27
+DNS_TYPE_AAAA: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 28
+DNS_TYPE_LOC: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 29
+DNS_TYPE_NXT: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 30
+DNS_TYPE_EID: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 31
+DNS_TYPE_NIMLOC: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 32
+DNS_TYPE_SRV: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 33
+DNS_TYPE_ATMA: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 34
+DNS_TYPE_NAPTR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 35
+DNS_TYPE_KX: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 36
+DNS_TYPE_CERT: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 37
+DNS_TYPE_A6: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 38
+DNS_TYPE_DNAME: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 39
+DNS_TYPE_SINK: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 40
+DNS_TYPE_OPT: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 41
+DNS_TYPE_DS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 43
+DNS_TYPE_RRSIG: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 46
+DNS_TYPE_NSEC: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 47
+DNS_TYPE_DNSKEY: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 48
+DNS_TYPE_DHCID: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 49
+DNS_TYPE_NSEC3: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 50
+DNS_TYPE_NSEC3PARAM: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 51
+DNS_TYPE_TLSA: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 52
+DNS_TYPE_SVCB: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 64
+DNS_TYPE_HTTPS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 65
+DNS_TYPE_UINFO: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 100
+DNS_TYPE_UID: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 101
+DNS_TYPE_GID: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 102
+DNS_TYPE_UNSPEC: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 103
+DNS_TYPE_ADDRS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 248
+DNS_TYPE_TKEY: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 249
+DNS_TYPE_TSIG: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 250
+DNS_TYPE_IXFR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 251
+DNS_TYPE_AXFR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 252
+DNS_TYPE_MAILB: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 253
+DNS_TYPE_MAILA: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 254
+DNS_TYPE_ALL: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 255
+DNS_TYPE_ANY: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 255
+DNS_TYPE_WINS: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 65281
+DNS_TYPE_WINSR: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 65282
+DNS_TYPE_NBSTAT: win32more.Windows.Win32.NetworkManagement.Dns.DNS_TYPE = 65282
 class DNS_UNKNOWN_DATA(Structure):
     dwByteCount: UInt32
-    bData: FlexibleArray[Byte]
+    bData: Byte * 1
 class DNS_WINSR_DATAA(Structure):
     dwMappingFlag: UInt32
     dwLookupTimeout: UInt32
@@ -1287,7 +1274,7 @@ class DNS_WINS_DATA(Structure):
     dwLookupTimeout: UInt32
     dwCacheTimeout: UInt32
     cWinsServerCount: UInt32
-    WinsServers: FlexibleArray[UInt32]
+    WinsServers: UInt32 * 1
 class DNS_WIRE_QUESTION(Structure):
     QuestionType: UInt16
     QuestionClass: UInt16
@@ -1301,10 +1288,10 @@ class DNS_WIRE_RECORD(Structure):
 class DNS_WKS_DATA(Structure):
     IpAddress: UInt32
     chProtocol: Byte
-    BitMask: FlexibleArray[Byte]
+    BitMask: Byte * 1
 class IP4_ARRAY(Structure):
     AddrCount: UInt32
-    AddrArray: FlexibleArray[UInt32]
+    AddrArray: UInt32 * 1
 if ARCH in 'X64,ARM64':
     class IP6_ADDRESS(Union):
         IP6Qword: UInt64 * 2

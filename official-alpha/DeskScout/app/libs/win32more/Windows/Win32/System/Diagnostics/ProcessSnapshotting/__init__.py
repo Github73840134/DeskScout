@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Diagnostics.Debug
 import win32more.Windows.Win32.System.Diagnostics.ProcessSnapshotting
@@ -222,9 +222,6 @@ PSS_THREAD_FLAGS_TERMINATED: win32more.Windows.Win32.System.Diagnostics.ProcessS
 class PSS_THREAD_INFORMATION(Structure):
     ThreadsCaptured: UInt32
     ContextLength: UInt32
-class PSS_THREAD_NAME(Structure):
-    ThreadNameSize: UInt16
-    ThreadName: win32more.Windows.Win32.Foundation.PWSTR
 class PSS_VA_CLONE_INFORMATION(Structure):
     VaCloneHandle: win32more.Windows.Win32.Foundation.HANDLE
 class PSS_VA_SPACE_ENTRY(Structure):
@@ -248,7 +245,6 @@ PSS_WALK_AUXILIARY_PAGES: win32more.Windows.Win32.System.Diagnostics.ProcessSnap
 PSS_WALK_VA_SPACE: win32more.Windows.Win32.System.Diagnostics.ProcessSnapshotting.PSS_WALK_INFORMATION_CLASS = 1
 PSS_WALK_HANDLES: win32more.Windows.Win32.System.Diagnostics.ProcessSnapshotting.PSS_WALK_INFORMATION_CLASS = 2
 PSS_WALK_THREADS: win32more.Windows.Win32.System.Diagnostics.ProcessSnapshotting.PSS_WALK_INFORMATION_CLASS = 3
-PSS_WALK_THREAD_NAME: win32more.Windows.Win32.System.Diagnostics.ProcessSnapshotting.PSS_WALK_INFORMATION_CLASS = 4
 
 
 make_ready(__name__)

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Storage.IscsiDisc
 import win32more.Windows.Win32.System.Ioctl
@@ -177,8 +177,6 @@ FIRMWARE_REQUEST_BLOCK_STRUCTURE_VERSION: UInt32 = 1
 FIRMWARE_REQUEST_FLAG_CONTROLLER: UInt32 = 1
 FIRMWARE_REQUEST_FLAG_LAST_SEGMENT: UInt32 = 2
 FIRMWARE_REQUEST_FLAG_FIRST_SEGMENT: UInt32 = 4
-FIRMWARE_REQUEST_FLAG_SWITCH_TO_FIRMWARE_WITHOUT_RESET: UInt32 = 268435456
-FIRMWARE_REQUEST_FLAG_REPLACE_AND_SWITCH_UPON_RESET: UInt32 = 536870912
 FIRMWARE_REQUEST_FLAG_REPLACE_EXISTING_IMAGE: UInt32 = 1073741824
 FIRMWARE_REQUEST_FLAG_SWITCH_TO_EXISTING_FIRMWARE: UInt32 = 2147483648
 STORAGE_FIRMWARE_INFO_STRUCTURE_VERSION: UInt32 = 1
@@ -439,7 +437,7 @@ class DSM_NOTIFICATION_REQUEST_BLOCK(Structure):
     DataSetProfile: UInt32
     Reserved: UInt32 * 3
     DataSetRangesCount: UInt32
-    DataSetRanges: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.MP_DEVICE_DATA_SET_RANGE]
+    DataSetRanges: win32more.Windows.Win32.Storage.IscsiDisc.MP_DEVICE_DATA_SET_RANGE * 1
 class DUMP_DRIVER(Structure):
     DumpDriverList: VoidPtr
     DriverName: Char * 15
@@ -512,11 +510,11 @@ class HYBRID_INFORMATION(Structure):
     Attributes: _Attributes_e__Struct
     Priorities: _Priorities_e__Struct
     class _Attributes_e__Struct(Structure):
-        WriteCacheChangeable: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        WriteThroughIoSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        FlushCacheSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Removable: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        ReservedBits: Annotated[UInt32, NativeBitfieldAttribute(28)]
+        WriteCacheChangeable: Annotated[UInt32, 1]
+        WriteThroughIoSupported: Annotated[UInt32, 1]
+        FlushCacheSupported: Annotated[UInt32, 1]
+        Removable: Annotated[UInt32, 1]
+        ReservedBits: Annotated[UInt32, 28]
     class _Priorities_e__Struct(Structure):
         PriorityLevelCount: Byte
         MaxPriorityBehavior: win32more.Windows.Win32.Foundation.BOOLEAN
@@ -525,14 +523,14 @@ class HYBRID_INFORMATION(Structure):
         DirtyThresholdLow: UInt32
         DirtyThresholdHigh: UInt32
         SupportedCommands: _SupportedCommands_e__Struct
-        Priority: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.NVCACHE_PRIORITY_LEVEL_DESCRIPTOR]
+        Priority: win32more.Windows.Win32.Storage.IscsiDisc.NVCACHE_PRIORITY_LEVEL_DESCRIPTOR * 1
         class _SupportedCommands_e__Struct(Structure):
-            CacheDisable: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            SetDirtyThreshold: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            PriorityDemoteBySize: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            PriorityChangeByLbaRange: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Evict: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            ReservedBits: Annotated[UInt32, NativeBitfieldAttribute(27)]
+            CacheDisable: Annotated[UInt32, 1]
+            SetDirtyThreshold: Annotated[UInt32, 1]
+            PriorityDemoteBySize: Annotated[UInt32, 1]
+            PriorityChangeByLbaRange: Annotated[UInt32, 1]
+            Evict: Annotated[UInt32, 1]
+            ReservedBits: Annotated[UInt32, 27]
             MaxEvictCommands: UInt32
             MaxLbaRangeCountForEvict: UInt32
             MaxLbaRangeCountForChangeLba: UInt32
@@ -553,7 +551,6 @@ class IDE_IO_CONTROL(Structure):
 class IKE_AUTHENTICATION_INFORMATION(Structure):
     AuthMethod: win32more.Windows.Win32.Storage.IscsiDisc.IKE_AUTHENTICATION_METHOD
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PsKey: win32more.Windows.Win32.Storage.IscsiDisc.IKE_AUTHENTICATION_PRESHARED_KEY
 IKE_AUTHENTICATION_METHOD = Int32
@@ -702,10 +699,10 @@ class ISCSI_TARGET_PORTALW(Structure):
 ISCSI_TARGET_PORTAL = UnicodeAlias('ISCSI_TARGET_PORTALW')
 class ISCSI_TARGET_PORTAL_GROUPA(Structure):
     Count: UInt32
-    Portals: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.ISCSI_TARGET_PORTALA]
+    Portals: win32more.Windows.Win32.Storage.IscsiDisc.ISCSI_TARGET_PORTALA * 1
 class ISCSI_TARGET_PORTAL_GROUPW(Structure):
     Count: UInt32
-    Portals: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.ISCSI_TARGET_PORTALW]
+    Portals: win32more.Windows.Win32.Storage.IscsiDisc.ISCSI_TARGET_PORTALW * 1
 ISCSI_TARGET_PORTAL_GROUP = UnicodeAlias('ISCSI_TARGET_PORTAL_GROUPW')
 class ISCSI_TARGET_PORTAL_INFOA(Structure):
     InitiatorName: win32more.Windows.Win32.Foundation.CHAR * 256
@@ -883,11 +880,11 @@ class NV_SEP_CACHE_PARAMETER(Structure):
         CacheFlags: _CacheFlags_e__Struct
         CacheFlagsSet: Byte
         class _CacheFlags_e__Struct(Structure):
-            WriteCacheEnabled: Annotated[Byte, NativeBitfieldAttribute(1)]
-            WriteCacheChangeable: Annotated[Byte, NativeBitfieldAttribute(1)]
-            WriteThroughIOSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
-            FlushCacheSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
-            ReservedBits: Annotated[Byte, NativeBitfieldAttribute(4)]
+            WriteCacheEnabled: Annotated[Byte, 1]
+            WriteCacheChangeable: Annotated[Byte, 1]
+            WriteThroughIOSupported: Annotated[Byte, 1]
+            FlushCacheSupported: Annotated[Byte, 1]
+            ReservedBits: Annotated[Byte, 4]
 NV_SEP_WRITE_CACHE_TYPE = Int32
 NVSEPWriteCacheTypeUnknown: win32more.Windows.Win32.Storage.IscsiDisc.NV_SEP_WRITE_CACHE_TYPE = 0
 NVSEPWriteCacheTypeNone: win32more.Windows.Win32.Storage.IscsiDisc.NV_SEP_WRITE_CACHE_TYPE = 1
@@ -916,7 +913,7 @@ class PERSISTENT_ISCSI_LOGIN_INFOW(Structure):
 PERSISTENT_ISCSI_LOGIN_INFO = UnicodeAlias('PERSISTENT_ISCSI_LOGIN_INFOW')
 class SCSI_ADAPTER_BUS_INFO(Structure):
     NumberOfBuses: Byte
-    BusData: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.SCSI_BUS_DATA]
+    BusData: win32more.Windows.Win32.Storage.IscsiDisc.SCSI_BUS_DATA * 1
 class SCSI_ADDRESS(Structure):
     Length: UInt32
     PortNumber: Byte
@@ -934,7 +931,7 @@ class SCSI_INQUIRY_DATA(Structure):
     DeviceClaimed: win32more.Windows.Win32.Foundation.BOOLEAN
     InquiryDataLength: UInt32
     NextInquiryDataOffset: UInt32
-    InquiryData: FlexibleArray[Byte]
+    InquiryData: Byte * 1
 class SCSI_LUN_LIST(Structure):
     OSLUN: UInt32
     TargetLUN: UInt64
@@ -984,7 +981,7 @@ if ARCH in 'X64,ARM64':
         DataInTransferLength: UInt32
         DataOutBufferOffset: UInt32
         DataInBufferOffset: UInt32
-        Cdb: FlexibleArray[Byte]
+        Cdb: Byte * 1
 class SCSI_PASS_THROUGH_DIRECT(Structure):
     Length: UInt16
     ScsiStatus: Byte
@@ -1031,7 +1028,7 @@ if ARCH in 'X64,ARM64':
         DataInTransferLength: UInt32
         DataOutBuffer: VoidPtr
         DataInBuffer: VoidPtr
-        Cdb: FlexibleArray[Byte]
+        Cdb: Byte * 1
 class SCSI_PASS_THROUGH_DIRECT_EX(Structure):
     Version: UInt32
     Length: UInt32
@@ -1048,7 +1045,7 @@ class SCSI_PASS_THROUGH_DIRECT_EX(Structure):
     DataInTransferLength: UInt32
     DataOutBuffer: VoidPtr
     DataInBuffer: VoidPtr
-    Cdb: FlexibleArray[Byte]
+    Cdb: Byte * 1
 class SCSI_PASS_THROUGH_EX(Structure):
     Version: UInt32
     Length: UInt32
@@ -1065,7 +1062,7 @@ class SCSI_PASS_THROUGH_EX(Structure):
     DataInTransferLength: UInt32
     DataOutBufferOffset: UIntPtr
     DataInBufferOffset: UIntPtr
-    Cdb: FlexibleArray[Byte]
+    Cdb: Byte * 1
 class SRB_IO_CONTROL(Structure):
     HeaderLength: UInt32
     Signature: Byte * 8
@@ -1081,7 +1078,7 @@ class STORAGE_DIAGNOSTIC_MP_REQUEST(Structure):
     ProviderId: Guid
     BufferSize: UInt32
     Reserved: UInt32
-    DataBuffer: FlexibleArray[Byte]
+    DataBuffer: Byte * 1
 class STORAGE_ENDURANCE_DATA_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -1094,8 +1091,8 @@ class STORAGE_ENDURANCE_INFO(Structure):
     BytesReadCount: Byte * 16
     ByteWriteCount: Byte * 16
     class _Flags_e__Struct(Structure):
-        Shared: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Reserved: Annotated[UInt32, NativeBitfieldAttribute(31)]
+        Shared: Annotated[UInt32, 1]
+        Reserved: Annotated[UInt32, 31]
 class STORAGE_FIRMWARE_ACTIVATE(Structure):
     Version: UInt32
     Size: UInt32
@@ -1106,7 +1103,7 @@ class STORAGE_FIRMWARE_DOWNLOAD(Structure):
     Size: UInt32
     Offset: UInt64
     BufferSize: UInt64
-    ImageBuffer: FlexibleArray[Byte]
+    ImageBuffer: Byte * 1
 class STORAGE_FIRMWARE_DOWNLOAD_V2(Structure):
     Version: UInt32
     Size: UInt32
@@ -1115,7 +1112,7 @@ class STORAGE_FIRMWARE_DOWNLOAD_V2(Structure):
     Slot: Byte
     Reserved: Byte * 3
     ImageSize: UInt32
-    ImageBuffer: FlexibleArray[Byte]
+    ImageBuffer: Byte * 1
 class STORAGE_FIRMWARE_INFO(Structure):
     Version: UInt32
     Size: UInt32
@@ -1124,7 +1121,7 @@ class STORAGE_FIRMWARE_INFO(Structure):
     ActiveSlot: Byte
     PendingActivateSlot: Byte
     Reserved: UInt32
-    Slot: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.STORAGE_FIRMWARE_SLOT_INFO]
+    Slot: win32more.Windows.Win32.Storage.IscsiDisc.STORAGE_FIRMWARE_SLOT_INFO * 1
 class STORAGE_FIRMWARE_INFO_V2(Structure):
     Version: UInt32
     Size: UInt32
@@ -1136,7 +1133,7 @@ class STORAGE_FIRMWARE_INFO_V2(Structure):
     Reserved: Byte * 3
     ImagePayloadAlignment: UInt32
     ImagePayloadMaxSize: UInt32
-    Slot: FlexibleArray[win32more.Windows.Win32.Storage.IscsiDisc.STORAGE_FIRMWARE_SLOT_INFO_V2]
+    Slot: win32more.Windows.Win32.Storage.IscsiDisc.STORAGE_FIRMWARE_SLOT_INFO_V2 * 1
 class STORAGE_FIRMWARE_SLOT_INFO(Structure):
     SlotNumber: Byte
     ReadOnly: win32more.Windows.Win32.Foundation.BOOLEAN

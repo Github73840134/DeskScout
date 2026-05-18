@@ -1,17 +1,18 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Microsoft.Graphics.Canvas
 import win32more.Microsoft.Graphics.Canvas.Geometry
 import win32more.Microsoft.Graphics.Canvas.Text
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Numerics
 import win32more.Windows.Graphics
+import win32more.Windows.Win32.System.WinRT
 class CanvasArcSize(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasArcSize'
     Small = 0
     Large = 1
 class CanvasCachedGeometry(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Geometry.ICanvasCachedGeometry
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasCachedGeometry'
@@ -31,39 +32,33 @@ class CanvasCachedGeometry(ComPtr):
     def CreateStrokeWithStrokeStyleAndFlatteningTolerance(cls: win32more.Microsoft.Graphics.Canvas.Geometry.ICanvasCachedGeometryStatics, geometry: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGeometry, strokeWidth: Single, strokeStyle: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasStrokeStyle, flatteningTolerance: Single) -> win32more.Microsoft.Graphics.Canvas.Geometry.CanvasCachedGeometry: ...
     Device = property(get_Device, None)
 class CanvasCapStyle(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasCapStyle'
     Flat = 0
     Square = 1
     Round = 2
     Triangle = 3
 class CanvasDashStyle(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasDashStyle'
     Solid = 0
     Dash = 1
     Dot = 2
     DashDot = 3
     DashDotDot = 4
 class CanvasFigureFill(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasFigureFill'
     Default = 0
     DoesNotAffectFills = 1
 class CanvasFigureLoop(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasFigureLoop'
     Open = 0
     Closed = 1
 class CanvasFigureSegmentOptions(Enum, UInt32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasFigureSegmentOptions'
     None_ = 0
     ForceUnstroked = 1
     ForceRoundLineJoin = 2
 class CanvasFilledRegionDetermination(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasFilledRegionDetermination'
     Alternate = 0
     Winding = 1
 class _CanvasGeometry_Meta_(ComPtr.__class__):
     pass
 class CanvasGeometry(ComPtr, metaclass=_CanvasGeometry_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Geometry.ICanvasGeometry
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGeometry'
@@ -172,23 +167,20 @@ class CanvasGeometry(ComPtr, metaclass=_CanvasGeometry_Meta_):
     Device = property(get_Device, None)
     _CanvasGeometry_Meta_.DefaultFlatteningTolerance = property(get_DefaultFlatteningTolerance, None)
 class CanvasGeometryCombine(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGeometryCombine'
     Union = 0
     Intersect = 1
     Xor = 2
     Exclude = 3
 class CanvasGeometryRelation(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGeometryRelation'
     Disjoint = 0
     Contained = 1
     Contains = 2
     Overlap = 3
 class CanvasGeometrySimplification(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGeometrySimplification'
     CubicsAndLines = 0
     Lines = 1
 class CanvasGradientMesh(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Geometry.ICanvasGradientMesh
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGradientMesh'
@@ -218,7 +210,6 @@ class CanvasGradientMesh(ComPtr):
     Device = property(get_Device, None)
     Patches = property(get_Patches, None)
 class CanvasGradientMeshPatch(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatch'
     Point00: win32more.Windows.Foundation.Numerics.Vector2
     Point01: win32more.Windows.Foundation.Numerics.Vector2
     Point02: win32more.Windows.Foundation.Numerics.Vector2
@@ -244,18 +235,16 @@ class CanvasGradientMeshPatch(Structure):
     Edge33To30: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatchEdge
     Edge30To00: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatchEdge
 class CanvasGradientMeshPatchEdge(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatchEdge'
     Aliased = 0
     Antialiased = 1
     AliasedAndInflated = 2
 class CanvasLineJoin(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasLineJoin'
     Miter = 0
     Bevel = 1
     Round = 2
     MiterOrBevel = 3
 class CanvasPathBuilder(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Geometry.ICanvasPathBuilder
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasPathBuilder'
@@ -299,7 +288,7 @@ class CanvasPathBuilder(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
 class CanvasStrokeStyle(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Geometry.ICanvasStrokeStyle
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasStrokeStyle'
@@ -360,21 +349,18 @@ class CanvasStrokeStyle(ComPtr):
     StartCap = property(get_StartCap, put_StartCap)
     TransformBehavior = property(get_TransformBehavior, put_TransformBehavior)
 class CanvasStrokeTransformBehavior(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasStrokeTransformBehavior'
     Normal = 0
     Fixed = 1
     Hairline = 2
 class CanvasSweepDirection(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasSweepDirection'
     CounterClockwise = 0
     Clockwise = 1
 class CanvasTriangleVertices(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Geometry.CanvasTriangleVertices'
     Vertex1: win32more.Windows.Foundation.Numerics.Vector2
     Vertex2: win32more.Windows.Foundation.Numerics.Vector2
     Vertex3: win32more.Windows.Foundation.Numerics.Vector2
 class ICanvasCachedGeometry(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasCachedGeometry'
     _iid_ = Guid('{ba6cb114-e1a1-448d-ab7c-8d2b92674119}')
@@ -382,7 +368,7 @@ class ICanvasCachedGeometry(ComPtr):
     def get_Device(self) -> win32more.Microsoft.Graphics.Canvas.CanvasDevice: ...
     Device = property(get_Device, None)
 class ICanvasCachedGeometryStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasCachedGeometryStatics'
     _iid_ = Guid('{80ba1060-a9d7-41ba-9372-ec3fc1744e5d}')
     @winrt_commethod(6)
@@ -396,7 +382,7 @@ class ICanvasCachedGeometryStatics(ComPtr):
     @winrt_commethod(10)
     def CreateStrokeWithStrokeStyleAndFlatteningTolerance(self, geometry: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGeometry, strokeWidth: Single, strokeStyle: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasStrokeStyle, flatteningTolerance: Single) -> win32more.Microsoft.Graphics.Canvas.Geometry.CanvasCachedGeometry: ...
 class ICanvasGeometry(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasGeometry'
     _iid_ = Guid('{74ea89fa-c87c-4d0d-9057-2743b8db67ee}')
@@ -468,7 +454,7 @@ class ICanvasGeometry(ComPtr):
     def get_Device(self) -> win32more.Microsoft.Graphics.Canvas.CanvasDevice: ...
     Device = property(get_Device, None)
 class ICanvasGeometryStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasGeometryStatics'
     _iid_ = Guid('{d94e33cf-cd59-46f2-8df4-55066aabfd56}')
     @winrt_commethod(6)
@@ -507,7 +493,7 @@ class ICanvasGeometryStatics(ComPtr):
     def get_DefaultFlatteningTolerance(self) -> Single: ...
     DefaultFlatteningTolerance = property(get_DefaultFlatteningTolerance, None)
 class ICanvasGradientMesh(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasGradientMesh'
     _iid_ = Guid('{6bfc2bf1-0a7a-449c-a7ef-6706321b0c1a}')
@@ -522,13 +508,13 @@ class ICanvasGradientMesh(ComPtr):
     Device = property(get_Device, None)
     Patches = property(get_Patches, None)
 class ICanvasGradientMeshFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasGradientMeshFactory'
     _iid_ = Guid('{4756492d-251e-421d-834d-87ec260d5e4d}')
     @winrt_commethod(6)
     def Create(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, patchElements: PassArray[win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatch]) -> win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGradientMesh: ...
 class ICanvasGradientMeshStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasGradientMeshStatics'
     _iid_ = Guid('{44027640-3eab-4199-aa3b-644890d0123d}')
     @winrt_commethod(6)
@@ -536,7 +522,7 @@ class ICanvasGradientMeshStatics(ComPtr):
     @winrt_commethod(7)
     def CreateTensorPatch(self, points: PassArray[win32more.Windows.Foundation.Numerics.Vector2], colors: PassArray[win32more.Windows.Foundation.Numerics.Vector4], edges: PassArray[win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatchEdge]) -> win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGradientMeshPatch: ...
 class ICanvasPathBuilder(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasPathBuilder'
     _iid_ = Guid('{bcf5822f-8127-4e5c-96b8-29983b915541}')
@@ -569,13 +555,13 @@ class ICanvasPathBuilder(ComPtr):
     @winrt_commethod(19)
     def AddGeometry(self, geometry: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGeometry) -> Void: ...
 class ICanvasPathBuilderFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasPathBuilderFactory'
     _iid_ = Guid('{ac2bee14-efd1-4343-8e53-ba62153d8966}')
     @winrt_commethod(6)
     def Create(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator) -> win32more.Microsoft.Graphics.Canvas.Geometry.CanvasPathBuilder: ...
 class ICanvasPathReceiver(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasPathReceiver'
     _iid_ = Guid('{70e65373-7fb3-4645-8b6d-f616d1b9a9d7}')
     @winrt_commethod(6)
@@ -595,7 +581,7 @@ class ICanvasPathReceiver(ComPtr):
     @winrt_commethod(13)
     def EndFigure(self, figureLoop: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasFigureLoop) -> Void: ...
 class ICanvasStrokeStyle(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Geometry.ICanvasStrokeStyle'
     _iid_ = Guid('{fd3e1cd2-6019-40a1-b315-267eef6c2aeb}')

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 class ABC(Structure):
@@ -560,7 +560,6 @@ DISPLAYCONFIG_TARGET_IS_HMD: UInt32 = 32
 DISPLAYCONFIG_PATH_ACTIVE: UInt32 = 1
 DISPLAYCONFIG_PATH_PREFERRED_UNSCALED: UInt32 = 4
 DISPLAYCONFIG_PATH_SUPPORT_VIRTUAL_MODE: UInt32 = 8
-DISPLAYCONFIG_PATH_BOOST_REFRESH_RATE: UInt32 = 16
 DISPLAYCONFIG_PATH_VALID_FLAGS: UInt32 = 29
 RDH_RECTANGLES: UInt32 = 1
 SYSRGN: UInt32 = 4
@@ -1539,7 +1538,7 @@ def TTGetNewFontName(phFontReference: POINTER(win32more.Windows.Win32.Foundation
 @winfunctype('USER32.dll')
 def DrawEdge(hdc: win32more.Windows.Win32.Graphics.Gdi.HDC, qrc: POINTER(win32more.Windows.Win32.Foundation.RECT), edge: win32more.Windows.Win32.Graphics.Gdi.DRAWEDGE_FLAGS, grfFlags: win32more.Windows.Win32.Graphics.Gdi.DRAW_EDGE_FLAGS) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def DrawFrameControl(hdc: win32more.Windows.Win32.Graphics.Gdi.HDC, lprc: POINTER(win32more.Windows.Win32.Foundation.RECT), uType: UInt32, uState: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def DrawFrameControl(param0: win32more.Windows.Win32.Graphics.Gdi.HDC, param1: POINTER(win32more.Windows.Win32.Foundation.RECT), param2: win32more.Windows.Win32.Graphics.Gdi.DFC_TYPE, param3: win32more.Windows.Win32.Graphics.Gdi.DFCS_STATE) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
 def DrawCaption(hwnd: win32more.Windows.Win32.Foundation.HWND, hdc: win32more.Windows.Win32.Graphics.Gdi.HDC, lprect: POINTER(win32more.Windows.Win32.Foundation.RECT), flags: win32more.Windows.Win32.Graphics.Gdi.DRAW_CAPTION_FLAGS) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
@@ -1720,7 +1719,7 @@ class BITMAPCOREHEADER(Structure):
     bcBitCount: UInt16
 class BITMAPCOREINFO(Structure):
     bmciHeader: win32more.Windows.Win32.Graphics.Gdi.BITMAPCOREHEADER
-    bmciColors: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.RGBTRIPLE]
+    bmciColors: win32more.Windows.Win32.Graphics.Gdi.RGBTRIPLE * 1
 class BITMAPFILEHEADER(Structure):
     bfType: UInt16
     bfSize: UInt32
@@ -1730,7 +1729,7 @@ class BITMAPFILEHEADER(Structure):
     _pack_ = 2
 class BITMAPINFO(Structure):
     bmiHeader: win32more.Windows.Win32.Graphics.Gdi.BITMAPINFOHEADER
-    bmiColors: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.RGBQUAD]
+    bmiColors: win32more.Windows.Win32.Graphics.Gdi.RGBQUAD * 1
 class BITMAPINFOHEADER(Structure):
     biSize: UInt32
     biWidth: Int32
@@ -1897,11 +1896,9 @@ class DEVMODEA(Structure):
     dmReserved2: UInt32
     dmPanningWidth: UInt32
     dmPanningHeight: UInt32
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             dmOrientation: Int16
             dmPaperSize: Int16
@@ -1946,11 +1943,9 @@ class DEVMODEW(Structure):
     dmReserved2: UInt32
     dmPanningWidth: UInt32
     dmPanningHeight: UInt32
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             dmOrientation: Int16
             dmPaperSize: Int16
@@ -2079,10 +2074,6 @@ class DIBSECTION(Structure):
 DIB_USAGE = UInt32
 DIB_RGB_COLORS: win32more.Windows.Win32.Graphics.Gdi.DIB_USAGE = 0
 DIB_PAL_COLORS: win32more.Windows.Win32.Graphics.Gdi.DIB_USAGE = 1
-DISPLAYCONFIG_ADVANCED_COLOR_MODE = Int32
-DISPLAYCONFIG_ADVANCED_COLOR_MODE_SDR: win32more.Windows.Win32.Graphics.Gdi.DISPLAYCONFIG_ADVANCED_COLOR_MODE = 0
-DISPLAYCONFIG_ADVANCED_COLOR_MODE_WCG: win32more.Windows.Win32.Graphics.Gdi.DISPLAYCONFIG_ADVANCED_COLOR_MODE = 1
-DISPLAYCONFIG_ADVANCED_COLOR_MODE_HDR: win32more.Windows.Win32.Graphics.Gdi.DISPLAYCONFIG_ADVANCED_COLOR_MODE = 2
 DISPLAYCONFIG_COLOR_ENCODING = Int32
 DISPLAYCONFIG_COLOR_ENCODING_RGB: win32more.Windows.Win32.Graphics.Gdi.DISPLAYCONFIG_COLOR_ENCODING = 0
 DISPLAYCONFIG_COLOR_ENCODING_YCBCR444: win32more.Windows.Win32.Graphics.Gdi.DISPLAYCONFIG_COLOR_ENCODING = 1
@@ -2286,7 +2277,7 @@ class EMRCOLORMATCHTOTARGET(Structure):
     dwFlags: UInt32
     cbName: UInt32
     cbData: UInt32
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class EMRCREATEBRUSHINDIRECT(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     ihBrush: UInt32
@@ -2342,7 +2333,7 @@ class EMREXTESCAPE(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     iEscape: Int32
     cbEscData: Int32
-    EscData: FlexibleArray[Byte]
+    EscData: Byte * 1
 class EMREXTFLOODFILL(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     ptlStart: win32more.Windows.Win32.Foundation.POINTL
@@ -2352,7 +2343,7 @@ class EMREXTSELECTCLIPRGN(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     cbRgnData: UInt32
     iMode: UInt32
-    RgnData: FlexibleArray[Byte]
+    RgnData: Byte * 1
 class EMREXTTEXTOUTA(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
@@ -2368,7 +2359,7 @@ class EMRFILLRGN(Structure):
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cbRgnData: UInt32
     ihBrush: UInt32
-    RgnData: FlexibleArray[Byte]
+    RgnData: Byte * 1
 class EMRFORMAT(Structure):
     dSignature: UInt32
     nVersion: UInt32
@@ -2380,32 +2371,32 @@ class EMRFRAMERGN(Structure):
     cbRgnData: UInt32
     ihBrush: UInt32
     szlStroke: win32more.Windows.Win32.Foundation.SIZE
-    RgnData: FlexibleArray[Byte]
+    RgnData: Byte * 1
 class EMRGDICOMMENT(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     cbData: UInt32
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class EMRGLSBOUNDEDRECORD(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cbData: UInt32
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class EMRGLSRECORD(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     cbData: UInt32
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class EMRGRADIENTFILL(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     nVer: UInt32
     nTri: UInt32
     ulMode: win32more.Windows.Win32.Graphics.Gdi.GRADIENT_FILL
-    Ver: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.TRIVERTEX]
+    Ver: win32more.Windows.Win32.Graphics.Gdi.TRIVERTEX * 1
 class EMRINVERTRGN(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cbRgnData: UInt32
-    RgnData: FlexibleArray[Byte]
+    RgnData: Byte * 1
 class EMRLINETO(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     ptl: win32more.Windows.Win32.Foundation.POINTL
@@ -2442,7 +2433,7 @@ class EMRNAMEDESCAPE(Structure):
     iEscape: Int32
     cbDriver: Int32
     cbEscData: Int32
-    EscData: FlexibleArray[Byte]
+    EscData: Byte * 1
 class EMROFFSETCLIPRGN(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     ptlOffset: win32more.Windows.Win32.Foundation.POINTL
@@ -2473,37 +2464,37 @@ class EMRPOLYDRAW(Structure):
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cptl: UInt32
     aptl: win32more.Windows.Win32.Foundation.POINTL * 1
-    abTypes: FlexibleArray[Byte]
+    abTypes: Byte * 1
 class EMRPOLYDRAW16(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cpts: UInt32
     apts: win32more.Windows.Win32.Foundation.POINTS * 1
-    abTypes: FlexibleArray[Byte]
+    abTypes: Byte * 1
 class EMRPOLYLINE(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cptl: UInt32
-    aptl: FlexibleArray[win32more.Windows.Win32.Foundation.POINTL]
+    aptl: win32more.Windows.Win32.Foundation.POINTL * 1
 class EMRPOLYLINE16(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     cpts: UInt32
-    apts: FlexibleArray[win32more.Windows.Win32.Foundation.POINTS]
+    apts: win32more.Windows.Win32.Foundation.POINTS * 1
 class EMRPOLYPOLYLINE(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     nPolys: UInt32
     cptl: UInt32
     aPolyCounts: UInt32 * 1
-    aptl: FlexibleArray[win32more.Windows.Win32.Foundation.POINTL]
+    aptl: win32more.Windows.Win32.Foundation.POINTL * 1
 class EMRPOLYPOLYLINE16(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
     nPolys: UInt32
     cpts: UInt32
     aPolyCounts: UInt32 * 1
-    apts: FlexibleArray[win32more.Windows.Win32.Foundation.POINTS]
+    apts: win32more.Windows.Win32.Foundation.POINTS * 1
 class EMRPOLYTEXTOUTA(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     rclBounds: win32more.Windows.Win32.Foundation.RECTL
@@ -2511,7 +2502,7 @@ class EMRPOLYTEXTOUTA(Structure):
     exScale: Single
     eyScale: Single
     cStrings: Int32
-    aemrtext: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.EMRTEXT]
+    aemrtext: win32more.Windows.Win32.Graphics.Gdi.EMRTEXT * 1
 class EMRRESIZEPALETTE(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     ihPal: UInt32
@@ -2568,7 +2559,7 @@ class EMRSETICMPROFILE(Structure):
     dwFlags: UInt32
     cbName: UInt32
     cbData: UInt32
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class EMRSETMAPPERFLAGS(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     dwFlags: UInt32
@@ -2580,7 +2571,7 @@ class EMRSETPALETTEENTRIES(Structure):
     ihPal: UInt32
     iStart: UInt32
     cEntries: UInt32
-    aPalEntries: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.PALETTEENTRY]
+    aPalEntries: win32more.Windows.Win32.Graphics.Gdi.PALETTEENTRY * 1
 class EMRSETPIXELV(Structure):
     emr: win32more.Windows.Win32.Graphics.Gdi.EMR
     ptlPixel: win32more.Windows.Win32.Foundation.POINTL
@@ -2806,7 +2797,7 @@ class ENHMETAHEADER(Structure):
 class ENHMETARECORD(Structure):
     iType: win32more.Windows.Win32.Graphics.Gdi.ENHANCED_METAFILE_RECORD_TYPE
     nSize: UInt32
-    dParm: FlexibleArray[UInt32]
+    dParm: UInt32 * 1
 @winfunctype_pointer
 def ENHMFENUMPROC(hdc: win32more.Windows.Win32.Graphics.Gdi.HDC, lpht: POINTER(win32more.Windows.Win32.Graphics.Gdi.HANDLETABLE), lpmr: POINTER(win32more.Windows.Win32.Graphics.Gdi.ENHMETARECORD), nHandles: Int32, data: win32more.Windows.Win32.Foundation.LPARAM) -> Int32: ...
 class ENUMLOGFONTA(Structure):
@@ -2882,7 +2873,7 @@ class EXTLOGPEN(Structure):
     elpColor: win32more.Windows.Win32.Foundation.COLORREF
     elpHatch: UIntPtr
     elpNumEntries: UInt32
-    elpStyleEntry: FlexibleArray[UInt32]
+    elpStyleEntry: UInt32 * 1
 class EXTLOGPEN32(Structure):
     elpPenStyle: UInt32
     elpWidth: UInt32
@@ -2890,7 +2881,7 @@ class EXTLOGPEN32(Structure):
     elpColor: win32more.Windows.Win32.Foundation.COLORREF
     elpHatch: UInt32
     elpNumEntries: UInt32
-    elpStyleEntry: FlexibleArray[UInt32]
+    elpStyleEntry: UInt32 * 1
 EXT_FLOOD_FILL_TYPE = UInt32
 FLOODFILLBORDER: win32more.Windows.Win32.Graphics.Gdi.EXT_FLOOD_FILL_TYPE = 0
 FLOODFILLSURFACE: win32more.Windows.Win32.Graphics.Gdi.EXT_FLOOD_FILL_TYPE = 1
@@ -3125,7 +3116,7 @@ class GLYPHSET(Structure):
     flAccel: UInt32
     cGlyphsSupported: UInt32
     cRanges: UInt32
-    ranges: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.WCRANGE]
+    ranges: win32more.Windows.Win32.Graphics.Gdi.WCRANGE * 1
 @winfunctype_pointer
 def GOBJENUMPROC(param0: VoidPtr, param1: win32more.Windows.Win32.Foundation.LPARAM) -> Int32: ...
 GRADIENT_FILL = UInt32
@@ -3145,7 +3136,7 @@ GM_ADVANCED: win32more.Windows.Win32.Graphics.Gdi.GRAPHICS_MODE = 2
 @winfunctype_pointer
 def GRAYSTRINGPROC(param0: win32more.Windows.Win32.Graphics.Gdi.HDC, param1: win32more.Windows.Win32.Foundation.LPARAM, param2: Int32) -> win32more.Windows.Win32.Foundation.BOOL: ...
 class HANDLETABLE(Structure):
-    objectHandle: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.HGDIOBJ]
+    objectHandle: win32more.Windows.Win32.Graphics.Gdi.HGDIOBJ * 1
 HATCH_BRUSH_STYLE = Int32
 HS_BDIAGONAL: win32more.Windows.Win32.Graphics.Gdi.HATCH_BRUSH_STYLE = 3
 HS_CROSS: win32more.Windows.Win32.Graphics.Gdi.HATCH_BRUSH_STYLE = 4
@@ -3221,7 +3212,7 @@ LOGFONT = UnicodeAlias('LOGFONTW')
 class LOGPALETTE(Structure):
     palVersion: UInt16
     palNumEntries: UInt16
-    palPalEntry: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.PALETTEENTRY]
+    palPalEntry: win32more.Windows.Win32.Graphics.Gdi.PALETTEENTRY * 1
 class LOGPEN(Structure):
     lopnStyle: UInt32
     lopnWidth: win32more.Windows.Win32.Foundation.POINT
@@ -3247,7 +3238,7 @@ class METAHEADER(Structure):
 class METARECORD(Structure):
     rdSize: UInt32
     rdFunction: UInt16
-    rdParm: FlexibleArray[UInt16]
+    rdParm: UInt16 * 1
 @winfunctype_pointer
 def MFENUMPROC(hdc: win32more.Windows.Win32.Graphics.Gdi.HDC, lpht: POINTER(win32more.Windows.Win32.Graphics.Gdi.HANDLETABLE), lpMR: POINTER(win32more.Windows.Win32.Graphics.Gdi.METARECORD), nObj: Int32, param4: win32more.Windows.Win32.Foundation.LPARAM) -> Int32: ...
 MODIFY_WORLD_TRANSFORM_MODE = UInt32
@@ -3651,7 +3642,7 @@ class RGBTRIPLE(Structure):
     rgbtRed: Byte
 class RGNDATA(Structure):
     rdh: win32more.Windows.Win32.Graphics.Gdi.RGNDATAHEADER
-    Buffer: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
+    Buffer: win32more.Windows.Win32.Foundation.CHAR * 1
 class RGNDATAHEADER(Structure):
     dwSize: UInt32
     iType: UInt32
@@ -3830,7 +3821,7 @@ TTLOAD_FONT_IN_SYSSTARTUP: win32more.Windows.Win32.Graphics.Gdi.TTLOAD_EMBEDDED_
 class TTPOLYCURVE(Structure):
     wType: UInt16
     cpfx: UInt16
-    apfx: FlexibleArray[win32more.Windows.Win32.Graphics.Gdi.POINTFX]
+    apfx: win32more.Windows.Win32.Graphics.Gdi.POINTFX * 1
 class TTPOLYGONHEADER(Structure):
     cb: UInt32
     dwType: UInt32

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Devices.Haptics
 import win32more.Windows.Devices.Input
 import win32more.Windows.Foundation
@@ -8,21 +9,21 @@ import win32more.Windows.Storage.Streams
 import win32more.Windows.System
 import win32more.Windows.UI.Core
 import win32more.Windows.UI.Input
+import win32more.Windows.Win32.System.WinRT
 class AttachableInputObject(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.UI.Input.IAttachableInputObject
     _classid_ = 'Windows.UI.Input.AttachableInputObject'
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
 class CrossSlideThresholds(Structure):
-    _name_ = 'Windows.UI.Input.CrossSlideThresholds'
     SelectionStart: Single
     SpeedBumpStart: Single
     SpeedBumpEnd: Single
     RearrangeStart: Single
 class CrossSlidingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ICrossSlidingEventArgs
     _classid_ = 'Windows.UI.Input.CrossSlidingEventArgs'
     @winrt_mixinmethod
@@ -38,7 +39,6 @@ class CrossSlidingEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class CrossSlidingState(Enum, Int32):
-    _name_ = 'Windows.UI.Input.CrossSlidingState'
     Started = 0
     Dragging = 1
     Selecting = 2
@@ -47,7 +47,7 @@ class CrossSlidingState(Enum, Int32):
     Rearranging = 5
     Completed = 6
 class DraggingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IDraggingEventArgs
     _classid_ = 'Windows.UI.Input.DraggingEventArgs'
     @winrt_mixinmethod
@@ -63,12 +63,11 @@ class DraggingEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class DraggingState(Enum, Int32):
-    _name_ = 'Windows.UI.Input.DraggingState'
     Started = 0
     Continuing = 1
     Completed = 2
 class EdgeGesture(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IEdgeGesture
     _classid_ = 'Windows.UI.Input.EdgeGesture'
     @winrt_mixinmethod
@@ -85,29 +84,27 @@ class EdgeGesture(ComPtr):
     def remove_Canceled(self: win32more.Windows.UI.Input.IEdgeGesture, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def GetForCurrentView(cls: win32more.Windows.UI.Input.IEdgeGestureStatics) -> win32more.Windows.UI.Input.EdgeGesture: ...
-    Canceled = event(add_Canceled, remove_Canceled)
-    Completed = event(add_Completed, remove_Completed)
-    Starting = event(add_Starting, remove_Starting)
+    Starting = event()
+    Completed = event()
+    Canceled = event()
 class EdgeGestureEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IEdgeGestureEventArgs
     _classid_ = 'Windows.UI.Input.EdgeGestureEventArgs'
     @winrt_mixinmethod
     def get_Kind(self: win32more.Windows.UI.Input.IEdgeGestureEventArgs) -> win32more.Windows.UI.Input.EdgeGestureKind: ...
     Kind = property(get_Kind, None)
 class EdgeGestureKind(Enum, Int32):
-    _name_ = 'Windows.UI.Input.EdgeGestureKind'
     Touch = 0
     Keyboard = 1
     Mouse = 2
 class GazeInputAccessStatus(Enum, Int32):
-    _name_ = 'Windows.UI.Input.GazeInputAccessStatus'
     Unspecified = 0
     Allowed = 1
     DeniedByUser = 2
     DeniedBySystem = 3
 class GestureRecognizer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IGestureRecognizer
     _classid_ = 'Windows.UI.Input.GestureRecognizer'
     def __init__(self, *args, **kwargs):
@@ -293,17 +290,16 @@ class GestureRecognizer(ComPtr):
     TapMinContactCount = property(get_TapMinContactCount, put_TapMinContactCount)
     TranslationMaxContactCount = property(get_TranslationMaxContactCount, put_TranslationMaxContactCount)
     TranslationMinContactCount = property(get_TranslationMinContactCount, put_TranslationMinContactCount)
-    CrossSliding = event(add_CrossSliding, remove_CrossSliding)
-    Dragging = event(add_Dragging, remove_Dragging)
-    Holding = event(add_Holding, remove_Holding)
-    ManipulationCompleted = event(add_ManipulationCompleted, remove_ManipulationCompleted)
-    ManipulationInertiaStarting = event(add_ManipulationInertiaStarting, remove_ManipulationInertiaStarting)
-    ManipulationStarted = event(add_ManipulationStarted, remove_ManipulationStarted)
-    ManipulationUpdated = event(add_ManipulationUpdated, remove_ManipulationUpdated)
-    RightTapped = event(add_RightTapped, remove_RightTapped)
-    Tapped = event(add_Tapped, remove_Tapped)
+    Tapped = event()
+    RightTapped = event()
+    Holding = event()
+    Dragging = event()
+    ManipulationStarted = event()
+    ManipulationUpdated = event()
+    ManipulationInertiaStarting = event()
+    ManipulationCompleted = event()
+    CrossSliding = event()
 class GestureSettings(Enum, UInt32):
-    _name_ = 'Windows.UI.Input.GestureSettings'
     None_ = 0
     Tap = 1
     DoubleTap = 2
@@ -323,7 +319,7 @@ class GestureSettings(Enum, UInt32):
     CrossSlide = 32768
     ManipulationMultipleFingerPanning = 65536
 class HoldingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IHoldingEventArgs
     _classid_ = 'Windows.UI.Input.HoldingEventArgs'
     @winrt_mixinmethod
@@ -342,20 +338,19 @@ class HoldingEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class HoldingState(Enum, Int32):
-    _name_ = 'Windows.UI.Input.HoldingState'
     Started = 0
     Completed = 1
     Canceled = 2
 class IAttachableInputObject(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IAttachableInputObject'
     _iid_ = Guid('{9b822734-a3c1-542a-b2f4-0e32b773fb07}')
 class IAttachableInputObjectFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IAttachableInputObjectFactory'
     _iid_ = Guid('{a4c54c4e-42bc-58fa-a640-ea1516f4c06b}')
 class ICrossSlidingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ICrossSlidingEventArgs'
     _iid_ = Guid('{e9374738-6f88-41d9-8720-78e08e398349}')
     @winrt_commethod(6)
@@ -368,14 +363,14 @@ class ICrossSlidingEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class ICrossSlidingEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ICrossSlidingEventArgs2'
     _iid_ = Guid('{eefb7d48-c070-59f3-8dab-bcaf621d8687}')
     @winrt_commethod(6)
     def get_ContactCount(self) -> UInt32: ...
     ContactCount = property(get_ContactCount, None)
 class IDraggingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IDraggingEventArgs'
     _iid_ = Guid('{1c905384-083c-4bd3-b559-179cddeb33ec}')
     @winrt_commethod(6)
@@ -388,14 +383,14 @@ class IDraggingEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class IDraggingEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IDraggingEventArgs2'
     _iid_ = Guid('{71efdbf9-382a-55ca-b4b9-008123c1bf1a}')
     @winrt_commethod(6)
     def get_ContactCount(self) -> UInt32: ...
     ContactCount = property(get_ContactCount, None)
 class IEdgeGesture(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IEdgeGesture'
     _iid_ = Guid('{580d5292-2ab1-49aa-a7f0-33bd3f8df9f1}')
     @winrt_commethod(6)
@@ -410,24 +405,24 @@ class IEdgeGesture(ComPtr):
     def add_Canceled(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.EdgeGesture, win32more.Windows.UI.Input.EdgeGestureEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_Canceled(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Canceled = event(add_Canceled, remove_Canceled)
-    Completed = event(add_Completed, remove_Completed)
-    Starting = event(add_Starting, remove_Starting)
+    Starting = event()
+    Completed = event()
+    Canceled = event()
 class IEdgeGestureEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IEdgeGestureEventArgs'
     _iid_ = Guid('{44fa4a24-2d09-42e1-8b5e-368208796a4c}')
     @winrt_commethod(6)
     def get_Kind(self) -> win32more.Windows.UI.Input.EdgeGestureKind: ...
     Kind = property(get_Kind, None)
 class IEdgeGestureStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IEdgeGestureStatics'
     _iid_ = Guid('{bc6a8519-18ee-4043-9839-4fc584d60a14}')
     @winrt_commethod(6)
     def GetForCurrentView(self) -> win32more.Windows.UI.Input.EdgeGesture: ...
 class IGestureRecognizer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IGestureRecognizer'
     _iid_ = Guid('{b47a37bf-3d6b-4f88-83e8-6dcb4012ffb0}')
     @winrt_commethod(6)
@@ -564,17 +559,17 @@ class IGestureRecognizer(ComPtr):
     PivotCenter = property(get_PivotCenter, put_PivotCenter)
     PivotRadius = property(get_PivotRadius, put_PivotRadius)
     ShowGestureFeedback = property(get_ShowGestureFeedback, put_ShowGestureFeedback)
-    CrossSliding = event(add_CrossSliding, remove_CrossSliding)
-    Dragging = event(add_Dragging, remove_Dragging)
-    Holding = event(add_Holding, remove_Holding)
-    ManipulationCompleted = event(add_ManipulationCompleted, remove_ManipulationCompleted)
-    ManipulationInertiaStarting = event(add_ManipulationInertiaStarting, remove_ManipulationInertiaStarting)
-    ManipulationStarted = event(add_ManipulationStarted, remove_ManipulationStarted)
-    ManipulationUpdated = event(add_ManipulationUpdated, remove_ManipulationUpdated)
-    RightTapped = event(add_RightTapped, remove_RightTapped)
-    Tapped = event(add_Tapped, remove_Tapped)
+    Tapped = event()
+    RightTapped = event()
+    Holding = event()
+    Dragging = event()
+    ManipulationStarted = event()
+    ManipulationUpdated = event()
+    ManipulationInertiaStarting = event()
+    ManipulationCompleted = event()
+    CrossSliding = event()
 class IGestureRecognizer2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IGestureRecognizer2'
     _iid_ = Guid('{d646097f-6ef7-5746-8ba8-8ff2206e6f3b}')
     @winrt_commethod(6)
@@ -618,7 +613,7 @@ class IGestureRecognizer2(ComPtr):
     TranslationMaxContactCount = property(get_TranslationMaxContactCount, put_TranslationMaxContactCount)
     TranslationMinContactCount = property(get_TranslationMinContactCount, put_TranslationMinContactCount)
 class IHoldingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IHoldingEventArgs'
     _iid_ = Guid('{2bf755c5-e799-41b4-bb40-242f40959b71}')
     @winrt_commethod(6)
@@ -631,7 +626,7 @@ class IHoldingEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class IHoldingEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IHoldingEventArgs2'
     _iid_ = Guid('{141da9ea-4c79-5674-afea-493fdeb91f19}')
     @winrt_commethod(6)
@@ -641,7 +636,7 @@ class IHoldingEventArgs2(ComPtr):
     ContactCount = property(get_ContactCount, None)
     CurrentContactCount = property(get_CurrentContactCount, None)
 class IInputActivationListener(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IInputActivationListener'
     _iid_ = Guid('{5d6d4ed2-28c7-5ae3-aa74-c918a9f243ca}')
     @winrt_commethod(6)
@@ -651,16 +646,16 @@ class IInputActivationListener(ComPtr):
     @winrt_commethod(8)
     def remove_InputActivationChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     State = property(get_State, None)
-    InputActivationChanged = event(add_InputActivationChanged, remove_InputActivationChanged)
+    InputActivationChanged = event()
 class IInputActivationListenerActivationChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IInputActivationListenerActivationChangedEventArgs'
     _iid_ = Guid('{7699b465-1dcf-5791-b4b9-6cafbeed2056}')
     @winrt_commethod(6)
     def get_State(self) -> win32more.Windows.UI.Input.InputActivationState: ...
     State = property(get_State, None)
 class IKeyboardDeliveryInterceptor(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IKeyboardDeliveryInterceptor'
     _iid_ = Guid('{b4baf068-8f49-446c-8db5-8c0ffe85cc9e}')
     @winrt_commethod(6)
@@ -676,16 +671,16 @@ class IKeyboardDeliveryInterceptor(ComPtr):
     @winrt_commethod(11)
     def remove_KeyUp(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     IsInterceptionEnabledWhenInForeground = property(get_IsInterceptionEnabledWhenInForeground, put_IsInterceptionEnabledWhenInForeground)
-    KeyDown = event(add_KeyDown, remove_KeyDown)
-    KeyUp = event(add_KeyUp, remove_KeyUp)
+    KeyDown = event()
+    KeyUp = event()
 class IKeyboardDeliveryInterceptorStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IKeyboardDeliveryInterceptorStatics'
     _iid_ = Guid('{f9f63ba2-ceba-4755-8a7e-14c0ffecd239}')
     @winrt_commethod(6)
     def GetForCurrentView(self) -> win32more.Windows.UI.Input.KeyboardDeliveryInterceptor: ...
 class IManipulationCompletedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationCompletedEventArgs'
     _iid_ = Guid('{b34ab22b-d19b-46ff-9f38-dec7754bb9e7}')
     @winrt_commethod(6)
@@ -701,7 +696,7 @@ class IManipulationCompletedEventArgs(ComPtr):
     Position = property(get_Position, None)
     Velocities = property(get_Velocities, None)
 class IManipulationCompletedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationCompletedEventArgs2'
     _iid_ = Guid('{f0c0dce7-30a9-5b96-886f-6560a85e4757}')
     @winrt_commethod(6)
@@ -711,7 +706,7 @@ class IManipulationCompletedEventArgs2(ComPtr):
     ContactCount = property(get_ContactCount, None)
     CurrentContactCount = property(get_CurrentContactCount, None)
 class IManipulationInertiaStartingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationInertiaStartingEventArgs'
     _iid_ = Guid('{dd37a898-26bf-467a-9ce5-ccf3fb11371e}')
     @winrt_commethod(6)
@@ -730,14 +725,14 @@ class IManipulationInertiaStartingEventArgs(ComPtr):
     Position = property(get_Position, None)
     Velocities = property(get_Velocities, None)
 class IManipulationInertiaStartingEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationInertiaStartingEventArgs2'
     _iid_ = Guid('{c25409b8-f9fa-5a45-bd97-dcbbb2201860}')
     @winrt_commethod(6)
     def get_ContactCount(self) -> UInt32: ...
     ContactCount = property(get_ContactCount, None)
 class IManipulationStartedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationStartedEventArgs'
     _iid_ = Guid('{ddec873e-cfce-4932-8c1d-3c3d011a34c0}')
     @winrt_commethod(6)
@@ -750,14 +745,14 @@ class IManipulationStartedEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class IManipulationStartedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationStartedEventArgs2'
     _iid_ = Guid('{2da3db4e-e583-5055-afaa-16fd986531a6}')
     @winrt_commethod(6)
     def get_ContactCount(self) -> UInt32: ...
     ContactCount = property(get_ContactCount, None)
 class IManipulationUpdatedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationUpdatedEventArgs'
     _iid_ = Guid('{cb354ce5-abb8-4f9f-b3ce-8181aa61ad82}')
     @winrt_commethod(6)
@@ -776,7 +771,7 @@ class IManipulationUpdatedEventArgs(ComPtr):
     Position = property(get_Position, None)
     Velocities = property(get_Velocities, None)
 class IManipulationUpdatedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IManipulationUpdatedEventArgs2'
     _iid_ = Guid('{f3dfb96a-3306-5903-a1c5-ff9757a8689e}')
     @winrt_commethod(6)
@@ -786,7 +781,7 @@ class IManipulationUpdatedEventArgs2(ComPtr):
     ContactCount = property(get_ContactCount, None)
     CurrentContactCount = property(get_CurrentContactCount, None)
 class IMouseWheelParameters(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IMouseWheelParameters'
     _iid_ = Guid('{ead0ca44-9ded-4037-8149-5e4cc2564468}')
     @winrt_commethod(6)
@@ -810,92 +805,89 @@ class IMouseWheelParameters(ComPtr):
     DeltaScale = property(get_DeltaScale, put_DeltaScale)
     PageTranslation = property(get_PageTranslation, put_PageTranslation)
 class IPhysicalGestureRecognizer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPhysicalGestureRecognizer'
-    _iid_ = Guid('{79a29f4d-32a6-5aa5-a999-42b0b420c66d}')
+    _iid_ = Guid('{a3bb83e5-6937-5f29-8707-ae4875f8fda3}')
     @winrt_commethod(6)
-    def get_IsActive(self) -> Boolean: ...
-    @winrt_commethod(7)
     def get_GestureSettings(self) -> win32more.Windows.UI.Input.GestureSettings: ...
-    @winrt_commethod(8)
+    @winrt_commethod(7)
     def put_GestureSettings(self, value: win32more.Windows.UI.Input.GestureSettings) -> Void: ...
-    @winrt_commethod(9)
+    @winrt_commethod(8)
     def get_TapMinContactCount(self) -> UInt32: ...
-    @winrt_commethod(10)
+    @winrt_commethod(9)
     def put_TapMinContactCount(self, value: UInt32) -> Void: ...
-    @winrt_commethod(11)
+    @winrt_commethod(10)
     def get_TapMaxContactCount(self) -> UInt32: ...
-    @winrt_commethod(12)
+    @winrt_commethod(11)
     def put_TapMaxContactCount(self, value: UInt32) -> Void: ...
-    @winrt_commethod(13)
+    @winrt_commethod(12)
     def get_HoldMinContactCount(self) -> UInt32: ...
-    @winrt_commethod(14)
+    @winrt_commethod(13)
     def put_HoldMinContactCount(self, value: UInt32) -> Void: ...
-    @winrt_commethod(15)
+    @winrt_commethod(14)
     def get_HoldMaxContactCount(self) -> UInt32: ...
-    @winrt_commethod(16)
+    @winrt_commethod(15)
     def put_HoldMaxContactCount(self, value: UInt32) -> Void: ...
-    @winrt_commethod(17)
+    @winrt_commethod(16)
     def get_HoldRadius(self) -> Single: ...
-    @winrt_commethod(18)
+    @winrt_commethod(17)
     def put_HoldRadius(self, value: Single) -> Void: ...
-    @winrt_commethod(19)
+    @winrt_commethod(18)
     def get_HoldStartDelay(self) -> win32more.Windows.Foundation.TimeSpan: ...
-    @winrt_commethod(20)
+    @winrt_commethod(19)
     def put_HoldStartDelay(self, value: win32more.Windows.Foundation.TimeSpan) -> Void: ...
-    @winrt_commethod(21)
+    @winrt_commethod(20)
     def get_TranslationMinContactCount(self) -> UInt32: ...
-    @winrt_commethod(22)
+    @winrt_commethod(21)
     def put_TranslationMinContactCount(self, value: UInt32) -> Void: ...
-    @winrt_commethod(23)
+    @winrt_commethod(22)
     def get_TranslationMaxContactCount(self) -> UInt32: ...
-    @winrt_commethod(24)
+    @winrt_commethod(23)
     def put_TranslationMaxContactCount(self, value: UInt32) -> Void: ...
-    @winrt_commethod(25)
+    @winrt_commethod(24)
     def ProcessDownEvent(self, value: win32more.Windows.UI.Input.PointerPoint) -> Void: ...
-    @winrt_commethod(26)
+    @winrt_commethod(25)
     def ProcessMoveEvents(self, value: win32more.Windows.Foundation.Collections.IVector[win32more.Windows.UI.Input.PointerPoint]) -> Void: ...
-    @winrt_commethod(27)
+    @winrt_commethod(26)
     def ProcessUpEvent(self, value: win32more.Windows.UI.Input.PointerPoint) -> Void: ...
-    @winrt_commethod(28)
+    @winrt_commethod(27)
     def CompleteGesture(self) -> Void: ...
-    @winrt_commethod(29)
+    @winrt_commethod(28)
     def add_ManipulationStarted(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.PhysicalGestureRecognizer, win32more.Windows.UI.Input.ManipulationStartedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_commethod(30)
+    @winrt_commethod(29)
     def remove_ManipulationStarted(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_commethod(31)
+    @winrt_commethod(30)
     def add_ManipulationUpdated(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.PhysicalGestureRecognizer, win32more.Windows.UI.Input.ManipulationUpdatedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_commethod(32)
+    @winrt_commethod(31)
     def remove_ManipulationUpdated(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_commethod(33)
+    @winrt_commethod(32)
     def add_ManipulationCompleted(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.PhysicalGestureRecognizer, win32more.Windows.UI.Input.ManipulationCompletedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_commethod(34)
+    @winrt_commethod(33)
     def remove_ManipulationCompleted(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_commethod(35)
+    @winrt_commethod(34)
     def add_Tapped(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.PhysicalGestureRecognizer, win32more.Windows.UI.Input.TappedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_commethod(36)
+    @winrt_commethod(35)
     def remove_Tapped(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_commethod(37)
+    @winrt_commethod(36)
     def add_Holding(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.PhysicalGestureRecognizer, win32more.Windows.UI.Input.HoldingEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_commethod(38)
+    @winrt_commethod(37)
     def remove_Holding(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     GestureSettings = property(get_GestureSettings, put_GestureSettings)
     HoldMaxContactCount = property(get_HoldMaxContactCount, put_HoldMaxContactCount)
     HoldMinContactCount = property(get_HoldMinContactCount, put_HoldMinContactCount)
     HoldRadius = property(get_HoldRadius, put_HoldRadius)
     HoldStartDelay = property(get_HoldStartDelay, put_HoldStartDelay)
-    IsActive = property(get_IsActive, None)
     TapMaxContactCount = property(get_TapMaxContactCount, put_TapMaxContactCount)
     TapMinContactCount = property(get_TapMinContactCount, put_TapMinContactCount)
     TranslationMaxContactCount = property(get_TranslationMaxContactCount, put_TranslationMaxContactCount)
     TranslationMinContactCount = property(get_TranslationMinContactCount, put_TranslationMinContactCount)
-    Holding = event(add_Holding, remove_Holding)
-    ManipulationCompleted = event(add_ManipulationCompleted, remove_ManipulationCompleted)
-    ManipulationStarted = event(add_ManipulationStarted, remove_ManipulationStarted)
-    ManipulationUpdated = event(add_ManipulationUpdated, remove_ManipulationUpdated)
-    Tapped = event(add_Tapped, remove_Tapped)
+    ManipulationStarted = event()
+    ManipulationUpdated = event()
+    ManipulationCompleted = event()
+    Tapped = event()
+    Holding = event()
 class IPointerPoint(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerPoint'
     _iid_ = Guid('{e995317d-7296-42d9-8233-c5be73b74a4a}')
     @winrt_commethod(6)
@@ -923,7 +915,7 @@ class IPointerPoint(ComPtr):
     RawPosition = property(get_RawPosition, None)
     Timestamp = property(get_Timestamp, None)
 class IPointerPointPhysicalPosition(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerPointPhysicalPosition'
     _iid_ = Guid('{003185a3-a5e7-4859-9c0b-89340204806c}')
     @winrt_commethod(6)
@@ -933,7 +925,7 @@ class IPointerPointPhysicalPosition(ComPtr):
     IsPhysicalPositionSupported = property(get_IsPhysicalPositionSupported, None)
     PhysicalPosition = property(get_PhysicalPosition, None)
 class IPointerPointProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerPointProperties'
     _iid_ = Guid('{c79d8a4b-c163-4ee7-803f-67ce79f9972d}')
     @winrt_commethod(6)
@@ -1007,14 +999,14 @@ class IPointerPointProperties(ComPtr):
     XTilt = property(get_XTilt, None)
     YTilt = property(get_YTilt, None)
 class IPointerPointProperties2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerPointProperties2'
     _iid_ = Guid('{22c3433a-c83b-41c0-a296-5e232d64d6af}')
     @winrt_commethod(6)
     def get_ZDistance(self) -> win32more.Windows.Foundation.IReference[Single]: ...
     ZDistance = property(get_ZDistance, None)
 class IPointerPointStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerPointStatics'
     _iid_ = Guid('{a506638d-2a1a-413e-bc75-9f38381cc069}')
     @winrt_commethod(6)
@@ -1026,7 +1018,7 @@ class IPointerPointStatics(ComPtr):
     @winrt_commethod(9)
     def GetIntermediatePointsTransformed(self, pointerId: UInt32, transform: win32more.Windows.UI.Input.IPointerPointTransform) -> win32more.Windows.Foundation.Collections.IVector[win32more.Windows.UI.Input.PointerPoint]: ...
 class IPointerPointTransform(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerPointTransform'
     _iid_ = Guid('{4d5fe14f-b87c-4028-bc9c-59e9947fb056}')
     @winrt_commethod(6)
@@ -1037,7 +1029,7 @@ class IPointerPointTransform(ComPtr):
     def TransformBounds(self, rect: win32more.Windows.Foundation.Rect) -> win32more.Windows.Foundation.Rect: ...
     Inverse = property(get_Inverse, None)
 class IPointerVisualizationSettings(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerVisualizationSettings'
     _iid_ = Guid('{4d1e6461-84f7-499d-bd91-2a36e2b7aaa2}')
     @winrt_commethod(6)
@@ -1051,13 +1043,13 @@ class IPointerVisualizationSettings(ComPtr):
     IsBarrelButtonFeedbackEnabled = property(get_IsBarrelButtonFeedbackEnabled, put_IsBarrelButtonFeedbackEnabled)
     IsContactFeedbackEnabled = property(get_IsContactFeedbackEnabled, put_IsContactFeedbackEnabled)
 class IPointerVisualizationSettingsStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IPointerVisualizationSettingsStatics'
     _iid_ = Guid('{68870edb-165b-4214-b4f3-584eca8c8a69}')
     @winrt_commethod(6)
     def GetForCurrentView(self) -> win32more.Windows.UI.Input.PointerVisualizationSettings: ...
 class IRadialController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialController'
     _iid_ = Guid('{3055d1c8-df51-43d4-b23b-0e1037467a09}')
     @winrt_commethod(6)
@@ -1075,7 +1067,7 @@ class IRadialController(ComPtr):
     @winrt_commethod(12)
     def remove_ScreenContactStarted(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(13)
-    def add_ScreenContactEnded(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ScreenContactEnded(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(14)
     def remove_ScreenContactEnded(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(15)
@@ -1083,7 +1075,7 @@ class IRadialController(ComPtr):
     @winrt_commethod(16)
     def remove_ScreenContactContinued(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(17)
-    def add_ControlLost(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ControlLost(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(18)
     def remove_ControlLost(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(19)
@@ -1101,15 +1093,15 @@ class IRadialController(ComPtr):
     Menu = property(get_Menu, None)
     RotationResolutionInDegrees = property(get_RotationResolutionInDegrees, put_RotationResolutionInDegrees)
     UseAutomaticHapticFeedback = property(get_UseAutomaticHapticFeedback, put_UseAutomaticHapticFeedback)
-    ButtonClicked = event(add_ButtonClicked, remove_ButtonClicked)
-    ControlAcquired = event(add_ControlAcquired, remove_ControlAcquired)
-    ControlLost = event(add_ControlLost, remove_ControlLost)
-    RotationChanged = event(add_RotationChanged, remove_RotationChanged)
-    ScreenContactContinued = event(add_ScreenContactContinued, remove_ScreenContactContinued)
-    ScreenContactEnded = event(add_ScreenContactEnded, remove_ScreenContactEnded)
-    ScreenContactStarted = event(add_ScreenContactStarted, remove_ScreenContactStarted)
+    ScreenContactStarted = event()
+    ScreenContactEnded = event()
+    ScreenContactContinued = event()
+    ControlLost = event()
+    RotationChanged = event()
+    ButtonClicked = event()
+    ControlAcquired = event()
 class IRadialController2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialController2'
     _iid_ = Guid('{3d577eff-4cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1124,25 +1116,25 @@ class IRadialController2(ComPtr):
     def add_ButtonReleased(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, win32more.Windows.UI.Input.RadialControllerButtonReleasedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_ButtonReleased(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    ButtonHolding = event(add_ButtonHolding, remove_ButtonHolding)
-    ButtonPressed = event(add_ButtonPressed, remove_ButtonPressed)
-    ButtonReleased = event(add_ButtonReleased, remove_ButtonReleased)
+    ButtonPressed = event()
+    ButtonHolding = event()
+    ButtonReleased = event()
 class IRadialControllerButtonClickedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerButtonClickedEventArgs'
     _iid_ = Guid('{206aa438-e651-11e5-bf62-2c27d7404e85}')
     @winrt_commethod(6)
     def get_Contact(self) -> win32more.Windows.UI.Input.RadialControllerScreenContact: ...
     Contact = property(get_Contact, None)
 class IRadialControllerButtonClickedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerButtonClickedEventArgs2'
     _iid_ = Guid('{3d577ef3-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
     def get_SimpleHapticsController(self) -> win32more.Windows.Devices.Haptics.SimpleHapticsController: ...
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerButtonHoldingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerButtonHoldingEventArgs'
     _iid_ = Guid('{3d577eee-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1152,7 +1144,7 @@ class IRadialControllerButtonHoldingEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerButtonPressedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerButtonPressedEventArgs'
     _iid_ = Guid('{3d577eed-4cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1162,7 +1154,7 @@ class IRadialControllerButtonPressedEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerButtonReleasedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerButtonReleasedEventArgs'
     _iid_ = Guid('{3d577eef-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1172,7 +1164,7 @@ class IRadialControllerButtonReleasedEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerConfiguration(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerConfiguration'
     _iid_ = Guid('{a6b79ecb-6a52-4430-910c-56370a9d6b42}')
     @winrt_commethod(6)
@@ -1182,7 +1174,7 @@ class IRadialControllerConfiguration(ComPtr):
     @winrt_commethod(8)
     def TrySelectDefaultMenuItem(self, type: win32more.Windows.UI.Input.RadialControllerSystemMenuItemKind) -> Boolean: ...
 class IRadialControllerConfiguration2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerConfiguration2'
     _iid_ = Guid('{3d577ef7-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1196,13 +1188,13 @@ class IRadialControllerConfiguration2(ComPtr):
     ActiveControllerWhenMenuIsSuppressed = property(get_ActiveControllerWhenMenuIsSuppressed, put_ActiveControllerWhenMenuIsSuppressed)
     IsMenuSuppressed = property(get_IsMenuSuppressed, put_IsMenuSuppressed)
 class IRadialControllerConfigurationStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerConfigurationStatics'
     _iid_ = Guid('{79b6b0e5-069a-4486-a99d-8db772b9642f}')
     @winrt_commethod(6)
     def GetForCurrentView(self) -> win32more.Windows.UI.Input.RadialControllerConfiguration: ...
 class IRadialControllerConfigurationStatics2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerConfigurationStatics2'
     _iid_ = Guid('{53e08b17-e205-48d3-9caf-80ff47c4d7c7}')
     @winrt_commethod(6)
@@ -1216,14 +1208,14 @@ class IRadialControllerConfigurationStatics2(ComPtr):
     AppController = property(get_AppController, put_AppController)
     IsAppControllerEnabled = property(get_IsAppControllerEnabled, put_IsAppControllerEnabled)
 class IRadialControllerControlAcquiredEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerControlAcquiredEventArgs'
     _iid_ = Guid('{206aa439-e651-11e5-bf62-2c27d7404e85}')
     @winrt_commethod(6)
     def get_Contact(self) -> win32more.Windows.UI.Input.RadialControllerScreenContact: ...
     Contact = property(get_Contact, None)
 class IRadialControllerControlAcquiredEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerControlAcquiredEventArgs2'
     _iid_ = Guid('{3d577ef4-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1233,7 +1225,7 @@ class IRadialControllerControlAcquiredEventArgs2(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerMenu(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerMenu'
     _iid_ = Guid('{8506b35d-f640-4412-aba0-bad077e5ea8a}')
     @winrt_commethod(6)
@@ -1251,40 +1243,40 @@ class IRadialControllerMenu(ComPtr):
     IsEnabled = property(get_IsEnabled, put_IsEnabled)
     Items = property(get_Items, None)
 class IRadialControllerMenuItem(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerMenuItem'
     _iid_ = Guid('{c80fc98d-ad0b-4c9c-8f2f-136a2373a6ba}')
     @winrt_commethod(6)
-    def get_DisplayText(self) -> hstr: ...
+    def get_DisplayText(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def get_Tag(self) -> IInspectable: ...
+    def get_Tag(self) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
     @winrt_commethod(8)
-    def put_Tag(self, value: IInspectable) -> Void: ...
+    def put_Tag(self, value: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
     @winrt_commethod(9)
-    def add_Invoked(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialControllerMenuItem, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_Invoked(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialControllerMenuItem, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(10)
     def remove_Invoked(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     DisplayText = property(get_DisplayText, None)
     Tag = property(get_Tag, put_Tag)
-    Invoked = event(add_Invoked, remove_Invoked)
+    Invoked = event()
 class IRadialControllerMenuItemStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerMenuItemStatics'
     _iid_ = Guid('{249e0887-d842-4524-9df8-e0d647edc887}')
     @winrt_commethod(6)
-    def CreateFromIcon(self, displayText: hstr, icon: win32more.Windows.Storage.Streams.RandomAccessStreamReference) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromIcon(self, displayText: WinRT_String, icon: win32more.Windows.Storage.Streams.RandomAccessStreamReference) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
     @winrt_commethod(7)
-    def CreateFromKnownIcon(self, displayText: hstr, value: win32more.Windows.UI.Input.RadialControllerMenuKnownIcon) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromKnownIcon(self, displayText: WinRT_String, value: win32more.Windows.UI.Input.RadialControllerMenuKnownIcon) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
 class IRadialControllerMenuItemStatics2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerMenuItemStatics2'
     _iid_ = Guid('{0cbb70be-7e3e-48bd-be04-2c7fcaa9c1ff}')
     @winrt_commethod(6)
-    def CreateFromFontGlyph(self, displayText: hstr, glyph: hstr, fontFamily: hstr) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromFontGlyph(self, displayText: WinRT_String, glyph: WinRT_String, fontFamily: WinRT_String) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
     @winrt_commethod(7)
-    def CreateFromFontGlyphWithUri(self, displayText: hstr, glyph: hstr, fontFamily: hstr, fontUri: win32more.Windows.Foundation.Uri) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromFontGlyphWithUri(self, displayText: WinRT_String, glyph: WinRT_String, fontFamily: WinRT_String, fontUri: win32more.Windows.Foundation.Uri) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
 class IRadialControllerRotationChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerRotationChangedEventArgs'
     _iid_ = Guid('{206aa435-e651-11e5-bf62-2c27d7404e85}')
     @winrt_commethod(6)
@@ -1294,7 +1286,7 @@ class IRadialControllerRotationChangedEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     RotationDeltaInDegrees = property(get_RotationDeltaInDegrees, None)
 class IRadialControllerRotationChangedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerRotationChangedEventArgs2'
     _iid_ = Guid('{3d577eec-4cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1304,7 +1296,7 @@ class IRadialControllerRotationChangedEventArgs2(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerScreenContact(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerScreenContact'
     _iid_ = Guid('{206aa434-e651-11e5-bf62-2c27d7404e85}')
     @winrt_commethod(6)
@@ -1314,14 +1306,14 @@ class IRadialControllerScreenContact(ComPtr):
     Bounds = property(get_Bounds, None)
     Position = property(get_Position, None)
 class IRadialControllerScreenContactContinuedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerScreenContactContinuedEventArgs'
     _iid_ = Guid('{206aa437-e651-11e5-bf62-2c27d7404e85}')
     @winrt_commethod(6)
     def get_Contact(self) -> win32more.Windows.UI.Input.RadialControllerScreenContact: ...
     Contact = property(get_Contact, None)
 class IRadialControllerScreenContactContinuedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerScreenContactContinuedEventArgs2'
     _iid_ = Guid('{3d577ef1-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1331,7 +1323,7 @@ class IRadialControllerScreenContactContinuedEventArgs2(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerScreenContactEndedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerScreenContactEndedEventArgs'
     _iid_ = Guid('{3d577ef2-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1341,14 +1333,14 @@ class IRadialControllerScreenContactEndedEventArgs(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerScreenContactStartedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerScreenContactStartedEventArgs'
     _iid_ = Guid('{206aa436-e651-11e5-bf62-2c27d7404e85}')
     @winrt_commethod(6)
     def get_Contact(self) -> win32more.Windows.UI.Input.RadialControllerScreenContact: ...
     Contact = property(get_Contact, None)
 class IRadialControllerScreenContactStartedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerScreenContactStartedEventArgs2'
     _iid_ = Guid('{3d577ef0-3cee-11e6-b535-001bdc06ab3b}')
     @winrt_commethod(6)
@@ -1358,7 +1350,7 @@ class IRadialControllerScreenContactStartedEventArgs2(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class IRadialControllerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRadialControllerStatics'
     _iid_ = Guid('{faded0b7-b84c-4894-87aa-8f25aa5f288b}')
     @winrt_commethod(6)
@@ -1366,7 +1358,7 @@ class IRadialControllerStatics(ComPtr):
     @winrt_commethod(7)
     def CreateForCurrentView(self) -> win32more.Windows.UI.Input.RadialController: ...
 class IRightTappedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRightTappedEventArgs'
     _iid_ = Guid('{4cbf40bd-af7a-4a36-9476-b1dce141709a}')
     @winrt_commethod(6)
@@ -1376,14 +1368,14 @@ class IRightTappedEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class IRightTappedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.IRightTappedEventArgs2'
     _iid_ = Guid('{61c7b7bb-9f57-5857-a33c-c58c3dfa959e}')
     @winrt_commethod(6)
     def get_ContactCount(self) -> UInt32: ...
     ContactCount = property(get_ContactCount, None)
 class ISystemButtonEventController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ISystemButtonEventController'
     _iid_ = Guid('{59b893a9-73bc-52b5-ba41-82511b2cb46c}')
     @winrt_commethod(6)
@@ -1402,18 +1394,18 @@ class ISystemButtonEventController(ComPtr):
     def add_SystemFunctionLockIndicatorChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.SystemButtonEventController, win32more.Windows.UI.Input.SystemFunctionLockIndicatorChangedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(13)
     def remove_SystemFunctionLockIndicatorChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    SystemFunctionButtonPressed = event(add_SystemFunctionButtonPressed, remove_SystemFunctionButtonPressed)
-    SystemFunctionButtonReleased = event(add_SystemFunctionButtonReleased, remove_SystemFunctionButtonReleased)
-    SystemFunctionLockChanged = event(add_SystemFunctionLockChanged, remove_SystemFunctionLockChanged)
-    SystemFunctionLockIndicatorChanged = event(add_SystemFunctionLockIndicatorChanged, remove_SystemFunctionLockIndicatorChanged)
+    SystemFunctionButtonPressed = event()
+    SystemFunctionButtonReleased = event()
+    SystemFunctionLockChanged = event()
+    SystemFunctionLockIndicatorChanged = event()
 class ISystemButtonEventControllerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ISystemButtonEventControllerStatics'
     _iid_ = Guid('{632fb07b-20bd-5e15-af4a-00dbf2064ffa}')
     @winrt_commethod(6)
     def CreateForDispatcherQueue(self, queue: win32more.Windows.System.DispatcherQueue) -> win32more.Windows.UI.Input.SystemButtonEventController: ...
 class ISystemFunctionButtonEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ISystemFunctionButtonEventArgs'
     _iid_ = Guid('{4833896f-80d1-5dd6-92a7-62a508ffef5a}')
     @winrt_commethod(6)
@@ -1425,7 +1417,7 @@ class ISystemFunctionButtonEventArgs(ComPtr):
     Handled = property(get_Handled, put_Handled)
     Timestamp = property(get_Timestamp, None)
 class ISystemFunctionLockChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ISystemFunctionLockChangedEventArgs'
     _iid_ = Guid('{cd040608-fcf9-585c-beab-f1d2eaf364ab}')
     @winrt_commethod(6)
@@ -1440,7 +1432,7 @@ class ISystemFunctionLockChangedEventArgs(ComPtr):
     IsLocked = property(get_IsLocked, None)
     Timestamp = property(get_Timestamp, None)
 class ISystemFunctionLockIndicatorChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ISystemFunctionLockIndicatorChangedEventArgs'
     _iid_ = Guid('{b212b94e-7a6f-58ae-b304-bae61d0371b9}')
     @winrt_commethod(6)
@@ -1455,7 +1447,7 @@ class ISystemFunctionLockIndicatorChangedEventArgs(ComPtr):
     IsIndicatorOn = property(get_IsIndicatorOn, None)
     Timestamp = property(get_Timestamp, None)
 class ITappedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ITappedEventArgs'
     _iid_ = Guid('{cfa126e4-253a-4c3c-953b-395c37aed309}')
     @winrt_commethod(6)
@@ -1468,20 +1460,20 @@ class ITappedEventArgs(ComPtr):
     Position = property(get_Position, None)
     TapCount = property(get_TapCount, None)
 class ITappedEventArgs2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ITappedEventArgs2'
     _iid_ = Guid('{294388f2-177e-51d5-be56-ee0866fa968c}')
     @winrt_commethod(6)
     def get_ContactCount(self) -> UInt32: ...
     ContactCount = property(get_ContactCount, None)
 class ITouchpadGesturesController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ITouchpadGesturesController'
-    _iid_ = Guid('{28c13cdd-e068-549f-89c6-1a440c6fc327}')
+    _iid_ = Guid('{b58f88d0-58ea-51b5-b5bf-61cc081bf21d}')
     @winrt_commethod(6)
-    def get_Enabled(self) -> Boolean: ...
+    def get_GesturesEnabled(self) -> Boolean: ...
     @winrt_commethod(7)
-    def put_Enabled(self, value: Boolean) -> Void: ...
+    def put_GesturesEnabled(self, value: Boolean) -> Void: ...
     @winrt_commethod(8)
     def get_SupportedGestures(self) -> win32more.Windows.UI.Input.TouchpadGlobalGestureKinds: ...
     @winrt_commethod(9)
@@ -1499,17 +1491,17 @@ class ITouchpadGesturesController(ComPtr):
     @winrt_commethod(15)
     def remove_PointerReleased(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
-    def add_GlobalActionPerformed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.TouchpadGesturesController, win32more.Windows.UI.Input.TouchpadGlobalActionEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_TouchpadGlobalActionPerformed(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.TouchpadGesturesController, win32more.Windows.UI.Input.TouchpadGlobalActionEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
-    def remove_GlobalActionPerformed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    Enabled = property(get_Enabled, put_Enabled)
+    def remove_TouchpadGlobalActionPerformed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
+    GesturesEnabled = property(get_GesturesEnabled, put_GesturesEnabled)
     SupportedGestures = property(get_SupportedGestures, put_SupportedGestures)
-    GlobalActionPerformed = event(add_GlobalActionPerformed, remove_GlobalActionPerformed)
-    PointerMoved = event(add_PointerMoved, remove_PointerMoved)
-    PointerPressed = event(add_PointerPressed, remove_PointerPressed)
-    PointerReleased = event(add_PointerReleased, remove_PointerReleased)
+    PointerPressed = event()
+    PointerMoved = event()
+    PointerReleased = event()
+    TouchpadGlobalActionPerformed = event()
 class ITouchpadGesturesControllerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ITouchpadGesturesControllerStatics'
     _iid_ = Guid('{207ef171-1a73-51cd-a694-8840e09dbafa}')
     @winrt_commethod(6)
@@ -1517,15 +1509,12 @@ class ITouchpadGesturesControllerStatics(ComPtr):
     @winrt_commethod(7)
     def CreateForProcess(self) -> win32more.Windows.UI.Input.TouchpadGesturesController: ...
 class ITouchpadGlobalActionEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.UI.Input.ITouchpadGlobalActionEventArgs'
-    _iid_ = Guid('{6edad206-e4e3-5f39-9d13-8575e8e2a12b}')
+    _iid_ = Guid('{08103525-dbb6-5f7f-9ffe-98c84bb49591}')
     @winrt_commethod(6)
     def get_Action(self) -> win32more.Windows.UI.Input.TouchpadGlobalAction: ...
-    @winrt_commethod(7)
-    def get_PointerDevice(self) -> win32more.Windows.Devices.Input.PointerDevice: ...
     Action = property(get_Action, None)
-    PointerDevice = property(get_PointerDevice, None)
 class InputActivationListener(ComPtr):
     extends: win32more.Windows.UI.Input.AttachableInputObject
     default_interface: win32more.Windows.UI.Input.IInputActivationListener
@@ -1537,22 +1526,21 @@ class InputActivationListener(ComPtr):
     @winrt_mixinmethod
     def remove_InputActivationChanged(self: win32more.Windows.UI.Input.IInputActivationListener, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     State = property(get_State, None)
-    InputActivationChanged = event(add_InputActivationChanged, remove_InputActivationChanged)
+    InputActivationChanged = event()
 class InputActivationListenerActivationChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IInputActivationListenerActivationChangedEventArgs
     _classid_ = 'Windows.UI.Input.InputActivationListenerActivationChangedEventArgs'
     @winrt_mixinmethod
     def get_State(self: win32more.Windows.UI.Input.IInputActivationListenerActivationChangedEventArgs) -> win32more.Windows.UI.Input.InputActivationState: ...
     State = property(get_State, None)
 class InputActivationState(Enum, Int32):
-    _name_ = 'Windows.UI.Input.InputActivationState'
     None_ = 0
     Deactivated = 1
     ActivatedNotForeground = 2
     ActivatedInForeground = 3
 class KeyboardDeliveryInterceptor(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IKeyboardDeliveryInterceptor
     _classid_ = 'Windows.UI.Input.KeyboardDeliveryInterceptor'
     @winrt_mixinmethod
@@ -1570,10 +1558,10 @@ class KeyboardDeliveryInterceptor(ComPtr):
     @winrt_classmethod
     def GetForCurrentView(cls: win32more.Windows.UI.Input.IKeyboardDeliveryInterceptorStatics) -> win32more.Windows.UI.Input.KeyboardDeliveryInterceptor: ...
     IsInterceptionEnabledWhenInForeground = property(get_IsInterceptionEnabledWhenInForeground, put_IsInterceptionEnabledWhenInForeground)
-    KeyDown = event(add_KeyDown, remove_KeyDown)
-    KeyUp = event(add_KeyUp, remove_KeyUp)
+    KeyDown = event()
+    KeyUp = event()
 class ManipulationCompletedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IManipulationCompletedEventArgs
     _classid_ = 'Windows.UI.Input.ManipulationCompletedEventArgs'
     @winrt_mixinmethod
@@ -1595,13 +1583,12 @@ class ManipulationCompletedEventArgs(ComPtr):
     Position = property(get_Position, None)
     Velocities = property(get_Velocities, None)
 class ManipulationDelta(Structure):
-    _name_ = 'Windows.UI.Input.ManipulationDelta'
     Translation: win32more.Windows.Foundation.Point
     Scale: Single
     Rotation: Single
     Expansion: Single
 class ManipulationInertiaStartingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IManipulationInertiaStartingEventArgs
     _classid_ = 'Windows.UI.Input.ManipulationInertiaStartingEventArgs'
     @winrt_mixinmethod
@@ -1623,7 +1610,7 @@ class ManipulationInertiaStartingEventArgs(ComPtr):
     Position = property(get_Position, None)
     Velocities = property(get_Velocities, None)
 class ManipulationStartedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IManipulationStartedEventArgs
     _classid_ = 'Windows.UI.Input.ManipulationStartedEventArgs'
     @winrt_mixinmethod
@@ -1639,7 +1626,7 @@ class ManipulationStartedEventArgs(ComPtr):
     PointerDeviceType = property(get_PointerDeviceType, None)
     Position = property(get_Position, None)
 class ManipulationUpdatedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IManipulationUpdatedEventArgs
     _classid_ = 'Windows.UI.Input.ManipulationUpdatedEventArgs'
     @winrt_mixinmethod
@@ -1664,12 +1651,11 @@ class ManipulationUpdatedEventArgs(ComPtr):
     Position = property(get_Position, None)
     Velocities = property(get_Velocities, None)
 class ManipulationVelocities(Structure):
-    _name_ = 'Windows.UI.Input.ManipulationVelocities'
     Linear: win32more.Windows.Foundation.Point
     Angular: Single
     Expansion: Single
 class MouseWheelParameters(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IMouseWheelParameters
     _classid_ = 'Windows.UI.Input.MouseWheelParameters'
     @winrt_mixinmethod
@@ -1693,7 +1679,7 @@ class MouseWheelParameters(ComPtr):
     DeltaScale = property(get_DeltaScale, put_DeltaScale)
     PageTranslation = property(get_PageTranslation, put_PageTranslation)
 class PhysicalGestureRecognizer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IPhysicalGestureRecognizer
     _classid_ = 'Windows.UI.Input.PhysicalGestureRecognizer'
     def __init__(self, *args, **kwargs):
@@ -1705,8 +1691,6 @@ class PhysicalGestureRecognizer(ComPtr):
             raise ValueError('no matched constructor')
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.UI.Input.PhysicalGestureRecognizer: ...
-    @winrt_mixinmethod
-    def get_IsActive(self: win32more.Windows.UI.Input.IPhysicalGestureRecognizer) -> Boolean: ...
     @winrt_mixinmethod
     def get_GestureSettings(self: win32more.Windows.UI.Input.IPhysicalGestureRecognizer) -> win32more.Windows.UI.Input.GestureSettings: ...
     @winrt_mixinmethod
@@ -1776,18 +1760,17 @@ class PhysicalGestureRecognizer(ComPtr):
     HoldMinContactCount = property(get_HoldMinContactCount, put_HoldMinContactCount)
     HoldRadius = property(get_HoldRadius, put_HoldRadius)
     HoldStartDelay = property(get_HoldStartDelay, put_HoldStartDelay)
-    IsActive = property(get_IsActive, None)
     TapMaxContactCount = property(get_TapMaxContactCount, put_TapMaxContactCount)
     TapMinContactCount = property(get_TapMinContactCount, put_TapMinContactCount)
     TranslationMaxContactCount = property(get_TranslationMaxContactCount, put_TranslationMaxContactCount)
     TranslationMinContactCount = property(get_TranslationMinContactCount, put_TranslationMinContactCount)
-    Holding = event(add_Holding, remove_Holding)
-    ManipulationCompleted = event(add_ManipulationCompleted, remove_ManipulationCompleted)
-    ManipulationStarted = event(add_ManipulationStarted, remove_ManipulationStarted)
-    ManipulationUpdated = event(add_ManipulationUpdated, remove_ManipulationUpdated)
-    Tapped = event(add_Tapped, remove_Tapped)
+    ManipulationStarted = event()
+    ManipulationUpdated = event()
+    ManipulationCompleted = event()
+    Tapped = event()
+    Holding = event()
 class PointerPoint(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IPointerPoint
     _classid_ = 'Windows.UI.Input.PointerPoint'
     @winrt_mixinmethod
@@ -1829,7 +1812,7 @@ class PointerPoint(ComPtr):
     RawPosition = property(get_RawPosition, None)
     Timestamp = property(get_Timestamp, None)
 class PointerPointProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IPointerPointProperties
     _classid_ = 'Windows.UI.Input.PointerPointProperties'
     @winrt_mixinmethod
@@ -1906,7 +1889,6 @@ class PointerPointProperties(ComPtr):
     YTilt = property(get_YTilt, None)
     ZDistance = property(get_ZDistance, None)
 class PointerUpdateKind(Enum, Int32):
-    _name_ = 'Windows.UI.Input.PointerUpdateKind'
     Other = 0
     LeftButtonPressed = 1
     LeftButtonReleased = 2
@@ -1919,7 +1901,7 @@ class PointerUpdateKind(Enum, Int32):
     XButton2Pressed = 9
     XButton2Released = 10
 class PointerVisualizationSettings(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IPointerVisualizationSettings
     _classid_ = 'Windows.UI.Input.PointerVisualizationSettings'
     @winrt_mixinmethod
@@ -1935,7 +1917,7 @@ class PointerVisualizationSettings(ComPtr):
     IsBarrelButtonFeedbackEnabled = property(get_IsBarrelButtonFeedbackEnabled, put_IsBarrelButtonFeedbackEnabled)
     IsContactFeedbackEnabled = property(get_IsContactFeedbackEnabled, put_IsContactFeedbackEnabled)
 class RadialController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialController
     _classid_ = 'Windows.UI.Input.RadialController'
     @winrt_mixinmethod
@@ -1953,7 +1935,7 @@ class RadialController(ComPtr):
     @winrt_mixinmethod
     def remove_ScreenContactStarted(self: win32more.Windows.UI.Input.IRadialController, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_ScreenContactEnded(self: win32more.Windows.UI.Input.IRadialController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ScreenContactEnded(self: win32more.Windows.UI.Input.IRadialController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_ScreenContactEnded(self: win32more.Windows.UI.Input.IRadialController, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -1961,7 +1943,7 @@ class RadialController(ComPtr):
     @winrt_mixinmethod
     def remove_ScreenContactContinued(self: win32more.Windows.UI.Input.IRadialController, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_ControlLost(self: win32more.Windows.UI.Input.IRadialController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ControlLost(self: win32more.Windows.UI.Input.IRadialController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_ControlLost(self: win32more.Windows.UI.Input.IRadialController, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -1995,18 +1977,18 @@ class RadialController(ComPtr):
     Menu = property(get_Menu, None)
     RotationResolutionInDegrees = property(get_RotationResolutionInDegrees, put_RotationResolutionInDegrees)
     UseAutomaticHapticFeedback = property(get_UseAutomaticHapticFeedback, put_UseAutomaticHapticFeedback)
-    ButtonClicked = event(add_ButtonClicked, remove_ButtonClicked)
-    ButtonHolding = event(add_ButtonHolding, remove_ButtonHolding)
-    ButtonPressed = event(add_ButtonPressed, remove_ButtonPressed)
-    ButtonReleased = event(add_ButtonReleased, remove_ButtonReleased)
-    ControlAcquired = event(add_ControlAcquired, remove_ControlAcquired)
-    ControlLost = event(add_ControlLost, remove_ControlLost)
-    RotationChanged = event(add_RotationChanged, remove_RotationChanged)
-    ScreenContactContinued = event(add_ScreenContactContinued, remove_ScreenContactContinued)
-    ScreenContactEnded = event(add_ScreenContactEnded, remove_ScreenContactEnded)
-    ScreenContactStarted = event(add_ScreenContactStarted, remove_ScreenContactStarted)
+    ScreenContactStarted = event()
+    ScreenContactEnded = event()
+    ScreenContactContinued = event()
+    ControlLost = event()
+    RotationChanged = event()
+    ButtonClicked = event()
+    ControlAcquired = event()
+    ButtonPressed = event()
+    ButtonHolding = event()
+    ButtonReleased = event()
 class RadialControllerButtonClickedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerButtonClickedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerButtonClickedEventArgs'
     @winrt_mixinmethod
@@ -2016,7 +1998,7 @@ class RadialControllerButtonClickedEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerButtonHoldingEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerButtonHoldingEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerButtonHoldingEventArgs'
     @winrt_mixinmethod
@@ -2026,7 +2008,7 @@ class RadialControllerButtonHoldingEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerButtonPressedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerButtonPressedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerButtonPressedEventArgs'
     @winrt_mixinmethod
@@ -2036,7 +2018,7 @@ class RadialControllerButtonPressedEventArgs(ComPtr):
     Contact = property(get_Contact, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerButtonReleasedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerButtonReleasedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerButtonReleasedEventArgs'
     @winrt_mixinmethod
@@ -2048,7 +2030,7 @@ class RadialControllerButtonReleasedEventArgs(ComPtr):
 class _RadialControllerConfiguration_Meta_(ComPtr.__class__):
     pass
 class RadialControllerConfiguration(ComPtr, metaclass=_RadialControllerConfiguration_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerConfiguration
     _classid_ = 'Windows.UI.Input.RadialControllerConfiguration'
     @winrt_mixinmethod
@@ -2080,7 +2062,7 @@ class RadialControllerConfiguration(ComPtr, metaclass=_RadialControllerConfigura
     _RadialControllerConfiguration_Meta_.AppController = property(get_AppController, put_AppController)
     _RadialControllerConfiguration_Meta_.IsAppControllerEnabled = property(get_IsAppControllerEnabled, put_IsAppControllerEnabled)
 class RadialControllerControlAcquiredEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerControlAcquiredEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerControlAcquiredEventArgs'
     @winrt_mixinmethod
@@ -2093,7 +2075,7 @@ class RadialControllerControlAcquiredEventArgs(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerMenu(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerMenu
     _classid_ = 'Windows.UI.Input.RadialControllerMenu'
     @winrt_mixinmethod
@@ -2111,32 +2093,31 @@ class RadialControllerMenu(ComPtr):
     IsEnabled = property(get_IsEnabled, put_IsEnabled)
     Items = property(get_Items, None)
 class RadialControllerMenuItem(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerMenuItem
     _classid_ = 'Windows.UI.Input.RadialControllerMenuItem'
     @winrt_mixinmethod
-    def get_DisplayText(self: win32more.Windows.UI.Input.IRadialControllerMenuItem) -> hstr: ...
+    def get_DisplayText(self: win32more.Windows.UI.Input.IRadialControllerMenuItem) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_Tag(self: win32more.Windows.UI.Input.IRadialControllerMenuItem) -> IInspectable: ...
+    def get_Tag(self: win32more.Windows.UI.Input.IRadialControllerMenuItem) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
     @winrt_mixinmethod
-    def put_Tag(self: win32more.Windows.UI.Input.IRadialControllerMenuItem, value: IInspectable) -> Void: ...
+    def put_Tag(self: win32more.Windows.UI.Input.IRadialControllerMenuItem, value: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
     @winrt_mixinmethod
-    def add_Invoked(self: win32more.Windows.UI.Input.IRadialControllerMenuItem, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialControllerMenuItem, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_Invoked(self: win32more.Windows.UI.Input.IRadialControllerMenuItem, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.RadialControllerMenuItem, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_Invoked(self: win32more.Windows.UI.Input.IRadialControllerMenuItem, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def CreateFromFontGlyph(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics2, displayText: hstr, glyph: hstr, fontFamily: hstr) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromFontGlyph(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics2, displayText: WinRT_String, glyph: WinRT_String, fontFamily: WinRT_String) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
     @winrt_classmethod
-    def CreateFromFontGlyphWithUri(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics2, displayText: hstr, glyph: hstr, fontFamily: hstr, fontUri: win32more.Windows.Foundation.Uri) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromFontGlyphWithUri(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics2, displayText: WinRT_String, glyph: WinRT_String, fontFamily: WinRT_String, fontUri: win32more.Windows.Foundation.Uri) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
     @winrt_classmethod
-    def CreateFromIcon(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics, displayText: hstr, icon: win32more.Windows.Storage.Streams.RandomAccessStreamReference) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromIcon(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics, displayText: WinRT_String, icon: win32more.Windows.Storage.Streams.RandomAccessStreamReference) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
     @winrt_classmethod
-    def CreateFromKnownIcon(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics, displayText: hstr, value: win32more.Windows.UI.Input.RadialControllerMenuKnownIcon) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
+    def CreateFromKnownIcon(cls: win32more.Windows.UI.Input.IRadialControllerMenuItemStatics, displayText: WinRT_String, value: win32more.Windows.UI.Input.RadialControllerMenuKnownIcon) -> win32more.Windows.UI.Input.RadialControllerMenuItem: ...
     DisplayText = property(get_DisplayText, None)
     Tag = property(get_Tag, put_Tag)
-    Invoked = event(add_Invoked, remove_Invoked)
+    Invoked = event()
 class RadialControllerMenuKnownIcon(Enum, Int32):
-    _name_ = 'Windows.UI.Input.RadialControllerMenuKnownIcon'
     Scroll = 0
     Zoom = 1
     UndoRedo = 2
@@ -2147,7 +2128,7 @@ class RadialControllerMenuKnownIcon(Enum, Int32):
     InkThickness = 7
     PenType = 8
 class RadialControllerRotationChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerRotationChangedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerRotationChangedEventArgs'
     @winrt_mixinmethod
@@ -2163,7 +2144,7 @@ class RadialControllerRotationChangedEventArgs(ComPtr):
     RotationDeltaInDegrees = property(get_RotationDeltaInDegrees, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerScreenContact(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerScreenContact
     _classid_ = 'Windows.UI.Input.RadialControllerScreenContact'
     @winrt_mixinmethod
@@ -2173,7 +2154,7 @@ class RadialControllerScreenContact(ComPtr):
     Bounds = property(get_Bounds, None)
     Position = property(get_Position, None)
 class RadialControllerScreenContactContinuedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerScreenContactContinuedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerScreenContactContinuedEventArgs'
     @winrt_mixinmethod
@@ -2186,7 +2167,7 @@ class RadialControllerScreenContactContinuedEventArgs(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerScreenContactEndedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerScreenContactEndedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerScreenContactEndedEventArgs'
     @winrt_mixinmethod
@@ -2196,7 +2177,7 @@ class RadialControllerScreenContactEndedEventArgs(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerScreenContactStartedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRadialControllerScreenContactStartedEventArgs
     _classid_ = 'Windows.UI.Input.RadialControllerScreenContactStartedEventArgs'
     @winrt_mixinmethod
@@ -2209,14 +2190,13 @@ class RadialControllerScreenContactStartedEventArgs(ComPtr):
     IsButtonPressed = property(get_IsButtonPressed, None)
     SimpleHapticsController = property(get_SimpleHapticsController, None)
 class RadialControllerSystemMenuItemKind(Enum, Int32):
-    _name_ = 'Windows.UI.Input.RadialControllerSystemMenuItemKind'
     Scroll = 0
     Zoom = 1
     UndoRedo = 2
     Volume = 3
     NextPreviousTrack = 4
 class RightTappedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.IRightTappedEventArgs
     _classid_ = 'Windows.UI.Input.RightTappedEventArgs'
     @winrt_mixinmethod
@@ -2250,12 +2230,12 @@ class SystemButtonEventController(ComPtr):
     def remove_SystemFunctionLockIndicatorChanged(self: win32more.Windows.UI.Input.ISystemButtonEventController, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def CreateForDispatcherQueue(cls: win32more.Windows.UI.Input.ISystemButtonEventControllerStatics, queue: win32more.Windows.System.DispatcherQueue) -> win32more.Windows.UI.Input.SystemButtonEventController: ...
-    SystemFunctionButtonPressed = event(add_SystemFunctionButtonPressed, remove_SystemFunctionButtonPressed)
-    SystemFunctionButtonReleased = event(add_SystemFunctionButtonReleased, remove_SystemFunctionButtonReleased)
-    SystemFunctionLockChanged = event(add_SystemFunctionLockChanged, remove_SystemFunctionLockChanged)
-    SystemFunctionLockIndicatorChanged = event(add_SystemFunctionLockIndicatorChanged, remove_SystemFunctionLockIndicatorChanged)
+    SystemFunctionButtonPressed = event()
+    SystemFunctionButtonReleased = event()
+    SystemFunctionLockChanged = event()
+    SystemFunctionLockIndicatorChanged = event()
 class SystemFunctionButtonEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ISystemFunctionButtonEventArgs
     _classid_ = 'Windows.UI.Input.SystemFunctionButtonEventArgs'
     @winrt_mixinmethod
@@ -2267,7 +2247,7 @@ class SystemFunctionButtonEventArgs(ComPtr):
     Handled = property(get_Handled, put_Handled)
     Timestamp = property(get_Timestamp, None)
 class SystemFunctionLockChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ISystemFunctionLockChangedEventArgs
     _classid_ = 'Windows.UI.Input.SystemFunctionLockChangedEventArgs'
     @winrt_mixinmethod
@@ -2282,7 +2262,7 @@ class SystemFunctionLockChangedEventArgs(ComPtr):
     IsLocked = property(get_IsLocked, None)
     Timestamp = property(get_Timestamp, None)
 class SystemFunctionLockIndicatorChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ISystemFunctionLockIndicatorChangedEventArgs
     _classid_ = 'Windows.UI.Input.SystemFunctionLockIndicatorChangedEventArgs'
     @winrt_mixinmethod
@@ -2297,7 +2277,7 @@ class SystemFunctionLockIndicatorChangedEventArgs(ComPtr):
     IsIndicatorOn = property(get_IsIndicatorOn, None)
     Timestamp = property(get_Timestamp, None)
 class TappedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ITappedEventArgs
     _classid_ = 'Windows.UI.Input.TappedEventArgs'
     @winrt_mixinmethod
@@ -2313,13 +2293,13 @@ class TappedEventArgs(ComPtr):
     Position = property(get_Position, None)
     TapCount = property(get_TapCount, None)
 class TouchpadGesturesController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ITouchpadGesturesController
     _classid_ = 'Windows.UI.Input.TouchpadGesturesController'
     @winrt_mixinmethod
-    def get_Enabled(self: win32more.Windows.UI.Input.ITouchpadGesturesController) -> Boolean: ...
+    def get_GesturesEnabled(self: win32more.Windows.UI.Input.ITouchpadGesturesController) -> Boolean: ...
     @winrt_mixinmethod
-    def put_Enabled(self: win32more.Windows.UI.Input.ITouchpadGesturesController, value: Boolean) -> Void: ...
+    def put_GesturesEnabled(self: win32more.Windows.UI.Input.ITouchpadGesturesController, value: Boolean) -> Void: ...
     @winrt_mixinmethod
     def get_SupportedGestures(self: win32more.Windows.UI.Input.ITouchpadGesturesController) -> win32more.Windows.UI.Input.TouchpadGlobalGestureKinds: ...
     @winrt_mixinmethod
@@ -2337,21 +2317,20 @@ class TouchpadGesturesController(ComPtr):
     @winrt_mixinmethod
     def remove_PointerReleased(self: win32more.Windows.UI.Input.ITouchpadGesturesController, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_GlobalActionPerformed(self: win32more.Windows.UI.Input.ITouchpadGesturesController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.TouchpadGesturesController, win32more.Windows.UI.Input.TouchpadGlobalActionEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_TouchpadGlobalActionPerformed(self: win32more.Windows.UI.Input.ITouchpadGesturesController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.UI.Input.TouchpadGesturesController, win32more.Windows.UI.Input.TouchpadGlobalActionEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
-    def remove_GlobalActionPerformed(self: win32more.Windows.UI.Input.ITouchpadGesturesController, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
+    def remove_TouchpadGlobalActionPerformed(self: win32more.Windows.UI.Input.ITouchpadGesturesController, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def IsSupported(cls: win32more.Windows.UI.Input.ITouchpadGesturesControllerStatics) -> Boolean: ...
     @winrt_classmethod
     def CreateForProcess(cls: win32more.Windows.UI.Input.ITouchpadGesturesControllerStatics) -> win32more.Windows.UI.Input.TouchpadGesturesController: ...
-    Enabled = property(get_Enabled, put_Enabled)
+    GesturesEnabled = property(get_GesturesEnabled, put_GesturesEnabled)
     SupportedGestures = property(get_SupportedGestures, put_SupportedGestures)
-    GlobalActionPerformed = event(add_GlobalActionPerformed, remove_GlobalActionPerformed)
-    PointerMoved = event(add_PointerMoved, remove_PointerMoved)
-    PointerPressed = event(add_PointerPressed, remove_PointerPressed)
-    PointerReleased = event(add_PointerReleased, remove_PointerReleased)
+    PointerPressed = event()
+    PointerMoved = event()
+    PointerReleased = event()
+    TouchpadGlobalActionPerformed = event()
 class TouchpadGlobalAction(Enum, Int32):
-    _name_ = 'Windows.UI.Input.TouchpadGlobalAction'
     ThreeFingerTap = 0
     FourFingerTap = 1
     FiveFingerTap = 2
@@ -2362,17 +2341,13 @@ class TouchpadGlobalAction(Enum, Int32):
     FourFingerPressUp = 7
     FiveFingerPressUp = 8
 class TouchpadGlobalActionEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.UI.Input.ITouchpadGlobalActionEventArgs
     _classid_ = 'Windows.UI.Input.TouchpadGlobalActionEventArgs'
     @winrt_mixinmethod
     def get_Action(self: win32more.Windows.UI.Input.ITouchpadGlobalActionEventArgs) -> win32more.Windows.UI.Input.TouchpadGlobalAction: ...
-    @winrt_mixinmethod
-    def get_PointerDevice(self: win32more.Windows.UI.Input.ITouchpadGlobalActionEventArgs) -> win32more.Windows.Devices.Input.PointerDevice: ...
     Action = property(get_Action, None)
-    PointerDevice = property(get_PointerDevice, None)
 class TouchpadGlobalGestureKinds(Enum, UInt32):
-    _name_ = 'Windows.UI.Input.TouchpadGlobalGestureKinds'
     None_ = 0
     ThreeFingerManipulations = 1
     FourFingerManipulations = 2

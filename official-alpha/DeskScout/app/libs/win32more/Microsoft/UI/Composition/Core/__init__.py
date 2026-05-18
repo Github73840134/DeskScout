@@ -1,10 +1,12 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Microsoft.UI.Composition
 import win32more.Microsoft.UI.Composition.Core
 import win32more.Windows.Foundation
+import win32more.Windows.Win32.System.WinRT
 class CompositorController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.UI.Composition.Core.ICompositorController
     _classid_ = 'Microsoft.UI.Composition.Core.CompositorController'
@@ -20,19 +22,19 @@ class CompositorController(ComPtr):
     @winrt_mixinmethod
     def get_Compositor(self: win32more.Microsoft.UI.Composition.Core.ICompositorController) -> win32more.Microsoft.UI.Composition.Compositor: ...
     @winrt_mixinmethod
+    def Commit(self: win32more.Microsoft.UI.Composition.Core.ICompositorController) -> Void: ...
+    @winrt_mixinmethod
     def EnsurePreviousCommitCompletedAsync(self: win32more.Microsoft.UI.Composition.Core.ICompositorController) -> win32more.Windows.Foundation.IAsyncAction: ...
+    @winrt_mixinmethod
+    def add_CommitNeeded(self: win32more.Microsoft.UI.Composition.Core.ICompositorController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.Core.CompositorController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_CommitNeeded(self: win32more.Microsoft.UI.Composition.Core.ICompositorController, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
-    @winrt_mixinmethod
-    def add_CommitNeeded(self: win32more.Microsoft.UI.Composition.Core.ICompositorController, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.Core.CompositorController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_mixinmethod
-    def Commit(self: win32more.Microsoft.UI.Composition.Core.ICompositorController) -> Void: ...
     Compositor = property(get_Compositor, None)
-    CommitNeeded = event(add_CommitNeeded, remove_CommitNeeded)
+    CommitNeeded = event()
 class ICompositorController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Composition.Core.ICompositorController'
     _iid_ = Guid('{cc107cdc-558f-5d1a-96a5-a735ac04386b}')
     @winrt_commethod(6)
@@ -42,11 +44,11 @@ class ICompositorController(ComPtr):
     @winrt_commethod(8)
     def EnsurePreviousCommitCompletedAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(9)
-    def add_CommitNeeded(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.Core.CompositorController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_CommitNeeded(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.Core.CompositorController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(10)
     def remove_CommitNeeded(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Compositor = property(get_Compositor, None)
-    CommitNeeded = event(add_CommitNeeded, remove_CommitNeeded)
+    CommitNeeded = event()
 
 
 make_ready(__name__)

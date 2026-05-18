@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Data.Xml.MsXml
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
@@ -8,12 +8,6 @@ import win32more.Windows.Win32.System.Diagnostics.Debug.Extensions
 import win32more.Windows.Win32.System.Kernel
 import win32more.Windows.Win32.System.Memory
 import win32more.Windows.Win32.System.Variant
-AddressSpaceRelation = Int32
-Disjoint: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.AddressSpaceRelation = 0
-Equal: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.AddressSpaceRelation = 1
-Overlapping: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.AddressSpaceRelation = 2
-Subset: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.AddressSpaceRelation = 3
-Superset: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.AddressSpaceRelation = 4
 ERROR_DBG_CANCELLED: UInt32 = 3221226695
 ERROR_DBG_TIMEOUT: UInt32 = 3221226932
 DEBUG_GET_TEXT_COMPLETIONS_NO_DOT_COMMANDS: UInt32 = 1
@@ -62,7 +56,6 @@ DEBUG_REQUEST_TL_INSTRUMENTATION_AWARE: UInt32 = 36
 DEBUG_REQUEST_GET_INSTRUMENTATION_VERSION: UInt32 = 37
 DEBUG_REQUEST_GET_MODULE_ARCHITECTURE: UInt32 = 38
 DEBUG_REQUEST_GET_IMAGE_ARCHITECTURE: UInt32 = 39
-DEBUG_REQUEST_SET_PARENT_HWND: UInt32 = 40
 DEBUG_SRCFILE_SYMBOL_TOKEN: UInt32 = 0
 DEBUG_SRCFILE_SYMBOL_TOKEN_SOURCE_COMMAND_WIDE: UInt32 = 1
 DEBUG_SRCFILE_SYMBOL_CHECKSUMINFO: UInt32 = 2
@@ -184,7 +177,6 @@ DEBUG_FORMAT_USER_SMALL_MODULE_HEADERS: UInt32 = 32768
 DEBUG_FORMAT_USER_SMALL_FILTER_TRIAGE: UInt32 = 65536
 DEBUG_FORMAT_USER_SMALL_ADD_AVX_XSTATE_CONTEXT: UInt32 = 131072
 DEBUG_FORMAT_USER_SMALL_IPT_TRACE: UInt32 = 262144
-DEBUG_FORMAT_USER_SMALL_NO_IGNORE_INACCESSIBLE_MEM: UInt32 = 67108864
 DEBUG_FORMAT_USER_SMALL_IGNORE_INACCESSIBLE_MEM: UInt32 = 134217728
 DEBUG_FORMAT_USER_SMALL_SCAN_PARTIAL_PAGES: UInt32 = 268435456
 DEBUG_DUMP_FILE_BASE: UInt32 = 4294967295
@@ -2056,20 +2048,18 @@ class DEBUG_POOL_DATA(Structure):
     Anonymous: _Anonymous_e__Union
     Reserved2: UInt64 * 4
     PoolTagDescription: win32more.Windows.Win32.Foundation.CHAR * 64
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         AsUlong: UInt32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Free: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            LargePool: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            SpecialPool: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Pageable: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Protected: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Allocated: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Session: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            Reserved: Annotated[UInt32, NativeBitfieldAttribute(25)]
+            Free: Annotated[UInt32, 1]
+            LargePool: Annotated[UInt32, 1]
+            SpecialPool: Annotated[UInt32, 1]
+            Pageable: Annotated[UInt32, 1]
+            Protected: Annotated[UInt32, 1]
+            Allocated: Annotated[UInt32, 1]
+            Session: Annotated[UInt32, 1]
+            Reserved: Annotated[UInt32, 25]
 DEBUG_POOL_REGION = Int32
 DbgPoolRegionUnknown: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.DEBUG_POOL_REGION = 0
 DbgPoolRegionSpecial: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.DEBUG_POOL_REGION = 1
@@ -2246,7 +2236,6 @@ class DEBUG_VALUE(Structure):
     Anonymous: _Anonymous_e__Union
     TailOfRawBytes: UInt32
     Type: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         I8: Byte
         I16: UInt16
@@ -2266,7 +2255,6 @@ class DEBUG_VALUE(Structure):
         I64Parts32: _I64Parts32_e__Struct
         F128Parts64: _F128Parts64_e__Struct
         RawBytes: Byte * 24
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             I64: UInt64
             Nat: win32more.Windows.Win32.Foundation.BOOL
@@ -2320,14 +2308,14 @@ class EXT_CAB_XML_DATA(Structure):
     SizeOfStruct: UInt32
     XmlObjectTag: win32more.Windows.Win32.Foundation.PWSTR
     NumSubTags: UInt32
-    SubTags: FlexibleArray[_SUBTAGS]
+    SubTags: _SUBTAGS * 1
     class _SUBTAGS(Structure):
         SubTag: win32more.Windows.Win32.Foundation.PWSTR
         MatchPattern: win32more.Windows.Win32.Foundation.PWSTR
         ReturnText: win32more.Windows.Win32.Foundation.PWSTR
         ReturnTextSize: UInt32
-        MatchType: Annotated[UInt32, NativeBitfieldAttribute(3)]
-        Reserved: Annotated[UInt32, NativeBitfieldAttribute(29)]
+        MatchType: Annotated[UInt32, 3]
+        Reserved: Annotated[UInt32, 29]
         Reserved2: UInt32
 @winfunctype_pointer
 def EXT_DECODE_ERROR(pDecodeError: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.DEBUG_DECODE_ERROR)) -> Void: ...
@@ -2408,24 +2396,6 @@ def EXT_XML_DATA(Client: win32more.Windows.Win32.System.Diagnostics.Debug.Extens
 ErrorClass = Int32
 ErrorClassWarning: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ErrorClass = 0
 ErrorClassError: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ErrorClass = 1
-class ExtendedArrayDimension(Structure):
-    DimensionFlags: UInt64
-    LowerBound: Int64
-    Length: UInt64
-    Stride: UInt64
-ExtendedArrayDimensionFlags = Int32
-ExtendedArrayLengthIsOffset32: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 1
-ExtendedArrayLengthIsOffset64: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 2
-ExtendedArrayLengthIsOffset: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 3
-ExtendedArrayLowerBoundIsOffset32: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 4
-ExtendedArrayLowerBoundIsOffset64: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 8
-ExtendedArrayLowerBoundIsOffset: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 12
-ExtendedArrayStrideIsOffset32: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 16
-ExtendedArrayStrideIsOffset64: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 32
-ExtendedArrayStrideIsOffset: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 48
-ExtendedArrayStrideIsComputedByNextRank: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 64
-ExtendedArrayStrideIsComputedByPreviousRank: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 128
-ExtendedArrayStrideIsComputed: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimensionFlags = 192
 class FA_ENTRY(Structure):
     Tag: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.DEBUG_FLR_PARAM_TYPE
     FullSize: UInt16
@@ -2458,13 +2428,12 @@ class FIELD_INFO(Structure):
     FieldOffset: UInt32
     BufferSize: UInt32
     BitField: _BitField
-    fPointer: Annotated[UInt32, NativeBitfieldAttribute(2)]
-    fArray: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fStruct: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fConstant: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fStatic: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Reserved: Annotated[UInt32, NativeBitfieldAttribute(26)]
-    _anonymous_ = ('Anonymous',)
+    fPointer: Annotated[UInt32, 2]
+    fArray: Annotated[UInt32, 1]
+    fStruct: Annotated[UInt32, 1]
+    fConstant: Annotated[UInt32, 1]
+    fStatic: Annotated[UInt32, 1]
+    Reserved: Annotated[UInt32, 26]
     class _Anonymous_e__Union(Union):
         fieldCallBack: VoidPtr
         pBuffer: VoidPtr
@@ -2500,23 +2469,6 @@ class GET_SET_SYMPATH(Structure):
     Length: Int32
 class GET_TEB_ADDRESS(Structure):
     Address: UInt64
-class IActionEnumerator(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{3dec5c44-f63a-4ca6-90f0-fd5c269fda59}')
-    @commethod(3)
-    def Reset(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetNext(self, keyName: POINTER(win32more.Windows.Win32.Foundation.BSTR), actionName: POINTER(win32more.Windows.Win32.Foundation.BSTR), actionDescription: POINTER(win32more.Windows.Win32.Foundation.BSTR), actionIsDefault: POINTER(Boolean), actionMethod: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject), metadta: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IActionQueryConcept(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{7fc09c9f-632d-48e8-a97b-2f4f2e5c1161}')
-    @commethod(3)
-    def EnumerateActions(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, actionEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IActionEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IActionableConcept(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{2cd9906f-f1b3-4463-828a-0addafe8baae}')
-    @commethod(3)
-    def EnumerateActions(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, actionEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IActionEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class ICodeAddressConcept(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{c7371568-5c78-4a00-a4ab-6ef8823184cb}')
@@ -2527,11 +2479,6 @@ class IComparableConcept(ComPtr):
     _iid_ = Guid('{a7830646-9f0c-4a31-ba19-503f33e6c8a3}')
     @commethod(3)
     def CompareObjects(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, otherObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, comparisonResult: POINTER(Int32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IConstructableConcept(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{1a9409f1-f0e0-4b48-9a4e-5783548fb57a}')
-    @commethod(3)
-    def CreateInstance(self, argCount: UInt64, ppArguments: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject), ppInstance: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDataModelConcept(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{fcb98d1d-1114-4fbf-b24c-effcb5def0d3}')
@@ -2589,18 +2536,6 @@ class IDataModelManager2(ComPtr):
     def AcquireSubNamespace(self, modelName: win32more.Windows.Win32.Foundation.PWSTR, subNamespaceModelName: win32more.Windows.Win32.Foundation.PWSTR, accessName: win32more.Windows.Win32.Foundation.PWSTR, metadata: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore, namespaceModelObject: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(24)
     def CreateTypedIntrinsicObjectEx(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, intrinsicData: POINTER(win32more.Windows.Win32.System.Variant.VARIANT), type: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType, object: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDataModelManager3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDataModelManager2
-    _iid_ = Guid('{8642daf8-6ef5-4753-b53f-d83a5cee8100}')
-    @commethod(25)
-    def AcquireFilteredSubNamespace(self, modelName: win32more.Windows.Win32.Foundation.PWSTR, subNamespaceModelName: win32more.Windows.Win32.Foundation.PWSTR, accessName: win32more.Windows.Win32.Foundation.PWSTR, metadata: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore, filter: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelMethod, namespaceModelObject: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject), token: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IFilteredNamespacePropertyToken)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(26)
-    def EnumerateNamedModels(self, ppEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.INamedModelsEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDataModelManager4(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDataModelManager3
-    _iid_ = Guid('{8898ad97-3a2e-421c-953f-035e15426b7c}')
-    @commethod(27)
-    def CreateSyntheticObjectFromKeyStore(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, parentStore: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore, object: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDataModelNameBinder(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{af352b7b-8292-4c01-b360-2dc3696c65e7}')
@@ -2629,13 +2564,6 @@ class IDataModelScript(ComPtr):
     def IsInvocable(self, isInvocable: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(9)
     def InvokeMain(self, client: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDataModelScriptClient) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDataModelScript2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDataModelScript
-    _iid_ = Guid('{7d90cf81-bee2-4b91-9d49-8fec0f7d56d1}')
-    @commethod(10)
-    def GetScriptFullFilePathName(self, scriptFullPathName: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(11)
-    def SetScriptFullFilePathName(self, scriptFullPathName: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDataModelScriptClient(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{3b362b0e-89f0-46c6-a663-dfdc95194aef}')
@@ -4218,203 +4146,6 @@ class IDebugClient8(ComPtr):
     def SetClientContext(self, Context: VoidPtr, ContextSize: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(97)
     def OpenDumpFileWide2(self, FileName: win32more.Windows.Win32.Foundation.PWSTR, FileHandle: UInt64, AlternateArch: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugClient9(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{2c24cd5b-4d9e-4df4-8a70-3d37440d119f}')
-    @commethod(3)
-    def AttachKernel(self, Flags: UInt32, ConnectOptions: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetKernelConnectionOptions(self, Buffer: win32more.Windows.Win32.Foundation.PSTR, BufferSize: UInt32, OptionsSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def SetKernelConnectionOptions(self, Options: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(6)
-    def StartProcessServer(self, Flags: UInt32, Options: win32more.Windows.Win32.Foundation.PSTR, Reserved: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(7)
-    def ConnectProcessServer(self, RemoteOptions: win32more.Windows.Win32.Foundation.PSTR, Server: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(8)
-    def DisconnectProcessServer(self, Server: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(9)
-    def GetRunningProcessSystemIds(self, Server: UInt64, Ids: POINTER(UInt32), Count: UInt32, ActualCount: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(10)
-    def GetRunningProcessSystemIdByExecutableName(self, Server: UInt64, ExeName: win32more.Windows.Win32.Foundation.PSTR, Flags: UInt32, Id: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(11)
-    def GetRunningProcessDescription(self, Server: UInt64, SystemId: UInt32, Flags: UInt32, ExeName: win32more.Windows.Win32.Foundation.PSTR, ExeNameSize: UInt32, ActualExeNameSize: POINTER(UInt32), Description: win32more.Windows.Win32.Foundation.PSTR, DescriptionSize: UInt32, ActualDescriptionSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(12)
-    def AttachProcess(self, Server: UInt64, ProcessId: UInt32, AttachFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(13)
-    def CreateProcessA(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PSTR, CreateFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(14)
-    def CreateProcessAndAttach(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PSTR, CreateFlags: UInt32, ProcessId: UInt32, AttachFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(15)
-    def GetProcessOptions(self, Options: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(16)
-    def AddProcessOptions(self, Options: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(17)
-    def RemoveProcessOptions(self, Options: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(18)
-    def SetProcessOptions(self, Options: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(19)
-    def OpenDumpFile(self, DumpFile: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(20)
-    def WriteDumpFile(self, DumpFile: win32more.Windows.Win32.Foundation.PSTR, Qualifier: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(21)
-    def ConnectSession(self, Flags: UInt32, HistoryLimit: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(22)
-    def StartServer(self, Options: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(23)
-    def OutputServers(self, OutputControl: UInt32, Machine: win32more.Windows.Win32.Foundation.PSTR, Flags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(24)
-    def TerminateProcesses(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(25)
-    def DetachProcesses(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(26)
-    def EndSession(self, Flags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(27)
-    def GetExitCode(self, Code: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(28)
-    def DispatchCallbacks(self, Timeout: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(29)
-    def ExitDispatch(self, Client: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugClient) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(30)
-    def CreateClient(self, Client: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugClient)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(31)
-    def GetInputCallbacks(self, Callbacks: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugInputCallbacks)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(32)
-    def SetInputCallbacks(self, Callbacks: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugInputCallbacks) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(33)
-    def GetOutputCallbacks(self, Callbacks: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugOutputCallbacks)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(34)
-    def SetOutputCallbacks(self, Callbacks: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugOutputCallbacks) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(35)
-    def GetOutputMask(self, Mask: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(36)
-    def SetOutputMask(self, Mask: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(37)
-    def GetOtherOutputMask(self, Client: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugClient, Mask: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(38)
-    def SetOtherOutputMask(self, Client: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugClient, Mask: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(39)
-    def GetOutputWidth(self, Columns: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(40)
-    def SetOutputWidth(self, Columns: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(41)
-    def GetOutputLinePrefix(self, Buffer: win32more.Windows.Win32.Foundation.PSTR, BufferSize: UInt32, PrefixSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(42)
-    def SetOutputLinePrefix(self, Prefix: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(43)
-    def GetIdentity(self, Buffer: win32more.Windows.Win32.Foundation.PSTR, BufferSize: UInt32, IdentitySize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(44)
-    def OutputIdentity(self, OutputControl: UInt32, Flags: UInt32, Format: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(45)
-    def GetEventCallbacks(self, Callbacks: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugEventCallbacks)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(46)
-    def SetEventCallbacks(self, Callbacks: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugEventCallbacks) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(47)
-    def FlushCallbacks(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(48)
-    def WriteDumpFile2(self, DumpFile: win32more.Windows.Win32.Foundation.PSTR, Qualifier: UInt32, FormatFlags: UInt32, Comment: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(49)
-    def AddDumpInformationFile(self, InfoFile: win32more.Windows.Win32.Foundation.PSTR, Type: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(50)
-    def EndProcessServer(self, Server: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(51)
-    def WaitForProcessServerEnd(self, Timeout: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(52)
-    def IsKernelDebuggerEnabled(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(53)
-    def TerminateCurrentProcess(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(54)
-    def DetachCurrentProcess(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(55)
-    def AbandonCurrentProcess(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(56)
-    def GetRunningProcessSystemIdByExecutableNameWide(self, Server: UInt64, ExeName: win32more.Windows.Win32.Foundation.PWSTR, Flags: UInt32, Id: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(57)
-    def GetRunningProcessDescriptionWide(self, Server: UInt64, SystemId: UInt32, Flags: UInt32, ExeName: win32more.Windows.Win32.Foundation.PWSTR, ExeNameSize: UInt32, ActualExeNameSize: POINTER(UInt32), Description: win32more.Windows.Win32.Foundation.PWSTR, DescriptionSize: UInt32, ActualDescriptionSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(58)
-    def CreateProcessWide(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PWSTR, CreateFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(59)
-    def CreateProcessAndAttachWide(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PWSTR, CreateFlags: UInt32, ProcessId: UInt32, AttachFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(60)
-    def OpenDumpFileWide(self, FileName: win32more.Windows.Win32.Foundation.PWSTR, FileHandle: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(61)
-    def WriteDumpFileWide(self, FileName: win32more.Windows.Win32.Foundation.PWSTR, FileHandle: UInt64, Qualifier: UInt32, FormatFlags: UInt32, Comment: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(62)
-    def AddDumpInformationFileWide(self, FileName: win32more.Windows.Win32.Foundation.PWSTR, FileHandle: UInt64, Type: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(63)
-    def GetNumberDumpFiles(self, Number: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(64)
-    def GetDumpFile(self, Index: UInt32, Buffer: win32more.Windows.Win32.Foundation.PSTR, BufferSize: UInt32, NameSize: POINTER(UInt32), Handle: POINTER(UInt64), Type: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(65)
-    def GetDumpFileWide(self, Index: UInt32, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, NameSize: POINTER(UInt32), Handle: POINTER(UInt64), Type: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(66)
-    def AttachKernelWide(self, Flags: UInt32, ConnectOptions: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(67)
-    def GetKernelConnectionOptionsWide(self, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, OptionsSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(68)
-    def SetKernelConnectionOptionsWide(self, Options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(69)
-    def StartProcessServerWide(self, Flags: UInt32, Options: win32more.Windows.Win32.Foundation.PWSTR, Reserved: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(70)
-    def ConnectProcessServerWide(self, RemoteOptions: win32more.Windows.Win32.Foundation.PWSTR, Server: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(71)
-    def StartServerWide(self, Options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(72)
-    def OutputServersWide(self, OutputControl: UInt32, Machine: win32more.Windows.Win32.Foundation.PWSTR, Flags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(73)
-    def GetOutputCallbacksWide(self, Callbacks: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugOutputCallbacksWide)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(74)
-    def SetOutputCallbacksWide(self, Callbacks: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugOutputCallbacksWide) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(75)
-    def GetOutputLinePrefixWide(self, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, PrefixSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(76)
-    def SetOutputLinePrefixWide(self, Prefix: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(77)
-    def GetIdentityWide(self, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, IdentitySize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(78)
-    def OutputIdentityWide(self, OutputControl: UInt32, Flags: UInt32, Format: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(79)
-    def GetEventCallbacksWide(self, Callbacks: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugEventCallbacksWide)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(80)
-    def SetEventCallbacksWide(self, Callbacks: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugEventCallbacksWide) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(81)
-    def CreateProcess2(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PSTR, OptionsBuffer: VoidPtr, OptionsBufferSize: UInt32, InitialDirectory: win32more.Windows.Win32.Foundation.PSTR, Environment: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(82)
-    def CreateProcess2Wide(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PWSTR, OptionsBuffer: VoidPtr, OptionsBufferSize: UInt32, InitialDirectory: win32more.Windows.Win32.Foundation.PWSTR, Environment: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(83)
-    def CreateProcessAndAttach2(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PSTR, OptionsBuffer: VoidPtr, OptionsBufferSize: UInt32, InitialDirectory: win32more.Windows.Win32.Foundation.PSTR, Environment: win32more.Windows.Win32.Foundation.PSTR, ProcessId: UInt32, AttachFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(84)
-    def CreateProcessAndAttach2Wide(self, Server: UInt64, CommandLine: win32more.Windows.Win32.Foundation.PWSTR, OptionsBuffer: VoidPtr, OptionsBufferSize: UInt32, InitialDirectory: win32more.Windows.Win32.Foundation.PWSTR, Environment: win32more.Windows.Win32.Foundation.PWSTR, ProcessId: UInt32, AttachFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(85)
-    def PushOutputLinePrefix(self, NewPrefix: win32more.Windows.Win32.Foundation.PSTR, Handle: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(86)
-    def PushOutputLinePrefixWide(self, NewPrefix: win32more.Windows.Win32.Foundation.PWSTR, Handle: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(87)
-    def PopOutputLinePrefix(self, Handle: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(88)
-    def GetNumberInputCallbacks(self, Count: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(89)
-    def GetNumberOutputCallbacks(self, Count: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(90)
-    def GetNumberEventCallbacks(self, EventFlags: UInt32, Count: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(91)
-    def GetQuitLockString(self, Buffer: win32more.Windows.Win32.Foundation.PSTR, BufferSize: UInt32, StringSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(92)
-    def SetQuitLockString(self, String: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(93)
-    def GetQuitLockStringWide(self, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, StringSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(94)
-    def SetQuitLockStringWide(self, String: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(95)
-    def SetEventContextCallbacks(self, Callbacks: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugEventContextCallbacks) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(96)
-    def SetClientContext(self, Context: VoidPtr, ContextSize: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(97)
-    def OpenDumpFileWide2(self, FileName: win32more.Windows.Win32.Foundation.PWSTR, FileHandle: UInt64, AlternateArch: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(98)
-    def OpenDumpDirectoryWide(self, DirName: win32more.Windows.Win32.Foundation.PWSTR, AlternateArch: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(99)
-    def OpenDumpDirectory(self, DumpDir: win32more.Windows.Win32.Foundation.PSTR, AlternativeArch: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugControl(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{5182e668-105e-416e-ad92-24ef800424ba}')
@@ -6938,13 +6669,6 @@ class IDebugHostBaseClass(ComPtr):
     _iid_ = Guid('{b94d57d2-390b-40f7-b5b4-b6db897d974b}')
     @commethod(10)
     def GetOffset(self, offset: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostBaseClass2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostBaseClass
-    _iid_ = Guid('{435460e2-fd3b-4275-b36c-88ef50188588}')
-    @commethod(11)
-    def IsVirtual(self, pIsVirtual: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(12)
-    def GetVirtualBaseOffsetLocation(self, pTableOffset: POINTER(Int64), pSlotOffset: POINTER(Int64), pSlotSize: POINTER(UInt64), pSlotIsSigned: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostConstant(ComPtr):
     extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol
     _iid_ = Guid('{62787edc-fa76-4690-bd71-5e8c3e2937ec}')
@@ -6955,52 +6679,6 @@ class IDebugHostContext(ComPtr):
     _iid_ = Guid('{a68c70d8-5ec0-46e5-b775-3134a48ea2e3}')
     @commethod(3)
     def IsEqualTo(self, pContext: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, pIsEqual: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostContext2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext
-    _iid_ = Guid('{e92274a2-47f4-4538-a196-b83db25fe403}')
-    @commethod(4)
-    def GetAddressSpaceRelation(self, pContext: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext2, pAddressSpaceRelation: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.AddressSpaceRelation)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostContextAlternator(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{6301eee8-85e3-4058-a7c0-d37e0ea65f75}')
-    @commethod(3)
-    def SwitchTo(self, fullSwitch: Byte) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def SwitchBack(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostContextControl(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{eeb8fb43-b44e-4b0f-b871-65f0886fcaf2}')
-    @commethod(3)
-    def SwitchTo(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetContextAlternator(self, contextAlternator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContextAlternator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostContextExtensibility(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{35ae8e40-f234-4ef1-b8ea-0dfbc58a2043}')
-    @commethod(3)
-    def HasExtensionData(self, blobId: UInt32) -> Boolean: ...
-    @commethod(4)
-    def ReadExtensionData(self, blobId: UInt32, bufferSize: UInt32, buffer: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def CloneContextForModification(self, extensionHandle: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContextExtension)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(6)
-    def CloneContextWithModification(self, blobId: UInt32, dataSize: UInt32, data: VoidPtr, clonedContext: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostContextExtension(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{5e67115d-5449-4553-a9e9-ca446578cab2}')
-    @commethod(3)
-    def AddExtensionData(self, blobId: UInt32, dataSize: UInt32, data: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def FinalizeContext(self, immutableContext: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostContextTargetComposition(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{3d06878f-97ab-4c5b-955e-fa647d3b137c}')
-    @commethod(3)
-    def GetServiceManager(self, ppServiceManager: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugServiceManager))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetServiceProcess(self, ppProcess: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ISvcProcess))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def GetServiceThread(self, ppThread: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ISvcThread))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostData(ComPtr):
     extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol
     _iid_ = Guid('{a3d64993-826c-44fa-897d-926f2fe7ad0b}')
@@ -7027,11 +6705,6 @@ class IDebugHostEvaluator2(ComPtr):
     _iid_ = Guid('{a117a435-1fb4-4092-a2ab-a929576c1e87}')
     @commethod(5)
     def AssignTo(self, assignmentReference: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, assignmentValue: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, assignmentResult: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject), assignmentMetadata: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostEvaluator3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostEvaluator2
-    _iid_ = Guid('{d2419f4a-7e8d-4c15-a499-73902b015abb}')
-    @commethod(6)
-    def Compare(self, pLeft: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, pRight: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, ppResult: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostExtensibility(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{3c2b24e1-11d0-4f86-8ae5-4df166f73253}')
@@ -7039,20 +6712,6 @@ class IDebugHostExtensibility(ComPtr):
     def CreateFunctionAlias(self, aliasName: win32more.Windows.Win32.Foundation.PWSTR, functionObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def DestroyFunctionAlias(self, aliasName: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostExtensibility2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostExtensibility
-    _iid_ = Guid('{91cc55e7-2a22-4494-9710-b729dab48f71}')
-    @commethod(5)
-    def CreateFunctionAliasWithMetadata(self, aliasName: win32more.Windows.Win32.Foundation.PWSTR, functionObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, metadata: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostExtensibility3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostExtensibility2
-    _iid_ = Guid('{4be234de-d397-4378-bbb4-9055a425d7d1}')
-    @commethod(6)
-    def ExtendHostContext(self, blobSize: UInt32, identifier: POINTER(Guid), blobId: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(7)
-    def QueryHostContextExtension(self, identifier: POINTER(Guid), blobId: POINTER(UInt32), blobSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(8)
-    def ReleaseHostContextExtension(self, blobId: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostField(ComPtr):
     extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol
     _iid_ = Guid('{e06f6495-16bc-4cc9-b11d-2a6b23fa72f3}')
@@ -7064,82 +6723,6 @@ class IDebugHostField(ComPtr):
     def GetLocation(self, location: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(13)
     def GetValue(self, value: POINTER(win32more.Windows.Win32.System.Variant.VARIANT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostField2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostField
-    _iid_ = Guid('{99468a0b-ea92-4bd4-9efe-a266160578ca}')
-    @commethod(14)
-    def GetContainingType(self, containingParentType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType3)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionIntrospection(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{a754393c-4fbe-4178-8ad5-fe6079ac048d}')
-    @commethod(3)
-    def EnumerateLocalsDetails(self, localsEnum: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionLocalDetailsEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def EnumerateInlineFunctionsByRVA(self, rva: UInt64, inlinesEnum: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbolEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def FindContainingCodeRangeByRVA(self, rva: UInt64, rangeStart: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location), rangeEnd: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(6)
-    def FindSourceLocationByRVA(self, rva: UInt64, sourceFile: POINTER(win32more.Windows.Win32.Foundation.BSTR), sourceLine: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionIntrospection2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionIntrospection
-    _iid_ = Guid('{8e1cb118-aa83-409a-aae9-c7ff78911a5f}')
-    @commethod(7)
-    def EnumerateLocalsDetailsEx(self, enumerateInlinedLocals: Byte, localsEnum: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionLocalDetailsEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionIntrospection3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionIntrospection2
-    _iid_ = Guid('{a24e286b-891a-40fc-8a3a-89b66eddce57}')
-    @commethod(8)
-    def IsNoReturnFunction(self, pIsNoReturnFunction: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionLocalDetails(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{89280ea8-b3b9-408c-be16-32ab28f5c0ac}')
-    @commethod(3)
-    def GetName(self, name: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetType(self, localType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def EnumerateStorage(self, storageEnum: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionLocalStorageEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(6)
-    def GetLocalKind(self, kind: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LocalKind)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(7)
-    def GetArgumentPosition(self, argPosition: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionLocalDetails2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionLocalDetails
-    _iid_ = Guid('{199a57b0-1967-4363-b25e-90c7e8a07f22}')
-    @commethod(8)
-    def IsInlineScope(self) -> Boolean: ...
-    @commethod(9)
-    def GetInlinedFunction(self, inlineFunction: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionLocalDetailsEnumerator(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{a61adc36-1ed5-40fe-a976-6a21cd81e811}')
-    @commethod(3)
-    def Reset(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetNext(self, localDetails: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionLocalDetails)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionLocalStorage(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{2f2f303b-39be-4b6d-9bfb-4faa49dbbd45}')
-    @commethod(3)
-    def GetValidRange(self, start: POINTER(UInt64), end: POINTER(UInt64), guaranteed: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetStorageKind(self, kind: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.StorageKind)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def GetRegister(self, registerId: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(6)
-    def GetOffset(self, offset: POINTER(Int64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionLocalStorage2(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{213b3725-36a2-45a0-9ea4-854d46d85195}')
-    @commethod(3)
-    def GetExtendedRegisterAddressInfo(self, registerId: POINTER(UInt32), offset: POINTER(Int64), isIndirectAccess: POINTER(Boolean), indirectOffset: POINTER(Int32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostFunctionLocalStorageEnumerator(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{026c9e81-8b9f-4d32-9606-a394ec62b045}')
-    @commethod(3)
-    def Reset(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetNext(self, storage: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostFunctionLocalStorage)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostMemory(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{212149c9-9183-4a3e-b00e-4fd1dc95339b}')
@@ -7158,25 +6741,6 @@ class IDebugHostMemory2(ComPtr):
     _iid_ = Guid('{eea033de-38f6-416b-a251-1d3771001270}')
     @commethod(8)
     def LinearizeLocation(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, location: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location, pLinearizedLocation: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostMemory3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostMemory2
-    _iid_ = Guid('{a515ed09-2bf3-4499-bb03-553790079f84}')
-    @commethod(9)
-    def CanonicalizeLocation(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, location: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location, pCanonicalizedLocation: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostMemory4(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostMemory3
-    _iid_ = Guid('{fe6b3658-da4b-44e3-8a58-6201322280e6}')
-    @commethod(10)
-    def GetPhysicalAddressLocation(self, physAddr: UInt64, pPhysicalAddressLocation: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(11)
-    def IsPhysicalAddressLocation(self, pLocation: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> Boolean: ...
-class IDebugHostMemory5(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostMemory4
-    _iid_ = Guid('{df033400-4912-46e9-ba62-6ef2eb4d87d4}')
-    @commethod(12)
-    def ReadIntrinsics(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, location: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location, vt: UInt16, count: UInt64, vals: POINTER(win32more.Windows.Win32.System.Variant.VARIANT), intrinsicsRead: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(13)
-    def ReadOrdinalIntrinsics(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, location: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location, ordinalSize: UInt64, ordinalIsSigned: Byte, count: UInt64, vals: POINTER(win32more.Windows.Win32.System.Variant.VARIANT), intrinsicsRead: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostModule(ComPtr):
     extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol
     _iid_ = Guid('{c9ba3e18-d070-4378-bbd0-34613b346e1e}')
@@ -7197,21 +6761,6 @@ class IDebugHostModule2(ComPtr):
     _iid_ = Guid('{b51887e8-bcd0-4e8f-a8c7-434398b78c37}')
     @commethod(16)
     def FindContainingSymbolByRVA(self, rva: UInt64, symbol: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol), offset: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostModule3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostModule2
-    _iid_ = Guid('{68576417-9fab-4c69-8977-3a4d87cf08fd}')
-    @commethod(17)
-    def GetRange(self, moduleStart: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location), moduleEnd: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostModule4(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostModule3
-    _iid_ = Guid('{41415136-38a4-474f-8e98-57e2dc64e565}')
-    @commethod(18)
-    def FindTypeByName2(self, pEnclosingSymbol: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol, typeName: win32more.Windows.Win32.Foundation.PWSTR, type: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostModule5(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostModule4
-    _iid_ = Guid('{ed36a63d-ad2b-467e-a0ca-4ca949357625}')
-    @commethod(19)
-    def GetPrimaryCompilerInformation(self, pCompilerId: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler), pPrimaryCompilerString: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostModuleSignature(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{31e53a5a-01ee-4bbb-b899-4b46ae7d595c}')
@@ -7234,13 +6783,6 @@ class IDebugHostStatus(ComPtr):
     _iid_ = Guid('{4f3e1ce2-86b2-4c7a-9c65-d0a9d0eecf44}')
     @commethod(3)
     def PollUserInterrupt(self, interruptRequested: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostStatus2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostStatus
-    _iid_ = Guid('{4a168d3f-04d0-49c4-8f9a-7b5b3108c6c6}')
-    @commethod(4)
-    def SetUserInterrupt(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def ClearUserInterrupt(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostSymbol(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{0f819103-87de-4e96-8277-e05cd441fb22}')
@@ -7263,11 +6805,6 @@ class IDebugHostSymbol2(ComPtr):
     _iid_ = Guid('{21515b67-6720-4257-8a68-077dc944471c}')
     @commethod(10)
     def GetLanguage(self, pKind: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LanguageKind)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostSymbol3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol2
-    _iid_ = Guid('{1b3fc1b3-d03d-43e0-8eb0-9aa4baa21edb}')
-    @commethod(11)
-    def GetCompilerInformation(self, pCompilerId: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler), pCompilerString: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostSymbolEnumerator(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{28d96c86-10a3-4976-b14e-eaef4790aa1f}')
@@ -7275,11 +6812,6 @@ class IDebugHostSymbolEnumerator(ComPtr):
     def Reset(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def GetNext(self, symbol: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostSymbolSubstitutionEnumerator(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbolEnumerator
-    _iid_ = Guid('{d49eece8-8d12-4ce1-ab73-e5b63df4f9d3}')
-    @commethod(5)
-    def GetNextWithSubstitutionText(self, symbol: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol), symbolText: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostSymbols(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{854fd751-c2e1-4eb2-b525-6619cb97a588}')
@@ -7297,25 +6829,6 @@ class IDebugHostSymbols(ComPtr):
     def FindModuleByLocation(self, context: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, moduleLocation: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location, module: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostModule)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(9)
     def GetMostDerivedObject(self, pContext: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostContext, location: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location, objectType: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType, derivedLocation: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Location), derivedType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostSymbols2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbols
-    _iid_ = Guid('{6baf1f48-65ee-4ff2-b3af-10c7f21d38b2}')
-    @commethod(10)
-    def DemangleSymbolName(self, pSymbol: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol, flags: UInt32, pDemangledSymbolName: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostSymbolsTargetComposition(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{3c4b6add-80e1-4c2b-afe1-9a1132586dd0}')
-    @commethod(3)
-    def GetTypeForServiceType(self, pServiceManager: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugServiceManager), pModule: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ISvcModule), pType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ISvcSymbolType), ppHostType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostTaggedUnionRangeEnumerator(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{f4a035c0-4ca0-4b6d-bfd2-b378a0dbfe4c}')
-    @commethod(3)
-    def Reset(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetNext(self, pLow: POINTER(win32more.Windows.Win32.System.Variant.VARIANT), pHigh: POINTER(win32more.Windows.Win32.System.Variant.VARIANT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def GetCount(self, pCount: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostType(ComPtr):
     extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostSymbol
     _iid_ = Guid('{3aadc353-2b14-4abb-9893-5e03458e07ee}')
@@ -7370,34 +6883,6 @@ class IDebugHostType2(ComPtr):
     def GetFunctionVarArgsKind(self, varArgsKind: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.VarArgsKind)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(33)
     def GetFunctionInstancePointerType(self, instancePointerType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType2)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostType3(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType2
-    _iid_ = Guid('{8b0409ac-c1bb-433d-887a-ed12c3af0e7d}')
-    @commethod(34)
-    def GetContainingType(self, containingParentType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType3)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostType4(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType3
-    _iid_ = Guid('{77d3cdc6-bd55-42bf-a4fd-d9aa60e3c1e1}')
-    @commethod(35)
-    def GetExtendedArrayHeaderSize(self, headerSize: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(36)
-    def GetExtendedArrayDimensions(self, dimensions: UInt64, pDimensions: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.ExtendedArrayDimension)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(37)
-    def GetUDTKind(self, udtKind: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.UDTKind)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostType5(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType4
-    _iid_ = Guid('{db6716ce-8ee8-4c86-89db-a658915c87f4}')
-    @commethod(38)
-    def IsBaseTypeOf(self, pOtherType: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType, pIsBase: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDebugHostType6(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType5
-    _iid_ = Guid('{08b431ed-f684-4480-8c44-b543aa32ceb0}')
-    @commethod(39)
-    def GetTaggedUnionTag(self, pTagType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType), pTagOffset: POINTER(UInt32), pTagMask: POINTER(win32more.Windows.Win32.System.Variant.VARIANT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(40)
-    def GetTaggedUnionTagRanges(self, pTagRangeEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostTaggedUnionRangeEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(41)
-    def UpcastToTaggedUnionType(self, pTaggedUnionType: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType, pUpcastedCaseType: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugHostType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDebugHostTypeSignature(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{3aadc353-2b14-4abb-9893-5e03458e07ee}')
@@ -7555,7 +7040,6 @@ class IDebugRegisters2(ComPtr):
     def GetStackOffset2(self, Source: UInt32, Offset: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(28)
     def GetFrameOffset2(self, Source: UInt32, Offset: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-IDebugServiceManager = IntPtr
 class IDebugSymbolGroup(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f2528316-0f1a-4431-aeed-11d096e1e2ab}')
@@ -8939,15 +8423,6 @@ class IDebugSystemObjects4(ComPtr):
     def GetCurrentProcessExecutableNameWide(self, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, ExeSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(47)
     def GetCurrentSystemServerNameWide(self, Buffer: win32more.Windows.Win32.Foundation.PWSTR, BufferSize: UInt32, NameSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDeconstructableConcept(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{f798139e-1b2c-4077-8d87-9fa5d044f3eb}')
-    @commethod(3)
-    def GetConstructableModelName(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, constructableModelName: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetConstructorArgumentCount(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, argCount: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def GetConstructorArguments(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, argCount: UInt64, constructorArguments: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDynamicConceptProviderConcept(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{95a7f7dd-602e-483f-9d06-a15c0ee13174}')
@@ -8975,15 +8450,6 @@ class IEquatableConcept(ComPtr):
     _iid_ = Guid('{c52d5d3d-609d-4d5d-8a82-46b0acdec4f4}')
     @commethod(3)
     def AreObjectsEqual(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, otherObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, isEqual: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IFilteredNamespacePropertyToken(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{63832802-2db3-4de7-b76c-197ac15b5ec6}')
-    @commethod(3)
-    def RemoveFilter(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetFilter(self, ppFilter: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelMethod)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def TrySetFilter(self, pFilter: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelMethod) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IHostDataModelAccess(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f2bce54e-4835-4f8a-836e-7981e29904d1}')
@@ -9128,15 +8594,6 @@ class IModelObject(ComPtr):
     def Compare(self, other: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, ppResult: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(35)
     def IsEqualTo(self, other: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, equal: POINTER(Boolean)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IModelObject2(ComPtr):
-    extends: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject
-    _iid_ = Guid('{d61e19f4-ab3d-4344-9f7b-0993f3d58745}')
-    @commethod(36)
-    def EnumerateOwnKeyValues(self, ppEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(37)
-    def EnumerateOwnKeys(self, ppEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(38)
-    def EnumerateOwnKeyReferences(self, ppEnumerator: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IModelPropertyAccessor(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{5a0c63d9-0526-42b8-960c-9516a3254c85}')
@@ -9147,18 +8604,10 @@ class IModelPropertyAccessor(ComPtr):
 class INLINE_FRAME_CONTEXT(Union):
     ContextValue: UInt32
     Anonymous: _Anonymous_e__Struct
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         FrameId: Byte
         FrameType: Byte
         FrameSignature: UInt16
-class INamedModelsEnumerator(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{47bbfc0b-0b20-4e0c-882b-465d6ccac97c}')
-    @commethod(3)
-    def Reset(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetNext(self, pModelName: POINTER(win32more.Windows.Win32.Foundation.BSTR), ppModel: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IOSPACE(Structure):
     Address: UInt32
     Length: UInt32
@@ -9192,11 +8641,6 @@ class IOSPACE_EX64(Structure):
     InterfaceType: UInt32
     BusNumber: UInt32
     AddressSpace: UInt32
-class IObjectWrapperConcept(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{a4952c59-7144-4c76-873b-6046c0955ffc}')
-    @commethod(3)
-    def GetWrappedObject(self, pContextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, wrappedObject: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject), pUsagePreference: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.WrappedObjectPreference)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IPreferredRuntimeTypeConcept(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{9d6c1d7b-a76f-4618-8068-5f76bd9a4e8a}')
@@ -9214,11 +8658,6 @@ class IStringDisplayableConcept(ComPtr):
     _iid_ = Guid('{d28e8d70-6c00-4205-940d-501016601ea3}')
     @commethod(3)
     def ToDisplayString(self, contextObject: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IModelObject, metadata: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IKeyStore, displayString: POINTER(win32more.Windows.Win32.Foundation.BSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-ISvcExecutionUnit = IntPtr
-ISvcModule = IntPtr
-ISvcProcess = IntPtr
-ISvcSymbolType = IntPtr
-ISvcThread = IntPtr
 IntrinsicKind = Int32
 IntrinsicVoid: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IntrinsicKind = 0
 IntrinsicBool: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IntrinsicKind = 1
@@ -9240,7 +8679,7 @@ class KDDEBUGGER_DATA32(Structure):
     ThCallbackStack: UInt16
     NextCallback: UInt16
     FramePointer: UInt16
-    PaeEnabled: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    PaeEnabled: Annotated[UInt16, 1]
     KiCallUserMode: UInt32
     KeUserCallbackDispatcher: UInt32
     PsLoadedModuleList: UInt32
@@ -9307,9 +8746,9 @@ class KDDEBUGGER_DATA64(Structure):
     ThCallbackStack: UInt16
     NextCallback: UInt16
     FramePointer: UInt16
-    PaeEnabled: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    KiBugCheckRecoveryActive: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    PagingLevels: Annotated[UInt16, NativeBitfieldAttribute(4)]
+    PaeEnabled: Annotated[UInt16, 1]
+    KiBugCheckRecoveryActive: Annotated[UInt16, 1]
+    PagingLevels: Annotated[UInt16, 4]
     KiCallUserMode: UInt64
     KeUserCallbackDispatcher: UInt64
     PsLoadedModuleList: UInt64
@@ -9486,14 +8925,14 @@ class KDEXTS_PTE_INFO(Structure):
     PteAddress: UInt64
     Pfn: UInt64
     Levels: UInt64
-    PteValid: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    PteTransition: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Prototype: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Protection: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Reserved: Annotated[UInt32, NativeBitfieldAttribute(28)]
-    ReadInProgress: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    WriteInProgress: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Modified: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    PteValid: Annotated[UInt32, 1]
+    PteTransition: Annotated[UInt32, 1]
+    Prototype: Annotated[UInt32, 1]
+    Protection: Annotated[UInt32, 1]
+    Reserved: Annotated[UInt32, 28]
+    ReadInProgress: Annotated[UInt32, 1]
+    WriteInProgress: Annotated[UInt32, 1]
+    Modified: Annotated[UInt32, 1]
 @winfunctype_pointer
 def KDEXT_DUMP_HANDLE_CALLBACK(HandleInfo: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KDEXT_HANDLE_INFORMATION), Flags: UInt32, Context: VoidPtr) -> win32more.Windows.Win32.Foundation.BOOLEAN: ...
 class KDEXT_FILELOCK_OWNER(Structure):
@@ -9521,21 +8960,11 @@ class KDEXT_THREAD_FIND_PARAMS(Structure):
     StackPointer: UInt64
     Cid: UInt32
     Thread: UInt64
-KnownCompiler = Int32
-CompilerUnknown: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler = 0
-CompilerMSVC: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler = 1
-CompilerGCC: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler = 2
-CompilerClang: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler = 3
-CompilerRustC: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KnownCompiler = 4
 LanguageKind = Int32
 LanguageUnknown: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LanguageKind = 0
 LanguageC: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LanguageKind = 1
 LanguageCPP: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LanguageKind = 2
 LanguageAssembly: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LanguageKind = 3
-LanguageRust: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LanguageKind = 4
-LocalKind = Int32
-LocalArgument: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LocalKind = 0
-LocalVariable: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.LocalKind = 1
 class Location(Structure):
     HostDefined: UInt64
     Offset: UInt64
@@ -9574,10 +9003,10 @@ class OS_INFO(Structure):
     BuildVersion: win32more.Windows.Win32.Foundation.CHAR * 64
     ServicePackString: win32more.Windows.Win32.Foundation.CHAR * 64
     class _s_e__Struct(Structure):
-        Checked: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Pae: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        MultiProc: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Reserved: Annotated[UInt32, NativeBitfieldAttribute(29)]
+        Checked: Annotated[UInt32, 1]
+        Pae: Annotated[UInt32, 1]
+        MultiProc: Annotated[UInt32, 1]
+        Reserved: Annotated[UInt32, 29]
 class OS_INFO_v1(Structure):
     Type: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.OS_TYPE
     Anonymous: _Anonymous_e__Union
@@ -9588,7 +9017,6 @@ class OS_INFO_v1(Structure):
     Language: win32more.Windows.Win32.Foundation.CHAR * 30
     OsString: win32more.Windows.Win32.Foundation.CHAR * 64
     ServicePackString: win32more.Windows.Win32.Foundation.CHAR * 64
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version: _Version_e__Struct
         Ver64: UInt64
@@ -9596,10 +9024,10 @@ class OS_INFO_v1(Structure):
             Major: UInt32
             Minor: UInt32
     class _s_e__Struct(Structure):
-        Checked: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Pae: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        MultiProc: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Reserved: Annotated[UInt32, NativeBitfieldAttribute(29)]
+        Checked: Annotated[UInt32, 1]
+        Pae: Annotated[UInt32, 1]
+        MultiProc: Annotated[UInt32, 1]
+        Reserved: Annotated[UInt32, 29]
 OS_TYPE = Int32
 WIN_95: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.OS_TYPE = 0
 WIN_98: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.OS_TYPE = 1
@@ -9680,7 +9108,7 @@ def PGET_SMBIOS_INFO(Client: win32more.Windows.Win32.System.Diagnostics.Debug.Ex
 class PHYSICAL(Structure):
     Address: UInt64
     BufLen: UInt32
-    Buf: FlexibleArray[Byte]
+    Buf: Byte * 1
 class PHYSICAL_TO_VIRTUAL(Structure):
     Status: UInt32
     Size: UInt32
@@ -9689,7 +9117,7 @@ class PHYSICAL_WITH_FLAGS(Structure):
     Address: UInt64
     BufLen: UInt32
     Flags: UInt32
-    Buf: FlexibleArray[Byte]
+    Buf: Byte * 1
 @winfunctype_pointer
 def PKDEXTS_GET_PTE_INFO(Client: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.IDebugClient, Virtual: UInt64, PteInfo: POINTER(win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.KDEXTS_PTE_INFO)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class POINTER_SEARCH_PHYSICAL(Structure):
@@ -9701,21 +9129,6 @@ class POINTER_SEARCH_PHYSICAL(Structure):
     MatchOffsets: POINTER(UInt64)
     MatchOffsetsSize: UInt32
     MatchOffsetsCount: UInt32
-POOL_HEADER_FIELD_NAME = Int32
-DbgkdPreviousSize: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.POOL_HEADER_FIELD_NAME = 0
-DbgkdPoolIndex: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.POOL_HEADER_FIELD_NAME = 1
-DbgkdBlockSize: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.POOL_HEADER_FIELD_NAME = 2
-DbgkdPoolType: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.POOL_HEADER_FIELD_NAME = 3
-DbgkdUlong1: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.POOL_HEADER_FIELD_NAME = 4
-class POOL_HEADER_SIZE_64(Union):
-    Anonymous: _Anonymous_e__Struct
-    Ulong1: UInt32
-    _anonymous_ = ('Anonymous',)
-    class _Anonymous_e__Struct(Structure):
-        UnsafePrevSize: Byte
-        Unused1: Byte
-        UnsafeSize: Byte
-        UnsafePoolType: Byte
 class PROCESSORINFO(Structure):
     Processor: UInt16
     NumberProcessors: UInt16
@@ -9831,17 +9244,17 @@ class READCONTROLSPACE(Structure):
     Processor: UInt16
     Address: UInt32
     BufLen: UInt32
-    Buf: FlexibleArray[Byte]
+    Buf: Byte * 1
 class READCONTROLSPACE32(Structure):
     Processor: UInt16
     Address: UInt32
     BufLen: UInt32
-    Buf: FlexibleArray[Byte]
+    Buf: Byte * 1
 class READCONTROLSPACE64(Structure):
     Processor: UInt16
     Address: UInt64
     BufLen: UInt32
-    Buf: FlexibleArray[Byte]
+    Buf: Byte * 1
 class READ_WRITE_MSR(Structure):
     Msr: UInt32
     Value: Int64
@@ -9885,12 +9298,11 @@ class SYM_DUMP_PARAM(Structure):
     TypeId: UInt32
     TypeSize: UInt32
     BufferSize: UInt32
-    fPointer: Annotated[UInt32, NativeBitfieldAttribute(2)]
-    fArray: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fStruct: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fConstant: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Reserved: Annotated[UInt32, NativeBitfieldAttribute(27)]
-    _anonymous_ = ('Anonymous',)
+    fPointer: Annotated[UInt32, 2]
+    fArray: Annotated[UInt32, 1]
+    fStruct: Annotated[UInt32, 1]
+    fConstant: Annotated[UInt32, 1]
+    Reserved: Annotated[UInt32, 27]
     class _Anonymous_e__Union(Union):
         Context: VoidPtr
         pBuffer: VoidPtr
@@ -9937,11 +9349,6 @@ Ambiguous: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.Signature
 LessSpecific: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.SignatureComparison = 2
 MoreSpecific: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.SignatureComparison = 3
 Identical: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.SignatureComparison = 4
-StorageKind = Int32
-StorageUnknown: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.StorageKind = 0
-StorageRegister: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.StorageKind = 1
-StorageRegisterRelative: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.StorageKind = 2
-StorageRegisterRelativeIndirect: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.StorageKind = 3
 SymbolKind = Int32
 Symbol: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.SymbolKind = 0
 SymbolModule: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.SymbolKind = 1
@@ -10010,12 +9417,6 @@ TypeTypedef: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.TypeKin
 TypeEnum: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.TypeKind = 6
 TypeIntrinsic: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.TypeKind = 7
 TypeExtendedArray: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.TypeKind = 8
-UDTKind = Int32
-UDTStruct: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.UDTKind = 0
-UDTClass: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.UDTKind = 1
-UDTUnion: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.UDTKind = 2
-UDTInterface: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.UDTKind = 3
-UDTTaggedUnion: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.UDTKind = 4
 class VIRTUAL_TO_PHYSICAL(Structure):
     Status: UInt32
     Size: UInt32
@@ -10114,9 +9515,6 @@ class WINDBG_OLD_EXTENSION_APIS(Structure):
     lpGetSymbolRoutine: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.PWINDBG_GET_SYMBOL
     lpDisasmRoutine: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.PWINDBG_DISASM
     lpCheckControlCRoutine: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.PWINDBG_CHECK_CONTROL_C
-WrappedObjectPreference = Int32
-WrappedObjectNameResolution: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.WrappedObjectPreference = 0
-WrappedObjectGeneralProxy: win32more.Windows.Win32.System.Diagnostics.Debug.Extensions.WrappedObjectPreference = 1
 class XML_DRIVER_NODE_INFO(Structure):
     FileName: win32more.Windows.Win32.Foundation.CHAR * 64
     FileSize: UInt64

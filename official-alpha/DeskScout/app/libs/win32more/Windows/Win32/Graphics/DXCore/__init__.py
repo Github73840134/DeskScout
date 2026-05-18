@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.DXCore
 import win32more.Windows.Win32.System.Com
@@ -7,17 +7,8 @@ _FACDXCORE: UInt32 = 2176
 DXCORE_ADAPTER_ATTRIBUTE_D3D11_GRAPHICS: Guid = Guid('{8c47866b-7583-450d-f0f0-6bada895af4b}')
 DXCORE_ADAPTER_ATTRIBUTE_D3D12_GRAPHICS: Guid = Guid('{0c9ece4d-2f6e-4f01-8c96-e89e331b47b1}')
 DXCORE_ADAPTER_ATTRIBUTE_D3D12_CORE_COMPUTE: Guid = Guid('{248e2800-a793-4724-abaa-23a6de1be090}')
-DXCORE_ADAPTER_ATTRIBUTE_D3D12_GENERIC_ML: Guid = Guid('{b71b0d41-1088-422f-a27c-0250b7d3a988}')
-DXCORE_ADAPTER_ATTRIBUTE_D3D12_GENERIC_MEDIA: Guid = Guid('{8eb2c848-82f6-4b49-aa87-aecfcf0174c6}')
-DXCORE_HARDWARE_TYPE_ATTRIBUTE_GPU: Guid = Guid('{b69eb219-3ded-4464-979f-a00bd4687006}')
-DXCORE_HARDWARE_TYPE_ATTRIBUTE_COMPUTE_ACCELERATOR: Guid = Guid('{e0b195da-58ef-4a22-90f1-1f28169cab8d}')
-DXCORE_HARDWARE_TYPE_ATTRIBUTE_NPU: Guid = Guid('{d46140c4-add7-451b-9e56-06fe8c3b58ed}')
-DXCORE_HARDWARE_TYPE_ATTRIBUTE_MEDIA_ACCELERATOR: Guid = Guid('{66bdb96a-050b-44c7-a4fd-d144ce0ab443}')
 @winfunctype('DXCORE.dll')
 def DXCoreCreateAdapterFactory(riid: POINTER(Guid), ppvFactory: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class DXCoreAdapterEngineIndex(Structure):
-    physicalAdapterIndex: UInt32
-    engineIndex: UInt32
 class DXCoreAdapterMemoryBudget(Structure):
     budget: UInt64
     currentUsage: UInt64
@@ -26,63 +17,29 @@ class DXCoreAdapterMemoryBudget(Structure):
 class DXCoreAdapterMemoryBudgetNodeSegmentGroup(Structure):
     nodeIndex: UInt32
     segmentGroup: win32more.Windows.Win32.Graphics.DXCore.DXCoreSegmentGroup
-class DXCoreAdapterPreference(Enum, UInt32):
-    Hardware = 0
-    MinimumPower = 1
-    HighPerformance = 2
-class DXCoreAdapterProcessSetQueryInput(Structure):
-    arraySize: UInt32
-    processIds: POINTER(UInt32)
-class DXCoreAdapterProcessSetQueryOutput(Structure):
-    processesWritten: UInt32
-    processesTotal: UInt32
-class DXCoreAdapterProperty(Enum, UInt32):
-    InstanceLuid = 0
-    DriverVersion = 1
-    DriverDescription = 2
-    HardwareID = 3
-    KmdModelVersion = 4
-    ComputePreemptionGranularity = 5
-    GraphicsPreemptionGranularity = 6
-    DedicatedAdapterMemory = 7
-    DedicatedSystemMemory = 8
-    SharedSystemMemory = 9
-    AcgCompatible = 10
-    IsHardware = 11
-    IsIntegrated = 12
-    IsDetachable = 13
-    HardwareIDParts = 14
-    PhysicalAdapterCount = 15
-    AdapterEngineCount = 16
-    AdapterEngineName = 17
+DXCoreAdapterPreference = UInt32
+Hardware: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterPreference = 0
+MinimumPower: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterPreference = 1
+HighPerformance: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterPreference = 2
+DXCoreAdapterProperty = UInt32
+InstanceLuid: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 0
+DriverVersion: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 1
+DriverDescription: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 2
+HardwareID: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 3
+KmdModelVersion: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 4
+ComputePreemptionGranularity: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 5
+GraphicsPreemptionGranularity: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 6
+DedicatedAdapterMemory: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 7
+DedicatedSystemMemory: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 8
+SharedSystemMemory: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 9
+AcgCompatible: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 10
+IsHardware: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 11
+IsIntegrated: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 12
+IsDetachable: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 13
+HardwareIDParts: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty = 14
 DXCoreAdapterState = UInt32
 IsDriverUpdateInProgress: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 0
 AdapterMemoryBudget: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 1
-AdapterMemoryUsageBytes: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 2
-AdapterMemoryUsageByProcessBytes: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 3
-AdapterEngineRunningTimeMicroseconds: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 4
-AdapterEngineRunningTimeByProcessMicroseconds: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 5
-AdapterTemperatureCelsius: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 6
-AdapterInUseProcessCount: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 7
-AdapterInUseProcessSet: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 8
-AdapterEngineFrequencyHertz: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 9
-AdapterMemoryFrequencyHertz: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState = 10
-class DXCoreEngineNamePropertyInput(Structure):
-    adapterEngineIndex: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterEngineIndex
-    engineNameLength: UInt32
-    engineName: win32more.Windows.Win32.Foundation.PWSTR
-class DXCoreEngineNamePropertyOutput(Structure):
-    engineNameLength: UInt32
-class DXCoreEngineQueryInput(Structure):
-    adapterEngineIndex: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterEngineIndex
-    processId: UInt32
-class DXCoreEngineQueryOutput(Structure):
-    runningTime: UInt64
-    processQuerySucceeded: Byte
-class DXCoreFrequencyQueryOutput(Structure):
-    frequency: UInt64
-    maxFrequency: UInt64
-    maxOverclockedFrequency: UInt64
 class DXCoreHardwareID(Structure):
     vendorID: UInt32
     deviceID: UInt32
@@ -94,45 +51,14 @@ class DXCoreHardwareIDParts(Structure):
     subSystemID: UInt32
     subVendorID: UInt32
     revisionID: UInt32
-class DXCoreHardwareTypeFilterFlags(Enum, UInt32):
-    None_ = 0
-    GPU = 1
-    ComputeAccelerator = 2
-    NPU = 4
-    MediaAccelerator = 8
-class DXCoreMemoryQueryInput(Structure):
-    physicalAdapterIndex: UInt32
-    memoryType: win32more.Windows.Win32.Graphics.DXCore.DXCoreMemoryType
-class DXCoreMemoryType(Enum, UInt32):
-    Dedicated = 0
-    Shared = 1
-class DXCoreMemoryUsage(Structure):
-    committed: UInt64
-    resident: UInt64
-class DXCoreNotificationType(Enum, UInt32):
-    AdapterListStale = 0
-    AdapterNoLongerValid = 1
-    AdapterBudgetChange = 2
-    AdapterHardwareContentProtectionTeardown = 3
-class DXCoreProcessMemoryQueryInput(Structure):
-    physicalAdapterIndex: UInt32
-    memoryType: win32more.Windows.Win32.Graphics.DXCore.DXCoreMemoryType
-    processId: UInt32
-class DXCoreProcessMemoryQueryOutput(Structure):
-    memoryUsage: win32more.Windows.Win32.Graphics.DXCore.DXCoreMemoryUsage
-    processQuerySucceeded: Byte
-class DXCoreRuntimeFilterFlags(Enum, UInt32):
-    None_ = 0
-    D3D11 = 1
-    D3D12 = 2
-class DXCoreSegmentGroup(Enum, UInt32):
-    Local = 0
-    NonLocal = 1
-class DXCoreWorkload(Enum, UInt32):
-    Graphics = 0
-    Compute = 1
-    Media = 2
-    MachineLearning = 3
+DXCoreNotificationType = UInt32
+AdapterListStale: win32more.Windows.Win32.Graphics.DXCore.DXCoreNotificationType = 0
+AdapterNoLongerValid: win32more.Windows.Win32.Graphics.DXCore.DXCoreNotificationType = 1
+AdapterBudgetChange: win32more.Windows.Win32.Graphics.DXCore.DXCoreNotificationType = 2
+AdapterHardwareContentProtectionTeardown: win32more.Windows.Win32.Graphics.DXCore.DXCoreNotificationType = 3
+DXCoreSegmentGroup = UInt32
+Local: win32more.Windows.Win32.Graphics.DXCore.DXCoreSegmentGroup = 0
+NonLocal: win32more.Windows.Win32.Graphics.DXCore.DXCoreSegmentGroup = 1
 class IDXCoreAdapter(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f0db4c7f-fe5a-42a2-bd62-f2a6cf6fc83e}')
@@ -156,11 +82,6 @@ class IDXCoreAdapter(ComPtr):
     def SetState(self, state: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterState, inputStateDetailsSize: UIntPtr, inputStateDetails: VoidPtr, inputDataSize: UIntPtr, inputData: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(12)
     def GetFactory(self, riid: POINTER(Guid), ppvFactory: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDXCoreAdapter1(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.DXCore.IDXCoreAdapter
-    _iid_ = Guid('{a0783366-cfa3-43be-9d79-55b2da97c63c}')
-    @commethod(13)
-    def GetPropertyWithInput(self, property: win32more.Windows.Win32.Graphics.DXCore.DXCoreAdapterProperty, inputPropertyDetailsSize: UIntPtr, inputPropertyDetails: VoidPtr, outputBufferSize: UIntPtr, outputBuffer: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDXCoreAdapterFactory(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{78ee5945-c36e-4b13-a669-005dd11c0f06}')
@@ -174,11 +95,6 @@ class IDXCoreAdapterFactory(ComPtr):
     def RegisterEventNotification(self, dxCoreObject: win32more.Windows.Win32.System.Com.IUnknown, notificationType: win32more.Windows.Win32.Graphics.DXCore.DXCoreNotificationType, callbackFunction: win32more.Windows.Win32.Graphics.DXCore.PFN_DXCORE_NOTIFICATION_CALLBACK, callbackContext: VoidPtr, eventCookie: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(7)
     def UnregisterEventNotification(self, eventCookie: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDXCoreAdapterFactory1(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.DXCore.IDXCoreAdapterFactory
-    _iid_ = Guid('{d5682e19-6d21-401c-827a-9a51a4ea35d7}')
-    @commethod(8)
-    def CreateAdapterListByWorkload(self, workload: win32more.Windows.Win32.Graphics.DXCore.DXCoreWorkload, runtimeFilter: win32more.Windows.Win32.Graphics.DXCore.DXCoreRuntimeFilterFlags, hardwareTypeFilter: win32more.Windows.Win32.Graphics.DXCore.DXCoreHardwareTypeFilterFlags, riid: POINTER(Guid), ppvAdapterList: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDXCoreAdapterList(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{526c7776-40e9-459b-b711-f32ad76dfc28}')

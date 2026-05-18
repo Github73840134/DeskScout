@@ -1,23 +1,23 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Microsoft.UI.Text
 import win32more.Windows.Foundation
 import win32more.Windows.Storage.Streams
 import win32more.Windows.UI
 import win32more.Windows.UI.Text
+import win32more.Windows.Win32.System.WinRT
 class CaretType(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.CaretType'
     Normal = 0
     Null = 1
 class FindOptions(Enum, UInt32):
-    _name_ = 'Microsoft.UI.Text.FindOptions'
     None_ = 0
     Word = 2
     Case = 4
 class _FontWeights_Meta_(ComPtr.__class__):
     pass
 class FontWeights(ComPtr, metaclass=_FontWeights_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.UI.Text.IFontWeights
     _classid_ = 'Microsoft.UI.Text.FontWeights'
     @winrt_classmethod
@@ -54,22 +54,20 @@ class FontWeights(ComPtr, metaclass=_FontWeights_Meta_):
     _FontWeights_Meta_.SemiLight = property(get_SemiLight, None)
     _FontWeights_Meta_.Thin = property(get_Thin, None)
 class FormatEffect(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.FormatEffect'
     Off = 0
     On = 1
     Toggle = 2
     Undefined = 3
 class HorizontalCharacterAlignment(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.HorizontalCharacterAlignment'
     Left = 0
     Right = 1
     Center = 2
 class IFontWeights(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.IFontWeights'
     _iid_ = Guid('{386cd040-5404-5a8d-8bc7-2ca989f5c065}')
 class IFontWeightsStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.IFontWeightsStatics'
     _iid_ = Guid('{cc390df6-76b0-5807-8b9d-e949a4e623ae}')
     @winrt_commethod(6)
@@ -106,7 +104,7 @@ class IFontWeightsStatics(ComPtr):
     SemiLight = property(get_SemiLight, None)
     Thin = property(get_Thin, None)
 class ITextCharacterFormat(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextCharacterFormat'
     _iid_ = Guid('{f5710050-98e5-5788-b1e3-32191eebf94d}')
     @winrt_commethod(6)
@@ -146,15 +144,15 @@ class ITextCharacterFormat(ComPtr):
     @winrt_commethod(23)
     def put_Kerning(self, value: Single) -> Void: ...
     @winrt_commethod(24)
-    def get_LanguageTag(self) -> hstr: ...
+    def get_LanguageTag(self) -> WinRT_String: ...
     @winrt_commethod(25)
-    def put_LanguageTag(self, value: hstr) -> Void: ...
+    def put_LanguageTag(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(26)
     def get_LinkType(self) -> win32more.Microsoft.UI.Text.LinkType: ...
     @winrt_commethod(27)
-    def get_Name(self) -> hstr: ...
+    def get_Name(self) -> WinRT_String: ...
     @winrt_commethod(28)
-    def put_Name(self, value: hstr) -> Void: ...
+    def put_Name(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(29)
     def get_Outline(self) -> win32more.Microsoft.UI.Text.FormatEffect: ...
     @winrt_commethod(30)
@@ -234,7 +232,7 @@ class ITextCharacterFormat(ComPtr):
     Underline = property(get_Underline, put_Underline)
     Weight = property(get_Weight, put_Weight)
 class ITextConstantsStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextConstantsStatics'
     _iid_ = Guid('{cd353b3c-af63-5cfb-918c-0f9c8931a161}')
     @winrt_commethod(6)
@@ -262,7 +260,7 @@ class ITextConstantsStatics(ComPtr):
     UndefinedFontStyle = property(get_UndefinedFontStyle, None)
     UndefinedInt32Value = property(get_UndefinedInt32Value, None)
 class ITextDocument(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextDocument'
     _iid_ = Guid('{1149d57d-86a6-59dd-88d9-196f27bc5c85}')
     @winrt_commethod(6)
@@ -304,7 +302,7 @@ class ITextDocument(ComPtr):
     @winrt_commethod(24)
     def GetRangeFromPoint(self, point: win32more.Windows.Foundation.Point, options: win32more.Microsoft.UI.Text.PointOptions) -> win32more.Microsoft.UI.Text.ITextRange: ...
     @winrt_commethod(25)
-    def GetText(self, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(hstr)) -> Void: ...
+    def GetText(self, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(WinRT_String)) -> Void: ...
     @winrt_commethod(26)
     def LoadFromStream(self, options: win32more.Microsoft.UI.Text.TextSetOptions, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_commethod(27)
@@ -316,7 +314,7 @@ class ITextDocument(ComPtr):
     @winrt_commethod(30)
     def SetDefaultParagraphFormat(self, value: win32more.Microsoft.UI.Text.ITextParagraphFormat) -> Void: ...
     @winrt_commethod(31)
-    def SetText(self, options: win32more.Microsoft.UI.Text.TextSetOptions, value: hstr) -> Void: ...
+    def SetText(self, options: win32more.Microsoft.UI.Text.TextSetOptions, value: WinRT_String) -> Void: ...
     @winrt_commethod(32)
     def Undo(self) -> Void: ...
     @winrt_commethod(33)
@@ -336,7 +334,7 @@ class ITextDocument(ComPtr):
     Selection = property(get_Selection, None)
     UndoLimit = property(get_UndoLimit, put_UndoLimit)
 class ITextDocument2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextDocument2'
     _iid_ = Guid('{21febcf1-2110-5879-b1da-b343097e71e1}')
     @winrt_commethod(6)
@@ -344,11 +342,11 @@ class ITextDocument2(ComPtr):
     @winrt_commethod(7)
     def SetMathMode(self, mode: win32more.Microsoft.UI.Text.RichEditMathMode) -> Void: ...
     @winrt_commethod(8)
-    def GetMathML(self, value: POINTER(hstr)) -> Void: ...
+    def GetMathML(self, value: POINTER(WinRT_String)) -> Void: ...
     @winrt_commethod(9)
-    def SetMathML(self, value: hstr) -> Void: ...
+    def SetMathML(self, value: WinRT_String) -> Void: ...
 class ITextParagraphFormat(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextParagraphFormat'
     _iid_ = Guid('{219b6cdf-0d0b-5701-b8a1-6c906b3ebbe1}')
     @winrt_commethod(6)
@@ -470,7 +468,7 @@ class ITextParagraphFormat(ComPtr):
     TabCount = property(get_TabCount, None)
     WidowControl = property(get_WidowControl, put_WidowControl)
 class ITextRange(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextRange'
     _iid_ = Guid('{06d4abcf-0c06-5d12-a743-85537efd09ea}')
     @winrt_commethod(6)
@@ -496,9 +494,9 @@ class ITextRange(ComPtr):
     @winrt_commethod(16)
     def get_Length(self) -> Int32: ...
     @winrt_commethod(17)
-    def get_Link(self) -> hstr: ...
+    def get_Link(self) -> WinRT_String: ...
     @winrt_commethod(18)
-    def put_Link(self, value: hstr) -> Void: ...
+    def put_Link(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(19)
     def get_ParagraphFormat(self) -> win32more.Microsoft.UI.Text.ITextParagraphFormat: ...
     @winrt_commethod(20)
@@ -510,9 +508,9 @@ class ITextRange(ComPtr):
     @winrt_commethod(23)
     def get_StoryLength(self) -> Int32: ...
     @winrt_commethod(24)
-    def get_Text(self) -> hstr: ...
+    def get_Text(self) -> WinRT_String: ...
     @winrt_commethod(25)
-    def put_Text(self, value: hstr) -> Void: ...
+    def put_Text(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(26)
     def CanPaste(self, format: Int32) -> Boolean: ...
     @winrt_commethod(27)
@@ -530,7 +528,7 @@ class ITextRange(ComPtr):
     @winrt_commethod(33)
     def Expand(self, unit: win32more.Microsoft.UI.Text.TextRangeUnit) -> Int32: ...
     @winrt_commethod(34)
-    def FindText(self, value: hstr, scanLength: Int32, options: win32more.Microsoft.UI.Text.FindOptions) -> Int32: ...
+    def FindText(self, value: WinRT_String, scanLength: Int32, options: win32more.Microsoft.UI.Text.FindOptions) -> Int32: ...
     @winrt_commethod(35)
     def GetCharacterUtf32(self, value: POINTER(UInt32), offset: Int32) -> Void: ...
     @winrt_commethod(36)
@@ -542,13 +540,13 @@ class ITextRange(ComPtr):
     @winrt_commethod(39)
     def GetRect(self, options: win32more.Microsoft.UI.Text.PointOptions, rect: POINTER(win32more.Windows.Foundation.Rect), hit: POINTER(Int32)) -> Void: ...
     @winrt_commethod(40)
-    def GetText(self, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(hstr)) -> Void: ...
+    def GetText(self, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(WinRT_String)) -> Void: ...
     @winrt_commethod(41)
     def GetTextViaStream(self, options: win32more.Microsoft.UI.Text.TextGetOptions, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_commethod(42)
     def InRange(self, range: win32more.Microsoft.UI.Text.ITextRange) -> Boolean: ...
     @winrt_commethod(43)
-    def InsertImage(self, width: Int32, height: Int32, ascent: Int32, verticalAlign: win32more.Microsoft.UI.Text.VerticalCharacterAlignment, alternateText: hstr, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
+    def InsertImage(self, width: Int32, height: Int32, ascent: Int32, verticalAlign: win32more.Microsoft.UI.Text.VerticalCharacterAlignment, alternateText: WinRT_String, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_commethod(44)
     def InStory(self, range: win32more.Microsoft.UI.Text.ITextRange) -> Boolean: ...
     @winrt_commethod(45)
@@ -572,7 +570,7 @@ class ITextRange(ComPtr):
     @winrt_commethod(54)
     def SetRange(self, startPosition: Int32, endPosition: Int32) -> Void: ...
     @winrt_commethod(55)
-    def SetText(self, options: win32more.Microsoft.UI.Text.TextSetOptions, value: hstr) -> Void: ...
+    def SetText(self, options: win32more.Microsoft.UI.Text.TextSetOptions, value: WinRT_String) -> Void: ...
     @winrt_commethod(56)
     def SetTextViaStream(self, options: win32more.Microsoft.UI.Text.TextSetOptions, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_commethod(57)
@@ -589,7 +587,7 @@ class ITextRange(ComPtr):
     StoryLength = property(get_StoryLength, None)
     Text = property(get_Text, put_Text)
 class ITextSelection(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.ITextSelection'
     _iid_ = Guid('{8f5e6cb1-2b04-589f-bd24-54e5cd8dd399}')
     @winrt_commethod(6)
@@ -611,15 +609,13 @@ class ITextSelection(ComPtr):
     @winrt_commethod(14)
     def MoveUp(self, unit: win32more.Microsoft.UI.Text.TextRangeUnit, count: Int32, extend: Boolean) -> Int32: ...
     @winrt_commethod(15)
-    def TypeText(self, value: hstr) -> Void: ...
+    def TypeText(self, value: WinRT_String) -> Void: ...
     Options = property(get_Options, put_Options)
     Type = property(get_Type, None)
 class LetterCase(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.LetterCase'
     Lower = 0
     Upper = 1
 class LineSpacingRule(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.LineSpacingRule'
     Undefined = 0
     Single = 1
     OneAndHalf = 2
@@ -629,7 +625,6 @@ class LineSpacingRule(Enum, Int32):
     Multiple = 6
     Percent = 7
 class LinkType(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.LinkType'
     Undefined = 0
     NotALink = 1
     ClientLink = 2
@@ -640,13 +635,11 @@ class LinkType(Enum, Int32):
     AutoLinkPhone = 7
     AutoLinkPath = 8
 class MarkerAlignment(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.MarkerAlignment'
     Undefined = 0
     Left = 1
     Center = 2
     Right = 3
 class MarkerStyle(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.MarkerStyle'
     Undefined = 0
     Parenthesis = 1
     Parentheses = 2
@@ -655,7 +648,6 @@ class MarkerStyle(Enum, Int32):
     Minus = 5
     NoNumber = 6
 class MarkerType(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.MarkerType'
     Undefined = 0
     None_ = 1
     Bullet = 2
@@ -682,14 +674,12 @@ class MarkerType(Enum, Int32):
     DevanagariConsonant = 23
     DevanagariNumeric = 24
 class ParagraphAlignment(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.ParagraphAlignment'
     Undefined = 0
     Left = 1
     Center = 2
     Right = 3
     Justify = 4
 class ParagraphStyle(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.ParagraphStyle'
     Undefined = 0
     None_ = 1
     Normal = 2
@@ -703,7 +693,6 @@ class ParagraphStyle(Enum, Int32):
     Heading8 = 10
     Heading9 = 11
 class PointOptions(Enum, UInt32):
-    _name_ = 'Microsoft.UI.Text.PointOptions'
     None_ = 0
     IncludeInset = 1
     Start = 32
@@ -713,18 +702,16 @@ class PointOptions(Enum, UInt32):
     NoHorizontalScroll = 65536
     NoVerticalScroll = 262144
 class RangeGravity(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.RangeGravity'
     UIBehavior = 0
     Backward = 1
     Forward = 2
     Inward = 3
     Outward = 4
 class RichEditMathMode(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.RichEditMathMode'
     NoMath = 0
     MathOnly = 1
 class RichEditTextDocument(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.UI.Text.ITextDocument
     _classid_ = 'Microsoft.UI.Text.RichEditTextDocument'
     @winrt_mixinmethod
@@ -766,7 +753,7 @@ class RichEditTextDocument(ComPtr):
     @winrt_mixinmethod
     def GetRangeFromPoint(self: win32more.Microsoft.UI.Text.ITextDocument, point: win32more.Windows.Foundation.Point, options: win32more.Microsoft.UI.Text.PointOptions) -> win32more.Microsoft.UI.Text.ITextRange: ...
     @winrt_mixinmethod
-    def GetText(self: win32more.Microsoft.UI.Text.ITextDocument, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(hstr)) -> Void: ...
+    def GetText(self: win32more.Microsoft.UI.Text.ITextDocument, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(WinRT_String)) -> Void: ...
     @winrt_mixinmethod
     def LoadFromStream(self: win32more.Microsoft.UI.Text.ITextDocument, options: win32more.Microsoft.UI.Text.TextSetOptions, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_mixinmethod
@@ -778,7 +765,7 @@ class RichEditTextDocument(ComPtr):
     @winrt_mixinmethod
     def SetDefaultParagraphFormat(self: win32more.Microsoft.UI.Text.ITextDocument, value: win32more.Microsoft.UI.Text.ITextParagraphFormat) -> Void: ...
     @winrt_mixinmethod
-    def SetText(self: win32more.Microsoft.UI.Text.ITextDocument, options: win32more.Microsoft.UI.Text.TextSetOptions, value: hstr) -> Void: ...
+    def SetText(self: win32more.Microsoft.UI.Text.ITextDocument, options: win32more.Microsoft.UI.Text.TextSetOptions, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def Undo(self: win32more.Microsoft.UI.Text.ITextDocument) -> Void: ...
     @winrt_mixinmethod
@@ -796,9 +783,9 @@ class RichEditTextDocument(ComPtr):
     @winrt_mixinmethod
     def SetMathMode(self: win32more.Microsoft.UI.Text.ITextDocument2, mode: win32more.Microsoft.UI.Text.RichEditMathMode) -> Void: ...
     @winrt_mixinmethod
-    def GetMathML(self: win32more.Microsoft.UI.Text.ITextDocument2, value: POINTER(hstr)) -> Void: ...
+    def GetMathML(self: win32more.Microsoft.UI.Text.ITextDocument2, value: POINTER(WinRT_String)) -> Void: ...
     @winrt_mixinmethod
-    def SetMathML(self: win32more.Microsoft.UI.Text.ITextDocument2, value: hstr) -> Void: ...
+    def SetMathML(self: win32more.Microsoft.UI.Text.ITextDocument2, value: WinRT_String) -> Void: ...
     AlignmentIncludesTrailingWhitespace = property(get_AlignmentIncludesTrailingWhitespace, put_AlignmentIncludesTrailingWhitespace)
     CaretType = property(get_CaretType, put_CaretType)
     DefaultTabStop = property(get_DefaultTabStop, put_DefaultTabStop)
@@ -806,7 +793,7 @@ class RichEditTextDocument(ComPtr):
     Selection = property(get_Selection, None)
     UndoLimit = property(get_UndoLimit, put_UndoLimit)
 class RichEditTextRange(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.UI.Text.ITextRange
     _classid_ = 'Microsoft.UI.Text.RichEditTextRange'
     @winrt_mixinmethod
@@ -832,9 +819,9 @@ class RichEditTextRange(ComPtr):
     @winrt_mixinmethod
     def get_Length(self: win32more.Microsoft.UI.Text.ITextRange) -> Int32: ...
     @winrt_mixinmethod
-    def get_Link(self: win32more.Microsoft.UI.Text.ITextRange) -> hstr: ...
+    def get_Link(self: win32more.Microsoft.UI.Text.ITextRange) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Link(self: win32more.Microsoft.UI.Text.ITextRange, value: hstr) -> Void: ...
+    def put_Link(self: win32more.Microsoft.UI.Text.ITextRange, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_ParagraphFormat(self: win32more.Microsoft.UI.Text.ITextRange) -> win32more.Microsoft.UI.Text.ITextParagraphFormat: ...
     @winrt_mixinmethod
@@ -846,9 +833,9 @@ class RichEditTextRange(ComPtr):
     @winrt_mixinmethod
     def get_StoryLength(self: win32more.Microsoft.UI.Text.ITextRange) -> Int32: ...
     @winrt_mixinmethod
-    def get_Text(self: win32more.Microsoft.UI.Text.ITextRange) -> hstr: ...
+    def get_Text(self: win32more.Microsoft.UI.Text.ITextRange) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Text(self: win32more.Microsoft.UI.Text.ITextRange, value: hstr) -> Void: ...
+    def put_Text(self: win32more.Microsoft.UI.Text.ITextRange, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def CanPaste(self: win32more.Microsoft.UI.Text.ITextRange, format: Int32) -> Boolean: ...
     @winrt_mixinmethod
@@ -866,7 +853,7 @@ class RichEditTextRange(ComPtr):
     @winrt_mixinmethod
     def Expand(self: win32more.Microsoft.UI.Text.ITextRange, unit: win32more.Microsoft.UI.Text.TextRangeUnit) -> Int32: ...
     @winrt_mixinmethod
-    def FindText(self: win32more.Microsoft.UI.Text.ITextRange, value: hstr, scanLength: Int32, options: win32more.Microsoft.UI.Text.FindOptions) -> Int32: ...
+    def FindText(self: win32more.Microsoft.UI.Text.ITextRange, value: WinRT_String, scanLength: Int32, options: win32more.Microsoft.UI.Text.FindOptions) -> Int32: ...
     @winrt_mixinmethod
     def GetCharacterUtf32(self: win32more.Microsoft.UI.Text.ITextRange, value: POINTER(UInt32), offset: Int32) -> Void: ...
     @winrt_mixinmethod
@@ -878,13 +865,13 @@ class RichEditTextRange(ComPtr):
     @winrt_mixinmethod
     def GetRect(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.PointOptions, rect: POINTER(win32more.Windows.Foundation.Rect), hit: POINTER(Int32)) -> Void: ...
     @winrt_mixinmethod
-    def GetText(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(hstr)) -> Void: ...
+    def GetText(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.TextGetOptions, value: POINTER(WinRT_String)) -> Void: ...
     @winrt_mixinmethod
     def GetTextViaStream(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.TextGetOptions, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_mixinmethod
     def InRange(self: win32more.Microsoft.UI.Text.ITextRange, range: win32more.Microsoft.UI.Text.ITextRange) -> Boolean: ...
     @winrt_mixinmethod
-    def InsertImage(self: win32more.Microsoft.UI.Text.ITextRange, width: Int32, height: Int32, ascent: Int32, verticalAlign: win32more.Microsoft.UI.Text.VerticalCharacterAlignment, alternateText: hstr, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
+    def InsertImage(self: win32more.Microsoft.UI.Text.ITextRange, width: Int32, height: Int32, ascent: Int32, verticalAlign: win32more.Microsoft.UI.Text.VerticalCharacterAlignment, alternateText: WinRT_String, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_mixinmethod
     def InStory(self: win32more.Microsoft.UI.Text.ITextRange, range: win32more.Microsoft.UI.Text.ITextRange) -> Boolean: ...
     @winrt_mixinmethod
@@ -908,7 +895,7 @@ class RichEditTextRange(ComPtr):
     @winrt_mixinmethod
     def SetRange(self: win32more.Microsoft.UI.Text.ITextRange, startPosition: Int32, endPosition: Int32) -> Void: ...
     @winrt_mixinmethod
-    def SetText(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.TextSetOptions, value: hstr) -> Void: ...
+    def SetText(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.TextSetOptions, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def SetTextViaStream(self: win32more.Microsoft.UI.Text.ITextRange, options: win32more.Microsoft.UI.Text.TextSetOptions, value: win32more.Windows.Storage.Streams.IRandomAccessStream) -> Void: ...
     @winrt_mixinmethod
@@ -925,28 +912,24 @@ class RichEditTextRange(ComPtr):
     StoryLength = property(get_StoryLength, None)
     Text = property(get_Text, put_Text)
 class SelectionOptions(Enum, UInt32):
-    _name_ = 'Microsoft.UI.Text.SelectionOptions'
     StartActive = 1
     AtEndOfLine = 2
     Overtype = 4
     Active = 8
     Replace = 16
 class SelectionType(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.SelectionType'
     None_ = 0
     InsertionPoint = 1
     Normal = 2
     InlineShape = 7
     Shape = 8
 class TabAlignment(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.TabAlignment'
     Left = 0
     Center = 1
     Right = 2
     Decimal = 3
     Bar = 4
 class TabLeader(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.TabLeader'
     Spaces = 0
     Dots = 1
     Dashes = 2
@@ -957,7 +940,7 @@ TextApiContract: UInt32 = 131072
 class _TextConstants_Meta_(ComPtr.__class__):
     pass
 class TextConstants(ComPtr, metaclass=_TextConstants_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.UI.Text.TextConstants'
     @winrt_classmethod
     def get_AutoColor(cls: win32more.Microsoft.UI.Text.ITextConstantsStatics) -> win32more.Windows.UI.Color: ...
@@ -984,7 +967,6 @@ class TextConstants(ComPtr, metaclass=_TextConstants_Meta_):
     _TextConstants_Meta_.UndefinedFontStyle = property(get_UndefinedFontStyle, None)
     _TextConstants_Meta_.UndefinedInt32Value = property(get_UndefinedInt32Value, None)
 class TextGetOptions(Enum, UInt32):
-    _name_ = 'Microsoft.UI.Text.TextGetOptions'
     None_ = 0
     AdjustCrlf = 1
     UseCrlf = 2
@@ -995,7 +977,6 @@ class TextGetOptions(Enum, UInt32):
     FormatRtf = 8192
     UseLf = 16777216
 class TextRangeUnit(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.TextRangeUnit'
     Character = 0
     Word = 1
     Sentence = 2
@@ -1030,7 +1011,6 @@ class TextRangeUnit(Enum, Int32):
     LinkProtected = 31
     ContentLink = 32
 class TextScript(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.TextScript'
     Undefined = 0
     Ansi = 1
     EastEurope = 2
@@ -1096,7 +1076,6 @@ class TextScript(Enum, Int32):
     Deseret = 62
     Tifinagh = 63
 class TextSetOptions(Enum, UInt32):
-    _name_ = 'Microsoft.UI.Text.TextSetOptions'
     None_ = 0
     UnicodeBidi = 1
     Unlink = 8
@@ -1105,7 +1084,6 @@ class TextSetOptions(Enum, UInt32):
     FormatRtf = 8192
     ApplyRtfDocumentDefaults = 16384
 class UnderlineType(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.UnderlineType'
     Undefined = 0
     None_ = 1
     Single = 2
@@ -1127,7 +1105,6 @@ class UnderlineType(Enum, Int32):
     ThickDotted = 18
     ThickLongDash = 19
 class VerticalCharacterAlignment(Enum, Int32):
-    _name_ = 'Microsoft.UI.Text.VerticalCharacterAlignment'
     Top = 0
     Baseline = 1
     Bottom = 2

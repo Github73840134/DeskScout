@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Storage.InstallableFileSystems
@@ -189,7 +189,7 @@ class FILTER_FULL_INFORMATION(Structure):
     FrameID: UInt32
     NumberOfInstances: UInt32
     FilterNameLength: UInt16
-    FilterNameBuffer: FlexibleArray[Char]
+    FilterNameBuffer: Char * 1
 FILTER_INFORMATION_CLASS = Int32
 FilterFullInformation: win32more.Windows.Win32.Storage.InstallableFileSystems.FILTER_INFORMATION_CLASS = 0
 FilterAggregateBasicInformation: win32more.Windows.Win32.Storage.InstallableFileSystems.FILTER_INFORMATION_CLASS = 1
@@ -202,7 +202,7 @@ class FILTER_REPLY_HEADER(Structure):
     MessageId: UInt64
 class FILTER_VOLUME_BASIC_INFORMATION(Structure):
     FilterVolumeNameLength: UInt16
-    FilterVolumeName: FlexibleArray[Char]
+    FilterVolumeName: Char * 1
 FILTER_VOLUME_INFORMATION_CLASS = Int32
 FilterVolumeBasicInformation: win32more.Windows.Win32.Storage.InstallableFileSystems.FILTER_VOLUME_INFORMATION_CLASS = 0
 FilterVolumeStandardInformation: win32more.Windows.Win32.Storage.InstallableFileSystems.FILTER_VOLUME_INFORMATION_CLASS = 1
@@ -212,7 +212,7 @@ class FILTER_VOLUME_STANDARD_INFORMATION(Structure):
     FrameID: UInt32
     FileSystemType: win32more.Windows.Win32.Storage.InstallableFileSystems.FLT_FILESYSTEM_TYPE
     FilterVolumeNameLength: UInt16
-    FilterVolumeName: FlexibleArray[Char]
+    FilterVolumeName: Char * 1
 FLT_FILESYSTEM_TYPE = Int32
 FLT_FSTYPE_UNKNOWN: win32more.Windows.Win32.Storage.InstallableFileSystems.FLT_FILESYSTEM_TYPE = 0
 FLT_FSTYPE_RAW: win32more.Windows.Win32.Storage.InstallableFileSystems.FLT_FILESYSTEM_TYPE = 1

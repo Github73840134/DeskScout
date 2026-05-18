@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Storage.IndexServer
 import win32more.Windows.Win32.System.Com
@@ -45,8 +45,6 @@ DBPROP_FREETEXTUSESTEMMING: UInt32 = 13
 DBPROP_IGNORESBRI: UInt32 = 14
 DBPROP_DONOTCOMPUTEEXPENSIVEPROPS: UInt32 = 15
 DBPROP_ENABLEROWSETEVENTS: UInt32 = 16
-DBPROP_SESSION_ID: UInt32 = 17
-DBPROP_QUERY_ID: UInt32 = 18
 DBPROPSET_CIFRMWRKCORE_EXT: Guid = Guid('{afafaca5-b5d1-11d0-8c62-00c04fc2db8d}')
 DBPROP_MACHINE: UInt32 = 2
 DBPROP_CLIENT_CLSID: UInt32 = 3
@@ -164,7 +162,6 @@ CHUNKSTATE = Int32
 CHUNK_TEXT: win32more.Windows.Win32.Storage.IndexServer.CHUNKSTATE = 1
 CHUNK_VALUE: win32more.Windows.Win32.Storage.IndexServer.CHUNKSTATE = 2
 CHUNK_FILTER_OWNED_VALUE: win32more.Windows.Win32.Storage.IndexServer.CHUNKSTATE = 4
-CHUNK_IMAGE: win32more.Windows.Win32.Storage.IndexServer.CHUNKSTATE = 8
 CHUNK_BREAKTYPE = Int32
 CHUNK_NO_BREAK: win32more.Windows.Win32.Storage.IndexServer.CHUNK_BREAKTYPE = 0
 CHUNK_EOW: win32more.Windows.Win32.Storage.IndexServer.CHUNK_BREAKTYPE = 1
@@ -256,14 +253,6 @@ class IFilter(ComPtr):
     def GetValue(self, ppPropValue: POINTER(POINTER(win32more.Windows.Win32.System.Com.StructuredStorage.PROPVARIANT))) -> Int32: ...
     @commethod(7)
     def BindRegion(self, origPos: win32more.Windows.Win32.Storage.IndexServer.FILTERREGION, riid: POINTER(Guid), ppunk: POINTER(VoidPtr)) -> Int32: ...
-class IMAGE_INFO(Structure):
-    Width: UInt32
-    Height: UInt32
-    Format: win32more.Windows.Win32.Storage.IndexServer.IMAGE_PIXELFORMAT
-IMAGE_PIXELFORMAT = Int32
-FILTER_PIXELFORMAT_BGRA8: win32more.Windows.Win32.Storage.IndexServer.IMAGE_PIXELFORMAT = 0
-FILTER_PIXELFORMAT_PBGRA8: win32more.Windows.Win32.Storage.IndexServer.IMAGE_PIXELFORMAT = 1
-FILTER_PIXELFORMAT_BGR8: win32more.Windows.Win32.Storage.IndexServer.IMAGE_PIXELFORMAT = 2
 class IPhraseSink(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{cc906ff0-c058-101a-b554-08002b33b0e6}')
@@ -271,13 +260,6 @@ class IPhraseSink(ComPtr):
     def PutSmallPhrase(self, pwcNoun: win32more.Windows.Win32.Foundation.PWSTR, cwcNoun: UInt32, pwcModifier: win32more.Windows.Win32.Foundation.PWSTR, cwcModifier: UInt32, ulAttachmentType: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def PutPhrase(self, pwcPhrase: win32more.Windows.Win32.Foundation.PWSTR, cwcPhrase: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IPixelFilter(ComPtr):
-    extends: win32more.Windows.Win32.Storage.IndexServer.IFilter
-    _iid_ = Guid('{3d7df9a7-8da6-4fbf-a45b-7592f06d93a9}')
-    @commethod(8)
-    def GetImageInfo(self, imageInfo: POINTER(win32more.Windows.Win32.Storage.IndexServer.IMAGE_INFO)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(9)
-    def GetPixelsForImage(self, scalingFactor: Single, sourceRect: POINTER(win32more.Windows.Win32.Foundation.RECT), pixelBufferSize: UInt32, pixelBuffer: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class STAT_CHUNK(Structure):
     idChunk: UInt32
     breakType: win32more.Windows.Win32.Storage.IndexServer.CHUNK_BREAKTYPE

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct2D.Common
 import win32more.Windows.Win32.Graphics.Direct3D
@@ -351,11 +351,6 @@ class IDCompositionDevice4(ComPtr):
     def CheckCompositionTextureSupport(self, renderingDevice: win32more.Windows.Win32.System.Com.IUnknown, supportsCompositionTextures: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(38)
     def CreateCompositionTexture(self, d3dTexture: win32more.Windows.Win32.System.Com.IUnknown, compositionTexture: POINTER(win32more.Windows.Win32.Graphics.DirectComposition.IDCompositionTexture)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDCompositionDevice5(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.DirectComposition.IDCompositionDevice4
-    _iid_ = Guid('{2c6bebfe-a603-472f-af34-d2443356e61b}')
-    @commethod(39)
-    def CreateDynamicTexture(self, compositionDynamicTexture: POINTER(win32more.Windows.Win32.Graphics.DirectComposition.IDCompositionDynamicTexture)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDCompositionDeviceDebug(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{a1a3c64a-224f-4a81-9773-4f03a89d3c6c}')
@@ -363,13 +358,6 @@ class IDCompositionDeviceDebug(ComPtr):
     def EnableDebugCounters(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def DisableDebugCounters(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IDCompositionDynamicTexture(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{a1de1d3f-6405-447f-8e95-1383a34b0277}')
-    @commethod(3)
-    def SetTexture(self, pTexture: win32more.Windows.Win32.Graphics.DirectComposition.IDCompositionTexture, pRects: POINTER(win32more.Windows.Win32.Foundation.RECT), rectCount: UIntPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def SetTexture(self, pTexture: win32more.Windows.Win32.Graphics.DirectComposition.IDCompositionTexture) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IDCompositionEffect(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{ec81b08f-bfcb-4e8d-b193-a915587999e8}')

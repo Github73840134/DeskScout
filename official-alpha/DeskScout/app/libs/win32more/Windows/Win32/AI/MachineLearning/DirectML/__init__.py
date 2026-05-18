@@ -1,10 +1,10 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.AI.MachineLearning.DirectML
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct3D12
 import win32more.Windows.Win32.System.Com
-DML_TARGET_VERSION: UInt32 = 25600
+DML_TARGET_VERSION: UInt32 = 20480
 DML_TENSOR_DIMENSION_COUNT_MAX: UInt32 = 5
 DML_TENSOR_DIMENSION_COUNT_MAX1: UInt32 = 8
 DML_TEMPORARY_BUFFER_ALIGNMENT: UInt32 = 256
@@ -160,26 +160,6 @@ class DML_BATCH_NORMALIZATION_OPERATOR_DESC(Structure):
     BiasTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     Spatial: win32more.Windows.Win32.Foundation.BOOL
-    Epsilon: Single
-    FusedActivation: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_DESC)
-class DML_BATCH_NORMALIZATION_TRAINING_GRAD_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    InputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    MeanTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    VarianceTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    ScaleTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputScaleGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputBiasGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    Epsilon: Single
-class DML_BATCH_NORMALIZATION_TRAINING_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    ScaleTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    BiasTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    FusedAddTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputMeanTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputVarianceTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     Epsilon: Single
     FusedActivation: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_DESC)
 class DML_BINDING_DESC(Structure):
@@ -356,20 +336,6 @@ class DML_ELEMENT_WISE_CEIL_OPERATOR_DESC(Structure):
     InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     ScaleBias: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALE_BIAS)
-class DML_ELEMENT_WISE_CLIP1_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    ScaleBias: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALE_BIAS)
-    MinMaxDataType: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DATA_TYPE
-    Min: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALAR_UNION
-    Max: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALAR_UNION
-class DML_ELEMENT_WISE_CLIP_GRAD1_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    InputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    MinMaxDataType: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DATA_TYPE
-    Min: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALAR_UNION
-    Max: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALAR_UNION
 class DML_ELEMENT_WISE_CLIP_GRAD_OPERATOR_DESC(Structure):
     InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     InputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
@@ -499,9 +465,6 @@ class DML_ELEMENT_WISE_MULTIPLY_OPERATOR_DESC(Structure):
     ATensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     BTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-class DML_ELEMENT_WISE_NEGATE_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
 class DML_ELEMENT_WISE_POW_OPERATOR_DESC(Structure):
     InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
     ExponentTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
@@ -583,13 +546,6 @@ DML_FEATURE_LEVEL_3_1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_F
 DML_FEATURE_LEVEL_4_0: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 16384
 DML_FEATURE_LEVEL_4_1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 16640
 DML_FEATURE_LEVEL_5_0: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 20480
-DML_FEATURE_LEVEL_5_1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 20736
-DML_FEATURE_LEVEL_5_2: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 20992
-DML_FEATURE_LEVEL_6_0: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 24576
-DML_FEATURE_LEVEL_6_1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 24832
-DML_FEATURE_LEVEL_6_2: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 25088
-DML_FEATURE_LEVEL_6_3: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 25344
-DML_FEATURE_LEVEL_6_4: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL = 25600
 class DML_FEATURE_QUERY_FEATURE_LEVELS(Structure):
     RequestedFeatureLevelCount: UInt32
     RequestedFeatureLevels: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_FEATURE_LEVEL)
@@ -985,27 +941,11 @@ DML_OPERATOR_BATCH_NORMALIZATION_GRAD: win32more.Windows.Win32.AI.MachineLearnin
 DML_OPERATOR_ELEMENT_WISE_QUANTIZED_LINEAR_ADD: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 147
 DML_OPERATOR_DYNAMIC_QUANTIZE_LINEAR: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 148
 DML_OPERATOR_ROI_ALIGN1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 149
-DML_OPERATOR_ROI_ALIGN_GRAD: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 150
-DML_OPERATOR_BATCH_NORMALIZATION_TRAINING: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 151
-DML_OPERATOR_BATCH_NORMALIZATION_TRAINING_GRAD: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 152
-DML_OPERATOR_ELEMENT_WISE_CLIP1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 153
-DML_OPERATOR_ELEMENT_WISE_CLIP_GRAD1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 154
-DML_OPERATOR_PADDING1: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 155
-DML_OPERATOR_ELEMENT_WISE_NEGATE: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_OPERATOR_TYPE = 156
 class DML_OUTPUT_GRAPH_EDGE_DESC(Structure):
     FromNodeIndex: UInt32
     FromNodeOutputIndex: UInt32
     GraphOutputIndex: UInt32
     Name: win32more.Windows.Win32.Foundation.PSTR
-class DML_PADDING1_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    PaddingMode: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_PADDING_MODE
-    PaddingValueDataType: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DATA_TYPE
-    PaddingValue: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_SCALAR_UNION
-    DimensionCount: UInt32
-    StartPadding: POINTER(UInt32)
-    EndPadding: POINTER(UInt32)
 DML_PADDING_MODE = Int32
 DML_PADDING_MODE_CONSTANT: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_PADDING_MODE = 0
 DML_PADDING_MODE_EDGE: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_PADDING_MODE = 1
@@ -1127,22 +1067,6 @@ class DML_ROI_ALIGN1_OPERATOR_DESC(Structure):
     InputPixelOffset: Single
     OutputPixelOffset: Single
     OutOfBoundsInputValue: Single
-    MinimumSamplesPerOutput: UInt32
-    MaximumSamplesPerOutput: UInt32
-    AlignRegionsToCorners: win32more.Windows.Win32.Foundation.BOOL
-class DML_ROI_ALIGN_GRAD_OPERATOR_DESC(Structure):
-    InputTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    InputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    ROITensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    BatchIndicesTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    OutputROIGradientTensor: POINTER(win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_TENSOR_DESC)
-    ReductionFunction: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_REDUCE_FUNCTION
-    InterpolationMode: win32more.Windows.Win32.AI.MachineLearning.DirectML.DML_INTERPOLATION_MODE
-    SpatialScaleX: Single
-    SpatialScaleY: Single
-    InputPixelOffset: Single
-    OutputPixelOffset: Single
     MinimumSamplesPerOutput: UInt32
     MaximumSamplesPerOutput: UInt32
     AlignRegionsToCorners: win32more.Windows.Win32.Foundation.BOOL

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.Ole
@@ -217,9 +217,9 @@ UnloadPerfCounterTextStrings = UnicodeAlias('UnloadPerfCounterTextStringsW')
 @winfunctype('loadperf.dll')
 def UnloadPerfCounterTextStringsA(lpCommandLine: win32more.Windows.Win32.Foundation.PSTR, bQuietModeArg: win32more.Windows.Win32.Foundation.BOOL) -> UInt32: ...
 @winfunctype('loadperf.dll')
-def UpdatePerfNameFilesA(szNewCtrFilePath: win32more.Windows.Win32.Foundation.PSTR, szNewHlpFilePath: win32more.Windows.Win32.Foundation.PSTR, szLanguageID: win32more.Windows.Win32.Foundation.PSTR, dwModes: UIntPtr) -> UInt32: ...
+def UpdatePerfNameFilesA(szNewCtrFilePath: win32more.Windows.Win32.Foundation.PSTR, szNewHlpFilePath: win32more.Windows.Win32.Foundation.PSTR, szLanguageID: win32more.Windows.Win32.Foundation.PSTR, dwFlags: UIntPtr) -> UInt32: ...
 @winfunctype('loadperf.dll')
-def UpdatePerfNameFilesW(szNewCtrFilePath: win32more.Windows.Win32.Foundation.PWSTR, szNewHlpFilePath: win32more.Windows.Win32.Foundation.PWSTR, szLanguageID: win32more.Windows.Win32.Foundation.PWSTR, dwModes: UIntPtr) -> UInt32: ...
+def UpdatePerfNameFilesW(szNewCtrFilePath: win32more.Windows.Win32.Foundation.PWSTR, szNewHlpFilePath: win32more.Windows.Win32.Foundation.PWSTR, szLanguageID: win32more.Windows.Win32.Foundation.PWSTR, dwFlags: UIntPtr) -> UInt32: ...
 UpdatePerfNameFiles = UnicodeAlias('UpdatePerfNameFilesW')
 @winfunctype('loadperf.dll')
 def SetServiceAsTrustedA(szReserved: win32more.Windows.Win32.Foundation.PSTR, szServiceName: win32more.Windows.Win32.Foundation.PSTR) -> UInt32: ...
@@ -1563,17 +1563,17 @@ LegacyTraceSessionCollection = Guid('{03837529-098b-11d8-9414-505054503030}')
 LogFileItem = Guid('{16ec5be8-df93-4237-94e4-9ee918111d71}')
 LogFiles = Guid('{2735d9fd-f6b9-4f19-a5d9-e2d068584bc5}')
 class PDH_BROWSE_DLG_CONFIG_A(Structure):
-    bIncludeInstanceIndex: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerAdd: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerDialog: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bLocalCountersOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bWildCardInstances: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bHideDetailBox: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bInitializePath: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bDisableMachineSelection: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bIncludeCostlyObjects: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bShowObjectBrowser: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bReserved: Annotated[UInt32, NativeBitfieldAttribute(22)]
+    bIncludeInstanceIndex: Annotated[UInt32, 1]
+    bSingleCounterPerAdd: Annotated[UInt32, 1]
+    bSingleCounterPerDialog: Annotated[UInt32, 1]
+    bLocalCountersOnly: Annotated[UInt32, 1]
+    bWildCardInstances: Annotated[UInt32, 1]
+    bHideDetailBox: Annotated[UInt32, 1]
+    bInitializePath: Annotated[UInt32, 1]
+    bDisableMachineSelection: Annotated[UInt32, 1]
+    bIncludeCostlyObjects: Annotated[UInt32, 1]
+    bShowObjectBrowser: Annotated[UInt32, 1]
+    bReserved: Annotated[UInt32, 22]
     hWndOwner: win32more.Windows.Win32.Foundation.HWND
     szDataSource: win32more.Windows.Win32.Foundation.PSTR
     szReturnPathBuffer: win32more.Windows.Win32.Foundation.PSTR
@@ -1584,17 +1584,17 @@ class PDH_BROWSE_DLG_CONFIG_A(Structure):
     dwDefaultDetailLevel: win32more.Windows.Win32.System.Performance.PERF_DETAIL
     szDialogBoxCaption: win32more.Windows.Win32.Foundation.PSTR
 class PDH_BROWSE_DLG_CONFIG_HA(Structure):
-    bIncludeInstanceIndex: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerAdd: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerDialog: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bLocalCountersOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bWildCardInstances: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bHideDetailBox: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bInitializePath: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bDisableMachineSelection: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bIncludeCostlyObjects: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bShowObjectBrowser: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bReserved: Annotated[UInt32, NativeBitfieldAttribute(22)]
+    bIncludeInstanceIndex: Annotated[UInt32, 1]
+    bSingleCounterPerAdd: Annotated[UInt32, 1]
+    bSingleCounterPerDialog: Annotated[UInt32, 1]
+    bLocalCountersOnly: Annotated[UInt32, 1]
+    bWildCardInstances: Annotated[UInt32, 1]
+    bHideDetailBox: Annotated[UInt32, 1]
+    bInitializePath: Annotated[UInt32, 1]
+    bDisableMachineSelection: Annotated[UInt32, 1]
+    bIncludeCostlyObjects: Annotated[UInt32, 1]
+    bShowObjectBrowser: Annotated[UInt32, 1]
+    bReserved: Annotated[UInt32, 22]
     hWndOwner: win32more.Windows.Win32.Foundation.HWND
     hDataSource: win32more.Windows.Win32.System.Performance.PDH_HLOG
     szReturnPathBuffer: win32more.Windows.Win32.Foundation.PSTR
@@ -1605,17 +1605,17 @@ class PDH_BROWSE_DLG_CONFIG_HA(Structure):
     dwDefaultDetailLevel: win32more.Windows.Win32.System.Performance.PERF_DETAIL
     szDialogBoxCaption: win32more.Windows.Win32.Foundation.PSTR
 class PDH_BROWSE_DLG_CONFIG_HW(Structure):
-    bIncludeInstanceIndex: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerAdd: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerDialog: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bLocalCountersOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bWildCardInstances: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bHideDetailBox: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bInitializePath: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bDisableMachineSelection: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bIncludeCostlyObjects: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bShowObjectBrowser: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bReserved: Annotated[UInt32, NativeBitfieldAttribute(22)]
+    bIncludeInstanceIndex: Annotated[UInt32, 1]
+    bSingleCounterPerAdd: Annotated[UInt32, 1]
+    bSingleCounterPerDialog: Annotated[UInt32, 1]
+    bLocalCountersOnly: Annotated[UInt32, 1]
+    bWildCardInstances: Annotated[UInt32, 1]
+    bHideDetailBox: Annotated[UInt32, 1]
+    bInitializePath: Annotated[UInt32, 1]
+    bDisableMachineSelection: Annotated[UInt32, 1]
+    bIncludeCostlyObjects: Annotated[UInt32, 1]
+    bShowObjectBrowser: Annotated[UInt32, 1]
+    bReserved: Annotated[UInt32, 22]
     hWndOwner: win32more.Windows.Win32.Foundation.HWND
     hDataSource: win32more.Windows.Win32.System.Performance.PDH_HLOG
     szReturnPathBuffer: win32more.Windows.Win32.Foundation.PWSTR
@@ -1627,17 +1627,17 @@ class PDH_BROWSE_DLG_CONFIG_HW(Structure):
     szDialogBoxCaption: win32more.Windows.Win32.Foundation.PWSTR
 PDH_BROWSE_DLG_CONFIG_H = UnicodeAlias('PDH_BROWSE_DLG_CONFIG_HW')
 class PDH_BROWSE_DLG_CONFIG_W(Structure):
-    bIncludeInstanceIndex: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerAdd: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bSingleCounterPerDialog: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bLocalCountersOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bWildCardInstances: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bHideDetailBox: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bInitializePath: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bDisableMachineSelection: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bIncludeCostlyObjects: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bShowObjectBrowser: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bReserved: Annotated[UInt32, NativeBitfieldAttribute(22)]
+    bIncludeInstanceIndex: Annotated[UInt32, 1]
+    bSingleCounterPerAdd: Annotated[UInt32, 1]
+    bSingleCounterPerDialog: Annotated[UInt32, 1]
+    bLocalCountersOnly: Annotated[UInt32, 1]
+    bWildCardInstances: Annotated[UInt32, 1]
+    bHideDetailBox: Annotated[UInt32, 1]
+    bInitializePath: Annotated[UInt32, 1]
+    bDisableMachineSelection: Annotated[UInt32, 1]
+    bIncludeCostlyObjects: Annotated[UInt32, 1]
+    bShowObjectBrowser: Annotated[UInt32, 1]
+    bReserved: Annotated[UInt32, 22]
     hWndOwner: win32more.Windows.Win32.Foundation.HWND
     szDataSource: win32more.Windows.Win32.Foundation.PWSTR
     szReturnPathBuffer: win32more.Windows.Win32.Foundation.PWSTR
@@ -1660,13 +1660,11 @@ class PDH_COUNTER_INFO_A(Structure):
     szFullPath: win32more.Windows.Win32.Foundation.PSTR
     Anonymous: _Anonymous_e__Union
     szExplainText: win32more.Windows.Win32.Foundation.PSTR
-    DataBuffer: FlexibleArray[UInt32]
-    _anonymous_ = ('Anonymous',)
+    DataBuffer: UInt32 * 1
     class _Anonymous_e__Union(Union):
         DataItemPath: win32more.Windows.Win32.System.Performance.PDH_DATA_ITEM_PATH_ELEMENTS_A
         CounterPath: win32more.Windows.Win32.System.Performance.PDH_COUNTER_PATH_ELEMENTS_A
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             szMachineName: win32more.Windows.Win32.Foundation.PSTR
             szObjectName: win32more.Windows.Win32.Foundation.PSTR
@@ -1686,13 +1684,11 @@ class PDH_COUNTER_INFO_W(Structure):
     szFullPath: win32more.Windows.Win32.Foundation.PWSTR
     Anonymous: _Anonymous_e__Union
     szExplainText: win32more.Windows.Win32.Foundation.PWSTR
-    DataBuffer: FlexibleArray[UInt32]
-    _anonymous_ = ('Anonymous',)
+    DataBuffer: UInt32 * 1
     class _Anonymous_e__Union(Union):
         DataItemPath: win32more.Windows.Win32.System.Performance.PDH_DATA_ITEM_PATH_ELEMENTS_W
         CounterPath: win32more.Windows.Win32.System.Performance.PDH_COUNTER_PATH_ELEMENTS_W
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             szMachineName: win32more.Windows.Win32.Foundation.PWSTR
             szObjectName: win32more.Windows.Win32.Foundation.PWSTR
@@ -1737,7 +1733,6 @@ PDH_FMT_LONG: win32more.Windows.Win32.System.Performance.PDH_FMT = 256
 class PDH_FMT_COUNTERVALUE(Structure):
     CStatus: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         longValue: Int32
         doubleValue: Double
@@ -1768,11 +1763,9 @@ class PDH_LOG_SERVICE_QUERY_INFO_A(Structure):
     dwFileType: UInt32
     dwReserved: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             PdlAutoNameInterval: UInt32
             PdlAutoNameUnits: UInt32
@@ -1803,11 +1796,9 @@ class PDH_LOG_SERVICE_QUERY_INFO_W(Structure):
     dwFileType: UInt32
     dwReserved: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             PdlAutoNameInterval: UInt32
             PdlAutoNameUnits: UInt32
@@ -1857,7 +1848,7 @@ class PDH_RAW_LOG_RECORD(Structure):
     dwStructureSize: UInt32
     dwRecordType: win32more.Windows.Win32.System.Performance.PDH_LOG_TYPE
     dwItems: UInt32
-    RawBytes: FlexibleArray[Byte]
+    RawBytes: Byte * 1
 PDH_SELECT_DATA_SOURCE_FLAGS = UInt32
 PDH_FLAGS_FILE_BROWSER_ONLY: win32more.Windows.Win32.System.Performance.PDH_SELECT_DATA_SOURCE_FLAGS = 1
 PDH_FLAGS_NONE: win32more.Windows.Win32.System.Performance.PDH_SELECT_DATA_SOURCE_FLAGS = 0

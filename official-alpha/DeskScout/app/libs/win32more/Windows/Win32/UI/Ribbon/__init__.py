@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -142,7 +142,6 @@ UI_EVENTLOCATION_ContextPopup: win32more.Windows.Win32.UI.Ribbon.UI_EVENTLOCATIO
 class UI_EVENTPARAMS(Structure):
     EventType: win32more.Windows.Win32.UI.Ribbon.UI_EVENTTYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Modes: Int32
         Params: win32more.Windows.Win32.UI.Ribbon.UI_EVENTPARAMS_COMMAND

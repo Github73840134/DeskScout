@@ -1,10 +1,12 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Devices.Custom
 import win32more.Windows.Foundation
 import win32more.Windows.Storage.Streams
+import win32more.Windows.Win32.System.WinRT
 class CustomDevice(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Devices.Custom.ICustomDevice
     _classid_ = 'Windows.Devices.Custom.CustomDevice'
     @winrt_mixinmethod
@@ -16,23 +18,21 @@ class CustomDevice(ComPtr):
     @winrt_mixinmethod
     def TrySendIOControlAsync(self: win32more.Windows.Devices.Custom.ICustomDevice, ioControlCode: win32more.Windows.Devices.Custom.IIOControlCode, inputBuffer: win32more.Windows.Storage.Streams.IBuffer, outputBuffer: win32more.Windows.Storage.Streams.IBuffer) -> win32more.Windows.Foundation.IAsyncOperation[Boolean]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.Custom.ICustomDeviceStatics, classGuid: Guid) -> hstr: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.Custom.ICustomDeviceStatics, classGuid: Guid) -> WinRT_String: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.Custom.ICustomDeviceStatics, deviceId: hstr, desiredAccess: win32more.Windows.Devices.Custom.DeviceAccessMode, sharingMode: win32more.Windows.Devices.Custom.DeviceSharingMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Custom.CustomDevice]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.Custom.ICustomDeviceStatics, deviceId: WinRT_String, desiredAccess: win32more.Windows.Devices.Custom.DeviceAccessMode, sharingMode: win32more.Windows.Devices.Custom.DeviceSharingMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Custom.CustomDevice]: ...
     InputStream = property(get_InputStream, None)
     OutputStream = property(get_OutputStream, None)
 CustomDeviceContract: UInt32 = 65536
 class DeviceAccessMode(Enum, Int32):
-    _name_ = 'Windows.Devices.Custom.DeviceAccessMode'
     Read = 0
     Write = 1
     ReadWrite = 2
 class DeviceSharingMode(Enum, Int32):
-    _name_ = 'Windows.Devices.Custom.DeviceSharingMode'
     Shared = 0
     Exclusive = 1
 class ICustomDevice(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Custom.ICustomDevice'
     _iid_ = Guid('{dd30251f-c48b-43bd-bcb1-dec88f15143e}')
     @winrt_commethod(6)
@@ -46,15 +46,15 @@ class ICustomDevice(ComPtr):
     InputStream = property(get_InputStream, None)
     OutputStream = property(get_OutputStream, None)
 class ICustomDeviceStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Custom.ICustomDeviceStatics'
     _iid_ = Guid('{c8220312-ef4c-46b1-a58e-eeb308dc8917}')
     @winrt_commethod(6)
-    def GetDeviceSelector(self, classGuid: Guid) -> hstr: ...
+    def GetDeviceSelector(self, classGuid: Guid) -> WinRT_String: ...
     @winrt_commethod(7)
-    def FromIdAsync(self, deviceId: hstr, desiredAccess: win32more.Windows.Devices.Custom.DeviceAccessMode, sharingMode: win32more.Windows.Devices.Custom.DeviceSharingMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Custom.CustomDevice]: ...
+    def FromIdAsync(self, deviceId: WinRT_String, desiredAccess: win32more.Windows.Devices.Custom.DeviceAccessMode, sharingMode: win32more.Windows.Devices.Custom.DeviceSharingMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Custom.CustomDevice]: ...
 class IIOControlCode(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Custom.IIOControlCode'
     _iid_ = Guid('{0e9559e7-60c8-4375-a761-7f8808066c60}')
     @winrt_commethod(6)
@@ -73,32 +73,30 @@ class IIOControlCode(ComPtr):
     DeviceType = property(get_DeviceType, None)
     Function = property(get_Function, None)
 class IIOControlCodeFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Custom.IIOControlCodeFactory'
     _iid_ = Guid('{856a7cf0-4c11-44ae-afc6-b8d4a212788f}')
     @winrt_commethod(6)
     def CreateIOControlCode(self, deviceType: UInt16, function: UInt16, accessMode: win32more.Windows.Devices.Custom.IOControlAccessMode, bufferingMethod: win32more.Windows.Devices.Custom.IOControlBufferingMethod) -> win32more.Windows.Devices.Custom.IOControlCode: ...
 class IKnownDeviceTypesStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Custom.IKnownDeviceTypesStatics'
     _iid_ = Guid('{ee5479c2-5448-45da-ad1b-24948c239094}')
     @winrt_commethod(6)
     def get_Unknown(self) -> UInt16: ...
     Unknown = property(get_Unknown, None)
 class IOControlAccessMode(Enum, Int32):
-    _name_ = 'Windows.Devices.Custom.IOControlAccessMode'
     Any = 0
     Read = 1
     Write = 2
     ReadWrite = 3
 class IOControlBufferingMethod(Enum, Int32):
-    _name_ = 'Windows.Devices.Custom.IOControlBufferingMethod'
     Buffered = 0
     DirectInput = 1
     DirectOutput = 2
     Neither = 3
 class IOControlCode(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Devices.Custom.IIOControlCode
     _classid_ = 'Windows.Devices.Custom.IOControlCode'
     def __init__(self, *args, **kwargs):
@@ -128,7 +126,7 @@ class IOControlCode(ComPtr):
 class _KnownDeviceTypes_Meta_(ComPtr.__class__):
     pass
 class KnownDeviceTypes(ComPtr, metaclass=_KnownDeviceTypes_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Custom.KnownDeviceTypes'
     @winrt_classmethod
     def get_Unknown(cls: win32more.Windows.Devices.Custom.IKnownDeviceTypesStatics) -> UInt16: ...

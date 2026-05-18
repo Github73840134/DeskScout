@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.Ndis
 import win32more.Windows.Win32.NetworkManagement.WiFi
@@ -58,8 +58,6 @@ L2_REASON_CODE_UNKNOWN: UInt32 = 65537
 L2_REASON_CODE_PROFILE_MISSING: UInt32 = 1
 DOT11_BSSID_LIST_REVISION_1: UInt32 = 1
 DOT11_HESSID_LENGTH: UInt32 = 6
-RSNA_OUI_PREFIX: UInt32 = 11276032
-WPA_OUI_PREFIX: UInt32 = 15880192
 DOT11_RATE_SET_MAX_LENGTH: UInt32 = 126
 DOT11_WFD_SERVICE_NAME_MAX_LENGTH: UInt32 = 255
 DOT11_WFD_APS2_SERVICE_TYPE_MAX_LENGTH: UInt32 = 21
@@ -548,15 +546,12 @@ DEVPKEY_PciDevice_AtomicsSupported: win32more.Windows.Win32.Foundation.DEVPROPKE
 DEVPKEY_PciDevice_SupportedLinkSubState: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=36)
 DEVPKEY_PciDevice_OnPostPath: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=37)
 DEVPKEY_PciDevice_D3ColdSupport: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=38)
-DEVPKEY_PciDevice_VirtualChannelControlRegisters: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=39)
 DEVPKEY_PciDevice_SerialNumber: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=40)
 DEVPKEY_PciDevice_UsbDvsecPortType: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=41)
 DEVPKEY_PciDevice_UsbDvsecPortSpecificAttributes: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=42)
 DEVPKEY_PciDevice_UsbComponentRelation: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=43)
 DEVPKEY_PciDevice_UsbHostRouterName: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=44)
 DEVPKEY_PciDevice_ParentSerialNumber: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=45)
-DEVPKEY_PciDevice_SupportsDmwrOnEntireDeviceTree: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=46)
-DEVPKEY_PciDevice_IsTunneledDevice: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{3ab22e31-8264-4b4e-9af5-a8d2d8e33e62}'), pid=47)
 WLAN_API_VERSION_1_0: UInt32 = 1
 WLAN_API_VERSION_2_0: UInt32 = 2
 WLAN_API_VERSION: UInt32 = 2
@@ -1133,7 +1128,7 @@ class DOT11EXT_IHV_SECURITY_PROFILE(Structure):
     bUseMSOnex: win32more.Windows.Win32.Foundation.BOOL
 class DOT11EXT_IHV_SSID_LIST(Structure):
     ulCount: UInt32
-    SSIDs: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID]
+    SSIDs: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID * 1
 class DOT11EXT_IHV_UI_REQUEST(Structure):
     dwSessionId: UInt32
     guidUIRequest: Guid
@@ -1239,9 +1234,6 @@ DOT11_ADHOC_NETWORK_CONNECTION_STATUS_DISCONNECTED: win32more.Windows.Win32.Netw
 DOT11_ADHOC_NETWORK_CONNECTION_STATUS_CONNECTING: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ADHOC_NETWORK_CONNECTION_STATUS = 12
 DOT11_ADHOC_NETWORK_CONNECTION_STATUS_CONNECTED: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ADHOC_NETWORK_CONNECTION_STATUS = 13
 DOT11_ADHOC_NETWORK_CONNECTION_STATUS_FORMED: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ADHOC_NETWORK_CONNECTION_STATUS = 14
-class DOT11_AKM_CIPHER_PAIR(Structure):
-    akm: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE
-    cipher: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE
 class DOT11_ANQP_QUERY_COMPLETE_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     Status: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ANQP_QUERY_RESULT
@@ -1306,7 +1298,7 @@ class DOT11_ASSOCIATION_INFO_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11AssocInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ASSOCIATION_INFO_EX]
+    dot11AssocInfo: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ASSOCIATION_INFO_EX * 1
 class DOT11_ASSOCIATION_PARAMS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     BSSID: Byte * 6
@@ -1342,7 +1334,7 @@ class DOT11_AUTH_ALGORITHM_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    AlgorithmIds: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_ALGORITHM]
+    AlgorithmIds: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_ALGORITHM * 1
 class DOT11_AUTH_CIPHER_PAIR(Structure):
     AuthAlgoId: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_ALGORITHM
     CipherAlgoId: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_CIPHER_ALGORITHM
@@ -1350,17 +1342,17 @@ class DOT11_AUTH_CIPHER_PAIR_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    AuthCipherPairs: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_CIPHER_PAIR]
+    AuthCipherPairs: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_CIPHER_PAIR * 1
 class DOT11_AVAILABLE_CHANNEL_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    uChannelNumber: FlexibleArray[UInt32]
+    uChannelNumber: UInt32 * 1
 class DOT11_AVAILABLE_FREQUENCY_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    uFrequencyValue: FlexibleArray[UInt32]
+    uFrequencyValue: UInt32 * 1
 DOT11_BAND = Int32
 dot11_band_2p4g: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_BAND = 1
 dot11_band_4p9g: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_BAND = 2
@@ -1372,7 +1364,7 @@ class DOT11_BSSID_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    BSSIDs: FlexibleArray[Byte]
+    BSSIDs: Byte * 6
 class DOT11_BSS_DESCRIPTION(Structure):
     uReserved: UInt32
     dot11BSSID: Byte * 6
@@ -1381,7 +1373,7 @@ class DOT11_BSS_DESCRIPTION(Structure):
     ullTimestamp: UInt64
     usCapabilityInformation: UInt16
     uBufferLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_BSS_ENTRY(Structure):
     uPhyId: UInt32
     PhySpecificInfo: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_BSS_ENTRY_PHY_SPECIFIC_INFO
@@ -1395,7 +1387,7 @@ class DOT11_BSS_ENTRY(Structure):
     ullHostTimestamp: UInt64
     usCapabilityInformation: UInt16
     uBufferLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_BSS_ENTRY_PHY_SPECIFIC_INFO(Union):
     uChCenterFrequency: UInt32
     FHSS: _FHSS_e__Struct
@@ -1414,7 +1406,7 @@ class DOT11_BYTE_ARRAY(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfBytes: UInt32
     uTotalNumOfBytes: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_CAN_SUSTAIN_AP_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     ulReason: UInt32
@@ -1443,7 +1435,7 @@ class DOT11_CIPHER_ALGORITHM_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    AlgorithmIds: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_CIPHER_ALGORITHM]
+    AlgorithmIds: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_CIPHER_ALGORITHM * 1
 class DOT11_CIPHER_DEFAULT_KEY_VALUE(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uKeyIndex: UInt32
@@ -1452,7 +1444,7 @@ class DOT11_CIPHER_DEFAULT_KEY_VALUE(Structure):
     bDelete: win32more.Windows.Win32.Foundation.BOOLEAN
     bStatic: win32more.Windows.Win32.Foundation.BOOLEAN
     usKeyLength: UInt16
-    ucKey: FlexibleArray[Byte]
+    ucKey: Byte * 1
 class DOT11_CIPHER_KEY_MAPPING_KEY_VALUE(Structure):
     PeerMacAddr: Byte * 6
     AlgorithmId: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_CIPHER_ALGORITHM
@@ -1460,7 +1452,7 @@ class DOT11_CIPHER_KEY_MAPPING_KEY_VALUE(Structure):
     bDelete: win32more.Windows.Win32.Foundation.BOOLEAN
     bStatic: win32more.Windows.Win32.Foundation.BOOLEAN
     usKeyLength: UInt16
-    ucKey: FlexibleArray[Byte]
+    ucKey: Byte * 1
 class DOT11_CONNECTION_COMPLETION_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uStatus: UInt32
@@ -1487,7 +1479,7 @@ class DOT11_COUNTRY_OR_REGION_STRING_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    CountryOrRegionStrings: FlexibleArray[Byte]
+    CountryOrRegionStrings: Byte * 3
 class DOT11_CURRENT_OFFLOAD_CAPABILITY(Structure):
     uReserved: UInt32
     uFlags: UInt32
@@ -1522,7 +1514,7 @@ class DOT11_DEFAULT_WEP_OFFLOAD(Structure):
     dot11IV48Counters: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_IV48_COUNTER * 16
     usDot11RWBitMaps: UInt16 * 16
     usKeyLength: UInt16
-    ucKey: FlexibleArray[Byte]
+    ucKey: Byte * 1
 class DOT11_DEFAULT_WEP_UPLOAD(Structure):
     uReserved: UInt32
     dot11OffloadType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_OFFLOAD_TYPE
@@ -1550,7 +1542,7 @@ class DOT11_DIVERSITY_SELECTION_RX(Structure):
 class DOT11_DIVERSITY_SELECTION_RX_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11DiversitySelectionRx: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_DIVERSITY_SELECTION_RX]
+    dot11DiversitySelectionRx: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_DIVERSITY_SELECTION_RX * 1
 DOT11_DIVERSITY_SUPPORT = Int32
 dot11_diversity_support_unknown: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_DIVERSITY_SUPPORT = 0
 dot11_diversity_support_fixedlist: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_DIVERSITY_SUPPORT = 1
@@ -1681,7 +1673,7 @@ class DOT11_HOPPING_PATTERN_ENTRY(Structure):
 class DOT11_HOPPING_PATTERN_ENTRY_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11HoppingPatternEntry: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_HOPPING_PATTERN_ENTRY]
+    dot11HoppingPatternEntry: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_HOPPING_PATTERN_ENTRY * 1
 DOT11_HOP_ALGO_ADOPTED = Int32
 dot11_hop_algo_current: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_HOP_ALGO_ADOPTED = 0
 dot11_hop_algo_hop_index: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_HOP_ALGO_ADOPTED = 1
@@ -1767,28 +1759,28 @@ class DOT11_JOIN_REQUEST(Structure):
 class DOT11_KEY_ALGO_BIP(Structure):
     ucIPN: Byte * 6
     ulBIPKeyLength: UInt32
-    ucBIPKey: FlexibleArray[Byte]
+    ucBIPKey: Byte * 1
 class DOT11_KEY_ALGO_BIP_GMAC_256(Structure):
     ucIPN: Byte * 6
     ulBIPGmac256KeyLength: UInt32
-    ucBIPGmac256Key: FlexibleArray[Byte]
+    ucBIPGmac256Key: Byte * 1
 class DOT11_KEY_ALGO_CCMP(Structure):
     ucIV48Counter: Byte * 6
     ulCCMPKeyLength: UInt32
-    ucCCMPKey: FlexibleArray[Byte]
+    ucCCMPKey: Byte * 1
 class DOT11_KEY_ALGO_GCMP(Structure):
     ucIV48Counter: Byte * 6
     ulGCMPKeyLength: UInt32
-    ucGCMPKey: FlexibleArray[Byte]
+    ucGCMPKey: Byte * 1
 class DOT11_KEY_ALGO_GCMP_256(Structure):
     ucIV48Counter: Byte * 6
     ulGCMP256KeyLength: UInt32
-    ucGCMP256Key: FlexibleArray[Byte]
+    ucGCMP256Key: Byte * 1
 class DOT11_KEY_ALGO_TKIP_MIC(Structure):
     ucIV48Counter: Byte * 6
     ulTKIPKeyLength: UInt32
     ulMICKeyLength: UInt32
-    ucTKIPMICKeys: FlexibleArray[Byte]
+    ucTKIPMICKeys: Byte * 1
 DOT11_KEY_DIRECTION = Int32
 dot11_key_direction_both: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_KEY_DIRECTION = 1
 dot11_key_direction_inbound: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_KEY_DIRECTION = 2
@@ -1804,7 +1796,7 @@ class DOT11_MAC_ADDRESS_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    MacAddrs: FlexibleArray[Byte]
+    MacAddrs: Byte * 6
 class DOT11_MAC_FRAME_STATISTICS(Structure):
     ullTransmittedFrameCount: UInt64
     ullReceivedFrameCount: UInt64
@@ -1861,14 +1853,14 @@ class DOT11_MANUFACTURING_SELF_TEST_QUERY_RESULTS(Structure):
     uPinFailedBitMask: UInt32
     pvContext: VoidPtr
     uBytesWrittenOut: UInt32
-    ucBufferOut: FlexibleArray[Byte]
+    ucBufferOut: Byte * 1
 class DOT11_MANUFACTURING_SELF_TEST_SET_PARAMS(Structure):
     SelfTestType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MANUFACTURING_SELF_TEST_TYPE
     uTestID: UInt32
     uPinBitMask: UInt32
     pvContext: VoidPtr
     uBufferLength: UInt32
-    ucBufferIn: FlexibleArray[Byte]
+    ucBufferIn: Byte * 1
 DOT11_MANUFACTURING_SELF_TEST_TYPE = Int32
 DOT11_MANUFACTURING_SELF_TEST_TYPE_INTERFACE: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MANUFACTURING_SELF_TEST_TYPE = 1
 DOT11_MANUFACTURING_SELF_TEST_TYPE_RF_INTERFACE: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MANUFACTURING_SELF_TEST_TYPE = 2
@@ -1876,18 +1868,18 @@ DOT11_MANUFACTURING_SELF_TEST_TYPE_BT_COEXISTENCE: win32more.Windows.Win32.Netwo
 class DOT11_MANUFACTURING_TEST(Structure):
     dot11ManufacturingTestType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MANUFACTURING_TEST_TYPE
     uBufferLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_MANUFACTURING_TEST_QUERY_DATA(Structure):
     uKey: UInt32
     uOffset: UInt32
     uBufferLength: UInt32
     uBytesRead: UInt32
-    ucBufferOut: FlexibleArray[Byte]
+    ucBufferOut: Byte * 1
 class DOT11_MANUFACTURING_TEST_SET_DATA(Structure):
     uKey: UInt32
     uOffset: UInt32
     uBufferLength: UInt32
-    ucBufferIn: FlexibleArray[Byte]
+    ucBufferIn: Byte * 1
 class DOT11_MANUFACTURING_TEST_SLEEP(Structure):
     uSleepTime: UInt32
     pvContext: VoidPtr
@@ -1907,7 +1899,7 @@ dot11_manufacturing_test_IHV_end: win32more.Windows.Win32.NetworkManagement.WiFi
 class DOT11_MD_CAPABILITY_ENTRY_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11MDCapabilityEntry: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MULTI_DOMAIN_CAPABILITY_ENTRY]
+    dot11MDCapabilityEntry: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MULTI_DOMAIN_CAPABILITY_ENTRY * 1
 class DOT11_MPDU_MAX_LENGTH_INDICATION(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uPhyId: UInt32
@@ -1942,11 +1934,11 @@ class DOT11_NETWORK(Structure):
 class DOT11_NETWORK_LIST(Structure):
     dwNumberOfItems: UInt32
     dwIndex: UInt32
-    Network: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_NETWORK]
+    Network: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_NETWORK * 1
 class DOT11_NIC_SPECIFIC_EXTENSION(Structure):
     uBufferLength: UInt32
     uTotalBufferLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_OFDM_PHY_ATTRIBUTES(Structure):
     uFrequencyBandsSupported: UInt32
 class DOT11_OFFLOAD_CAPABILITY(Structure):
@@ -1969,7 +1961,7 @@ class DOT11_OFFLOAD_NETWORK_LIST_INFO(Structure):
     FastScanIterations: UInt32
     SlowScanPeriod: UInt32
     uNumOfEntries: UInt32
-    offloadNetworkList: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_OFFLOAD_NETWORK]
+    offloadNetworkList: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_OFFLOAD_NETWORK * 1
 class DOT11_OFFLOAD_NETWORK_STATUS_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     Status: Int32
@@ -2009,7 +2001,7 @@ class DOT11_PEER_INFO_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    PeerInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PEER_INFO]
+    PeerInfo: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PEER_INFO * 1
 class DOT11_PEER_STATISTICS(Structure):
     ullDecryptSuccessCount: UInt64
     ullDecryptFailureCount: UInt64
@@ -2065,7 +2057,6 @@ class DOT11_PHY_FREQUENCY_ADOPTED_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     ulPhyId: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ulChannel: UInt32
         ulFrequency: UInt32
@@ -2073,7 +2064,7 @@ class DOT11_PHY_ID_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11PhyId: FlexibleArray[UInt32]
+    dot11PhyId: UInt32 * 1
 class DOT11_PHY_STATE_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uPhyId: UInt32
@@ -2103,12 +2094,12 @@ class DOT11_PHY_TYPE_INFO(Structure):
     uMaxChannelTime: UInt32
     ChDescriptionType: win32more.Windows.Win32.NetworkManagement.WiFi.CH_DESCRIPTION_TYPE
     uChannelListSize: UInt32
-    ucChannelListBuffer: FlexibleArray[Byte]
+    ucChannelListBuffer: Byte * 1
 class DOT11_PHY_TYPE_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11PhyType: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE]
+    dot11PhyType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE * 1
 class DOT11_PMKID_CANDIDATE_LIST_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uCandidateListSize: UInt32
@@ -2121,7 +2112,7 @@ class DOT11_PMKID_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    PMKIDs: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PMKID_ENTRY]
+    PMKIDs: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PMKID_ENTRY * 1
 class DOT11_PORT_STATE(Structure):
     PeerMacAddress: Byte * 6
     uSessionId: UInt32
@@ -2164,7 +2155,7 @@ class DOT11_PRIVACY_EXEMPTION_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    PrivacyExemptionEntries: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PRIVACY_EXEMPTION]
+    PrivacyExemptionEntries: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PRIVACY_EXEMPTION * 1
 class DOT11_PROVISION_DISCOVERY_REQUEST_SEND_COMPLETE_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     PeerDeviceAddress: Byte * 6
@@ -2271,7 +2262,7 @@ class DOT11_RECV_EXTENSION_INFO(Structure):
     usDot11RightRWBitMap: UInt16
     usNumberOfMPDUsReceived: UInt16
     usNumberOfFragments: UInt16
-    pNdisPackets: FlexibleArray[VoidPtr]
+    pNdisPackets: VoidPtr * 1
 class DOT11_RECV_EXTENSION_INFO_V2(Structure):
     uVersion: UInt32
     pvReserved: VoidPtr
@@ -2293,7 +2284,7 @@ class DOT11_RECV_EXTENSION_INFO_V2(Structure):
     usDot11RightRWBitMap: UInt16
     usNumberOfMPDUsReceived: UInt16
     usNumberOfFragments: UInt16
-    pNdisPackets: FlexibleArray[VoidPtr]
+    pNdisPackets: VoidPtr * 1
 class DOT11_RECV_SENSITIVITY(Structure):
     ucDataRate: Byte
     lRSSIMin: Int32
@@ -2302,15 +2293,14 @@ class DOT11_RECV_SENSITIVITY_LIST(Structure):
     Anonymous: _Anonymous_e__Union
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11RecvSensitivity: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_RECV_SENSITIVITY]
-    _anonymous_ = ('Anonymous',)
+    dot11RecvSensitivity: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_RECV_SENSITIVITY * 1
     class _Anonymous_e__Union(Union):
         dot11PhyType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE
         uPhyId: UInt32
 class DOT11_REG_DOMAINS_SUPPORT_VALUE(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11RegDomainValue: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_REG_DOMAIN_VALUE]
+    dot11RegDomainValue: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_REG_DOMAIN_VALUE * 1
 class DOT11_REG_DOMAIN_VALUE(Structure):
     uRegDomainsSupportIndex: UInt32
     uRegDomainsSupportValue: UInt32
@@ -2347,7 +2337,7 @@ class DOT11_SCAN_REQUEST(Structure):
     uNumOfPhyTypes: UInt32
     uIEsOffset: UInt32
     uIEsLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_SCAN_REQUEST_V2(Structure):
     dot11BSSType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_BSS_TYPE
     dot11BSSID: Byte * 6
@@ -2362,7 +2352,7 @@ class DOT11_SCAN_REQUEST_V2(Structure):
     uNumOfPhyTypeInfos: UInt32
     uIEsOffset: UInt32
     uIEsLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 DOT11_SCAN_TYPE = Int32
 dot11_scan_type_active: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SCAN_TYPE = 1
 dot11_scan_type_passive: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SCAN_TYPE = 2
@@ -2371,7 +2361,7 @@ dot11_scan_type_forced: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SCA
 class DOT11_SECURITY_PACKET_HEADER(Structure):
     PeerMac: Byte * 6
     usEtherType: UInt16
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
     _pack_ = 1
 class DOT11_SEND_GO_NEGOTIATION_CONFIRMATION_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
@@ -2465,7 +2455,7 @@ class DOT11_SSID_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    SSIDs: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID]
+    SSIDs: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID * 1
 class DOT11_START_REQUEST(Structure):
     uStartFailureTimeout: UInt32
     OperationalRateSet: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_RATE_SET
@@ -2478,7 +2468,7 @@ class DOT11_STATISTICS(Structure):
     ullReserved: UInt64
     MacUcastCounters: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MAC_FRAME_STATISTICS
     MacMcastCounters: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_MAC_FRAME_STATISTICS
-    PhyCounters: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_FRAME_STATISTICS]
+    PhyCounters: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_FRAME_STATISTICS * 1
 class DOT11_STATUS_INDICATION(Structure):
     uStatusType: UInt32
     ndisStatus: Int32
@@ -2491,7 +2481,7 @@ class DOT11_SUPPORTED_ANTENNA(Structure):
 class DOT11_SUPPORTED_ANTENNA_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11SupportedAntenna: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SUPPORTED_ANTENNA]
+    dot11SupportedAntenna: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SUPPORTED_ANTENNA * 1
 class DOT11_SUPPORTED_DATA_RATES_VALUE(Structure):
     ucSupportedTxDataRatesValue: Byte * 8
     ucSupportedRxDataRatesValue: Byte * 8
@@ -2503,17 +2493,17 @@ class DOT11_SUPPORTED_DSSS_CHANNEL(Structure):
 class DOT11_SUPPORTED_DSSS_CHANNEL_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11SupportedDSSSChannel: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SUPPORTED_DSSS_CHANNEL]
+    dot11SupportedDSSSChannel: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SUPPORTED_DSSS_CHANNEL * 1
 class DOT11_SUPPORTED_OFDM_FREQUENCY(Structure):
     uCenterFrequency: UInt32
 class DOT11_SUPPORTED_OFDM_FREQUENCY_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11SupportedOFDMFrequency: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SUPPORTED_OFDM_FREQUENCY]
+    dot11SupportedOFDMFrequency: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SUPPORTED_OFDM_FREQUENCY * 1
 class DOT11_SUPPORTED_PHY_TYPES(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11PHYType: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE]
+    dot11PHYType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE * 1
 class DOT11_SUPPORTED_POWER_LEVELS(Structure):
     uNumOfSupportedPowerLevels: UInt32
     uTxPowerLevelValues: UInt32 * 8
@@ -2529,7 +2519,7 @@ class DOT11_TKIPMIC_FAILURE_PARAMETERS(Structure):
 class DOT11_UPDATE_IE(Structure):
     dot11UpdateIEOp: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_UPDATE_IE_OP
     uBufferLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 DOT11_UPDATE_IE_OP = Int32
 dot11_update_ie_op_create_replace: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_UPDATE_IE_OP = 1
 dot11_update_ie_op_delete: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_UPDATE_IE_OP = 2
@@ -2539,7 +2529,7 @@ class DOT11_VENUEINFO(Structure):
 class DOT11_VWIFI_ATTRIBUTES(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uTotalNumOfEntries: UInt32
-    Combinations: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_VWIFI_COMBINATION]
+    Combinations: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_VWIFI_COMBINATION * 1
 class DOT11_VWIFI_COMBINATION(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumInfrastructure: UInt32
@@ -2573,7 +2563,7 @@ class DOT11_WEP_OFFLOAD(Structure):
     dot11IV48Counters: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_IV48_COUNTER * 16
     usDot11RWBitMaps: UInt16 * 16
     usKeyLength: UInt16
-    ucKey: FlexibleArray[Byte]
+    ucKey: Byte * 1
 class DOT11_WEP_UPLOAD(Structure):
     uReserved: UInt32
     dot11OffloadType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_OFFLOAD_TYPE
@@ -2596,7 +2586,7 @@ class DOT11_WFD_ADVERTISED_SERVICE_DESCRIPTOR(Structure):
     ServiceName: Byte * 255
 class DOT11_WFD_ADVERTISED_SERVICE_LIST(Structure):
     ServiceCount: UInt16
-    AdvertisedService: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_ADVERTISED_SERVICE_DESCRIPTOR]
+    AdvertisedService: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_ADVERTISED_SERVICE_DESCRIPTOR * 1
 class DOT11_WFD_ADVERTISEMENT_ID(Structure):
     AdvertisementID: UInt32
     ServiceAddress: Byte * 6
@@ -2690,8 +2680,8 @@ dot11_wfd_discover_type_auto: win32more.Windows.Win32.NetworkManagement.WiFi.DOT
 dot11_wfd_discover_type_scan_social_channels: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_DISCOVER_TYPE = 4
 dot11_wfd_discover_type_forced: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_DISCOVER_TYPE = -2147483648
 class DOT11_WFD_GO_INTENT(Structure):
-    TieBreaker: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Intent: Annotated[Byte, NativeBitfieldAttribute(7)]
+    TieBreaker: Annotated[Byte, 1]
+    Intent: Annotated[Byte, 7]
 class DOT11_WFD_GROUP_ID(Structure):
     DeviceAddress: Byte * 6
     SSID: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID
@@ -2722,8 +2712,8 @@ class DOT11_WFD_GROUP_START_PARAMETERS(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     AdvertisedOperatingChannel: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_CHANNEL
 class DOT11_WFD_INVITATION_FLAGS(Structure):
-    InvitationType: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Reserved: Annotated[Byte, NativeBitfieldAttribute(7)]
+    InvitationType: Annotated[Byte, 1]
+    Reserved: Annotated[Byte, 7]
 DOT11_WFD_SCAN_TYPE = Int32
 dot11_wfd_scan_type_active: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_SCAN_TYPE = 1
 dot11_wfd_scan_type_passive: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_SCAN_TYPE = 2
@@ -2732,10 +2722,10 @@ class DOT11_WFD_SECONDARY_DEVICE_TYPE_LIST(Structure):
     Header: win32more.Windows.Win32.NetworkManagement.Ndis.NDIS_OBJECT_HEADER
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    SecondaryDeviceTypes: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_DEVICE_TYPE]
+    SecondaryDeviceTypes: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WFD_DEVICE_TYPE * 1
 class DOT11_WFD_SERVICE_HASH_LIST(Structure):
     ServiceHashCount: UInt16
-    ServiceHash: FlexibleArray[Byte]
+    ServiceHash: Byte * 6
 class DOT11_WFD_SESSION_ID(Structure):
     SessionID: UInt32
     SessionAddress: Byte * 6
@@ -2751,14 +2741,14 @@ class DOT11_WME_AC_PARAMETERS(Structure):
 class DOT11_WME_AC_PARAMETERS_LIST(Structure):
     uNumOfEntries: UInt32
     uTotalNumOfEntries: UInt32
-    dot11WMEACParameters: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WME_AC_PARAMETERS]
+    dot11WMEACParameters: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_WME_AC_PARAMETERS * 1
 class DOT11_WME_UPDATE_IE(Structure):
     uParamElemMinBeaconIntervals: UInt32
     uWMEInfoElemOffset: UInt32
     uWMEInfoElemLength: UInt32
     uWMEParamElemOffset: UInt32
     uWMEParamElemLength: UInt32
-    ucBuffer: FlexibleArray[Byte]
+    ucBuffer: Byte * 1
 class DOT11_WPA_TSC(Structure):
     uReserved: UInt32
     dot11OffloadType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_OFFLOAD_TYPE
@@ -2929,12 +2919,12 @@ class ONEX_AUTH_PARAMS(Structure):
     oneXConnProfile: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
     authIdentity: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_AUTH_IDENTITY
     dwQuarantineState: UInt32
-    fSessionId: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fhUserToken: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fOnexUserProfile: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fIdentity: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fUserName: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fDomain: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fSessionId: Annotated[UInt32, 1]
+    fhUserToken: Annotated[UInt32, 1]
+    fOnexUserProfile: Annotated[UInt32, 1]
+    fIdentity: Annotated[UInt32, 1]
+    fUserName: Annotated[UInt32, 1]
+    fDomain: Annotated[UInt32, 1]
     dwSessionId: UInt32
     hUserToken: win32more.Windows.Win32.Foundation.HANDLE
     OneXUserProfile: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
@@ -2965,8 +2955,8 @@ class ONEX_EAP_ERROR(Structure):
     rootCauseGuid: Guid
     repairGuid: Guid
     helpLinkGuid: Guid
-    fRootCauseString: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fRepairString: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fRootCauseString: Annotated[UInt32, 1]
+    fRepairString: Annotated[UInt32, 1]
     RootCauseString: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
     RepairString: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
 ONEX_EAP_METHOD_BACKEND_SUPPORT = Int32
@@ -3006,8 +2996,8 @@ class ONEX_RESULT_UPDATE_DATA(Structure):
     oneXStatus: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_STATUS
     BackendSupport: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_EAP_METHOD_BACKEND_SUPPORT
     fBackendEngaged: win32more.Windows.Win32.Foundation.BOOL
-    fOneXAuthParams: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fEapError: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fOneXAuthParams: Annotated[UInt32, 1]
+    fEapError: Annotated[UInt32, 1]
     authParams: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
     eapError: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
 class ONEX_STATUS(Structure):
@@ -3016,59 +3006,13 @@ class ONEX_STATUS(Structure):
     dwError: UInt32
 class ONEX_USER_INFO(Structure):
     authIdentity: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_AUTH_IDENTITY
-    fUserName: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fDomainName: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fUserName: Annotated[UInt32, 1]
+    fDomainName: Annotated[UInt32, 1]
     UserName: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
     DomainName: win32more.Windows.Win32.NetworkManagement.WiFi.ONEX_VARIABLE_BLOB
 class ONEX_VARIABLE_BLOB(Structure):
     dwSize: UInt32
     dwOffset: UInt32
-class RSNA_AKM_CIPHER_PAIR(Structure):
-    akm: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE
-    cipher: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE
-RSNA_AKM_SUITE = Int32
-rsna_akm_none: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 11276032
-rsna_akm_1x: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 28053248
-rsna_akm_psk: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 44830464
-rsna_akm_ft_1x_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 61607680
-rsna_akm_ft_psk_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 78384896
-rsna_akm_1x_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 95162112
-rsna_akm_psk_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 111939328
-rsna_akm_tdls_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 128716544
-rsna_akm_sae_pmk256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 145493760
-rsna_akm_ft_sae_pmk256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 162270976
-rsna_akm_peerkey_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 179048192
-rsna_akm_1x_suite_b_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 195825408
-rsna_akm_1x_suite_b_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 212602624
-rsna_akm_ft_1x_sha384_cmp_256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 229379840
-rsna_akm_fils_1x_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 246157056
-rsna_akm_fils_1x_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 262934272
-rsna_akm_ft_fils_1x_sha256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 279711488
-rsna_akm_ft_fils_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 296488704
-rsna_akm_owe: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 313265920
-rsna_akm_ft_psk_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 330043136
-rsna_akm_psk_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 346820352
-rsna_akm_ft_1x_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 380374784
-rsna_akm_1x_sha384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 397152000
-rsna_akm_sae_pmk384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 413929216
-rsna_akm_ft_sae_pmk384: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 430706432
-rsna_akm_max: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_AKM_SUITE = 430706432
-RSNA_CIPHER_SUITE = Int32
-rsna_cipher_group: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 11276032
-rsna_cipher_wep40: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 28053248
-rsna_cipher_tkip: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 44830464
-rsna_cipher_reserved: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 61607680
-rsna_cipher_ccmp_128: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 78384896
-rsna_cipher_wep104: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 95162112
-rsna_cipher_bip_cmac_128: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 111939328
-rsna_cipher_no_group_traffic: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 128716544
-rsna_cipher_gcmp_128: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 145493760
-rsna_cipher_gcmp_256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 162270976
-rsna_cipher_ccmp_256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 179048192
-rsna_cipher_bip_gmac_128: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 195825408
-rsna_cipher_bip_gmac_256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 212602624
-rsna_cipher_bip_cmac_256: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 229379840
-rsna_cipher_max: win32more.Windows.Win32.NetworkManagement.WiFi.RSNA_CIPHER_SUITE = 229379840
 class WDIAG_IHV_WLAN_ID(Structure):
     strProfileName: Char * 256
     Ssid: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID
@@ -3104,7 +3048,7 @@ class WLAN_ASSOCIATION_ATTRIBUTES(Structure):
     ulTxRate: UInt32
 class WLAN_AUTH_CIPHER_PAIR_LIST(Structure):
     dwNumberOfItems: UInt32
-    pAuthCipherPairList: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_CIPHER_PAIR]
+    pAuthCipherPairList: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_AUTH_CIPHER_PAIR * 1
 WLAN_AUTOCONF_OPCODE = Int32
 wlan_autoconf_opcode_start: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_AUTOCONF_OPCODE = 0
 wlan_autoconf_opcode_show_denied_networks: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_AUTOCONF_OPCODE = 1
@@ -3133,11 +3077,11 @@ class WLAN_AVAILABLE_NETWORK(Structure):
 class WLAN_AVAILABLE_NETWORK_LIST(Structure):
     dwNumberOfItems: UInt32
     dwIndex: UInt32
-    Network: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_AVAILABLE_NETWORK]
+    Network: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_AVAILABLE_NETWORK * 1
 class WLAN_AVAILABLE_NETWORK_LIST_V2(Structure):
     dwNumberOfItems: UInt32
     dwIndex: UInt32
-    Network: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_AVAILABLE_NETWORK_V2]
+    Network: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_AVAILABLE_NETWORK_V2 * 1
 class WLAN_AVAILABLE_NETWORK_V2(Structure):
     strProfileName: Char * 256
     dot11Ssid: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_SSID
@@ -3177,7 +3121,7 @@ class WLAN_BSS_ENTRY(Structure):
 class WLAN_BSS_LIST(Structure):
     dwTotalSize: UInt32
     dwNumberOfItems: UInt32
-    wlanBssEntries: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_BSS_ENTRY]
+    wlanBssEntries: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_BSS_ENTRY * 1
 class WLAN_CONNECTION_ATTRIBUTES(Structure):
     isState: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTERFACE_STATE
     wlanConnectionMode: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_CONNECTION_MODE
@@ -3199,7 +3143,7 @@ class WLAN_CONNECTION_NOTIFICATION_DATA(Structure):
     bSecurityEnabled: win32more.Windows.Win32.Foundation.BOOL
     wlanReasonCode: UInt32
     dwFlags: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_CONNECTION_NOTIFICATION_FLAGS
-    strProfileXml: FlexibleArray[Char]
+    strProfileXml: Char * 1
 WLAN_CONNECTION_NOTIFICATION_FLAGS = UInt32
 WLAN_CONNECTION_NOTIFICATION_ADHOC_NETWORK_FORMED: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_CONNECTION_NOTIFICATION_FLAGS = 1
 WLAN_CONNECTION_NOTIFICATION_CONSOLE_USER_PROFILE: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_CONNECTION_NOTIFICATION_FLAGS = 4
@@ -3219,24 +3163,18 @@ class WLAN_CONNECTION_PARAMETERS_V2(Structure):
     dot11BssType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_BSS_TYPE
     dwFlags: UInt32
     pDot11AccessNetworkOptions: POINTER(win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_ACCESSNETWORKOPTIONS)
-class WLAN_CONNECTION_QOS_INFO(Structure):
-    peerCapabilities: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_QOS_CAPABILITIES
-    bMSCSConfigured: win32more.Windows.Win32.Foundation.BOOL
-    bDSCPToUPMappingConfigured: win32more.Windows.Win32.Foundation.BOOL
-    ulNumConfiguredSCSStreams: UInt32
-    ulNumConfiguredDSCPPolicies: UInt32
 class WLAN_COUNTRY_OR_REGION_STRING_LIST(Structure):
     dwNumberOfItems: UInt32
-    pCountryOrRegionStringList: FlexibleArray[Byte]
+    pCountryOrRegionStringList: Byte * 3
 class WLAN_DEVICE_SERVICE_GUID_LIST(Structure):
     dwNumberOfItems: UInt32
     dwIndex: UInt32
-    DeviceService: FlexibleArray[Guid]
+    DeviceService: Guid * 1
 class WLAN_DEVICE_SERVICE_NOTIFICATION_DATA(Structure):
     DeviceService: Guid
     dwOpCode: UInt32
     dwDataSize: UInt32
-    DataBlob: FlexibleArray[Byte]
+    DataBlob: Byte * 1
 WLAN_FILTER_LIST_TYPE = Int32
 wlan_filter_list_type_gp_permit: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_FILTER_LIST_TYPE = 0
 wlan_filter_list_type_gp_deny: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_FILTER_LIST_TYPE = 1
@@ -3315,7 +3253,7 @@ class WLAN_HOSTED_NETWORK_STATUS(Structure):
     dot11PhyType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE
     ulChannelFrequency: UInt32
     dwNumberOfPeers: UInt32
-    PeerList: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_HOSTED_NETWORK_PEER_STATE]
+    PeerList: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_HOSTED_NETWORK_PEER_STATE * 1
 WLAN_IHV_CONTROL_TYPE = Int32
 wlan_ihv_control_type_service: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_IHV_CONTROL_TYPE = 0
 wlan_ihv_control_type_driver: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_IHV_CONTROL_TYPE = 1
@@ -3333,7 +3271,7 @@ class WLAN_INTERFACE_INFO(Structure):
 class WLAN_INTERFACE_INFO_LIST(Structure):
     dwNumberOfItems: UInt32
     dwIndex: UInt32
-    InterfaceInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTERFACE_INFO]
+    InterfaceInfo: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTERFACE_INFO * 1
 WLAN_INTERFACE_STATE = Int32
 wlan_interface_state_not_ready: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTERFACE_STATE = 0
 wlan_interface_state_connected: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTERFACE_STATE = 1
@@ -3367,8 +3305,6 @@ wlan_intf_opcode_hosted_network_capable: win32more.Windows.Win32.NetworkManageme
 wlan_intf_opcode_management_frame_protection_capable: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 16
 wlan_intf_opcode_secondary_sta_interfaces: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 17
 wlan_intf_opcode_secondary_sta_synchronized_connections: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 18
-wlan_intf_opcode_realtime_connection_quality: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 19
-wlan_intf_opcode_qos_info: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 20
 wlan_intf_opcode_autoconf_end: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 268435455
 wlan_intf_opcode_msm_start: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 268435712
 wlan_intf_opcode_statistics: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_INTF_OPCODE = 268435713
@@ -3511,16 +3447,7 @@ class WLAN_PROFILE_INFO(Structure):
 class WLAN_PROFILE_INFO_LIST(Structure):
     dwNumberOfItems: UInt32
     dwIndex: UInt32
-    ProfileInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_PROFILE_INFO]
-class WLAN_QOS_CAPABILITIES(Structure):
-    bMSCSSupported: win32more.Windows.Win32.Foundation.BOOL
-    bDSCPToUPMappingSupported: win32more.Windows.Win32.Foundation.BOOL
-    bSCSSupported: win32more.Windows.Win32.Foundation.BOOL
-    bDSCPPolicySupported: win32more.Windows.Win32.Foundation.BOOL
-class WLAN_QOS_INFO(Structure):
-    interfaceCapabilities: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_QOS_CAPABILITIES
-    bConnected: win32more.Windows.Win32.Foundation.BOOL
-    connectionQoSInfo: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_CONNECTION_QOS_INFO
+    ProfileInfo: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_PROFILE_INFO * 1
 class WLAN_RADIO_STATE(Structure):
     dwNumberOfPhys: UInt32
     PhyRadioState: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_PHY_RADIO_STATE * 64
@@ -3529,28 +3456,14 @@ class WLAN_RATE_SET(Structure):
     usRateSet: UInt16 * 126
 class WLAN_RAW_DATA(Structure):
     dwDataSize: UInt32
-    DataBlob: FlexibleArray[Byte]
+    DataBlob: Byte * 1
 class WLAN_RAW_DATA_LIST(Structure):
     dwTotalSize: UInt32
     dwNumberOfItems: UInt32
-    DataList: FlexibleArray[_Anonymous_e__Struct]
+    DataList: _Anonymous_e__Struct * 1
     class _Anonymous_e__Struct(Structure):
         dwDataOffset: UInt32
         dwDataSize: UInt32
-class WLAN_REALTIME_CONNECTION_QUALITY(Structure):
-    dot11PhyType: win32more.Windows.Win32.NetworkManagement.WiFi.DOT11_PHY_TYPE
-    ulLinkQuality: UInt32
-    ulRxRate: UInt32
-    ulTxRate: UInt32
-    bIsMLOConnection: win32more.Windows.Win32.Foundation.BOOL
-    ulNumLinks: UInt32
-    linksInfo: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_REALTIME_CONNECTION_QUALITY_LINK_INFO]
-class WLAN_REALTIME_CONNECTION_QUALITY_LINK_INFO(Structure):
-    ucLinkID: Byte
-    ulChannelCenterFrequencyMhz: UInt32
-    ulBandwidth: UInt32
-    lRssi: Int32
-    wlanRateSet: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_RATE_SET
 WLAN_SECURABLE_OBJECT = Int32
 wlan_secure_permit_list: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_SECURABLE_OBJECT = 0
 wlan_secure_deny_list: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_SECURABLE_OBJECT = 1
@@ -3584,24 +3497,11 @@ class WLAN_STATISTICS(Structure):
     MacUcastCounters: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_MAC_FRAME_STATISTICS
     MacMcastCounters: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_MAC_FRAME_STATISTICS
     dwNumberOfPhys: UInt32
-    PhyCounters: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_PHY_FRAME_STATISTICS]
+    PhyCounters: win32more.Windows.Win32.NetworkManagement.WiFi.WLAN_PHY_FRAME_STATISTICS * 1
 WL_DISPLAY_PAGES = Int32
 WLConnectionPage: win32more.Windows.Win32.NetworkManagement.WiFi.WL_DISPLAY_PAGES = 0
 WLSecurityPage: win32more.Windows.Win32.NetworkManagement.WiFi.WL_DISPLAY_PAGES = 1
 WLAdvPage: win32more.Windows.Win32.NetworkManagement.WiFi.WL_DISPLAY_PAGES = 2
-WPA_AKM_SUITE = Int32
-wpa_akm_none: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_AKM_SUITE = 15880192
-wpa_akm_1x: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_AKM_SUITE = 32657408
-wpa_akm_psk: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_AKM_SUITE = 49434624
-wpa_akm_max: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_AKM_SUITE = 49434624
-WPA_CIPHER_SUITE = Int32
-wpa_cipher_none: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 15880192
-wpa_cipher_wep40: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 32657408
-wpa_cipher_tkip: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 49434624
-wpa_cipher_ccmp_128: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 82989056
-wpa_cipher_wep104: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 99766272
-wpa_cipher_bip_cmac_128: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 116543488
-wpa_cipher_max: win32more.Windows.Win32.NetworkManagement.WiFi.WPA_CIPHER_SUITE = 116543488
 
 
 make_ready(__name__)

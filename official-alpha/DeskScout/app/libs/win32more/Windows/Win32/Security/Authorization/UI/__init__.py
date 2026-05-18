@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Security.Authorization
@@ -115,7 +115,7 @@ class SID_INFO(Structure):
     pwzUPN: win32more.Windows.Win32.Foundation.PWSTR
 class SID_INFO_LIST(Structure):
     cItems: UInt32
-    aSidInfo: FlexibleArray[win32more.Windows.Win32.Security.Authorization.UI.SID_INFO]
+    aSidInfo: win32more.Windows.Win32.Security.Authorization.UI.SID_INFO * 1
 class SI_ACCESS(Structure):
     pguid: POINTER(Guid)
     mask: UInt32

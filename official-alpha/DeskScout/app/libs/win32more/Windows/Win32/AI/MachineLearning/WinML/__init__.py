@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.AI.MachineLearning.WinML
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct3D12
@@ -188,7 +188,6 @@ class MLOperatorAttributeNameValue(Structure):
     type: win32more.Windows.Win32.AI.MachineLearning.WinML.MLOperatorAttributeType
     valueCount: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         reserved: VoidPtr
         ints: POINTER(Int64)
@@ -205,15 +204,12 @@ class MLOperatorAttributeType(Enum, UInt32):
 class MLOperatorEdgeDescription(Structure):
     edgeType: win32more.Windows.Win32.AI.MachineLearning.WinML.MLOperatorEdgeType
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         reserved: UInt64
         tensorDataType: win32more.Windows.Win32.AI.MachineLearning.WinML.MLOperatorTensorDataType
 class MLOperatorEdgeType(Enum, UInt32):
     Undefined = 0
     Tensor = 1
-    SequenceTensor = 2
-    Primitive = 3
 class MLOperatorEdgeTypeConstraint(Structure):
     typeLabel: win32more.Windows.Win32.Foundation.PSTR
     allowedTypes: POINTER(win32more.Windows.Win32.AI.MachineLearning.WinML.MLOperatorEdgeDescription)
@@ -257,7 +253,6 @@ class MLOperatorSchemaEdgeDescription(Structure):
     options: win32more.Windows.Win32.AI.MachineLearning.WinML.MLOperatorParameterOptions
     typeFormat: win32more.Windows.Win32.AI.MachineLearning.WinML.MLOperatorSchemaEdgeTypeFormat
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         reserved: VoidPtr
         typeLabel: win32more.Windows.Win32.Foundation.PSTR
@@ -289,7 +284,6 @@ class WINML_BINDING_DESC(Structure):
     Name: win32more.Windows.Win32.Foundation.PWSTR
     BindType: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_BINDING_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Tensor: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_TENSOR_BINDING_DESC
         Sequence: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_SEQUENCE_BINDING_DESC
@@ -325,7 +319,6 @@ class WINML_MAP_BINDING_DESC(Structure):
     Anonymous1: _Anonymous1_e__Union
     Fields: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_TENSOR_DATA_TYPE
     Anonymous2: _Anonymous2_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pStringKeys: POINTER(win32more.Windows.Win32.Foundation.PWSTR)
         pIntKeys: POINTER(Int64)
@@ -354,7 +347,6 @@ class WINML_SEQUENCE_BINDING_DESC(Structure):
     ElementCount: UInt32
     ElementType: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_TENSOR_DATA_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pStrings: POINTER(win32more.Windows.Win32.Foundation.PWSTR)
         pInts: POINTER(Int64)
@@ -395,7 +387,6 @@ class WINML_VARIABLE_DESC(Structure):
     FeatureType: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_FEATURE_TYPE
     Required: win32more.Windows.Win32.Foundation.BOOL
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Tensor: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_TENSOR_VARIABLE_DESC
         Sequence: win32more.Windows.Win32.AI.MachineLearning.WinML.WINML_SEQUENCE_VARIABLE_DESC

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -129,7 +129,6 @@ CCM_SPECIAL_SUBMENU: win32more.Windows.Win32.System.Mmc.CCM_SPECIAL = 2
 CCM_SPECIAL_DEFAULT_ITEM: win32more.Windows.Win32.System.Mmc.CCM_SPECIAL = 4
 CCM_SPECIAL_INSERTION_POINT: win32more.Windows.Win32.System.Mmc.CCM_SPECIAL = 8
 CCM_SPECIAL_TESTONLY: win32more.Windows.Win32.System.Mmc.CCM_SPECIAL = 16
-CCM_SPECIAL_ELEVATION_ICON: win32more.Windows.Win32.System.Mmc.CCM_SPECIAL = 32
 class CONTEXTMENUITEM(Structure):
     strName: win32more.Windows.Win32.Foundation.PWSTR
     strStatusBarText: win32more.Windows.Win32.Foundation.PWSTR
@@ -892,7 +891,6 @@ class MMC_TASK(Structure):
     szHelpString: win32more.Windows.Win32.Foundation.PWSTR
     eActionType: win32more.Windows.Win32.System.Mmc.MMC_ACTION_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         nCommandID: IntPtr
         szActionURL: win32more.Windows.Win32.Foundation.PWSTR
@@ -903,7 +901,6 @@ class MMC_TASK_DISPLAY_BITMAP(Structure):
 class MMC_TASK_DISPLAY_OBJECT(Structure):
     eDisplayType: win32more.Windows.Win32.System.Mmc.MMC_TASK_DISPLAY_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         uBitmap: win32more.Windows.Win32.System.Mmc.MMC_TASK_DISPLAY_BITMAP
         uSymbol: win32more.Windows.Win32.System.Mmc.MMC_TASK_DISPLAY_SYMBOL
@@ -923,7 +920,7 @@ MMC_VIEW_TYPE_HTML: win32more.Windows.Win32.System.Mmc.MMC_VIEW_TYPE = 1
 MMC_VIEW_TYPE_OCX: win32more.Windows.Win32.System.Mmc.MMC_VIEW_TYPE = 2
 class MMC_VISIBLE_COLUMNS(Structure):
     nVisibleColumns: Int32
-    rgVisibleCols: FlexibleArray[Int32]
+    rgVisibleCols: Int32 * 1
 class MenuItem(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IDispatch
     _iid_ = Guid('{0178fad1-b361-4b27-96ad-67c57ebf2e1d}')
@@ -1012,12 +1009,10 @@ class RESULT_VIEW_TYPE_INFO(Structure):
     eViewType: win32more.Windows.Win32.System.Mmc.MMC_VIEW_TYPE
     dwMiscOptions: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwListOptions: UInt32
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             dwHTMLOptions: UInt32
             pstrURL: win32more.Windows.Win32.Foundation.PWSTR
@@ -1037,20 +1032,20 @@ class SCOPEDATAITEM(Structure):
 class SColumnSetID(Structure):
     dwFlags: UInt32
     cBytes: UInt32
-    id: FlexibleArray[Byte]
+    id: Byte * 1
 class SMMCDataObjects(Structure):
     count: UInt32
-    lpDataObject: FlexibleArray[win32more.Windows.Win32.System.Com.IDataObject]
+    lpDataObject: win32more.Windows.Win32.System.Com.IDataObject * 1
 class SMMCObjectTypes(Structure):
     count: UInt32
-    guid: FlexibleArray[Guid]
+    guid: Guid * 1
 class SNodeID(Structure):
     cBytes: UInt32
-    id: FlexibleArray[Byte]
+    id: Byte * 1
 class SNodeID2(Structure):
     dwFlags: UInt32
     cBytes: UInt32
-    id: FlexibleArray[Byte]
+    id: Byte * 1
 class ScopeNamespace(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IDispatch
     _iid_ = Guid('{ebbb48dc-1a3b-4d86-b786-c21b28389012}')

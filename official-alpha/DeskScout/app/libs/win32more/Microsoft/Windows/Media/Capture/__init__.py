@@ -1,11 +1,13 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Microsoft.UI
 import win32more.Microsoft.Windows.Media.Capture
 import win32more.Windows.Foundation
 import win32more.Windows.Storage
+import win32more.Windows.Win32.System.WinRT
 class CameraCaptureUI(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.Windows.Media.Capture.ICameraCaptureUI
     _classid_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUI'
     def __init__(self, *args, **kwargs):
@@ -27,7 +29,6 @@ class CameraCaptureUI(ComPtr):
     VideoSettings = property(get_VideoSettings, None)
 CameraCaptureUIContract: UInt32 = 65536
 class CameraCaptureUIMaxPhotoResolution(Enum, Int32):
-    _name_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIMaxPhotoResolution'
     HighestAvailable = 0
     VerySmallQvga = 1
     SmallVga = 2
@@ -35,18 +36,16 @@ class CameraCaptureUIMaxPhotoResolution(Enum, Int32):
     Large3M = 4
     VeryLarge5M = 5
 class CameraCaptureUIMaxVideoResolution(Enum, Int32):
-    _name_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIMaxVideoResolution'
     HighestAvailable = 0
     LowDefinition = 1
     StandardDefinition = 2
     HighDefinition = 3
 class CameraCaptureUIMode(Enum, Int32):
-    _name_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIMode'
     PhotoOrVideo = 0
     Photo = 1
     Video = 2
 class CameraCaptureUIPhotoCaptureSettings(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.Windows.Media.Capture.ICameraCaptureUIPhotoCaptureSettings
     _classid_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIPhotoCaptureSettings'
     def __init__(self, *args, **kwargs):
@@ -84,12 +83,11 @@ class CameraCaptureUIPhotoCaptureSettings(ComPtr):
     Format = property(get_Format, put_Format)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class CameraCaptureUIPhotoFormat(Enum, Int32):
-    _name_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIPhotoFormat'
     Jpeg = 0
     Png = 1
     JpegXR = 2
 class CameraCaptureUIVideoCaptureSettings(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.Windows.Media.Capture.ICameraCaptureUIVideoCaptureSettings
     _classid_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIVideoCaptureSettings'
     def __init__(self, *args, **kwargs):
@@ -122,11 +120,10 @@ class CameraCaptureUIVideoCaptureSettings(ComPtr):
     MaxDurationInSeconds = property(get_MaxDurationInSeconds, put_MaxDurationInSeconds)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class CameraCaptureUIVideoFormat(Enum, Int32):
-    _name_ = 'Microsoft.Windows.Media.Capture.CameraCaptureUIVideoFormat'
     Mp4 = 0
     Wmv = 1
 class ICameraCaptureUI(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Windows.Media.Capture.ICameraCaptureUI'
     _iid_ = Guid('{c001d024-c617-5742-9ae1-8fd31be07f6c}')
     @winrt_commethod(6)
@@ -138,13 +135,13 @@ class ICameraCaptureUI(ComPtr):
     PhotoSettings = property(get_PhotoSettings, None)
     VideoSettings = property(get_VideoSettings, None)
 class ICameraCaptureUIFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Windows.Media.Capture.ICameraCaptureUIFactory'
     _iid_ = Guid('{2b49623d-5f22-5fee-991f-14f24592a3c2}')
     @winrt_commethod(6)
     def CreateInstance(self, windowId: win32more.Microsoft.UI.WindowId) -> win32more.Microsoft.Windows.Media.Capture.CameraCaptureUI: ...
 class ICameraCaptureUIPhotoCaptureSettings(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Windows.Media.Capture.ICameraCaptureUIPhotoCaptureSettings'
     _iid_ = Guid('{19fe2155-d018-53fc-bbdc-5781a94687a0}')
     @winrt_commethod(6)
@@ -173,7 +170,7 @@ class ICameraCaptureUIPhotoCaptureSettings(ComPtr):
     Format = property(get_Format, put_Format)
     MaxResolution = property(get_MaxResolution, put_MaxResolution)
 class ICameraCaptureUIVideoCaptureSettings(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Windows.Media.Capture.ICameraCaptureUIVideoCaptureSettings'
     _iid_ = Guid('{47dd74f6-83b7-5123-bbdf-d757201d1ee8}')
     @winrt_commethod(6)

@@ -1,5 +1,6 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Microsoft.Graphics.Canvas
 import win32more.Microsoft.Graphics.Canvas.Brushes
 import win32more.Microsoft.Graphics.Canvas.Text
@@ -8,37 +9,31 @@ import win32more.Windows.Foundation.Collections
 import win32more.Windows.Foundation.Numerics
 import win32more.Windows.UI
 import win32more.Windows.UI.Text
+import win32more.Windows.Win32.System.WinRT
 class CanvasAnalyzedBidi(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi'
     ExplicitLevel: UInt32
     ResolvedLevel: UInt32
 class CanvasAnalyzedBreakpoint(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint'
     BreakBefore: win32more.Microsoft.Graphics.Canvas.Text.CanvasLineBreakCondition
     BreakAfter: win32more.Microsoft.Graphics.Canvas.Text.CanvasLineBreakCondition
     IsWhitespace: Boolean
     IsSoftHyphen: Boolean
 class CanvasAnalyzedGlyphOrientation(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation'
     GlyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation
     AdjustedBidiLevel: UInt32
     IsSideways: Boolean
     IsRightToLeft: Boolean
 class CanvasAnalyzedScript(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript'
     ScriptIdentifier: Int32
     Shape: win32more.Microsoft.Graphics.Canvas.Text.CanvasScriptShape
 class CanvasCharacterRange(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasCharacterRange'
     CharacterIndex: Int32
     CharacterCount: Int32
 class CanvasClusterMetrics(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasClusterMetrics'
     CharacterCount: Int32
     Width: Single
     Properties: win32more.Microsoft.Graphics.Canvas.Text.CanvasClusterProperties
 class CanvasClusterProperties(Enum, UInt32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasClusterProperties'
     None_ = 0
     CanWrapLineAfter = 1
     Whitespace = 2
@@ -46,13 +41,12 @@ class CanvasClusterProperties(Enum, UInt32):
     SoftHyphen = 8
     RightToLeft = 16
 class CanvasDrawTextOptions(Enum, UInt32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasDrawTextOptions'
     Default = 0
     NoPixelSnap = 1
     Clip = 2
     EnableColorFont = 4
 class CanvasFontFace(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontFace'
@@ -127,11 +121,11 @@ class CanvasFontFace(ComPtr):
     @winrt_mixinmethod
     def get_Style(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace) -> win32more.Windows.UI.Text.FontStyle: ...
     @winrt_mixinmethod
-    def get_FamilyNames(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def get_FamilyNames(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_mixinmethod
-    def get_FaceNames(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def get_FaceNames(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_mixinmethod
-    def GetInformationalStrings(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, fontInformation: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontInformation) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def GetInformationalStrings(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, fontInformation: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontInformation) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_mixinmethod
     def HasCharacter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, unicodeValue: UInt32) -> Boolean: ...
     @winrt_mixinmethod
@@ -143,11 +137,11 @@ class CanvasFontFace(ComPtr):
     @winrt_mixinmethod
     def GetSupportedTypographicFeatureNames(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName]: ...
     @winrt_mixinmethod
-    def GetSupportedTypographicFeatureNamesWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: hstr) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName]: ...
+    def GetSupportedTypographicFeatureNamesWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: WinRT_String) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName]: ...
     @winrt_mixinmethod
     def GetTypographicFeatureGlyphSupport(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, typographicFeatureName: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName, glyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]) -> ReceiveArray[Boolean]: ...
     @winrt_mixinmethod
-    def GetTypographicFeatureGlyphSupportWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, typographicFeatureName: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName, glyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], locale: hstr) -> ReceiveArray[Boolean]: ...
+    def GetTypographicFeatureGlyphSupportWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontFace, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, typographicFeatureName: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName, glyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], locale: WinRT_String) -> ReceiveArray[Boolean]: ...
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     Ascent = property(get_Ascent, None)
@@ -182,7 +176,6 @@ class CanvasFontFace(ComPtr):
     UnicodeRanges = property(get_UnicodeRanges, None)
     Weight = property(get_Weight, None)
 class CanvasFontFileFormatType(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontFileFormatType'
     Cff = 0
     TrueType = 1
     TrueTypeCollection = 2
@@ -192,7 +185,6 @@ class CanvasFontFileFormatType(Enum, Int32):
     Unknown = 6
     RawCff = 7
 class CanvasFontInformation(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontInformation'
     None_ = 0
     CopyrightNotice = 1
     VersionStrings = 2
@@ -216,12 +208,10 @@ class CanvasFontInformation(Enum, Int32):
     DesignScriptLanguageTag = 20
     SupportedScriptLanguageTag = 21
 class CanvasFontProperty(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontProperty'
     Identifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier
-    Value: hstr
-    Locale: hstr
+    Value: WinRT_String
+    Locale: WinRT_String
 class CanvasFontPropertyIdentifier(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier'
     None_ = 0
     FamilyName = 1
     PreferredFamilyName = 2
@@ -237,7 +227,7 @@ class CanvasFontPropertyIdentifier(Enum, Int32):
     Style = 12
     Total = 13
 class CanvasFontSet(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontSet'
@@ -257,13 +247,13 @@ class CanvasFontSet(ComPtr):
     @winrt_mixinmethod
     def GetMatchingFontsFromProperties(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, propertyElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
     @winrt_mixinmethod
-    def GetMatchingFontsFromWwsFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, familyName: hstr, weight: win32more.Windows.UI.Text.FontWeight, stretch: win32more.Windows.UI.Text.FontStretch, style: win32more.Windows.UI.Text.FontStyle) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
+    def GetMatchingFontsFromWwsFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, familyName: WinRT_String, weight: win32more.Windows.UI.Text.FontWeight, stretch: win32more.Windows.UI.Text.FontStretch, style: win32more.Windows.UI.Text.FontStyle) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
     @winrt_mixinmethod
     def CountFontsMatchingProperty(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, property: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty) -> UInt32: ...
     @winrt_mixinmethod
-    def GetPropertyValuesFromIndex(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, fontIndex: UInt32, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def GetPropertyValuesFromIndex(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, fontIndex: UInt32, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_mixinmethod
-    def GetPropertyValuesFromIdentifier(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier, preferredLocaleNames: hstr) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]: ...
+    def GetPropertyValuesFromIdentifier(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier, preferredLocaleNames: WinRT_String) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]: ...
     @winrt_mixinmethod
     def GetPropertyValues(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSet, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]: ...
     @winrt_mixinmethod
@@ -272,18 +262,15 @@ class CanvasFontSet(ComPtr):
     def GetSystemFontSet(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasFontSetStatics) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
     Fonts = property(get_Fonts, None)
 class CanvasFontSimulations(Enum, UInt32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasFontSimulations'
     None_ = 0
     Bold = 1
     Oblique = 2
 class CanvasGlyph(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasGlyph'
     Index: Int32
     Advance: Single
     AdvanceOffset: Single
     AscenderOffset: Single
 class CanvasGlyphJustification(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasGlyphJustification'
     None_ = 0
     ArabicBlank = 1
     Character = 2
@@ -298,7 +285,6 @@ class CanvasGlyphJustification(Enum, Int32):
     ArabicSeen = 14
     ArabicSeenM = 15
 class CanvasGlyphMetrics(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasGlyphMetrics'
     LeftSideBearing: Single
     AdvanceWidth: Single
     RightSideBearing: Single
@@ -308,25 +294,21 @@ class CanvasGlyphMetrics(Structure):
     VerticalOrigin: Single
     DrawBounds: win32more.Windows.Foundation.Rect
 class CanvasGlyphOrientation(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation'
     Upright = 0
     Clockwise90Degrees = 1
     Clockwise180Degrees = 2
     Clockwise270Degrees = 3
 class CanvasGlyphShaping(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping'
     Justification: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphJustification
     IsClusterStart: Boolean
     IsDiacritic: Boolean
     IsZeroWidthSpace: Boolean
 class CanvasHorizontalAlignment(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasHorizontalAlignment'
     Left = 0
     Right = 1
     Center = 2
     Justified = 3
 class CanvasJustificationOpportunity(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasJustificationOpportunity'
     ExpansionMinimum: Single
     ExpansionMaximum: Single
     CompressionMaximum: Single
@@ -337,13 +319,11 @@ class CanvasJustificationOpportunity(Structure):
     ApplyToLeadingEdge: Boolean
     ApplyToTrailingEdge: Boolean
 class CanvasLineBreakCondition(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasLineBreakCondition'
     Neutral = 0
     CanBreak = 1
     CannotBreak = 2
     MustBreak = 3
 class CanvasLineMetrics(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasLineMetrics'
     CharacterCount: Int32
     TrailingWhitespaceCount: Int32
     TerminalNewlineCount: Int32
@@ -353,12 +333,11 @@ class CanvasLineMetrics(Structure):
     LeadingWhitespaceBefore: Single
     LeadingWhitespaceAfter: Single
 class CanvasLineSpacingMode(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasLineSpacingMode'
     Default = 0
     Uniform = 1
     Proportional = 2
 class CanvasNumberSubstitution(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasNumberSubstitution
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution'
@@ -374,22 +353,20 @@ class CanvasNumberSubstitution(ComPtr):
     @winrt_factorymethod
     def Create(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasNumberSubstitutionFactory, method: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
     @winrt_factorymethod
-    def CreateWithLocaleAndIgnoreOverrides(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasNumberSubstitutionFactory, method: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod, localeName: hstr, ignoreEnvironmentOverrides: Boolean) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
+    def CreateWithLocaleAndIgnoreOverrides(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasNumberSubstitutionFactory, method: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod, localeName: WinRT_String, ignoreEnvironmentOverrides: Boolean) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
 class CanvasNumberSubstitutionMethod(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod'
     FromCulture = 0
     Contextual = 1
     Disabled = 2
     National = 3
     Traditional = 4
 class CanvasOpticalAlignment(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasOpticalAlignment'
     Default = 0
     NoSideBearings = 1
 class CanvasScaledFont(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasScaledFont
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasScaledFont'
     @winrt_mixinmethod
@@ -399,11 +376,10 @@ class CanvasScaledFont(ComPtr):
     FontFace = property(get_FontFace, None)
     ScaleFactor = property(get_ScaleFactor, None)
 class CanvasScriptProperties(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasScriptProperties'
-    IsoScriptCode: hstr
+    IsoScriptCode: WinRT_String
     IsoScriptNumber: Int32
     ClusterLookahead: Int32
-    JustificationCharacter: hstr
+    JustificationCharacter: WinRT_String
     RestrictCaretToClusters: Boolean
     UsesWordDividers: Boolean
     IsDiscreteWriting: Boolean
@@ -412,11 +388,10 @@ class CanvasScriptProperties(Structure):
     IsConnectedWriting: Boolean
     IsCursiveWriting: Boolean
 class CanvasScriptShape(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasScriptShape'
     Default = 0
     NoVisual = 1
 class CanvasTextAnalyzer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer'
@@ -432,11 +407,11 @@ class CanvasTextAnalyzer(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def Create(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory, text: hstr, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
+    def Create(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory, text: WinRT_String, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
     @winrt_factorymethod
-    def CreateWithOptions(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory, text: hstr, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, options: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerOptions) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
+    def CreateWithOptions(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory, text: WinRT_String, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, options: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerOptions) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
     @winrt_factorymethod
-    def CreateWithNumberSubstitutionAndVerticalGlyphOrientationAndBidiLevel(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory, text: hstr, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, verticalGlyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalGlyphOrientation, bidiLevel: UInt32) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
+    def CreateWithNumberSubstitutionAndVerticalGlyphOrientationAndBidiLevel(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory, text: WinRT_String, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, verticalGlyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalGlyphOrientation, bidiLevel: UInt32) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
     @winrt_mixinmethod
     def GetFontsUsingSystemFontSet(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, textFormat: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasScaledFont]]: ...
     @winrt_mixinmethod
@@ -444,27 +419,27 @@ class CanvasTextAnalyzer(ComPtr):
     @winrt_mixinmethod
     def GetBidi(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi]]: ...
     @winrt_mixinmethod
-    def GetBidiWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi]]: ...
+    def GetBidiWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi]]: ...
     @winrt_mixinmethod
     def GetBreakpoints(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint]: ...
     @winrt_mixinmethod
-    def GetBreakpointsWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: hstr) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint]: ...
+    def GetBreakpointsWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: WinRT_String) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint]: ...
     @winrt_mixinmethod
     def GetNumberSubstitutions(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution]]: ...
     @winrt_mixinmethod
     def GetScript(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript]]: ...
     @winrt_mixinmethod
-    def GetScriptWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript]]: ...
+    def GetScriptWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript]]: ...
     @winrt_mixinmethod
     def GetGlyphOrientations(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation]]: ...
     @winrt_mixinmethod
-    def GetGlyphOrientationsWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation]]: ...
+    def GetGlyphOrientationsWithLocale(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, locale: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation]]: ...
     @winrt_mixinmethod
     def GetScriptProperties(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, analyzedScript: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasScriptProperties: ...
     @winrt_mixinmethod
     def GetGlyphs(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, isSideways: Boolean, isRightToLeft: Boolean, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
     @winrt_mixinmethod
-    def GetGlyphsWithAllOptions(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, isSideways: Boolean, isRightToLeft: Boolean, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: hstr, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, typographyRanges: win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasTypography]], clusterMapIndicesElements: ReceiveArray[Int32], isShapedAloneGlyphsElements: ReceiveArray[Boolean], glyphShapingResultsElements: ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
+    def GetGlyphsWithAllOptions(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, isSideways: Boolean, isRightToLeft: Boolean, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: WinRT_String, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, typographyRanges: win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasTypography]], clusterMapIndicesElements: ReceiveArray[Int32], isShapedAloneGlyphsElements: ReceiveArray[Boolean], glyphShapingResultsElements: ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
     @winrt_mixinmethod
     def GetJustificationOpportunities(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, clusterMapIndicesElements: PassArray[Int32], glyphShapingResultsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasJustificationOpportunity]: ...
     @winrt_mixinmethod
@@ -476,13 +451,11 @@ class CanvasTextAnalyzer(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
 class CanvasTextAntialiasing(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextAntialiasing'
     Auto = 0
     ClearType = 1
     Grayscale = 2
     Aliased = 3
 class CanvasTextDirection(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextDirection'
     LeftToRightThenTopToBottom = 0
     RightToLeftThenTopToBottom = 1
     LeftToRightThenBottomToTop = 2
@@ -492,7 +465,7 @@ class CanvasTextDirection(Enum, Int32):
     TopToBottomThenRightToLeft = 6
     BottomToTopThenRightToLeft = 7
 class CanvasTextFormat(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextFormat'
@@ -510,9 +483,9 @@ class CanvasTextFormat(ComPtr):
     @winrt_mixinmethod
     def put_Direction(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> Void: ...
     @winrt_mixinmethod
-    def get_FontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> hstr: ...
+    def get_FontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_FontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: hstr) -> Void: ...
+    def put_FontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_FontSize(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> Single: ...
     @winrt_mixinmethod
@@ -542,9 +515,9 @@ class CanvasTextFormat(ComPtr):
     @winrt_mixinmethod
     def put_LineSpacingBaseline(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: Single) -> Void: ...
     @winrt_mixinmethod
-    def get_LocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> hstr: ...
+    def get_LocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_LocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: hstr) -> Void: ...
+    def put_LocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_VerticalAlignment(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalAlignment: ...
     @winrt_mixinmethod
@@ -558,9 +531,9 @@ class CanvasTextFormat(ComPtr):
     @winrt_mixinmethod
     def put_TrimmingGranularity(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextTrimmingGranularity) -> Void: ...
     @winrt_mixinmethod
-    def get_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> hstr: ...
+    def get_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: hstr) -> Void: ...
+    def put_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_TrimmingDelimiterCount(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormat) -> Int32: ...
     @winrt_mixinmethod
@@ -600,9 +573,9 @@ class CanvasTextFormat(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_classmethod
-    def GetSystemFontFamilies(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormatStatics) -> ReceiveArray[hstr]: ...
+    def GetSystemFontFamilies(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormatStatics) -> ReceiveArray[WinRT_String]: ...
     @winrt_classmethod
-    def GetSystemFontFamiliesFromLocaleList(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormatStatics, localeList: win32more.Windows.Foundation.Collections.IVectorView[hstr]) -> ReceiveArray[hstr]: ...
+    def GetSystemFontFamiliesFromLocaleList(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextFormatStatics, localeList: win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]) -> ReceiveArray[WinRT_String]: ...
     CustomTrimmingSign = property(get_CustomTrimmingSign, put_CustomTrimmingSign)
     Direction = property(get_Direction, put_Direction)
     FontFamily = property(get_FontFamily, put_FontFamily)
@@ -627,12 +600,11 @@ class CanvasTextFormat(ComPtr):
     VerticalGlyphOrientation = property(get_VerticalGlyphOrientation, put_VerticalGlyphOrientation)
     WordWrapping = property(get_WordWrapping, put_WordWrapping)
 class CanvasTextGridFit(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextGridFit'
     Default = 0
     Disable = 1
     Enable = 2
 class CanvasTextLayout(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextLayout'
@@ -644,7 +616,7 @@ class CanvasTextLayout(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def Create(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayoutFactory, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, textString: hstr, textFormat: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat, requestedWidth: Single, requestedHeight: Single) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextLayout: ...
+    def Create(cls: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayoutFactory, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, textString: WinRT_String, textFormat: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat, requestedWidth: Single, requestedHeight: Single) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextLayout: ...
     @winrt_mixinmethod
     def GetFormatChangeIndices(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> ReceiveArray[Int32]: ...
     @winrt_mixinmethod
@@ -652,7 +624,7 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def put_Direction(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> Void: ...
     @winrt_mixinmethod
-    def get_DefaultFontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> hstr: ...
+    def get_DefaultFontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_DefaultFontSize(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> Single: ...
     @winrt_mixinmethod
@@ -674,7 +646,7 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def put_LineSpacingBaseline(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, value: Single) -> Void: ...
     @winrt_mixinmethod
-    def get_DefaultLocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> hstr: ...
+    def get_DefaultLocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_VerticalAlignment(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalAlignment: ...
     @winrt_mixinmethod
@@ -688,9 +660,9 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def put_TrimmingGranularity(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextTrimmingGranularity) -> Void: ...
     @winrt_mixinmethod
-    def get_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> hstr: ...
+    def get_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, value: hstr) -> Void: ...
+    def put_TrimmingDelimiter(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_TrimmingDelimiterCount(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout) -> Int32: ...
     @winrt_mixinmethod
@@ -724,9 +696,9 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def GetBrush(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush: ...
     @winrt_mixinmethod
-    def GetCustomBrush(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> IInspectable: ...
+    def GetCustomBrush(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
     @winrt_mixinmethod
-    def GetFontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> hstr: ...
+    def GetFontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> WinRT_String: ...
     @winrt_mixinmethod
     def GetFontSize(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> Single: ...
     @winrt_mixinmethod
@@ -736,7 +708,7 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def GetFontWeight(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> win32more.Windows.UI.Text.FontWeight: ...
     @winrt_mixinmethod
-    def GetLocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> hstr: ...
+    def GetLocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> WinRT_String: ...
     @winrt_mixinmethod
     def GetStrikethrough(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32) -> Boolean: ...
     @winrt_mixinmethod
@@ -748,9 +720,9 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def SetBrush(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush) -> Void: ...
     @winrt_mixinmethod
-    def SetCustomBrush(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, brush: IInspectable) -> Void: ...
+    def SetCustomBrush(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, brush: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
     @winrt_mixinmethod
-    def SetFontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, fontFamily: hstr) -> Void: ...
+    def SetFontFamily(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, fontFamily: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def SetFontSize(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, fontSize: Single) -> Void: ...
     @winrt_mixinmethod
@@ -760,7 +732,7 @@ class CanvasTextLayout(ComPtr):
     @winrt_mixinmethod
     def SetFontWeight(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, fontWeight: win32more.Windows.UI.Text.FontWeight) -> Void: ...
     @winrt_mixinmethod
-    def SetLocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, name: hstr) -> Void: ...
+    def SetLocaleName(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, name: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def SetStrikethrough(self: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextLayout, characterIndex: Int32, characterCount: Int32, hasStrikethrough: Boolean) -> Void: ...
     @winrt_mixinmethod
@@ -870,17 +842,14 @@ class CanvasTextLayout(ComPtr):
     VerticalGlyphOrientation = property(get_VerticalGlyphOrientation, put_VerticalGlyphOrientation)
     WordWrapping = property(get_WordWrapping, put_WordWrapping)
 class CanvasTextLayoutRegion(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextLayoutRegion'
     CharacterIndex: Int32
     CharacterCount: Int32
     LayoutBounds: win32more.Windows.Foundation.Rect
 class CanvasTextMeasuringMode(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode'
     Natural = 0
     GdiClassic = 1
     GdiNatural = 2
 class CanvasTextRenderingMode(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextRenderingMode'
     Default = 0
     Aliased = 1
     GdiClassic = 2
@@ -890,7 +859,7 @@ class CanvasTextRenderingMode(Enum, Int32):
     Outline = 6
     NaturalSymmetricDownsampled = 7
 class CanvasTextRenderingParameters(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextRenderingParameters
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextRenderingParameters'
     def __init__(self, *args, **kwargs):
@@ -909,16 +878,14 @@ class CanvasTextRenderingParameters(ComPtr):
     GridFit = property(get_GridFit, None)
     RenderingMode = property(get_RenderingMode, None)
 class CanvasTextTrimmingGranularity(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTextTrimmingGranularity'
     None_ = 0
     Character = 1
     Word = 2
 class CanvasTrimmingSign(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTrimmingSign'
     None_ = 0
     Ellipsis = 1
 class CanvasTypography(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTypography
     _classid_ = 'Microsoft.Graphics.Canvas.Text.CanvasTypography'
@@ -940,11 +907,9 @@ class CanvasTypography(ComPtr):
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
 class CanvasTypographyFeature(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTypographyFeature'
     Name: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName
     Parameter: UInt32
 class CanvasTypographyFeatureName(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName'
     None_ = 0
     Default = 1953261156
     VerticalWriting = 1953654134
@@ -1028,27 +993,23 @@ class CanvasTypographyFeatureName(Enum, Int32):
     Unicase = 1667853941
     SlashedZero = 1869768058
 class CanvasUnicodeRange(Structure):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasUnicodeRange'
     First: UInt32
     Last: UInt32
 class CanvasVerticalAlignment(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasVerticalAlignment'
     Top = 0
     Bottom = 1
     Center = 2
 class CanvasVerticalGlyphOrientation(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasVerticalGlyphOrientation'
     Default = 0
     Stacked = 1
 class CanvasWordWrapping(Enum, Int32):
-    _name_ = 'Microsoft.Graphics.Canvas.Text.CanvasWordWrapping'
     Wrap = 0
     NoWrap = 1
     EmergencyBreak = 2
     WholeWord = 3
     Character = 4
 class ICanvasFontFace(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasFontFace'
     _iid_ = Guid('{5199d129-4ef9-4dee-b74c-4dc910201a7f}')
@@ -1123,11 +1084,11 @@ class ICanvasFontFace(ComPtr):
     @winrt_commethod(40)
     def get_Style(self) -> win32more.Windows.UI.Text.FontStyle: ...
     @winrt_commethod(41)
-    def get_FamilyNames(self) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def get_FamilyNames(self) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_commethod(42)
-    def get_FaceNames(self) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def get_FaceNames(self) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_commethod(43)
-    def GetInformationalStrings(self, fontInformation: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontInformation) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def GetInformationalStrings(self, fontInformation: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontInformation) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_commethod(44)
     def HasCharacter(self, unicodeValue: UInt32) -> Boolean: ...
     @winrt_commethod(45)
@@ -1139,11 +1100,11 @@ class ICanvasFontFace(ComPtr):
     @winrt_commethod(48)
     def GetSupportedTypographicFeatureNames(self, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName]: ...
     @winrt_commethod(49)
-    def GetSupportedTypographicFeatureNamesWithLocale(self, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: hstr) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName]: ...
+    def GetSupportedTypographicFeatureNamesWithLocale(self, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: WinRT_String) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName]: ...
     @winrt_commethod(50)
     def GetTypographicFeatureGlyphSupport(self, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, typographicFeatureName: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName, glyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]) -> ReceiveArray[Boolean]: ...
     @winrt_commethod(51)
-    def GetTypographicFeatureGlyphSupportWithLocale(self, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, typographicFeatureName: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName, glyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], locale: hstr) -> ReceiveArray[Boolean]: ...
+    def GetTypographicFeatureGlyphSupportWithLocale(self, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, typographicFeatureName: win32more.Microsoft.Graphics.Canvas.Text.CanvasTypographyFeatureName, glyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], locale: WinRT_String) -> ReceiveArray[Boolean]: ...
     Ascent = property(get_Ascent, None)
     CapHeight = property(get_CapHeight, None)
     CaretOffset = property(get_CaretOffset, None)
@@ -1176,7 +1137,7 @@ class ICanvasFontFace(ComPtr):
     UnicodeRanges = property(get_UnicodeRanges, None)
     Weight = property(get_Weight, None)
 class ICanvasFontSet(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasFontSet'
     _iid_ = Guid('{0a5bfb92-1f3c-459f-9d7e-a6289dd093c0}')
@@ -1187,43 +1148,43 @@ class ICanvasFontSet(ComPtr):
     @winrt_commethod(8)
     def GetMatchingFontsFromProperties(self, propertyElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
     @winrt_commethod(9)
-    def GetMatchingFontsFromWwsFamily(self, familyName: hstr, weight: win32more.Windows.UI.Text.FontWeight, stretch: win32more.Windows.UI.Text.FontStretch, style: win32more.Windows.UI.Text.FontStyle) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
+    def GetMatchingFontsFromWwsFamily(self, familyName: WinRT_String, weight: win32more.Windows.UI.Text.FontWeight, stretch: win32more.Windows.UI.Text.FontStretch, style: win32more.Windows.UI.Text.FontStyle) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
     @winrt_commethod(10)
     def CountFontsMatchingProperty(self, property: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty) -> UInt32: ...
     @winrt_commethod(11)
-    def GetPropertyValuesFromIndex(self, fontIndex: UInt32, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier) -> win32more.Windows.Foundation.Collections.IMapView[hstr, hstr]: ...
+    def GetPropertyValuesFromIndex(self, fontIndex: UInt32, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, WinRT_String]: ...
     @winrt_commethod(12)
-    def GetPropertyValuesFromIdentifier(self, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier, preferredLocaleNames: hstr) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]: ...
+    def GetPropertyValuesFromIdentifier(self, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier, preferredLocaleNames: WinRT_String) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]: ...
     @winrt_commethod(13)
     def GetPropertyValues(self, propertyIdentifier: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontPropertyIdentifier) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasFontProperty]: ...
     Fonts = property(get_Fonts, None)
 class ICanvasFontSetFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasFontSetFactory'
     _iid_ = Guid('{3c9c9bda-70f9-4ff9-aab2-3b42923286ee}')
     @winrt_commethod(6)
     def Create(self, uri: win32more.Windows.Foundation.Uri) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
 class ICanvasFontSetStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasFontSetStatics'
     _iid_ = Guid('{5f4275ce-bcfa-48c5-9e67-fbe9866d4924}')
     @winrt_commethod(6)
     def GetSystemFontSet(self) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasFontSet: ...
 class ICanvasNumberSubstitution(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasNumberSubstitution'
     _iid_ = Guid('{c81a67ad-0639-4f8f-878b-d937f8a14293}')
 class ICanvasNumberSubstitutionFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasNumberSubstitutionFactory'
     _iid_ = Guid('{7496a822-c781-4eb0-aafb-c078e7fa8e24}')
     @winrt_commethod(6)
     def Create(self, method: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
     @winrt_commethod(7)
-    def CreateWithLocaleAndIgnoreOverrides(self, method: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod, localeName: hstr, ignoreEnvironmentOverrides: Boolean) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
+    def CreateWithLocaleAndIgnoreOverrides(self, method: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitutionMethod, localeName: WinRT_String, ignoreEnvironmentOverrides: Boolean) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
 class ICanvasScaledFont(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasScaledFont'
     _iid_ = Guid('{bbc4f8d2-eb2b-45f1-ac2a-cfc1f598bae3}')
     @winrt_commethod(6)
@@ -1233,7 +1194,7 @@ class ICanvasScaledFont(ComPtr):
     FontFace = property(get_FontFace, None)
     ScaleFactor = property(get_ScaleFactor, None)
 class ICanvasTextAnalyzer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzer'
     _iid_ = Guid('{4298f3d1-645b-40e3-b91b-81986d767fc0}')
@@ -1244,27 +1205,27 @@ class ICanvasTextAnalyzer(ComPtr):
     @winrt_commethod(8)
     def GetBidi(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi]]: ...
     @winrt_commethod(9)
-    def GetBidiWithLocale(self, locale: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi]]: ...
+    def GetBidiWithLocale(self, locale: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBidi]]: ...
     @winrt_commethod(10)
     def GetBreakpoints(self) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint]: ...
     @winrt_commethod(11)
-    def GetBreakpointsWithLocale(self, locale: hstr) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint]: ...
+    def GetBreakpointsWithLocale(self, locale: WinRT_String) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedBreakpoint]: ...
     @winrt_commethod(12)
     def GetNumberSubstitutions(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution]]: ...
     @winrt_commethod(13)
     def GetScript(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript]]: ...
     @winrt_commethod(14)
-    def GetScriptWithLocale(self, locale: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript]]: ...
+    def GetScriptWithLocale(self, locale: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript]]: ...
     @winrt_commethod(15)
     def GetGlyphOrientations(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation]]: ...
     @winrt_commethod(16)
-    def GetGlyphOrientationsWithLocale(self, locale: hstr) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation]]: ...
+    def GetGlyphOrientationsWithLocale(self, locale: WinRT_String) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedGlyphOrientation]]: ...
     @winrt_commethod(17)
     def GetScriptProperties(self, analyzedScript: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasScriptProperties: ...
     @winrt_commethod(18)
     def GetGlyphs(self, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, isSideways: Boolean, isRightToLeft: Boolean, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
     @winrt_commethod(19)
-    def GetGlyphsWithAllOptions(self, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, isSideways: Boolean, isRightToLeft: Boolean, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: hstr, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, typographyRanges: win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasTypography]], clusterMapIndicesElements: ReceiveArray[Int32], isShapedAloneGlyphsElements: ReceiveArray[Boolean], glyphShapingResultsElements: ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
+    def GetGlyphsWithAllOptions(self, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, isSideways: Boolean, isRightToLeft: Boolean, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, locale: WinRT_String, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, typographyRanges: win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Collections.IKeyValuePair[win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, win32more.Microsoft.Graphics.Canvas.Text.CanvasTypography]], clusterMapIndicesElements: ReceiveArray[Int32], isShapedAloneGlyphsElements: ReceiveArray[Boolean], glyphShapingResultsElements: ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
     @winrt_commethod(20)
     def GetJustificationOpportunities(self, characterRange: win32more.Microsoft.Graphics.Canvas.Text.CanvasCharacterRange, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, clusterMapIndicesElements: PassArray[Int32], glyphShapingResultsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasJustificationOpportunity]: ...
     @winrt_commethod(21)
@@ -1274,21 +1235,21 @@ class ICanvasTextAnalyzer(ComPtr):
     @winrt_commethod(23)
     def AddGlyphsAfterJustificationWithClusterMap(self, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, script: win32more.Microsoft.Graphics.Canvas.Text.CanvasAnalyzedScript, clusterMapIndicesElements: PassArray[Int32], originalGlyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], justifiedGlyphsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], glyphShapingResultsElements: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphShaping], outputClusterMapIndicesElements: ReceiveArray[Int32]) -> ReceiveArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph]: ...
 class ICanvasTextAnalyzerFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerFactory'
     _iid_ = Guid('{521e433f-f698-44c0-8d7f-fe374fe539e1}')
     @winrt_commethod(6)
-    def Create(self, text: hstr, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
+    def Create(self, text: WinRT_String, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
     @winrt_commethod(7)
-    def CreateWithNumberSubstitutionAndVerticalGlyphOrientationAndBidiLevel(self, text: hstr, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, verticalGlyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalGlyphOrientation, bidiLevel: UInt32) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
+    def CreateWithNumberSubstitutionAndVerticalGlyphOrientationAndBidiLevel(self, text: WinRT_String, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, numberSubstitution: win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution, verticalGlyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalGlyphOrientation, bidiLevel: UInt32) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
     @winrt_commethod(8)
-    def CreateWithOptions(self, text: hstr, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, options: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerOptions) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
+    def CreateWithOptions(self, text: WinRT_String, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, options: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerOptions) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextAnalyzer: ...
 class ICanvasTextAnalyzerOptions(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextAnalyzerOptions'
     _iid_ = Guid('{31f2406a-8c5f-4e12-8bd6-cfbbc7214d02}')
     @winrt_commethod(6)
-    def GetLocaleName(self, characterIndex: Int32, characterCount: POINTER(Int32)) -> hstr: ...
+    def GetLocaleName(self, characterIndex: Int32, characterCount: POINTER(Int32)) -> WinRT_String: ...
     @winrt_commethod(7)
     def GetNumberSubstitution(self, characterIndex: Int32, characterCount: POINTER(Int32)) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasNumberSubstitution: ...
     @winrt_commethod(8)
@@ -1296,7 +1257,7 @@ class ICanvasTextAnalyzerOptions(ComPtr):
     @winrt_commethod(9)
     def GetBidiLevel(self, characterIndex: Int32, characterCount: POINTER(Int32)) -> UInt32: ...
 class ICanvasTextFormat(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextFormat'
     _iid_ = Guid('{af61bfdc-eabb-4d38-ba1b-afb340612d33}')
@@ -1305,9 +1266,9 @@ class ICanvasTextFormat(ComPtr):
     @winrt_commethod(7)
     def put_Direction(self, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> Void: ...
     @winrt_commethod(8)
-    def get_FontFamily(self) -> hstr: ...
+    def get_FontFamily(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def put_FontFamily(self, value: hstr) -> Void: ...
+    def put_FontFamily(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(10)
     def get_FontSize(self) -> Single: ...
     @winrt_commethod(11)
@@ -1337,9 +1298,9 @@ class ICanvasTextFormat(ComPtr):
     @winrt_commethod(23)
     def put_LineSpacingBaseline(self, value: Single) -> Void: ...
     @winrt_commethod(24)
-    def get_LocaleName(self) -> hstr: ...
+    def get_LocaleName(self) -> WinRT_String: ...
     @winrt_commethod(25)
-    def put_LocaleName(self, value: hstr) -> Void: ...
+    def put_LocaleName(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(26)
     def get_VerticalAlignment(self) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalAlignment: ...
     @winrt_commethod(27)
@@ -1353,9 +1314,9 @@ class ICanvasTextFormat(ComPtr):
     @winrt_commethod(31)
     def put_TrimmingGranularity(self, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextTrimmingGranularity) -> Void: ...
     @winrt_commethod(32)
-    def get_TrimmingDelimiter(self) -> hstr: ...
+    def get_TrimmingDelimiter(self) -> WinRT_String: ...
     @winrt_commethod(33)
-    def put_TrimmingDelimiter(self, value: hstr) -> Void: ...
+    def put_TrimmingDelimiter(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(34)
     def get_TrimmingDelimiterCount(self) -> Int32: ...
     @winrt_commethod(35)
@@ -1416,19 +1377,19 @@ class ICanvasTextFormat(ComPtr):
     VerticalGlyphOrientation = property(get_VerticalGlyphOrientation, put_VerticalGlyphOrientation)
     WordWrapping = property(get_WordWrapping, put_WordWrapping)
 class ICanvasTextFormatStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextFormatStatics'
     _iid_ = Guid('{8a927515-33fc-4c92-a6aa-94a8f29c140b}')
     @winrt_commethod(6)
-    def GetSystemFontFamilies(self) -> ReceiveArray[hstr]: ...
+    def GetSystemFontFamilies(self) -> ReceiveArray[WinRT_String]: ...
     @winrt_commethod(7)
-    def GetSystemFontFamiliesFromLocaleList(self, localeList: win32more.Windows.Foundation.Collections.IVectorView[hstr]) -> ReceiveArray[hstr]: ...
+    def GetSystemFontFamiliesFromLocaleList(self, localeList: win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]) -> ReceiveArray[WinRT_String]: ...
 class ICanvasTextInlineObject(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextInlineObject'
     _iid_ = Guid('{7a89ee99-ce2a-47fa-9dd2-0a6825f6053f}')
     @winrt_commethod(6)
-    def Draw(self, textRenderer: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextRenderer, point: win32more.Windows.Foundation.Numerics.Vector2, isSideways: Boolean, isRightToLeft: Boolean, brush: IInspectable) -> Void: ...
+    def Draw(self, textRenderer: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextRenderer, point: win32more.Windows.Foundation.Numerics.Vector2, isSideways: Boolean, isRightToLeft: Boolean, brush: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
     @winrt_commethod(7)
     def get_Size(self) -> win32more.Windows.Foundation.Size: ...
     @winrt_commethod(8)
@@ -1448,7 +1409,7 @@ class ICanvasTextInlineObject(ComPtr):
     Size = property(get_Size, None)
     SupportsSideways = property(get_SupportsSideways, None)
 class ICanvasTextLayout(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextLayout'
     _iid_ = Guid('{bae63e54-48ae-4446-a2c7-b6ef93806c20}')
@@ -1459,7 +1420,7 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(8)
     def put_Direction(self, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection) -> Void: ...
     @winrt_commethod(9)
-    def get_DefaultFontFamily(self) -> hstr: ...
+    def get_DefaultFontFamily(self) -> WinRT_String: ...
     @winrt_commethod(10)
     def get_DefaultFontSize(self) -> Single: ...
     @winrt_commethod(11)
@@ -1481,7 +1442,7 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(19)
     def put_LineSpacingBaseline(self, value: Single) -> Void: ...
     @winrt_commethod(20)
-    def get_DefaultLocaleName(self) -> hstr: ...
+    def get_DefaultLocaleName(self) -> WinRT_String: ...
     @winrt_commethod(21)
     def get_VerticalAlignment(self) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasVerticalAlignment: ...
     @winrt_commethod(22)
@@ -1495,9 +1456,9 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(26)
     def put_TrimmingGranularity(self, value: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextTrimmingGranularity) -> Void: ...
     @winrt_commethod(27)
-    def get_TrimmingDelimiter(self) -> hstr: ...
+    def get_TrimmingDelimiter(self) -> WinRT_String: ...
     @winrt_commethod(28)
-    def put_TrimmingDelimiter(self, value: hstr) -> Void: ...
+    def put_TrimmingDelimiter(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(29)
     def get_TrimmingDelimiterCount(self) -> Int32: ...
     @winrt_commethod(30)
@@ -1531,9 +1492,9 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(44)
     def GetBrush(self, characterIndex: Int32) -> win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush: ...
     @winrt_commethod(45)
-    def GetCustomBrush(self, characterIndex: Int32) -> IInspectable: ...
+    def GetCustomBrush(self, characterIndex: Int32) -> win32more.Windows.Win32.System.WinRT.IInspectable: ...
     @winrt_commethod(46)
-    def GetFontFamily(self, characterIndex: Int32) -> hstr: ...
+    def GetFontFamily(self, characterIndex: Int32) -> WinRT_String: ...
     @winrt_commethod(47)
     def GetFontSize(self, characterIndex: Int32) -> Single: ...
     @winrt_commethod(48)
@@ -1543,7 +1504,7 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(50)
     def GetFontWeight(self, characterIndex: Int32) -> win32more.Windows.UI.Text.FontWeight: ...
     @winrt_commethod(51)
-    def GetLocaleName(self, characterIndex: Int32) -> hstr: ...
+    def GetLocaleName(self, characterIndex: Int32) -> WinRT_String: ...
     @winrt_commethod(52)
     def GetStrikethrough(self, characterIndex: Int32) -> Boolean: ...
     @winrt_commethod(53)
@@ -1555,9 +1516,9 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(56)
     def SetBrush(self, characterIndex: Int32, characterCount: Int32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush) -> Void: ...
     @winrt_commethod(57)
-    def SetCustomBrush(self, characterIndex: Int32, characterCount: Int32, brush: IInspectable) -> Void: ...
+    def SetCustomBrush(self, characterIndex: Int32, characterCount: Int32, brush: win32more.Windows.Win32.System.WinRT.IInspectable) -> Void: ...
     @winrt_commethod(58)
-    def SetFontFamily(self, characterIndex: Int32, characterCount: Int32, fontFamily: hstr) -> Void: ...
+    def SetFontFamily(self, characterIndex: Int32, characterCount: Int32, fontFamily: WinRT_String) -> Void: ...
     @winrt_commethod(59)
     def SetFontSize(self, characterIndex: Int32, characterCount: Int32, fontSize: Single) -> Void: ...
     @winrt_commethod(60)
@@ -1567,7 +1528,7 @@ class ICanvasTextLayout(ComPtr):
     @winrt_commethod(62)
     def SetFontWeight(self, characterIndex: Int32, characterCount: Int32, fontWeight: win32more.Windows.UI.Text.FontWeight) -> Void: ...
     @winrt_commethod(63)
-    def SetLocaleName(self, characterIndex: Int32, characterCount: Int32, name: hstr) -> Void: ...
+    def SetLocaleName(self, characterIndex: Int32, characterCount: Int32, name: WinRT_String) -> Void: ...
     @winrt_commethod(64)
     def SetStrikethrough(self, characterIndex: Int32, characterCount: Int32, hasStrikethrough: Boolean) -> Void: ...
     @winrt_commethod(65)
@@ -1673,29 +1634,29 @@ class ICanvasTextLayout(ComPtr):
     VerticalGlyphOrientation = property(get_VerticalGlyphOrientation, put_VerticalGlyphOrientation)
     WordWrapping = property(get_WordWrapping, put_WordWrapping)
 class ICanvasTextLayoutFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextLayoutFactory'
     _iid_ = Guid('{9c1f7179-acd0-4680-93d5-95a6247e8f6b}')
     @winrt_commethod(6)
-    def Create(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, textString: hstr, textFormat: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat, requestedWidth: Single, requestedHeight: Single) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextLayout: ...
+    def Create(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, textString: WinRT_String, textFormat: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat, requestedWidth: Single, requestedHeight: Single) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextLayout: ...
 class ICanvasTextLayoutStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextLayoutStatics'
     _iid_ = Guid('{7f2b8ffd-6935-4f60-b409-6394a19c5ebc}')
     @winrt_commethod(6)
     def GetGlyphOrientationTransform(self, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation, isSideways: Boolean, position: win32more.Windows.Foundation.Numerics.Vector2) -> win32more.Windows.Foundation.Numerics.Matrix3x2: ...
 class ICanvasTextRenderer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextRenderer'
     _iid_ = Guid('{9aaeece5-8d09-4a64-b322-af030421b2e4}')
     @winrt_commethod(6)
-    def DrawGlyphRun(self, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: IInspectable, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: hstr, textString: hstr, clusterMapIndices: PassArray[Int32], characterIndex: UInt32, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
+    def DrawGlyphRun(self, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Windows.Win32.System.WinRT.IInspectable, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: WinRT_String, textString: WinRT_String, clusterMapIndices: PassArray[Int32], characterIndex: UInt32, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
     @winrt_commethod(7)
-    def DrawStrikethrough(self, point: win32more.Windows.Foundation.Numerics.Vector2, strikethroughWidth: Single, strikethroughThickness: Single, strikethroughOffset: Single, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, brush: IInspectable, textMeasuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: hstr, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
+    def DrawStrikethrough(self, point: win32more.Windows.Foundation.Numerics.Vector2, strikethroughWidth: Single, strikethroughThickness: Single, strikethroughOffset: Single, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, brush: win32more.Windows.Win32.System.WinRT.IInspectable, textMeasuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: WinRT_String, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
     @winrt_commethod(8)
-    def DrawUnderline(self, point: win32more.Windows.Foundation.Numerics.Vector2, underlineWidth: Single, underlineThickness: Single, underlineOffset: Single, runHeight: Single, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, brush: IInspectable, textMeasuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: hstr, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
+    def DrawUnderline(self, point: win32more.Windows.Foundation.Numerics.Vector2, underlineWidth: Single, underlineThickness: Single, underlineOffset: Single, runHeight: Single, textDirection: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextDirection, brush: win32more.Windows.Win32.System.WinRT.IInspectable, textMeasuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: WinRT_String, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
     @winrt_commethod(9)
-    def DrawInlineObject(self, point: win32more.Windows.Foundation.Numerics.Vector2, inlineObject: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextInlineObject, isSideways: Boolean, isRightToLeft: Boolean, brush: IInspectable, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
+    def DrawInlineObject(self, point: win32more.Windows.Foundation.Numerics.Vector2, inlineObject: win32more.Microsoft.Graphics.Canvas.Text.ICanvasTextInlineObject, isSideways: Boolean, isRightToLeft: Boolean, brush: win32more.Windows.Win32.System.WinRT.IInspectable, glyphOrientation: win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyphOrientation) -> Void: ...
     @winrt_commethod(10)
     def get_PixelSnappingDisabled(self) -> Boolean: ...
     @winrt_commethod(11)
@@ -1706,7 +1667,7 @@ class ICanvasTextRenderer(ComPtr):
     PixelSnappingDisabled = property(get_PixelSnappingDisabled, None)
     Transform = property(get_Transform, None)
 class ICanvasTextRenderingParameters(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextRenderingParameters'
     _iid_ = Guid('{b20bf738-edb9-4eec-a12f-b6ae32e8ace6}')
     @winrt_commethod(6)
@@ -1716,13 +1677,13 @@ class ICanvasTextRenderingParameters(ComPtr):
     GridFit = property(get_GridFit, None)
     RenderingMode = property(get_RenderingMode, None)
 class ICanvasTextRenderingParametersFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTextRenderingParametersFactory'
     _iid_ = Guid('{d240ac25-4d23-4964-9d9a-db2fc8af185d}')
     @winrt_commethod(6)
     def Create(self, textRenderingMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextRenderingMode, gridFit: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextGridFit) -> win32more.Microsoft.Graphics.Canvas.Text.CanvasTextRenderingParameters: ...
 class ICanvasTypography(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.Text.ICanvasTypography'
     _iid_ = Guid('{f15bc312-447f-44ed-8bec-7e40f4a4dfc8}')

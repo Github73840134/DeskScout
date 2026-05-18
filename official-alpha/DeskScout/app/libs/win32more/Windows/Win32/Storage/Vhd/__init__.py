@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Storage.Vhd
@@ -10,7 +10,6 @@ APPLY_SNAPSHOT_VHDSET_FLAG_WRITEABLE: win32more.Windows.Win32.Storage.Vhd.APPLY_
 class APPLY_SNAPSHOT_VHDSET_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.APPLY_SNAPSHOT_VHDSET_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -35,7 +34,6 @@ ATTACH_VIRTUAL_DISK_FLAG_AT_BOOT: win32more.Windows.Win32.Storage.Vhd.ATTACH_VIR
 class ATTACH_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.ATTACH_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         Version2: _Version2_e__Struct
@@ -125,7 +123,6 @@ COMPACT_VIRTUAL_DISK_FLAG_NO_BLOCK_MOVES: win32more.Windows.Win32.Storage.Vhd.CO
 class COMPACT_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.COMPACT_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -149,7 +146,6 @@ CREATE_VIRTUAL_DISK_FLAG_SUPPORT_SPARSE_FILES_ANY_FS: win32more.Windows.Win32.St
 class CREATE_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.CREATE_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         Version2: _Version2_e__Struct
@@ -216,7 +212,6 @@ DELETE_SNAPSHOT_VHDSET_FLAG_PERSIST_RCT: win32more.Windows.Win32.Storage.Vhd.DEL
 class DELETE_SNAPSHOT_VHDSET_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.DELETE_SNAPSHOT_VHDSET_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -248,7 +243,6 @@ EXPAND_VIRTUAL_DISK_FLAG_NOTIFY_CHANGE: win32more.Windows.Win32.Storage.Vhd.EXPA
 class EXPAND_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.EXPAND_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -262,7 +256,6 @@ FORK_VIRTUAL_DISK_FLAG_EXISTING_FILE: win32more.Windows.Win32.Storage.Vhd.FORK_V
 class FORK_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.FORK_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -277,7 +270,6 @@ GET_STORAGE_DEPENDENCY_FLAG_DISK_HANDLE: win32more.Windows.Win32.Storage.Vhd.GET
 class GET_VIRTUAL_DISK_INFO(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.GET_VIRTUAL_DISK_INFO_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Size: _Size_e__Struct
         Identifier: Guid
@@ -301,7 +293,7 @@ class GET_VIRTUAL_DISK_INFO(Structure):
             SectorSize: UInt32
         class _ParentLocation_e__Struct(Structure):
             ParentResolved: win32more.Windows.Win32.Foundation.BOOL
-            ParentLocationBuffer: FlexibleArray[Char]
+            ParentLocationBuffer: Char * 1
         class _PhysicalDisk_e__Struct(Structure):
             LogicalSectorSize: UInt32
             PhysicalSectorSize: UInt32
@@ -309,7 +301,7 @@ class GET_VIRTUAL_DISK_INFO(Structure):
         class _ChangeTrackingState_e__Struct(Structure):
             Enabled: win32more.Windows.Win32.Foundation.BOOL
             NewerChanges: win32more.Windows.Win32.Foundation.BOOL
-            MostRecentId: FlexibleArray[Char]
+            MostRecentId: Char * 1
 GET_VIRTUAL_DISK_INFO_VERSION = Int32
 GET_VIRTUAL_DISK_INFO_UNSPECIFIED: win32more.Windows.Win32.Storage.Vhd.GET_VIRTUAL_DISK_INFO_VERSION = 0
 GET_VIRTUAL_DISK_INFO_SIZE: win32more.Windows.Win32.Storage.Vhd.GET_VIRTUAL_DISK_INFO_VERSION = 1
@@ -332,7 +324,6 @@ MERGE_VIRTUAL_DISK_FLAG_NONE: win32more.Windows.Win32.Storage.Vhd.MERGE_VIRTUAL_
 class MERGE_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.MERGE_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         Version2: _Version2_e__Struct
@@ -354,7 +345,6 @@ MIRROR_VIRTUAL_DISK_FLAG_IS_LIVE_MIGRATION: win32more.Windows.Win32.Storage.Vhd.
 class MIRROR_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.MIRROR_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -368,7 +358,6 @@ MODIFY_VHDSET_FLAG_WRITEABLE_SNAPSHOT: win32more.Windows.Win32.Storage.Vhd.MODIF
 class MODIFY_VHDSET_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.MODIFY_VHDSET_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         SnapshotPath: _SnapshotPath_e__Struct
         SnapshotId: Guid
@@ -398,7 +387,6 @@ OPEN_VIRTUAL_DISK_FLAG_SUPPORT_ENCRYPTED_FILES: win32more.Windows.Win32.Storage.
 class OPEN_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.OPEN_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         Version2: _Version2_e__Struct
@@ -430,7 +418,6 @@ RAW_SCSI_VIRTUAL_DISK_FLAG_NONE: win32more.Windows.Win32.Storage.Vhd.RAW_SCSI_VI
 class RAW_SCSI_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.RAW_SCSI_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -446,7 +433,6 @@ class RAW_SCSI_VIRTUAL_DISK_PARAMETERS(Structure):
 class RAW_SCSI_VIRTUAL_DISK_RESPONSE(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.RAW_SCSI_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -463,7 +449,6 @@ RESIZE_VIRTUAL_DISK_FLAG_RESIZE_TO_SMALLEST_SAFE_VIRTUAL_SIZE: win32more.Windows
 class RESIZE_VIRTUAL_DISK_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.RESIZE_VIRTUAL_DISK_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):
@@ -474,7 +459,6 @@ RESIZE_VIRTUAL_DISK_VERSION_1: win32more.Windows.Win32.Storage.Vhd.RESIZE_VIRTUA
 class SET_VIRTUAL_DISK_INFO(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.SET_VIRTUAL_DISK_INFO_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ParentFilePath: win32more.Windows.Win32.Foundation.PWSTR
         UniqueIdentifier: Guid
@@ -502,7 +486,6 @@ class STORAGE_DEPENDENCY_INFO(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.STORAGE_DEPENDENCY_INFO_VERSION
     NumberEntries: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1Entries: win32more.Windows.Win32.Storage.Vhd.STORAGE_DEPENDENCY_INFO_TYPE_1 * 1
         Version2Entries: win32more.Windows.Win32.Storage.Vhd.STORAGE_DEPENDENCY_INFO_TYPE_2 * 1
@@ -529,7 +512,6 @@ TAKE_SNAPSHOT_VHDSET_FLAG_WRITEABLE: win32more.Windows.Win32.Storage.Vhd.TAKE_SN
 class TAKE_SNAPSHOT_VHDSET_PARAMETERS(Structure):
     Version: win32more.Windows.Win32.Storage.Vhd.TAKE_SNAPSHOT_VHDSET_VERSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version1: _Version1_e__Struct
         class _Version1_e__Struct(Structure):

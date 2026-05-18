@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct2D.Common
 import win32more.Windows.Win32.Graphics.Dxgi.Common
@@ -39,8 +39,6 @@ CLSID_WICHeifDecoder: Guid = Guid('{e9a4a80a-44fe-4de4-8971-7150b10a5199}')
 CLSID_WICHeifEncoder: Guid = Guid('{0dbecec1-9eb3-4860-9c6f-ddbe86634575}')
 CLSID_WICWebpDecoder: Guid = Guid('{7693e886-51c9-4070-8419-9f70738ec8fa}')
 CLSID_WICRAWDecoder: Guid = Guid('{41945702-8302-44a6-9445-ac98e8afa086}')
-CLSID_WICJpegXLDecoder: Guid = Guid('{fc6ceece-aef5-4a23-96ec-5984ffb486d9}')
-CLSID_WICJpegXLEncoder: Guid = Guid('{0e4ecd3b-1ba6-4636-8198-56c73040964a}')
 GUID_ContainerFormatBmp: Guid = Guid('{0af1d87e-fcfe-4188-bdeb-a7906471cbe3}')
 GUID_ContainerFormatPng: Guid = Guid('{1b7cfaf4-713f-473c-bbcd-6137425faeaf}')
 GUID_ContainerFormatIco: Guid = Guid('{a3a860c4-338f-4c17-919a-fba4b5628f21}')
@@ -53,7 +51,6 @@ GUID_ContainerFormatAdng: Guid = Guid('{f3ff6d0d-38c0-41c4-b1fe-1f3824f17b84}')
 GUID_ContainerFormatHeif: Guid = Guid('{e1e62521-6787-405b-a339-500715b5763f}')
 GUID_ContainerFormatWebp: Guid = Guid('{e094b0e2-67f2-45b3-b0ea-115337ca7cf3}')
 GUID_ContainerFormatRaw: Guid = Guid('{fe99ce60-f19c-433c-a3ae-00acefa9ca21}')
-GUID_ContainerFormatJpegXL: Guid = Guid('{fec14e3f-427a-4736-aae6-27ed84f69322}')
 CLSID_WICImagingCategories: Guid = Guid('{fae3d380-fea4-4623-8c75-c6b61110b681}')
 CATID_WICBitmapDecoders: Guid = Guid('{7ed96837-96f0-4812-b211-f13c24117ed3}')
 CATID_WICBitmapEncoders: Guid = Guid('{ac757296-3522-4e11-9862-c17be5a1767e}')
@@ -87,10 +84,6 @@ GUID_WICPixelFormat2bppGray: Guid = Guid('{6fddc324-4e03-4bfe-b185-3d77768dc906}
 GUID_WICPixelFormat4bppGray: Guid = Guid('{6fddc324-4e03-4bfe-b185-3d77768dc907}')
 GUID_WICPixelFormat8bppGray: Guid = Guid('{6fddc324-4e03-4bfe-b185-3d77768dc908}')
 GUID_WICPixelFormat8bppAlpha: Guid = Guid('{e6cd0116-eeba-4161-aa85-27dd9fb3a895}')
-GUID_WICPixelFormat8bppDepth: Guid = Guid('{4c9c9f45-1d89-4e31-9bc7-69343a0dca69}')
-GUID_WICPixelFormat8bppGain: Guid = Guid('{a884022a-af13-4c16-b746-619bf618b878}')
-GUID_WICPixelFormat24bppRGBGain: Guid = Guid('{a5022b24-7109-443b-9948-25b6ed8f39fd}')
-GUID_WICPixelFormat32bppBGRGain: Guid = Guid('{837d6738-208a-43e0-8995-79ab74407402}')
 GUID_WICPixelFormat16bppBGR555: Guid = Guid('{6fddc324-4e03-4bfe-b185-3d77768dc909}')
 GUID_WICPixelFormat16bppBGR565: Guid = Guid('{6fddc324-4e03-4bfe-b185-3d77768dc90a}')
 GUID_WICPixelFormat16bppBGRA5551: Guid = Guid('{05ec7c2b-f1e6-4961-ad46-e1cc810a87d2}')
@@ -235,9 +228,6 @@ GUID_MetadataFormatHeif: Guid = Guid('{817ef3e1-1288-45f4-a852-260d9e7cce83}')
 GUID_MetadataFormatHeifHDR: Guid = Guid('{568b8d8a-1e65-438c-8968-d60e1012beb9}')
 GUID_MetadataFormatWebpANIM: Guid = Guid('{6dc4fda6-78e6-4102-ae35-bcfa1edcc78b}')
 GUID_MetadataFormatWebpANMF: Guid = Guid('{43c105ee-b93b-4abb-b003-a08c0d870471}')
-GUID_MetadataFormatJpegXLAnim: Guid = Guid('{501c2e24-7a7d-42b2-93c7-b4f45bcc92f7}')
-GUID_MetadataFormatJpegXLAnimFrame: Guid = Guid('{958ecc2c-36cb-4af9-9ea8-0b74baccfd3e}')
-GUID_MetadataFormatGainMap: Guid = Guid('{568d3138-c446-4ec2-a7a8-59abb16d21e3}')
 CLSID_WICUnknownMetadataReader: Guid = Guid('{699745c2-5066-4b82-a8e3-d40478dbec8c}')
 CLSID_WICUnknownMetadataWriter: Guid = Guid('{a09cca86-27ba-4f39-9053-121fa4dc08fc}')
 CLSID_WICApp0MetadataWriter: Guid = Guid('{f3c633a2-46c8-498e-8fbb-cc6f721bbcde}')
@@ -317,15 +307,8 @@ CLSID_WICDdsMetadataWriter: Guid = Guid('{fd688bbd-31ed-4db7-a723-934927d38367}'
 CLSID_WICHeifMetadataReader: Guid = Guid('{acddfc3f-85ec-41bc-bdef-1bc262e4db05}')
 CLSID_WICHeifMetadataWriter: Guid = Guid('{3ae45e79-40bc-4401-ace5-dd3cb16e6afe}')
 CLSID_WICHeifHDRMetadataReader: Guid = Guid('{2438de3d-94d9-4be8-84a8-4de95a575e75}')
-CLSID_WICHeifHDRMetadataWriter: Guid = Guid('{b83135a2-8e7e-485e-a533-f93621dd93c8}')
 CLSID_WICWebpAnimMetadataReader: Guid = Guid('{076f9911-a348-465c-a807-a252f3f2d3de}')
 CLSID_WICWebpAnmfMetadataReader: Guid = Guid('{85a10b03-c9f6-439f-be5e-c0fbef67807c}')
-CLSID_WICJpegXLAnimMetadataReader: Guid = Guid('{bf8b6eb0-37e2-4ed8-8289-be9ae31d9f03}')
-CLSID_WICJpegXLAnimMetadataWriter: Guid = Guid('{39d01345-432b-44e6-afd6-f606d20a5571}')
-CLSID_WICJpegXLAnimFrameMetadataReader: Guid = Guid('{9cdf50a8-8770-4fe6-aef2-d06e2c01744f}')
-CLSID_WICJpegXLAnimFrameMetadataWriter: Guid = Guid('{d1ce58a8-06e0-4b6f-8fc1-577560bd5ad9}')
-CLSID_WICGainMapMetadataReader: Guid = Guid('{3ac32daf-27b9-4af5-b0ab-d1189dcf34b3}')
-CLSID_WICGainMapMetadataWriter: Guid = Guid('{6f845268-a92e-4a02-b002-a67c362800b2}')
 @winfunctype('WindowsCodecs.dll')
 def WICConvertBitmapSource(dstFormat: POINTER(Guid), pISrc: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource, ppIDst: POINTER(win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('WindowsCodecs.dll')
@@ -457,20 +440,6 @@ class IWICBitmapFlipRotator(ComPtr):
     _iid_ = Guid('{5009834f-2d6a-41ce-9e1b-17c5aff7a782}')
     @commethod(8)
     def Initialize(self, pISource: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource, options: win32more.Windows.Win32.Graphics.Imaging.WICBitmapTransformOptions) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICBitmapFrameChainReader(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{0c599495-a120-4222-9130-a8c29410bd0b}')
-    @commethod(3)
-    def GetChainedFrameCount(self, chainType: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType, pCount: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetChainedFrame(self, chainType: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType, index: UInt32, ppIBitmapFrame: POINTER(win32more.Windows.Win32.Graphics.Imaging.IWICBitmapFrameDecode)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICBitmapFrameChainWriter(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{40d9ea28-4768-47b3-8c12-558a48e98e38}')
-    @commethod(3)
-    def AppendFrameToChain(self, chainType: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType, ppIFrameEncode: POINTER(win32more.Windows.Win32.Graphics.Imaging.IWICBitmapFrameEncode), ppIEncoderOptions: POINTER(win32more.Windows.Win32.System.Com.StructuredStorage.IPropertyBag2)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def DoesSupportChainType(self, chainType: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType, pfIsSupported: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IWICBitmapFrameDecode(ComPtr):
     extends: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource
     _iid_ = Guid('{3b16811b-6a43-4ec9-a813-3d930c13b940}')
@@ -545,18 +514,6 @@ class IWICBitmapSourceTransform(ComPtr):
     def GetClosestPixelFormat(self, pguidDstFormat: POINTER(Guid)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(6)
     def DoesSupportTransform(self, dstTransform: win32more.Windows.Win32.Graphics.Imaging.WICBitmapTransformOptions, pfIsSupported: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICBitmapSourceTransform2(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSourceTransform
-    _iid_ = Guid('{c3373fdf-6d39-4e5f-8e79-bf40c0b7ed77}')
-    @commethod(7)
-    def GetColorContextsForPixelFormat(self, pPixelFormat: POINTER(Guid), cCount: UInt32, ppIColorContexts: POINTER(win32more.Windows.Win32.Graphics.Imaging.IWICColorContext), pcActualCount: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICBitmapToneMapper(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource
-    _iid_ = Guid('{44728ded-1edf-4fe9-b50b-c89a264c9439}')
-    @commethod(8)
-    def InitializeForHdrTarget(self, pISource: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource, guidDstFormat: POINTER(Guid), fLuminanceInNits: Single, fWhiteLevelInNits: Single, mode: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(9)
-    def InitializeForSdrTarget(self, pISource: win32more.Windows.Win32.Graphics.Imaging.IWICBitmapSource, guidDstFormat: POINTER(Guid), mode: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IWICColorContext(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{3c613a02-34b2-44ea-9a7c-45aea9c6fd6d}')
@@ -613,17 +570,6 @@ class IWICComponentInfo(ComPtr):
     def GetSpecVersion(self, cchSpecVersion: UInt32, wzSpecVersion: win32more.Windows.Win32.Foundation.PWSTR, pcchActual: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(10)
     def GetFriendlyName(self, cchFriendlyName: UInt32, wzFriendlyName: win32more.Windows.Win32.Foundation.PWSTR, pcchActual: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICD3DTextureSource(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{caf65cc4-8ebe-4718-a21f-8dbf40bb7e25}')
-    @commethod(3)
-    def GetTexture(self, pD3DDevice: win32more.Windows.Win32.System.Com.IUnknown, pID3DTextureOptions: win32more.Windows.Win32.System.Com.StructuredStorage.IPropertyBag2, riid: POINTER(Guid), ppTexture: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetTransformedTexture(self, prc: POINTER(win32more.Windows.Win32.Graphics.Imaging.WICRect), uiWidth: UInt32, uiHeight: UInt32, pguidDstFormat: POINTER(Guid), dstTransform: win32more.Windows.Win32.Graphics.Imaging.WICBitmapTransformOptions, pD3DDevice: win32more.Windows.Win32.System.Com.IUnknown, pID3DTextureOptions: win32more.Windows.Win32.System.Com.StructuredStorage.IPropertyBag2, riid: POINTER(Guid), ppTexture: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def DoesSupportD3DDeviceType(self, riid: POINTER(Guid), pfIsSupported: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(6)
-    def GetD3DTextureOptions(self, ppID3DTextureOptions: POINTER(win32more.Windows.Win32.System.Com.StructuredStorage.IPropertyBag2)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IWICDdsDecoder(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{409cd537-8532-40cb-9774-e2feb2df4e9c}')
@@ -721,28 +667,6 @@ class IWICDevelopRawNotificationCallback(ComPtr):
     _iid_ = Guid('{95c75a6e-3e8c-4ec2-85a8-aebcc551e59b}')
     @commethod(3)
     def Notify(self, NotificationMask: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICDisplayAdaptationControl(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{de9d91d2-70b4-4f41-836c-25fcd39626d3}')
-    @commethod(3)
-    def DoesSupportChangingMaxLuminance(self, pguidDstFormat: POINTER(Guid), pfIsSupported: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def SetDisplayMaxLuminance(self, fLuminanceInNits: Single) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(5)
-    def GetDisplayMaxLuminance(self, pfLuminanceInNits: POINTER(Single)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWICDisplayAdaptationControl2(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.Imaging.IWICDisplayAdaptationControl
-    _iid_ = Guid('{d7508d29-3ab7-447e-a676-4d80d7de726b}')
-    @commethod(6)
-    def SetSdrWhiteLevel(self, fWhiteLevelInNits: Single) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(7)
-    def GetSdrWhiteLevel(self, pfWhiteLevelInNits: POINTER(Single)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(8)
-    def SetToneMappingMode(self, mode: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(9)
-    def GetToneMappingMode(self, mode: POINTER(win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(10)
-    def DoesSupportToneMappingMode(self, mode: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode, pfIsSupported: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IWICEnumMetadataItem(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{dc2bb46d-3f07-481e-8625-220c4aedbb33}')
@@ -1090,14 +1014,6 @@ WICBitmapAlphaChannelOption = Int32
 WICBitmapUseAlpha: win32more.Windows.Win32.Graphics.Imaging.WICBitmapAlphaChannelOption = 0
 WICBitmapUsePremultipliedAlpha: win32more.Windows.Win32.Graphics.Imaging.WICBitmapAlphaChannelOption = 1
 WICBitmapIgnoreAlpha: win32more.Windows.Win32.Graphics.Imaging.WICBitmapAlphaChannelOption = 2
-WICBitmapChainType = Int32
-WICBitmapChainType_Alternate: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 1
-WICBitmapChainType_Layer: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 2
-WICBitmapChainType_Preview: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 3
-WICBitmapChainType_Thumbnail: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 4
-WICBitmapChainType_AlphaMap: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 5
-WICBitmapChainType_DepthMap: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 6
-WICBitmapChainType_GainMap: win32more.Windows.Win32.Graphics.Imaging.WICBitmapChainType = 7
 WICBitmapCreateCacheOption = Int32
 WICBitmapNoCache: win32more.Windows.Win32.Graphics.Imaging.WICBitmapCreateCacheOption = 0
 WICBitmapCacheOnDemand: win32more.Windows.Win32.Graphics.Imaging.WICBitmapCreateCacheOption = 1
@@ -1162,11 +1078,6 @@ class WICBitmapPlaneDescription(Structure):
     Format: Guid
     Width: UInt32
     Height: UInt32
-WICBitmapToneMappingMode = Int32
-WICBitmapToneMappingMode_None: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode = 0
-WICBitmapToneMappingMode_Default: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode = 1
-WICBitmapToneMappingMode_D2D: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode = 2
-WICBitmapToneMappingMode_GainMap: win32more.Windows.Win32.Graphics.Imaging.WICBitmapToneMappingMode = 3
 WICBitmapTransformOptions = Int32
 WICBitmapTransformRotate0: win32more.Windows.Win32.Graphics.Imaging.WICBitmapTransformOptions = 0
 WICBitmapTransformRotate90: win32more.Windows.Win32.Graphics.Imaging.WICBitmapTransformOptions = 1
@@ -1225,8 +1136,6 @@ class WICDdsParameters(Structure):
 WICDecodeOptions = Int32
 WICDecodeMetadataCacheOnDemand: win32more.Windows.Win32.Graphics.Imaging.WICDecodeOptions = 0
 WICDecodeMetadataCacheOnLoad: win32more.Windows.Win32.Graphics.Imaging.WICDecodeOptions = 1
-WICGainMapProperties = Int32
-WICGainMapMetadata: win32more.Windows.Win32.Graphics.Imaging.WICGainMapProperties = 1
 WICGifApplicationExtensionProperties = Int32
 WICGifApplicationExtensionApplication: win32more.Windows.Win32.Graphics.Imaging.WICGifApplicationExtensionProperties = 1
 WICGifApplicationExtensionData: win32more.Windows.Win32.Graphics.Imaging.WICGifApplicationExtensionProperties = 2
@@ -1257,14 +1166,6 @@ WICGifLogicalScreenDescriptorSortFlag: win32more.Windows.Win32.Graphics.Imaging.
 WICGifLogicalScreenDescriptorGlobalColorTableSize: win32more.Windows.Win32.Graphics.Imaging.WICGifLogicalScreenDescriptorProperties = 7
 WICGifLogicalScreenDescriptorBackgroundColorIndex: win32more.Windows.Win32.Graphics.Imaging.WICGifLogicalScreenDescriptorProperties = 8
 WICGifLogicalScreenDescriptorPixelAspectRatio: win32more.Windows.Win32.Graphics.Imaging.WICGifLogicalScreenDescriptorProperties = 9
-WICHeifCompressionOption = Int32
-WICHeifCompressionDontCare: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 0
-WICHeifCompressionNone: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 1
-WICHeifCompressionHEVC: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 2
-WICHeifCompressionAV1: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 3
-WICHeifCompressionJpegXL: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 4
-WICHeifCompressionBrotli: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 5
-WICHeifCompressionDeflate: win32more.Windows.Win32.Graphics.Imaging.WICHeifCompressionOption = 6
 WICHeifHdrProperties = Int32
 WICHeifHdrMaximumLuminanceLevel: win32more.Windows.Win32.Graphics.Imaging.WICHeifHdrProperties = 1
 WICHeifHdrMaximumFrameAverageLuminanceLevel: win32more.Windows.Win32.Graphics.Imaging.WICHeifHdrProperties = 2
@@ -1273,8 +1174,6 @@ WICHeifHdrMaximumMasteringDisplayLuminanceLevel: win32more.Windows.Win32.Graphic
 WICHeifHdrCustomVideoPrimaries: win32more.Windows.Win32.Graphics.Imaging.WICHeifHdrProperties = 5
 WICHeifProperties = Int32
 WICHeifOrientation: win32more.Windows.Win32.Graphics.Imaging.WICHeifProperties = 1
-WICHeifLayeredImageCanvasColor: win32more.Windows.Win32.Graphics.Imaging.WICHeifProperties = 2
-WICHeifLayeredImageLayerPositions: win32more.Windows.Win32.Graphics.Imaging.WICHeifProperties = 3
 class WICImageParameters(Structure):
     PixelFormat: win32more.Windows.Win32.Graphics.Direct2D.Common.D2D1_PIXEL_FORMAT
     DpiX: Single
@@ -1317,13 +1216,6 @@ WICJpegScanTypeProgressive: win32more.Windows.Win32.Graphics.Imaging.WICJpegScan
 WICJpegTransferMatrix = Int32
 WICJpegTransferMatrixIdentity: win32more.Windows.Win32.Graphics.Imaging.WICJpegTransferMatrix = 0
 WICJpegTransferMatrixBT601: win32more.Windows.Win32.Graphics.Imaging.WICJpegTransferMatrix = 1
-WICJpegXLAnimFrameProperties = Int32
-WICJpegXLAnimFrameDurationInTicks: win32more.Windows.Win32.Graphics.Imaging.WICJpegXLAnimFrameProperties = 1
-WICJpegXLAnimFrameName: win32more.Windows.Win32.Graphics.Imaging.WICJpegXLAnimFrameProperties = 2
-WICJpegXLAnimProperties = Int32
-WICJpegXLAnimLoopCount: win32more.Windows.Win32.Graphics.Imaging.WICJpegXLAnimProperties = 1
-WICJpegXLAnimFrameTicksPerSecondNumerator: win32more.Windows.Win32.Graphics.Imaging.WICJpegXLAnimProperties = 2
-WICJpegXLAnimFrameTicksPerSecondDenominator: win32more.Windows.Win32.Graphics.Imaging.WICJpegXLAnimProperties = 3
 WICJpegYCrCbSubsamplingOption = Int32
 WICJpegYCrCbSubsamplingDefault: win32more.Windows.Win32.Graphics.Imaging.WICJpegYCrCbSubsamplingOption = 0
 WICJpegYCrCbSubsampling420: win32more.Windows.Win32.Graphics.Imaging.WICJpegYCrCbSubsamplingOption = 1
@@ -1464,7 +1356,7 @@ WICRawRotationCapabilityNinetyDegreesSupported: win32more.Windows.Win32.Graphics
 WICRawRotationCapabilityFullySupported: win32more.Windows.Win32.Graphics.Imaging.WICRawRotationCapabilities = 3
 class WICRawToneCurve(Structure):
     cPoints: UInt32
-    aPoints: FlexibleArray[win32more.Windows.Win32.Graphics.Imaging.WICRawToneCurvePoint]
+    aPoints: win32more.Windows.Win32.Graphics.Imaging.WICRawToneCurvePoint * 1
 class WICRawToneCurvePoint(Structure):
     Input: Double
     Output: Double

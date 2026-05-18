@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.CompositionSwapchain
 import win32more.Windows.Win32.Graphics.Dxgi.Common
@@ -76,9 +76,6 @@ class IPresentationFactory(ComPtr):
     def IsPresentationSupportedWithIndependentFlip(self) -> Byte: ...
     @commethod(5)
     def CreatePresentationManager(self, ppPresentationManager: POINTER(win32more.Windows.Win32.Graphics.CompositionSwapchain.IPresentationManager)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IPresentationFactory_SupportHdrAware(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{2bd0b885-a16f-4bd9-a59a-d073e069d416}')
 class IPresentationManager(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{fb562f82-6292-470a-88b1-843661e7f20c}')
@@ -127,11 +124,6 @@ class IPresentationSurface(ComPtr):
     def SetDisableReadback(self, value: Byte) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(11)
     def SetLetterboxingMargins(self, leftLetterboxSize: Single, topLetterboxSize: Single, rightLetterboxSize: Single, bottomLetterboxSize: Single) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IPresentationSurface2(ComPtr):
-    extends: win32more.Windows.Win32.Graphics.CompositionSwapchain.IPresentationSurface
-    _iid_ = Guid('{95609569-c5f0-47f9-8804-5345f2e2767e}')
-    @commethod(12)
-    def SetIsHdrContent(self, isHdrContent: Byte) -> Void: ...
 PresentStatisticsKind = Int32
 PresentStatisticsKind_PresentStatus: win32more.Windows.Win32.Graphics.CompositionSwapchain.PresentStatisticsKind = 1
 PresentStatisticsKind_CompositionFrame: win32more.Windows.Win32.Graphics.CompositionSwapchain.PresentStatisticsKind = 2

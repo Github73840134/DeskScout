@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Devices.Cdrom
 import win32more.Windows.Win32.Foundation
 IOCTL_CDROM_BASE: Int32 = 2
@@ -115,11 +115,11 @@ CdromEntirePerformanceList: win32more.Windows.Win32.Devices.Cdrom.CDROM_PERFORMA
 CdromPerformanceExceptionsOnly: win32more.Windows.Win32.Devices.Cdrom.CDROM_PERFORMANCE_EXCEPTION_TYPE = 3
 class CDROM_PERFORMANCE_HEADER(Structure):
     DataLength: Byte * 4
-    Except: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Write: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Reserved1: Annotated[Byte, NativeBitfieldAttribute(6)]
+    Except: Annotated[Byte, 1]
+    Write: Annotated[Byte, 1]
+    Reserved1: Annotated[Byte, 6]
     Reserved2: Byte * 3
-    Data: FlexibleArray[Byte]
+    Data: Byte * 1
 class CDROM_PERFORMANCE_REQUEST(Structure):
     RequestType: win32more.Windows.Win32.Devices.Cdrom.CDROM_PERFORMANCE_REQUEST_TYPE
     PerformanceType: win32more.Windows.Win32.Devices.Cdrom.CDROM_PERFORMANCE_TYPE
@@ -142,9 +142,9 @@ class CDROM_PLAY_AUDIO_MSF(Structure):
     EndingS: Byte
     EndingF: Byte
 class CDROM_READ_TOC_EX(Structure):
-    Format: Annotated[Byte, NativeBitfieldAttribute(4)]
-    Reserved1: Annotated[Byte, NativeBitfieldAttribute(3)]
-    Msf: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Format: Annotated[Byte, 4]
+    Reserved1: Annotated[Byte, 3]
+    Msf: Annotated[Byte, 1]
     SessionTrack: Byte
     Reserved2: Byte
     Reserved3: Byte
@@ -191,21 +191,21 @@ class CDROM_TOC_ATIP_DATA(Structure):
     Length: Byte * 2
     Reserved1: Byte
     Reserved2: Byte
-    Descriptors: FlexibleArray[win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_ATIP_DATA_BLOCK]
+    Descriptors: win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_ATIP_DATA_BLOCK * 1
 class CDROM_TOC_ATIP_DATA_BLOCK(Structure):
-    CdrwReferenceSpeed: Annotated[Byte, NativeBitfieldAttribute(3)]
-    Reserved3: Annotated[Byte, NativeBitfieldAttribute(1)]
-    WritePower: Annotated[Byte, NativeBitfieldAttribute(3)]
-    True1: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Reserved4: Annotated[Byte, NativeBitfieldAttribute(6)]
-    UnrestrictedUse: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Reserved5: Annotated[Byte, NativeBitfieldAttribute(1)]
-    A3Valid: Annotated[Byte, NativeBitfieldAttribute(1)]
-    A2Valid: Annotated[Byte, NativeBitfieldAttribute(1)]
-    A1Valid: Annotated[Byte, NativeBitfieldAttribute(1)]
-    DiscSubType: Annotated[Byte, NativeBitfieldAttribute(3)]
-    IsCdrw: Annotated[Byte, NativeBitfieldAttribute(1)]
-    True2: Annotated[Byte, NativeBitfieldAttribute(1)]
+    CdrwReferenceSpeed: Annotated[Byte, 3]
+    Reserved3: Annotated[Byte, 1]
+    WritePower: Annotated[Byte, 3]
+    True1: Annotated[Byte, 1]
+    Reserved4: Annotated[Byte, 6]
+    UnrestrictedUse: Annotated[Byte, 1]
+    Reserved5: Annotated[Byte, 1]
+    A3Valid: Annotated[Byte, 1]
+    A2Valid: Annotated[Byte, 1]
+    A1Valid: Annotated[Byte, 1]
+    DiscSubType: Annotated[Byte, 3]
+    IsCdrw: Annotated[Byte, 1]
+    True2: Annotated[Byte, 1]
     Reserved7: Byte
     LeadInMsf: Byte * 3
     Reserved8: Byte
@@ -221,18 +221,17 @@ class CDROM_TOC_CD_TEXT_DATA(Structure):
     Length: Byte * 2
     Reserved1: Byte
     Reserved2: Byte
-    Descriptors: FlexibleArray[win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_CD_TEXT_DATA_BLOCK]
+    Descriptors: win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_CD_TEXT_DATA_BLOCK * 1
 class CDROM_TOC_CD_TEXT_DATA_BLOCK(Structure):
     PackType: Byte
-    TrackNumber: Annotated[Byte, NativeBitfieldAttribute(7)]
-    ExtensionFlag: Annotated[Byte, NativeBitfieldAttribute(1)]
+    TrackNumber: Annotated[Byte, 7]
+    ExtensionFlag: Annotated[Byte, 1]
     SequenceNumber: Byte
-    CharacterPosition: Annotated[Byte, NativeBitfieldAttribute(4)]
-    BlockNumber: Annotated[Byte, NativeBitfieldAttribute(3)]
-    Unicode: Annotated[Byte, NativeBitfieldAttribute(1)]
+    CharacterPosition: Annotated[Byte, 4]
+    BlockNumber: Annotated[Byte, 3]
+    Unicode: Annotated[Byte, 1]
     Anonymous: _Anonymous_e__Union
     CRC: Byte * 2
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Text: Byte * 12
         WText: Char * 6
@@ -240,11 +239,11 @@ class CDROM_TOC_FULL_TOC_DATA(Structure):
     Length: Byte * 2
     FirstCompleteSession: Byte
     LastCompleteSession: Byte
-    Descriptors: FlexibleArray[win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_FULL_TOC_DATA_BLOCK]
+    Descriptors: win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_FULL_TOC_DATA_BLOCK * 1
 class CDROM_TOC_FULL_TOC_DATA_BLOCK(Structure):
     SessionNumber: Byte
-    Control: Annotated[Byte, NativeBitfieldAttribute(4)]
-    Adr: Annotated[Byte, NativeBitfieldAttribute(4)]
+    Control: Annotated[Byte, 4]
+    Adr: Annotated[Byte, 4]
     Reserved1: Byte
     Point: Byte
     MsfExtra: Byte * 3
@@ -254,18 +253,18 @@ class CDROM_TOC_PMA_DATA(Structure):
     Length: Byte * 2
     Reserved1: Byte
     Reserved2: Byte
-    Descriptors: FlexibleArray[win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_FULL_TOC_DATA_BLOCK]
+    Descriptors: win32more.Windows.Win32.Devices.Cdrom.CDROM_TOC_FULL_TOC_DATA_BLOCK * 1
 class CDROM_TOC_SESSION_DATA(Structure):
     Length: Byte * 2
     FirstCompleteSession: Byte
     LastCompleteSession: Byte
-    TrackData: FlexibleArray[win32more.Windows.Win32.Devices.Cdrom.TRACK_DATA]
+    TrackData: win32more.Windows.Win32.Devices.Cdrom.TRACK_DATA * 1
 class CDROM_WRITE_SPEED_DESCRIPTOR(Structure):
-    MixedReadWrite: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Exact: Annotated[Byte, NativeBitfieldAttribute(1)]
-    Reserved1: Annotated[Byte, NativeBitfieldAttribute(1)]
-    WriteRotationControl: Annotated[Byte, NativeBitfieldAttribute(2)]
-    Reserved2: Annotated[Byte, NativeBitfieldAttribute(3)]
+    MixedReadWrite: Annotated[Byte, 1]
+    Exact: Annotated[Byte, 1]
+    Reserved1: Annotated[Byte, 1]
+    WriteRotationControl: Annotated[Byte, 2]
+    Reserved2: Annotated[Byte, 3]
     Reserved3: Byte * 3
     EndLba: Byte * 4
     ReadSpeed: Byte * 4
@@ -300,8 +299,8 @@ class SUB_Q_CHANNEL_DATA(Union):
 class SUB_Q_CURRENT_POSITION(Structure):
     Header: win32more.Windows.Win32.Devices.Cdrom.SUB_Q_HEADER
     FormatCode: Byte
-    Control: Annotated[Byte, NativeBitfieldAttribute(4)]
-    ADR: Annotated[Byte, NativeBitfieldAttribute(4)]
+    Control: Annotated[Byte, 4]
+    ADR: Annotated[Byte, 4]
     TrackNumber: Byte
     IndexNumber: Byte
     AbsoluteAddress: Byte * 4
@@ -314,8 +313,8 @@ class SUB_Q_MEDIA_CATALOG_NUMBER(Structure):
     Header: win32more.Windows.Win32.Devices.Cdrom.SUB_Q_HEADER
     FormatCode: Byte
     Reserved: Byte * 3
-    Reserved1: Annotated[Byte, NativeBitfieldAttribute(7)]
-    Mcval: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved1: Annotated[Byte, 7]
+    Mcval: Annotated[Byte, 1]
     MediaCatalog: Byte * 15
 class SUB_Q_TRACK_ISRC(Structure):
     Header: win32more.Windows.Win32.Devices.Cdrom.SUB_Q_HEADER
@@ -323,13 +322,13 @@ class SUB_Q_TRACK_ISRC(Structure):
     Reserved0: Byte
     Track: Byte
     Reserved1: Byte
-    Reserved2: Annotated[Byte, NativeBitfieldAttribute(7)]
-    Tcval: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved2: Annotated[Byte, 7]
+    Tcval: Annotated[Byte, 1]
     TrackIsrc: Byte * 15
 class TRACK_DATA(Structure):
     Reserved: Byte
-    Control: Annotated[Byte, NativeBitfieldAttribute(4)]
-    Adr: Annotated[Byte, NativeBitfieldAttribute(4)]
+    Control: Annotated[Byte, 4]
+    Adr: Annotated[Byte, 4]
     TrackNumber: Byte
     Reserved1: Byte
     Address: Byte * 4

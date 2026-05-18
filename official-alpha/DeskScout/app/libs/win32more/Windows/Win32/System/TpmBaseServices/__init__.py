@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.TpmBaseServices
 TBS_CONTEXT_VERSION_ONE: UInt32 = 1
@@ -31,8 +31,6 @@ TBS_TCGLOG_DRTM_BOOT: UInt32 = 4
 TBS_TCGLOG_DRTM_RESUME: UInt32 = 5
 @winfunctype('tbs.dll')
 def Tbsi_Context_Create(pContextParams: POINTER(win32more.Windows.Win32.System.TpmBaseServices.TBS_CONTEXT_PARAMS), phContext: POINTER(VoidPtr)) -> UInt32: ...
-@winfunctype('tbs.dll')
-def Tbsi_Tpm_Vendor_Maintenance_Mode(pContextParams: POINTER(win32more.Windows.Win32.System.TpmBaseServices.TBS_CONTEXT_PARAMS), phContext: POINTER(VoidPtr)) -> UInt32: ...
 @winfunctype('tbs.dll')
 def Tbsip_Context_Close(hContext: VoidPtr) -> UInt32: ...
 @winfunctype('tbs.dll')
@@ -76,15 +74,13 @@ class TBS_CONTEXT_PARAMS(Structure):
 class TBS_CONTEXT_PARAMS2(Structure):
     version: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         asUINT32: UInt32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            requestRaw: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            includeTpm12: Annotated[UInt32, NativeBitfieldAttribute(1)]
-            includeTpm20: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            requestRaw: Annotated[UInt32, 1]
+            includeTpm12: Annotated[UInt32, 1]
+            includeTpm20: Annotated[UInt32, 1]
 class TPM_DEVICE_INFO(Structure):
     structVersion: UInt32
     tpmVersion: UInt32

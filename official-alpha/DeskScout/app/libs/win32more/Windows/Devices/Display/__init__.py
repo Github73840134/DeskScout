@@ -1,22 +1,24 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Devices.Display
 import win32more.Windows.Foundation
 import win32more.Windows.Graphics
+import win32more.Windows.Win32.System.WinRT
 class DisplayMonitor(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Devices.Display.IDisplayMonitor
     _classid_ = 'Windows.Devices.Display.DisplayMonitor'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> hstr: ...
+    def get_DeviceId(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_DisplayName(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> hstr: ...
+    def get_DisplayName(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_ConnectionKind(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> win32more.Windows.Devices.Display.DisplayMonitorConnectionKind: ...
     @winrt_mixinmethod
     def get_PhysicalConnector(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> win32more.Windows.Devices.Display.DisplayMonitorPhysicalConnectorKind: ...
     @winrt_mixinmethod
-    def get_DisplayAdapterDeviceId(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> hstr: ...
+    def get_DisplayAdapterDeviceId(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_DisplayAdapterId(self: win32more.Windows.Devices.Display.IDisplayMonitor) -> win32more.Windows.Graphics.DisplayAdapterId: ...
     @winrt_mixinmethod
@@ -50,11 +52,11 @@ class DisplayMonitor(ComPtr):
     @winrt_mixinmethod
     def get_IsDolbyVisionSupportedInHdrMode(self: win32more.Windows.Devices.Display.IDisplayMonitor2) -> Boolean: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.Display.IDisplayMonitorStatics) -> hstr: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.Display.IDisplayMonitorStatics) -> WinRT_String: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.Display.IDisplayMonitorStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.Display.IDisplayMonitorStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
     @winrt_classmethod
-    def FromInterfaceIdAsync(cls: win32more.Windows.Devices.Display.IDisplayMonitorStatics, deviceInterfaceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
+    def FromInterfaceIdAsync(cls: win32more.Windows.Devices.Display.IDisplayMonitorStatics, deviceInterfaceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
     BluePrimary = property(get_BluePrimary, None)
     ConnectionKind = property(get_ConnectionKind, None)
     DeviceId = property(get_DeviceId, None)
@@ -76,17 +78,14 @@ class DisplayMonitor(ComPtr):
     UsageKind = property(get_UsageKind, None)
     WhitePoint = property(get_WhitePoint, None)
 class DisplayMonitorConnectionKind(Enum, Int32):
-    _name_ = 'Windows.Devices.Display.DisplayMonitorConnectionKind'
     Internal = 0
     Wired = 1
     Wireless = 2
     Virtual = 3
 class DisplayMonitorDescriptorKind(Enum, Int32):
-    _name_ = 'Windows.Devices.Display.DisplayMonitorDescriptorKind'
     Edid = 0
     DisplayId = 1
 class DisplayMonitorPhysicalConnectorKind(Enum, Int32):
-    _name_ = 'Windows.Devices.Display.DisplayMonitorPhysicalConnectorKind'
     Unknown = 0
     HD15 = 1
     AnalogTV = 2
@@ -96,24 +95,23 @@ class DisplayMonitorPhysicalConnectorKind(Enum, Int32):
     Sdi = 6
     DisplayPort = 7
 class DisplayMonitorUsageKind(Enum, Int32):
-    _name_ = 'Windows.Devices.Display.DisplayMonitorUsageKind'
     Standard = 0
     HeadMounted = 1
     SpecialPurpose = 2
 class IDisplayMonitor(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Display.IDisplayMonitor'
     _iid_ = Guid('{1f6b15d4-1d01-4c51-87e2-6f954a772b59}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> hstr: ...
+    def get_DeviceId(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def get_DisplayName(self) -> hstr: ...
+    def get_DisplayName(self) -> WinRT_String: ...
     @winrt_commethod(8)
     def get_ConnectionKind(self) -> win32more.Windows.Devices.Display.DisplayMonitorConnectionKind: ...
     @winrt_commethod(9)
     def get_PhysicalConnector(self) -> win32more.Windows.Devices.Display.DisplayMonitorPhysicalConnectorKind: ...
     @winrt_commethod(10)
-    def get_DisplayAdapterDeviceId(self) -> hstr: ...
+    def get_DisplayAdapterDeviceId(self) -> WinRT_String: ...
     @winrt_commethod(11)
     def get_DisplayAdapterId(self) -> win32more.Windows.Graphics.DisplayAdapterId: ...
     @winrt_commethod(12)
@@ -164,22 +162,22 @@ class IDisplayMonitor(ComPtr):
     UsageKind = property(get_UsageKind, None)
     WhitePoint = property(get_WhitePoint, None)
 class IDisplayMonitor2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Display.IDisplayMonitor2'
     _iid_ = Guid('{023018e6-cb23-5830-96df-a7bf6e602577}')
     @winrt_commethod(6)
     def get_IsDolbyVisionSupportedInHdrMode(self) -> Boolean: ...
     IsDolbyVisionSupportedInHdrMode = property(get_IsDolbyVisionSupportedInHdrMode, None)
 class IDisplayMonitorStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Display.IDisplayMonitorStatics'
     _iid_ = Guid('{6eae698f-a228-4c05-821d-b695d667de8e}')
     @winrt_commethod(6)
-    def GetDeviceSelector(self) -> hstr: ...
+    def GetDeviceSelector(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
+    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
     @winrt_commethod(8)
-    def FromInterfaceIdAsync(self, deviceInterfaceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
+    def FromInterfaceIdAsync(self, deviceInterfaceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Display.DisplayMonitor]: ...
 
 
 make_ready(__name__)

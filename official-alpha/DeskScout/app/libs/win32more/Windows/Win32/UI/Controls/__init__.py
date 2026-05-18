@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -2575,7 +2575,12 @@ def CheckRadioButton(hDlg: win32more.Windows.Win32.Foundation.HWND, nIDFirstButt
 @winfunctype('USER32.dll')
 def IsDlgButtonChecked(hDlg: win32more.Windows.Win32.Foundation.HWND, nIDButton: Int32) -> UInt32: ...
 @winfunctype('USER32.dll')
-def CreateSyntheticPointerDevice(pointerType: win32more.Windows.Win32.UI.WindowsAndMessaging.POINTER_INPUT_TYPE, maxCount: UInt32, mode: win32more.Windows.Win32.UI.Input.Pointer.POINTER_FEEDBACK_MODE) -> win32more.Windows.Win32.UI.Input.Pointer.HSYNTHETICPOINTERDEVICE: ...
+def IsCharLowerW(ch: Char) -> win32more.Windows.Win32.Foundation.BOOL: ...
+IsCharLower = UnicodeAlias('IsCharLowerW')
+@winfunctype('USER32.dll')
+def CreateSyntheticPointerDevice(pointerType: win32more.Windows.Win32.UI.WindowsAndMessaging.POINTER_INPUT_TYPE, maxCount: UInt32, mode: win32more.Windows.Win32.UI.Controls.POINTER_FEEDBACK_MODE) -> win32more.Windows.Win32.UI.Controls.HSYNTHETICPOINTERDEVICE: ...
+@winfunctype('USER32.dll')
+def DestroySyntheticPointerDevice(device: win32more.Windows.Win32.UI.Controls.HSYNTHETICPOINTERDEVICE) -> Void: ...
 @winfunctype('USER32.dll')
 def RegisterTouchHitTestingWindow(hwnd: win32more.Windows.Win32.Foundation.HWND, value: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
@@ -3564,6 +3569,7 @@ UTS_NORMAL: win32more.Windows.Win32.UI.Controls.HOVERBACKGROUNDSTATES = 1
 UTS_HOT: win32more.Windows.Win32.UI.Controls.HOVERBACKGROUNDSTATES = 2
 UTS_PRESSED: win32more.Windows.Win32.UI.Controls.HOVERBACKGROUNDSTATES = 3
 HPROPSHEETPAGE = VoidPtr
+HSYNTHETICPOINTERDEVICE = VoidPtr
 HTHEME = IntPtr
 HTREEITEM = IntPtr
 HYPERLINKSTATES = Int32
@@ -4295,13 +4301,12 @@ MENU_SYSTEMCLOSE: win32more.Windows.Win32.UI.Controls.MENUPARTS = 17
 MENU_SYSTEMMAXIMIZE: win32more.Windows.Win32.UI.Controls.MENUPARTS = 18
 MENU_SYSTEMMINIMIZE: win32more.Windows.Win32.UI.Controls.MENUPARTS = 19
 MENU_SYSTEMRESTORE: win32more.Windows.Win32.UI.Controls.MENUPARTS = 20
-MENU_POPUPSUBMENUHCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 21
-MENU_SYSTEMCLOSEHCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 22
-MENU_SYSTEMMAXIMIZEHCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 23
-MENU_SYSTEMMINIMIZEHCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 24
-MENU_SYSTEMRESTOREHCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 25
+MENU_SYSTEMCLOSE_HCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 22
+MENU_SYSTEMMAXIMIZE_HCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 23
+MENU_SYSTEMMINIMIZE_HCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 24
+MENU_SYSTEMRESTORE_HCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 25
 MENU_POPUPITEMKBFOCUS: win32more.Windows.Win32.UI.Controls.MENUPARTS = 26
-MENU_POPUPITEMFOCUSABLE: win32more.Windows.Win32.UI.Controls.MENUPARTS = 27
+MENU_POPUPITEM_FOCUSABLE: win32more.Windows.Win32.UI.Controls.MENUPARTS = 27
 MENU_POPUPSUBMENU_HCHOT: win32more.Windows.Win32.UI.Controls.MENUPARTS = 21
 MINBUTTONSTATES = Int32
 MINBS_NORMAL: win32more.Windows.Win32.UI.Controls.MINBUTTONSTATES = 1
@@ -5056,6 +5061,47 @@ def PFNPROPSHEETCALLBACK(param0: win32more.Windows.Win32.Foundation.HWND, param1
 def PFNTVCOMPARE(lParam1: win32more.Windows.Win32.Foundation.LPARAM, lParam2: win32more.Windows.Win32.Foundation.LPARAM, lParamSort: win32more.Windows.Win32.Foundation.LPARAM) -> Int32: ...
 @winfunctype_pointer
 def PFTASKDIALOGCALLBACK(hwnd: win32more.Windows.Win32.Foundation.HWND, msg: UInt32, wParam: win32more.Windows.Win32.Foundation.WPARAM, lParam: win32more.Windows.Win32.Foundation.LPARAM, lpRefData: IntPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class POINTER_DEVICE_CURSOR_INFO(Structure):
+    cursorId: UInt32
+    cursor: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_CURSOR_TYPE
+POINTER_DEVICE_CURSOR_TYPE = Int32
+POINTER_DEVICE_CURSOR_TYPE_UNKNOWN: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_CURSOR_TYPE = 0
+POINTER_DEVICE_CURSOR_TYPE_TIP: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_CURSOR_TYPE = 1
+POINTER_DEVICE_CURSOR_TYPE_ERASER: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_CURSOR_TYPE = 2
+POINTER_DEVICE_CURSOR_TYPE_MAX: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_CURSOR_TYPE = -1
+class POINTER_DEVICE_INFO(Structure):
+    displayOrientation: UInt32
+    device: win32more.Windows.Win32.Foundation.HANDLE
+    pointerDeviceType: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_TYPE
+    monitor: win32more.Windows.Win32.Graphics.Gdi.HMONITOR
+    startingCursorId: UInt32
+    maxActiveContacts: UInt16
+    productString: Char * 520
+class POINTER_DEVICE_PROPERTY(Structure):
+    logicalMin: Int32
+    logicalMax: Int32
+    physicalMin: Int32
+    physicalMax: Int32
+    unit: UInt32
+    unitExponent: UInt32
+    usagePageId: UInt16
+    usageId: UInt16
+POINTER_DEVICE_TYPE = Int32
+POINTER_DEVICE_TYPE_INTEGRATED_PEN: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_TYPE = 1
+POINTER_DEVICE_TYPE_EXTERNAL_PEN: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_TYPE = 2
+POINTER_DEVICE_TYPE_TOUCH: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_TYPE = 3
+POINTER_DEVICE_TYPE_TOUCH_PAD: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_TYPE = 4
+POINTER_DEVICE_TYPE_MAX: win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_TYPE = -1
+POINTER_FEEDBACK_MODE = Int32
+POINTER_FEEDBACK_DEFAULT: win32more.Windows.Win32.UI.Controls.POINTER_FEEDBACK_MODE = 1
+POINTER_FEEDBACK_INDIRECT: win32more.Windows.Win32.UI.Controls.POINTER_FEEDBACK_MODE = 2
+POINTER_FEEDBACK_NONE: win32more.Windows.Win32.UI.Controls.POINTER_FEEDBACK_MODE = 3
+class POINTER_TYPE_INFO(Structure):
+    type: win32more.Windows.Win32.UI.WindowsAndMessaging.POINTER_INPUT_TYPE
+    Anonymous: _Anonymous_e__Union
+    class _Anonymous_e__Union(Union):
+        touchInfo: win32more.Windows.Win32.UI.Input.Pointer.POINTER_TOUCH_INFO
+        penInfo: win32more.Windows.Win32.UI.Input.Pointer.POINTER_PEN_INFO
 POPUPCHECKBACKGROUNDSTATES = Int32
 MCB_DISABLED: win32more.Windows.Win32.UI.Controls.POPUPCHECKBACKGROUNDSTATES = 1
 MCB_NORMAL: win32more.Windows.Win32.UI.Controls.POPUPCHECKBACKGROUNDSTATES = 2
@@ -5112,7 +5158,6 @@ class PROPSHEETHEADERA_V1(Structure):
     Anonymous2: _Anonymous2_e__Union
     Anonymous3: _Anonymous3_e__Union
     pfnCallback: win32more.Windows.Win32.UI.Controls.PFNPROPSHEETCALLBACK
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         hIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
         pszIcon: win32more.Windows.Win32.Foundation.PSTR
@@ -5136,7 +5181,6 @@ class PROPSHEETHEADERA_V2(Structure):
     Anonymous4: _Anonymous4_e__Union
     hplWatermark: win32more.Windows.Win32.Graphics.Gdi.HPALETTE
     Anonymous5: _Anonymous5_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3', 'Anonymous4', 'Anonymous5')
     class _Anonymous1_e__Union(Union):
         hIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
         pszIcon: win32more.Windows.Win32.Foundation.PSTR
@@ -5163,7 +5207,6 @@ class PROPSHEETHEADERW_V1(Structure):
     Anonymous2: _Anonymous2_e__Union
     Anonymous3: _Anonymous3_e__Union
     pfnCallback: win32more.Windows.Win32.UI.Controls.PFNPROPSHEETCALLBACK
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         hIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
         pszIcon: win32more.Windows.Win32.Foundation.PWSTR
@@ -5187,7 +5230,6 @@ class PROPSHEETHEADERW_V2(Structure):
     Anonymous4: _Anonymous4_e__Union
     hplWatermark: win32more.Windows.Win32.Graphics.Gdi.HPALETTE
     Anonymous5: _Anonymous5_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3', 'Anonymous4', 'Anonymous5')
     class _Anonymous1_e__Union(Union):
         hIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
         pszIcon: win32more.Windows.Win32.Foundation.PWSTR
@@ -5218,7 +5260,6 @@ class PROPSHEETPAGEA(Structure):
     pszHeaderSubTitle: win32more.Windows.Win32.Foundation.PSTR
     hActCtx: win32more.Windows.Win32.Foundation.HANDLE
     Anonymous3: _Anonymous3_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5239,7 +5280,6 @@ class PROPSHEETPAGEA_V1(Structure):
     lParam: win32more.Windows.Win32.Foundation.LPARAM
     pfnCallback: win32more.Windows.Win32.UI.Controls.LPFNPSPCALLBACKA
     pcRefParent: POINTER(UInt32)
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5259,7 +5299,6 @@ class PROPSHEETPAGEA_V2(Structure):
     pcRefParent: POINTER(UInt32)
     pszHeaderTitle: win32more.Windows.Win32.Foundation.PSTR
     pszHeaderSubTitle: win32more.Windows.Win32.Foundation.PSTR
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5280,7 +5319,6 @@ class PROPSHEETPAGEA_V3(Structure):
     pszHeaderTitle: win32more.Windows.Win32.Foundation.PSTR
     pszHeaderSubTitle: win32more.Windows.Win32.Foundation.PSTR
     hActCtx: win32more.Windows.Win32.Foundation.HANDLE
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5302,7 +5340,6 @@ class PROPSHEETPAGEW(Structure):
     pszHeaderSubTitle: win32more.Windows.Win32.Foundation.PWSTR
     hActCtx: win32more.Windows.Win32.Foundation.HANDLE
     Anonymous3: _Anonymous3_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PWSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5324,7 +5361,6 @@ class PROPSHEETPAGEW_V1(Structure):
     lParam: win32more.Windows.Win32.Foundation.LPARAM
     pfnCallback: win32more.Windows.Win32.UI.Controls.LPFNPSPCALLBACKW
     pcRefParent: POINTER(UInt32)
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PWSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5344,7 +5380,6 @@ class PROPSHEETPAGEW_V2(Structure):
     pcRefParent: POINTER(UInt32)
     pszHeaderTitle: win32more.Windows.Win32.Foundation.PWSTR
     pszHeaderSubTitle: win32more.Windows.Win32.Foundation.PWSTR
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PWSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5365,7 +5400,6 @@ class PROPSHEETPAGEW_V3(Structure):
     pszHeaderTitle: win32more.Windows.Win32.Foundation.PWSTR
     pszHeaderSubTitle: win32more.Windows.Win32.Foundation.PWSTR
     hActCtx: win32more.Windows.Win32.Foundation.HANDLE
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         pszTemplate: win32more.Windows.Win32.Foundation.PWSTR
         pResource: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.DLGTEMPLATE)
@@ -5697,7 +5731,6 @@ class TASKDIALOGCONFIG(Structure):
     pfCallback: win32more.Windows.Win32.UI.Controls.PFTASKDIALOGCALLBACK
     lpCallbackData: IntPtr
     cxWidth: UInt32
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     _pack_ = 1
     class _Anonymous1_e__Union(Union):
         hMainIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
@@ -6523,7 +6556,6 @@ class TVINSERTSTRUCTA(Structure):
     hParent: win32more.Windows.Win32.UI.Controls.HTREEITEM
     hInsertAfter: win32more.Windows.Win32.UI.Controls.HTREEITEM
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         itemex: win32more.Windows.Win32.UI.Controls.TVITEMEXA
         item: win32more.Windows.Win32.UI.Controls.TVITEMA
@@ -6531,7 +6563,6 @@ class TVINSERTSTRUCTW(Structure):
     hParent: win32more.Windows.Win32.UI.Controls.HTREEITEM
     hInsertAfter: win32more.Windows.Win32.UI.Controls.HTREEITEM
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         itemex: win32more.Windows.Win32.UI.Controls.TVITEMEXW
         item: win32more.Windows.Win32.UI.Controls.TVITEMW

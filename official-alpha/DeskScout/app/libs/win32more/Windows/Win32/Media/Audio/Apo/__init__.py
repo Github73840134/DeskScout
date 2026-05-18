@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Media.Audio
 import win32more.Windows.Win32.Media.Audio.Apo
@@ -73,7 +73,6 @@ APO_LOG_LEVEL_VERBOSE: win32more.Windows.Win32.Media.Audio.Apo.APO_LOG_LEVEL = 5
 class APO_NOTIFICATION(Structure):
     type: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         audioEndpointVolumeChange: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_ENDPOINT_VOLUME_CHANGE_NOTIFICATION
         audioEndpointPropertyChange: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_ENDPOINT_PROPERTY_CHANGE_NOTIFICATION
@@ -81,11 +80,9 @@ class APO_NOTIFICATION(Structure):
         audioEndpointVolumeChange2: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_ENDPOINT_VOLUME_CHANGE_NOTIFICATION2
         deviceOrientation: win32more.Windows.Win32.Media.Audio.Apo.DEVICE_ORIENTATION_TYPE
         audioMicrophoneBoostChange: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_MICROPHONE_BOOST_NOTIFICATION
-        audioEnvironmentChange: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_ENVIRONMENT_STATE_CHANGE_NOTIFICATION
 class APO_NOTIFICATION_DESCRIPTOR(Structure):
     type: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         audioEndpointVolume: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_ENDPOINT_VOLUME_APO_NOTIFICATION_DESCRIPTOR
         audioEndpointPropertyChange: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_ENDPOINT_PROPERTY_CHANGE_APO_NOTIFICATION_DESCRIPTOR
@@ -99,10 +96,6 @@ APO_NOTIFICATION_TYPE_SYSTEM_EFFECTS_PROPERTY_CHANGE: win32more.Windows.Win32.Me
 APO_NOTIFICATION_TYPE_ENDPOINT_VOLUME2: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE = 4
 APO_NOTIFICATION_TYPE_DEVICE_ORIENTATION: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE = 5
 APO_NOTIFICATION_TYPE_MICROPHONE_BOOST: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE = 6
-APO_NOTIFICATION_TYPE_AUDIO_ENVIRONMENT_STATE_CHANGE: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE = 7
-APO_REFERENCE_STREAM_PROPERTIES = Int32
-APO_REFERENCE_STREAM_PROPERTIES_NONE: win32more.Windows.Win32.Media.Audio.Apo.APO_REFERENCE_STREAM_PROPERTIES = 0
-APO_REFERENCE_STREAM_PROPERTIES_POST_VOLUME_LOOPBACK: win32more.Windows.Win32.Media.Audio.Apo.APO_REFERENCE_STREAM_PROPERTIES = 1
 class APO_REG_PROPERTIES(Structure):
     clsid: Guid
     Flags: win32more.Windows.Win32.Media.Audio.Apo.APO_FLAG
@@ -116,7 +109,7 @@ class APO_REG_PROPERTIES(Structure):
     u32MaxOutputConnections: UInt32
     u32MaxInstances: UInt32
     u32NumAPOInterfaces: UInt32
-    iidAPOInterfaceList: FlexibleArray[Guid]
+    iidAPOInterfaceList: Guid * 1
 class AUDIO_ENDPOINT_PROPERTY_CHANGE_APO_NOTIFICATION_DESCRIPTOR(Structure):
     device: win32more.Windows.Win32.Media.Audio.IMMDevice
 class AUDIO_ENDPOINT_PROPERTY_CHANGE_NOTIFICATION(Structure):
@@ -131,9 +124,6 @@ class AUDIO_ENDPOINT_VOLUME_CHANGE_NOTIFICATION(Structure):
 class AUDIO_ENDPOINT_VOLUME_CHANGE_NOTIFICATION2(Structure):
     endpoint: win32more.Windows.Win32.Media.Audio.IMMDevice
     volume: POINTER(win32more.Windows.Win32.Media.Audio.Apo.AUDIO_VOLUME_NOTIFICATION_DATA2)
-class AUDIO_ENVIRONMENT_STATE_CHANGE_NOTIFICATION(Structure):
-    propertyStore: win32more.Windows.Win32.UI.Shell.PropertiesSystem.IPropertyStore
-    propertyKey: win32more.Windows.Win32.Foundation.PROPERTYKEY
 AUDIO_FLOW_TYPE = Int32
 AUDIO_FLOW_PULL: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_FLOW_TYPE = 0
 AUDIO_FLOW_PUSH: win32more.Windows.Win32.Media.Audio.Apo.AUDIO_FLOW_TYPE = 1
@@ -173,10 +163,7 @@ class AUDIO_VOLUME_NOTIFICATION_DATA2(Structure):
     volumeIncrementInDb: Single
     step: UInt32
     stepCount: UInt32
-    channelVolumesInDb: FlexibleArray[Single]
-class AcousticEchoCanceller_Reference_Input(Structure):
-    apoInitSystemEffects: win32more.Windows.Win32.Media.Audio.Apo.APOInitSystemEffects3
-    streamProperties: win32more.Windows.Win32.Media.Audio.Apo.APO_REFERENCE_STREAM_PROPERTIES
+    channelVolumesInDb: Single * 1
 APOERR_ALREADY_INITIALIZED: win32more.Windows.Win32.Foundation.HRESULT = -2005073919
 APOERR_NOT_INITIALIZED: win32more.Windows.Win32.Foundation.HRESULT = -2005073918
 APOERR_FORMAT_NOT_SUPPORTED: win32more.Windows.Win32.Foundation.HRESULT = -2005073917
@@ -229,9 +216,6 @@ PKEY_FX_ApplyToBluetooth: win32more.Windows.Win32.Foundation.PROPERTYKEY = Const
 PKEY_FX_ApplyToUsb: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d04e05a6-594b-4fb6-a80d-01af5eed7d1d}'), pid=31)
 PKEY_FX_ApplyToRender: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d04e05a6-594b-4fb6-a80d-01af5eed7d1d}'), pid=32)
 PKEY_FX_ApplyToCapture: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d04e05a6-594b-4fb6-a80d-01af5eed7d1d}'), pid=33)
-PKEY_FX_RequestSetAsDefault: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d04e05a6-594b-4fb6-a80d-01af5eed7d1d}'), pid=34)
-PKEY_FX_RequestSetAsDefaultPriority: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d04e05a6-594b-4fb6-a80d-01af5eed7d1d}'), pid=35)
-PKEY_FX_OEM_Preferred_EffectPack_Id: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d04e05a6-594b-4fb6-a80d-01af5eed7d1d}'), pid=36)
 PKEY_SFX_ProcessingModes_Supported_For_Streaming: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d3993a3f-99c2-4402-b5ec-a92a0367664b}'), pid=5)
 PKEY_MFX_ProcessingModes_Supported_For_Streaming: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d3993a3f-99c2-4402-b5ec-a92a0367664b}'), pid=6)
 PKEY_EFX_ProcessingModes_Supported_For_Streaming: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d3993a3f-99c2-4402-b5ec-a92a0367664b}'), pid=7)
@@ -244,7 +228,6 @@ PKEY_APO_SWFallback_ProcessingModes: win32more.Windows.Win32.Foundation.PROPERTY
 PKEY_FX_EffectPack_Schema_V1: Guid = Guid('{7abf23d9-727e-4d0b-86a3-dd501d260001}')
 SID_AudioProcessingObjectRTQueue: Guid = Guid('{458c1a1f-6899-4c12-99ac-e2e6ac253104}')
 SID_AudioProcessingObjectLoggingService: Guid = Guid('{8b8008af-09f9-456e-a173-bdb58499bce7}')
-PKEY_AudioEnvironment_SpatialAudioActive: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4afb7b88-a653-44a5-99db-687fd74af0bb}'), pid=2)
 AUDIOMEDIATYPE_EQUAL_FORMAT_TYPES: UInt32 = 2
 AUDIOMEDIATYPE_EQUAL_FORMAT_DATA: UInt32 = 4
 AUDIOMEDIATYPE_EQUAL_FORMAT_USER_DATA: UInt32 = 8
@@ -268,11 +251,6 @@ def FNAPONOTIFICATIONCALLBACK(pProperties: POINTER(win32more.Windows.Win32.Media
 class IApoAcousticEchoCancellation(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{25385759-3236-4101-a943-25693dfb5d2d}')
-class IApoAcousticEchoCancellation2(ComPtr):
-    extends: win32more.Windows.Win32.Media.Audio.Apo.IApoAcousticEchoCancellation
-    _iid_ = Guid('{f235855f-f06d-45b3-a63f-ee4b71509dc2}')
-    @commethod(3)
-    def GetDesiredReferenceStreamProperties(self, pProperties: POINTER(win32more.Windows.Win32.Media.Audio.Apo.APO_REFERENCE_STREAM_PROPERTIES)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IApoAuxiliaryInputConfiguration(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{4ceb0aab-fa19-48ed-a857-87771ae1b768}')
@@ -344,13 +322,6 @@ class IAudioProcessingObjectNotifications2(ComPtr):
     _iid_ = Guid('{ca2cfbde-a9d6-4eb0-bc95-c4d026b380f0}')
     @commethod(5)
     def GetApoNotificationRegistrationInfo2(self, maxApoNotificationTypeSupported: win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_TYPE, apoNotifications: POINTER(POINTER(win32more.Windows.Win32.Media.Audio.Apo.APO_NOTIFICATION_DESCRIPTOR)), count: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IAudioProcessingObjectPreferredFormatSupport(ComPtr):
-    extends: win32more.Windows.Win32.System.Com.IUnknown
-    _iid_ = Guid('{51cbd3c4-f1f3-4d2f-a0e1-7e9c4dd0feb3}')
-    @commethod(3)
-    def GetPreferredInputFormat(self, outputFormat: win32more.Windows.Win32.Media.Audio.Apo.IAudioMediaType, preferredFormat: POINTER(win32more.Windows.Win32.Media.Audio.Apo.IAudioMediaType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(4)
-    def GetPreferredOutputFormat(self, inputFormat: win32more.Windows.Win32.Media.Audio.Apo.IAudioMediaType, preferredFormat: POINTER(win32more.Windows.Win32.Media.Audio.Apo.IAudioMediaType)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAudioProcessingObjectRT(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{9e1d6a6d-ddbc-4e95-a4c7-ad64ba37846c}')

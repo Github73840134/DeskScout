@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Media.Audio
 import win32more.Windows.Win32.Media.Audio.Apo
@@ -448,25 +448,11 @@ WTSGetListenerSecurity = UnicodeAlias('WTSGetListenerSecurityW')
 @winfunctype('WTSAPI32.dll')
 def WTSGetListenerSecurityA(hServer: win32more.Windows.Win32.Foundation.HANDLE, pReserved: VoidPtr, Reserved: UInt32, pListenerName: win32more.Windows.Win32.Foundation.PSTR, SecurityInformation: win32more.Windows.Win32.Security.OBJECT_SECURITY_INFORMATION, pSecurityDescriptor: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, nLength: UInt32, lpnLengthNeeded: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('WTSAPI32.dll')
-def WTSCloudAuthOpen(activityId: POINTER(Guid)) -> win32more.Windows.Win32.System.RemoteDesktop.WTS_CLOUD_AUTH_HANDLE: ...
-@winfunctype('WTSAPI32.dll')
-def WTSCloudAuthClose(cloudAuthHandle: win32more.Windows.Win32.System.RemoteDesktop.WTS_CLOUD_AUTH_HANDLE) -> Void: ...
-@winfunctype('WTSAPI32.dll')
-def WTSCloudAuthGetServerNonce(cloudAuthHandle: win32more.Windows.Win32.System.RemoteDesktop.WTS_CLOUD_AUTH_HANDLE, serverNonce: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('WTSAPI32.dll')
-def WTSCloudAuthConvertAssertionToSerializedUserCredential(cloudAuthHandle: win32more.Windows.Win32.System.RemoteDesktop.WTS_CLOUD_AUTH_HANDLE, assertion: win32more.Windows.Win32.Foundation.PSTR, assertionLength: UInt32, resourceId: win32more.Windows.Win32.Foundation.PWSTR, userCredential: POINTER(POINTER(win32more.Windows.Win32.System.RemoteDesktop.WTS_SERIALIZED_USER_CREDENTIAL))) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('WTSAPI32.dll')
-def WTSCloudAuthNetworkLogonWithSerializedCredential(cloudAuthHandle: win32more.Windows.Win32.System.RemoteDesktop.WTS_CLOUD_AUTH_HANDLE, userCredential: POINTER(win32more.Windows.Win32.System.RemoteDesktop.WTS_SERIALIZED_USER_CREDENTIAL), token: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('WTSAPI32.dll')
-def WTSCloudAuthDuplicateSerializedUserCredential(userCredential: POINTER(win32more.Windows.Win32.System.RemoteDesktop.WTS_SERIALIZED_USER_CREDENTIAL), duplicatedUserCredential: POINTER(POINTER(win32more.Windows.Win32.System.RemoteDesktop.WTS_SERIALIZED_USER_CREDENTIAL))) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('WTSAPI32.dll')
 def WTSEnableChildSessions(bEnable: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('WTSAPI32.dll')
 def WTSIsChildSessionsEnabled(pbEnabled: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('WTSAPI32.dll')
 def WTSGetChildSessionId(pSessionId: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('WTSAPI32.dll')
-def WTSActiveSessionExists(pbActiveSessionExists: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('WTSAPI32.dll')
 def WTSSetRenderHint(pRenderHintID: POINTER(UInt64), hwndOwner: win32more.Windows.Win32.Foundation.HWND, renderHintType: UInt32, cbHintDataLength: UInt32, pHintData: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNEL32.dll')
@@ -1230,11 +1216,6 @@ class IWRdsProtocolConnection(ComPtr):
     def GetShadowConnection(self, ppShadowConnection: POINTER(win32more.Windows.Win32.System.RemoteDesktop.IWRdsProtocolShadowConnection)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(26)
     def NotifyCommandProcessCreated(self, SessionId: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IWRdsProtocolConnection2(ComPtr):
-    extends: win32more.Windows.Win32.System.RemoteDesktop.IWRdsProtocolConnection
-    _iid_ = Guid('{c2bd9b66-4a76-4701-b6a3-bfafc1482169}')
-    @commethod(27)
-    def GetSerializedUserCredential(self, userCredential: POINTER(POINTER(win32more.Windows.Win32.System.RemoteDesktop.WTS_SERIALIZED_USER_CREDENTIAL))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IWRdsProtocolConnectionCallback(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f1d70332-d070-4ef1-a088-78313536c2d6}')
@@ -1792,7 +1773,7 @@ class RFX_GFX_MSG_HEADER(Structure):
     _pack_ = 1
 class RFX_GFX_MSG_RDP_DATA(Structure):
     channelHdr: win32more.Windows.Win32.System.RemoteDesktop.RFX_GFX_MSG_HEADER
-    rdpData: FlexibleArray[Byte]
+    rdpData: Byte * 1
 class RFX_GFX_RECT(Structure):
     left: Int32
     top: Int32
@@ -2447,7 +2428,6 @@ class WTS_CLIENT_DISPLAY(Structure):
     HorizontalResolution: UInt32
     VerticalResolution: UInt32
     ColorDepth: UInt32
-WTS_CLOUD_AUTH_HANDLE = VoidPtr
 WTS_CONFIG_CLASS = Int32
 WTSUserConfigInitialProgram: win32more.Windows.Win32.System.RemoteDesktop.WTS_CONFIG_CLASS = 0
 WTSUserConfigWorkingDirectory: win32more.Windows.Win32.System.RemoteDesktop.WTS_CONFIG_CLASS = 1
@@ -2516,8 +2496,6 @@ WTSConfigInfo: win32more.Windows.Win32.System.RemoteDesktop.WTS_INFO_CLASS = 26
 WTSValidationInfo: win32more.Windows.Win32.System.RemoteDesktop.WTS_INFO_CLASS = 27
 WTSSessionAddressV4: win32more.Windows.Win32.System.RemoteDesktop.WTS_INFO_CLASS = 28
 WTSIsRemoteSession: win32more.Windows.Win32.System.RemoteDesktop.WTS_INFO_CLASS = 29
-WTSSessionActivityId: win32more.Windows.Win32.System.RemoteDesktop.WTS_INFO_CLASS = 30
-WTSCapabilityCheck: win32more.Windows.Win32.System.RemoteDesktop.WTS_INFO_CLASS = 31
 class WTS_LICENSE_CAPABILITIES(Structure):
     KeyExchangeAlg: UInt32
     ProtocolVer: UInt32
@@ -2647,9 +2625,6 @@ WTS_SECURITY_MESSAGE: win32more.Windows.Win32.System.RemoteDesktop.WTS_SECURITY_
 WTS_SECURITY_CONNECT: win32more.Windows.Win32.System.RemoteDesktop.WTS_SECURITY_FLAGS = 256
 WTS_SECURITY_DISCONNECT: win32more.Windows.Win32.System.RemoteDesktop.WTS_SECURITY_FLAGS = 512
 WTS_SECURITY_GUEST_ACCESS: win32more.Windows.Win32.System.RemoteDesktop.WTS_SECURITY_FLAGS = 32
-class WTS_SERIALIZED_USER_CREDENTIAL(Structure):
-    SerializationLength: UInt32
-    Serialization: POINTER(Byte)
 class WTS_SERVER_INFOA(Structure):
     pServerName: win32more.Windows.Win32.Foundation.PSTR
 class WTS_SERVER_INFOW(Structure):
@@ -2733,8 +2708,6 @@ WTS_TYPE_CLASS = Int32
 WTSTypeProcessInfoLevel0: win32more.Windows.Win32.System.RemoteDesktop.WTS_TYPE_CLASS = 0
 WTSTypeProcessInfoLevel1: win32more.Windows.Win32.System.RemoteDesktop.WTS_TYPE_CLASS = 1
 WTSTypeSessionInfoLevel1: win32more.Windows.Win32.System.RemoteDesktop.WTS_TYPE_CLASS = 2
-WTSTypeCloudAuthServerNonce: win32more.Windows.Win32.System.RemoteDesktop.WTS_TYPE_CLASS = 3
-WTSTypeSerializedUserCredential: win32more.Windows.Win32.System.RemoteDesktop.WTS_TYPE_CLASS = 4
 class WTS_USER_CREDENTIAL(Structure):
     UserName: Char * 256
     Password: Char * 256

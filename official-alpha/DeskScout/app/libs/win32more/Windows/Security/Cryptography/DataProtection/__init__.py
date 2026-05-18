@@ -1,10 +1,12 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.Security.Cryptography.DataProtection
 import win32more.Windows.Storage.Streams
+import win32more.Windows.Win32.System.WinRT
 class DataProtectionProvider(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Cryptography.DataProtection.IDataProtectionProvider
     _classid_ = 'Windows.Security.Cryptography.DataProtection.DataProtectionProvider'
     def __init__(self, *args, **kwargs):
@@ -19,7 +21,7 @@ class DataProtectionProvider(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.Security.Cryptography.DataProtection.DataProtectionProvider: ...
     @winrt_factorymethod
-    def CreateOverloadExplicit(cls: win32more.Windows.Security.Cryptography.DataProtection.IDataProtectionProviderFactory, protectionDescriptor: hstr) -> win32more.Windows.Security.Cryptography.DataProtection.DataProtectionProvider: ...
+    def CreateOverloadExplicit(cls: win32more.Windows.Security.Cryptography.DataProtection.IDataProtectionProviderFactory, protectionDescriptor: WinRT_String) -> win32more.Windows.Security.Cryptography.DataProtection.DataProtectionProvider: ...
     @winrt_mixinmethod
     def ProtectAsync(self: win32more.Windows.Security.Cryptography.DataProtection.IDataProtectionProvider, data: win32more.Windows.Storage.Streams.IBuffer) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IBuffer]: ...
     @winrt_mixinmethod
@@ -29,7 +31,7 @@ class DataProtectionProvider(ComPtr):
     @winrt_mixinmethod
     def UnprotectStreamAsync(self: win32more.Windows.Security.Cryptography.DataProtection.IDataProtectionProvider, src: win32more.Windows.Storage.Streams.IInputStream, dest: win32more.Windows.Storage.Streams.IOutputStream) -> win32more.Windows.Foundation.IAsyncAction: ...
 class IDataProtectionProvider(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Cryptography.DataProtection.IDataProtectionProvider'
     _iid_ = Guid('{09639948-ed22-4270-bd1c-6d72c00f8787}')
     @winrt_commethod(6)
@@ -41,11 +43,11 @@ class IDataProtectionProvider(ComPtr):
     @winrt_commethod(9)
     def UnprotectStreamAsync(self, src: win32more.Windows.Storage.Streams.IInputStream, dest: win32more.Windows.Storage.Streams.IOutputStream) -> win32more.Windows.Foundation.IAsyncAction: ...
 class IDataProtectionProviderFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Cryptography.DataProtection.IDataProtectionProviderFactory'
     _iid_ = Guid('{adf33dac-4932-4cdf-ac41-7214333514ca}')
     @winrt_commethod(6)
-    def CreateOverloadExplicit(self, protectionDescriptor: hstr) -> win32more.Windows.Security.Cryptography.DataProtection.DataProtectionProvider: ...
+    def CreateOverloadExplicit(self, protectionDescriptor: WinRT_String) -> win32more.Windows.Security.Cryptography.DataProtection.DataProtectionProvider: ...
 
 
 make_ready(__name__)

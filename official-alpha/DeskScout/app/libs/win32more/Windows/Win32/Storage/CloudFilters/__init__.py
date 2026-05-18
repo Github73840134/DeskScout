@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Storage.CloudFilters
 import win32more.Windows.Win32.Storage.FileSystem
@@ -143,7 +143,6 @@ CF_CALLBACK_OPEN_COMPLETION_FLAG_PLACEHOLDER_UNSUPPORTED: win32more.Windows.Win3
 class CF_CALLBACK_PARAMETERS(Structure):
     ParamSize: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Cancel: _Cancel_e__Struct
         FetchData: _FetchData_e__Struct
@@ -160,7 +159,6 @@ class CF_CALLBACK_PARAMETERS(Structure):
         class _Cancel_e__Struct(Structure):
             Flags: win32more.Windows.Win32.Storage.CloudFilters.CF_CALLBACK_CANCEL_FLAGS
             Anonymous: _Anonymous_e__Union
-            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Union(Union):
                 FetchData: _FetchData_e__Struct
                 class _FetchData_e__Struct(Structure):
@@ -317,7 +315,6 @@ class CF_OPERATION_INFO(Structure):
 class CF_OPERATION_PARAMETERS(Structure):
     ParamSize: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         TransferData: _TransferData_e__Struct
         RetrieveData: _RetrieveData_e__Struct
@@ -399,7 +396,7 @@ class CF_PLACEHOLDER_BASIC_INFO(Structure):
     FileId: Int64
     SyncRootFileId: Int64
     FileIdentityLength: UInt32
-    FileIdentity: FlexibleArray[Byte]
+    FileIdentity: Byte * 1
 CF_PLACEHOLDER_CREATE_FLAGS = Int32
 CF_PLACEHOLDER_CREATE_FLAG_NONE: win32more.Windows.Win32.Storage.CloudFilters.CF_PLACEHOLDER_CREATE_FLAGS = 0
 CF_PLACEHOLDER_CREATE_FLAG_DISABLE_ON_DEMAND_POPULATION: win32more.Windows.Win32.Storage.CloudFilters.CF_PLACEHOLDER_CREATE_FLAGS = 1
@@ -436,7 +433,7 @@ class CF_PLACEHOLDER_STANDARD_INFO(Structure):
     FileId: Int64
     SyncRootFileId: Int64
     FileIdentityLength: UInt32
-    FileIdentity: FlexibleArray[Byte]
+    FileIdentity: Byte * 1
 CF_PLACEHOLDER_STATE = UInt32
 CF_PLACEHOLDER_STATE_NO_STATES: win32more.Windows.Win32.Storage.CloudFilters.CF_PLACEHOLDER_STATE = 0
 CF_PLACEHOLDER_STATE_PLACEHOLDER: win32more.Windows.Win32.Storage.CloudFilters.CF_PLACEHOLDER_STATE = 1
@@ -529,7 +526,7 @@ class CF_SYNC_ROOT_STANDARD_INFO(Structure):
     ProviderName: Char * 256
     ProviderVersion: Char * 256
     SyncRootIdentityLength: UInt32
-    SyncRootIdentity: FlexibleArray[Byte]
+    SyncRootIdentity: Byte * 1
 class CF_SYNC_STATUS(Structure):
     StructSize: UInt32
     Code: UInt32

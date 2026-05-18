@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.EventLog
@@ -338,7 +338,6 @@ class EVT_VARIANT(Structure):
     Anonymous: _Anonymous_e__Union
     Count: UInt32
     Type: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         BooleanVal: win32more.Windows.Win32.Foundation.BOOL
         SByteVal: SByte
@@ -408,8 +407,6 @@ EvtVarTypeEvtXml: win32more.Windows.Win32.System.EventLog.EVT_VARIANT_TYPE = 35
 READ_EVENT_LOG_READ_FLAGS = UInt32
 EVENTLOG_SEEK_READ: win32more.Windows.Win32.System.EventLog.READ_EVENT_LOG_READ_FLAGS = 2
 EVENTLOG_SEQUENTIAL_READ: win32more.Windows.Win32.System.EventLog.READ_EVENT_LOG_READ_FLAGS = 1
-EVENTLOG_FORWARDS_READ: win32more.Windows.Win32.System.EventLog.READ_EVENT_LOG_READ_FLAGS = 4
-EVENTLOG_BACKWARDS_READ: win32more.Windows.Win32.System.EventLog.READ_EVENT_LOG_READ_FLAGS = 8
 REPORT_EVENT_TYPE = UInt16
 EVENTLOG_SUCCESS: win32more.Windows.Win32.System.EventLog.REPORT_EVENT_TYPE = 0
 EVENTLOG_AUDIT_FAILURE: win32more.Windows.Win32.System.EventLog.REPORT_EVENT_TYPE = 16

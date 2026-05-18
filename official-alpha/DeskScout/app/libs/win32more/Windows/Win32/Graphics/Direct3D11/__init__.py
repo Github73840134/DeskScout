@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct3D
 import win32more.Windows.Win32.Graphics.Direct3D11
@@ -420,16 +420,6 @@ D3D11_DECODER_PROFILE_MPEG4PT2_VLD_ADVSIMPLE_NOGMC: Guid = Guid('{ed418a9f-010d-
 D3D11_DECODER_PROFILE_MPEG4PT2_VLD_ADVSIMPLE_GMC: Guid = Guid('{ab998b5b-4258-44a9-9feb-94e597a6baae}')
 D3D11_DECODER_PROFILE_HEVC_VLD_MAIN: Guid = Guid('{5b11d51b-2f4c-4452-bcc3-09f2a1160cc0}')
 D3D11_DECODER_PROFILE_HEVC_VLD_MAIN10: Guid = Guid('{107af0e0-ef1a-4d19-aba8-67a163073d13}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MONOCHROME: Guid = Guid('{0685b993-3d8c-43a0-8b28-d74c2d6899a4}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MONOCHROME10: Guid = Guid('{142a1d0f-69dd-4ec9-8591-b12ffcb91a29}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN12: Guid = Guid('{1a72925f-0c2c-4f15-96fb-b17d1473603f}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN10_422: Guid = Guid('{0bac4fe5-1532-4429-a854-f84de04953db}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN12_422: Guid = Guid('{55bcac81-f311-4093-a7d0-1cbc0b849bee}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN_444: Guid = Guid('{4008018f-f537-4b36-98cf-61af8a2c1a33}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN10_EXT: Guid = Guid('{9cc55490-e37c-4932-8684-4920f9f6409c}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN10_444: Guid = Guid('{0dabeffa-4458-4602-bc03-0795659d617c}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN12_444: Guid = Guid('{9798634d-fe9d-48e5-b4da-dbec45b3df01}')
-D3D11_DECODER_PROFILE_HEVC_VLD_MAIN16: Guid = Guid('{a4fbdbb0-a113-482b-a232-635cc0697f6d}')
 D3D11_DECODER_PROFILE_VP9_VLD_PROFILE0: Guid = Guid('{463707f8-a1d0-4585-876d-83aa6d60b89e}')
 D3D11_DECODER_PROFILE_VP9_VLD_10BIT_PROFILE2: Guid = Guid('{a4c749ef-6ecf-48aa-8448-50a7a1165ff7}')
 D3D11_DECODER_PROFILE_VP8_VLD: Guid = Guid('{90b899ea-3a62-4705-88b3-8df04b2744e7}')
@@ -438,13 +428,6 @@ D3D11_DECODER_PROFILE_AV1_VLD_PROFILE1: Guid = Guid('{6936ff0f-45b1-4163-9cc1-64
 D3D11_DECODER_PROFILE_AV1_VLD_PROFILE2: Guid = Guid('{0c5f2aa1-e541-4089-bb7b-98110a19d7c8}')
 D3D11_DECODER_PROFILE_AV1_VLD_12BIT_PROFILE2: Guid = Guid('{17127009-a00f-4ce1-994e-bf4081f6f3f0}')
 D3D11_DECODER_PROFILE_AV1_VLD_12BIT_PROFILE2_420: Guid = Guid('{2d80bed6-9cac-4835-9e91-327bbc4f9ee8}')
-D3D11_DECODER_PROFILE_MJPEG_VLD_420: Guid = Guid('{725cb506-0c29-43c4-9440-8e9397903a04}')
-D3D11_DECODER_PROFILE_MJPEG_VLD_422: Guid = Guid('{5b77b9cd-1a35-4c30-9fd8-ef4b60c035dd}')
-D3D11_DECODER_PROFILE_MJPEG_VLD_444: Guid = Guid('{d95161f9-0d44-47e6-bcf5-1bfbfb268f97}')
-D3D11_DECODER_PROFILE_MJPEG_VLD_4444: Guid = Guid('{c91748d5-fd18-4aca-9db3-3a6634ab547d}')
-D3D11_DECODER_PROFILE_JPEG_VLD_420: Guid = Guid('{cf782c83-bef5-4a2c-87cb-6019e7b175ac}')
-D3D11_DECODER_PROFILE_JPEG_VLD_422: Guid = Guid('{f04df417-eee2-4067-a778-f35c15ab9721}')
-D3D11_DECODER_PROFILE_JPEG_VLD_444: Guid = Guid('{4cd00e17-89ba-48ef-b9f9-edcb82713f65}')
 D3D11_CRYPTO_TYPE_AES128_CTR: Guid = Guid('{9b6bd711-4f74-41c9-9e7b-0be2d7d93b4f}')
 D3D11_DECODER_ENCRYPTION_HW_CENC: Guid = Guid('{89d6ac4f-09f2-4229-b2cd-37740a6dfd81}')
 D3D11_DECODER_BITSTREAM_ENCRYPTION_TYPE_CENC: Guid = Guid('{b0405235-c13d-44f2-9ae5-dd48e08e5b67}')
@@ -602,9 +585,9 @@ class D3D11_AUTHENTICATED_PROTECTION_FLAGS(Union):
     Flags: _Flags_e__Struct
     Value: UInt32
     class _Flags_e__Struct(Structure):
-        ProtectionEnabled: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        OverlayOrFullscreenRequired: Annotated[UInt32, NativeBitfieldAttribute(1)]
-        Reserved: Annotated[UInt32, NativeBitfieldAttribute(30)]
+        ProtectionEnabled: Annotated[UInt32, 1]
+        OverlayOrFullscreenRequired: Annotated[UInt32, 1]
+        Reserved: Annotated[UInt32, 30]
 class D3D11_AUTHENTICATED_QUERY_ACCESSIBILITY_ENCRYPTION_GUID_COUNT_OUTPUT(Structure):
     Output: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_AUTHENTICATED_QUERY_OUTPUT
     EncryptionGuidCount: UInt32
@@ -750,7 +733,6 @@ class D3D11_BUFFER_DESC(Structure):
 class D3D11_BUFFER_RTV(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         FirstElement: UInt32
         ElementOffset: UInt32
@@ -760,7 +742,6 @@ class D3D11_BUFFER_RTV(Structure):
 class D3D11_BUFFER_SRV(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         FirstElement: UInt32
         ElementOffset: UInt32
@@ -910,7 +891,6 @@ class D3D11_DEPTH_STENCIL_VIEW_DESC(Structure):
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_DSV_DIMENSION
     Flags: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_DSV
         Texture1DArray: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_ARRAY_DSV
@@ -974,7 +954,6 @@ D3D11_FEATURE_D3D11_OPTIONS4: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_
 D3D11_FEATURE_SHADER_CACHE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_FEATURE = 18
 D3D11_FEATURE_D3D11_OPTIONS5: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_FEATURE = 19
 D3D11_FEATURE_DISPLAYABLE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_FEATURE = 20
-D3D11_FEATURE_D3D11_OPTIONS6: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_FEATURE = 21
 class D3D11_FEATURE_DATA_ARCHITECTURE_INFO(Structure):
     TileBasedDeferredRenderer: win32more.Windows.Win32.Foundation.BOOL
 class D3D11_FEATURE_DATA_D3D10_X_HARDWARE_OPTIONS(Structure):
@@ -1014,8 +993,6 @@ class D3D11_FEATURE_DATA_D3D11_OPTIONS4(Structure):
     ExtendedNV12SharedTextureSupported: win32more.Windows.Win32.Foundation.BOOL
 class D3D11_FEATURE_DATA_D3D11_OPTIONS5(Structure):
     SharedResourceTier: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_SHARED_RESOURCE_TIER
-class D3D11_FEATURE_DATA_D3D11_OPTIONS6(Structure):
-    ShaderAccessRestrictedResourceTier: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_SHADER_ACCESS_RESTRICTED_RESOURCE_TIER
 class D3D11_FEATURE_DATA_D3D9_OPTIONS(Structure):
     FullNonPow2TextureSupport: win32more.Windows.Win32.Foundation.BOOL
 class D3D11_FEATURE_DATA_D3D9_OPTIONS1(Structure):
@@ -2620,8 +2597,7 @@ D3D11_MESSAGE_ID_TRACKED_WORKLOAD_ENGINE_TYPE_NOT_FOUND: win32more.Windows.Win32
 D3D11_MESSAGE_ID_NO_TRACKED_WORKLOAD_SLOT_AVAILABLE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_ID = 3146281
 D3D11_MESSAGE_ID_END_TRACKED_WORKLOAD_INVALID_ARG: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_ID = 3146282
 D3D11_MESSAGE_ID_TRACKED_WORKLOAD_DISJOINT_FAILURE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_ID = 3146283
-D3D11_MESSAGE_ID_DEVICE_DRAW_RESOURCE_FORMAT_AND_WRITE_MASK_MISMATCH: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_ID = 3146284
-D3D11_MESSAGE_ID_D3D11_5_MESSAGES_END: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_ID = 3146285
+D3D11_MESSAGE_ID_D3D11_5_MESSAGES_END: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_ID = 3146284
 D3D11_MESSAGE_SEVERITY = Int32
 D3D11_MESSAGE_SEVERITY_CORRUPTION: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_SEVERITY = 0
 D3D11_MESSAGE_SEVERITY_ERROR: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_MESSAGE_SEVERITY = 1
@@ -2759,7 +2735,6 @@ class D3D11_RENDER_TARGET_VIEW_DESC(Structure):
     Format: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_FORMAT
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RTV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Buffer: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_BUFFER_RTV
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_RTV
@@ -2773,7 +2748,6 @@ class D3D11_RENDER_TARGET_VIEW_DESC1(Structure):
     Format: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_FORMAT
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RTV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Buffer: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_BUFFER_RTV
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_RTV
@@ -2809,7 +2783,6 @@ D3D11_RESOURCE_MISC_TILED: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RES
 D3D11_RESOURCE_MISC_HW_PROTECTED: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RESOURCE_MISC_FLAG = 524288
 D3D11_RESOURCE_MISC_SHARED_DISPLAYABLE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RESOURCE_MISC_FLAG = 1048576
 D3D11_RESOURCE_MISC_SHARED_EXCLUSIVE_WRITER: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RESOURCE_MISC_FLAG = 2097152
-D3D11_RESOURCE_MISC_NO_SHADER_ACCESS: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RESOURCE_MISC_FLAG = 4194304
 D3D11_RLDO_FLAGS = Int32
 D3D11_RLDO_SUMMARY: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RLDO_FLAGS = 1
 D3D11_RLDO_DETAIL: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_RLDO_FLAGS = 2
@@ -2835,9 +2808,6 @@ class D3D11_SAMPLER_DESC(Structure):
     BorderColor: Single * 4
     MinLOD: Single
     MaxLOD: Single
-D3D11_SHADER_ACCESS_RESTRICTED_RESOURCE_TIER = Int32
-D3D11_SHADER_ACCESS_RESTRICTED_RESOURCE_TIER_0: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_SHADER_ACCESS_RESTRICTED_RESOURCE_TIER = 0
-D3D11_SHADER_ACCESS_RESTRICTED_RESOURCE_TIER_1: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_SHADER_ACCESS_RESTRICTED_RESOURCE_TIER = 1
 class D3D11_SHADER_BUFFER_DESC(Structure):
     Name: win32more.Windows.Win32.Foundation.PSTR
     Type: win32more.Windows.Win32.Graphics.Direct3D.D3D_CBUFFER_TYPE
@@ -2903,7 +2873,6 @@ class D3D11_SHADER_RESOURCE_VIEW_DESC(Structure):
     Format: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_FORMAT
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D.D3D_SRV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Buffer: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_BUFFER_SRV
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_SRV
@@ -2920,7 +2889,6 @@ class D3D11_SHADER_RESOURCE_VIEW_DESC1(Structure):
     Format: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_FORMAT
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D.D3D_SRV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Buffer: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_BUFFER_SRV
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_SRV
@@ -2937,7 +2905,6 @@ class D3D11_SHADER_TRACE_DESC(Structure):
     Type: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_SHADER_TYPE
     Flags: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         VertexShaderTraceDesc: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VERTEX_SHADER_TRACE_DESC
         HullShaderTraceDesc: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_HULL_SHADER_TRACE_DESC
@@ -3282,7 +3249,6 @@ class D3D11_TRACE_REGISTER(Structure):
     Anonymous: _Anonymous_e__Union
     OperandIndex: Byte
     Flags: Byte
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Index1D: UInt16
         Index2D: UInt16 * 2
@@ -3370,7 +3336,6 @@ class D3D11_UNORDERED_ACCESS_VIEW_DESC(Structure):
     Format: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_FORMAT
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_UAV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Buffer: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_BUFFER_UAV
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_UAV
@@ -3382,7 +3347,6 @@ class D3D11_UNORDERED_ACCESS_VIEW_DESC1(Structure):
     Format: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_FORMAT
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_UAV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Buffer: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_BUFFER_UAV
         Texture1D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX1D_UAV
@@ -3402,7 +3366,6 @@ class D3D11_VERTEX_SHADER_TRACE_DESC(Structure):
     Invocation: UInt64
 class D3D11_VIDEO_COLOR(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         YCbCr: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_COLOR_YCbCrA
         RGBA: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_COLOR_RGBA
@@ -3471,7 +3434,6 @@ D3D11_VIDEO_DECODER_BUFFER_SLICE_CONTROL: win32more.Windows.Win32.Graphics.Direc
 D3D11_VIDEO_DECODER_BUFFER_BITSTREAM: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_DECODER_BUFFER_TYPE = 6
 D3D11_VIDEO_DECODER_BUFFER_MOTION_VECTOR: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_DECODER_BUFFER_TYPE = 7
 D3D11_VIDEO_DECODER_BUFFER_FILM_GRAIN: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_DECODER_BUFFER_TYPE = 8
-D3D11_VIDEO_DECODER_BUFFER_HUFFMAN_TABLE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_DECODER_BUFFER_TYPE = 9
 D3D11_VIDEO_DECODER_CAPS = Int32
 D3D11_VIDEO_DECODER_CAPS_DOWNSAMPLE: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_DECODER_CAPS = 1
 D3D11_VIDEO_DECODER_CAPS_NON_REAL_TIME: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_DECODER_CAPS = 2
@@ -3530,7 +3492,6 @@ class D3D11_VIDEO_DECODER_OUTPUT_VIEW_DESC(Structure):
     DecodeProfile: Guid
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VDOV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Texture2D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX2D_VDOV
 class D3D11_VIDEO_DECODER_SUB_SAMPLE_MAPPING_BLOCK(Structure):
@@ -3570,12 +3531,12 @@ class D3D11_VIDEO_PROCESSOR_CAPS(Structure):
     MaxInputStreams: UInt32
     MaxStreamStates: UInt32
 class D3D11_VIDEO_PROCESSOR_COLOR_SPACE(Structure):
-    Usage: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    RGB_Range: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    YCbCr_Matrix: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    YCbCr_xvYCC: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    Nominal_Range: Annotated[UInt32, NativeBitfieldAttribute(2)]
-    Reserved: Annotated[UInt32, NativeBitfieldAttribute(26)]
+    Usage: Annotated[UInt32, 1]
+    RGB_Range: Annotated[UInt32, 1]
+    YCbCr_Matrix: Annotated[UInt32, 1]
+    YCbCr_xvYCC: Annotated[UInt32, 1]
+    Nominal_Range: Annotated[UInt32, 2]
+    Reserved: Annotated[UInt32, 26]
 class D3D11_VIDEO_PROCESSOR_CONTENT_DESC(Structure):
     InputFrameFormat: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VIDEO_FRAME_FORMAT
     InputFrameRate: win32more.Windows.Win32.Graphics.Dxgi.Common.DXGI_RATIONAL
@@ -3644,7 +3605,6 @@ class D3D11_VIDEO_PROCESSOR_INPUT_VIEW_DESC(Structure):
     FourCC: UInt32
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VPIV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Texture2D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX2D_VPIV
 D3D11_VIDEO_PROCESSOR_ITELECINE_CAPS = Int32
@@ -3669,7 +3629,6 @@ D3D11_VIDEO_PROCESSOR_OUTPUT_RATE_CUSTOM: win32more.Windows.Win32.Graphics.Direc
 class D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC(Structure):
     ViewDimension: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_VPOV_DIMENSION
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Texture2D: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX2D_VPOV
         Texture2DArray: win32more.Windows.Win32.Graphics.Direct3D11.D3D11_TEX2D_ARRAY_VPOV

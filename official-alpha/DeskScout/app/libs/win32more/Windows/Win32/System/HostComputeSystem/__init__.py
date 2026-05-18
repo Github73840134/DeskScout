@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.HostComputeSystem
@@ -42,8 +42,6 @@ def HcsSetOperationCallback(operation: win32more.Windows.Win32.System.HostComput
 @winfunctype('computecore.dll')
 def HcsCancelOperation(operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('computecore.dll')
-def HcsGetOperationProperties(operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, options: win32more.Windows.Win32.Foundation.PWSTR, resultDocument: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computecore.dll')
 def HcsCreateComputeSystem(id: win32more.Windows.Win32.Foundation.PWSTR, configuration: win32more.Windows.Win32.Foundation.PWSTR, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, securityDescriptor: POINTER(win32more.Windows.Win32.Security.SECURITY_DESCRIPTOR), computeSystem: POINTER(win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('computecore.dll')
 def HcsCreateComputeSystemInNamespace(idNamespace: win32more.Windows.Win32.Foundation.PWSTR, id: win32more.Windows.Win32.Foundation.PWSTR, configuration: win32more.Windows.Win32.Foundation.PWSTR, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, options: POINTER(win32more.Windows.Win32.System.HostComputeSystem.HCS_CREATE_OPTIONS), computeSystem: POINTER(win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
@@ -75,14 +73,6 @@ def HcsModifyComputeSystem(computeSystem: win32more.Windows.Win32.System.HostCom
 def HcsWaitForComputeSystemExit(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, timeoutMs: UInt32, result: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('computecore.dll')
 def HcsSetComputeSystemCallback(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, callbackOptions: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_OPTIONS, context: VoidPtr, callback: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_CALLBACK) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computecore.dll')
-def HcsInitializeLiveMigrationOnSource(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computecore.dll')
-def HcsStartLiveMigrationOnSource(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computecore.dll')
-def HcsStartLiveMigrationTransfer(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computecore.dll')
-def HcsFinalizeLiveMigration(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('computecore.dll')
 def HcsCreateProcess(computeSystem: win32more.Windows.Win32.System.HostComputeSystem.HCS_SYSTEM, processParameters: win32more.Windows.Win32.Foundation.PWSTR, operation: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION, securityDescriptor: POINTER(win32more.Windows.Win32.Security.SECURITY_DESCRIPTOR), process: POINTER(win32more.Windows.Win32.System.HostComputeSystem.HCS_PROCESS)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('computecore.dll')
@@ -145,10 +135,6 @@ def HcsFormatWritableLayerVhd(vhdHandle: win32more.Windows.Win32.Foundation.HAND
 def HcsGetLayerVhdMountPath(vhdHandle: win32more.Windows.Win32.Foundation.HANDLE, mountPath: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('computestorage.dll')
 def HcsSetupBaseOSVolume(layerPath: win32more.Windows.Win32.Foundation.PWSTR, volumePath: win32more.Windows.Win32.Foundation.PWSTR, options: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computestorage.dll')
-def HcsAttachOverlayFilter(VolumeMountPoint: win32more.Windows.Win32.Foundation.PWSTR, LayerData: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('computestorage.dll')
-def HcsDetachOverlayFilter(VolumeMountPoint: win32more.Windows.Win32.Foundation.PWSTR, LayerData: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 HCS_CREATE_OPTIONS = Int32
 HcsCreateOptions_1: win32more.Windows.Win32.System.HostComputeSystem.HCS_CREATE_OPTIONS = 65536
 class HCS_CREATE_OPTIONS_1(Structure):
@@ -168,7 +154,6 @@ HCS_EVENT_OPTIONS = Int32
 HcsEventOptionNone: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_OPTIONS = 0
 HcsEventOptionEnableOperationCallbacks: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_OPTIONS = 1
 HcsEventOptionEnableVmLifecycle: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_OPTIONS = 2
-HcsEventOptionEnableLiveMigrationEvents: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_OPTIONS = 4
 HCS_EVENT_TYPE = Int32
 HcsEventInvalid: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = 0
 HcsEventSystemExited: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = 1
@@ -181,7 +166,6 @@ HcsEventProcessExited: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVEN
 HcsEventOperationCallback: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = 16777216
 HcsEventServiceDisconnect: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = 33554432
 HcsEventGroupVmLifecycle: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = -2147483646
-HcsEventGroupLiveMigration: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = -2147483645
 HcsEventGroupOperationInfo: win32more.Windows.Win32.System.HostComputeSystem.HCS_EVENT_TYPE = -1073741823
 HCS_NOTIFICATIONS = Int32
 HcsNotificationInvalid: win32more.Windows.Win32.System.HostComputeSystem.HCS_NOTIFICATIONS = 0
@@ -217,7 +201,6 @@ def HCS_OPERATION_COMPLETION(operation: win32more.Windows.Win32.System.HostCompu
 HCS_OPERATION_OPTIONS = Int32
 HcsOperationOptionNone: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_OPTIONS = 0
 HcsOperationOptionProgressUpdate: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_OPTIONS = 1
-HcsOperationOptionReserved1: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_OPTIONS = 2
 HCS_OPERATION_TYPE = Int32
 HcsOperationTypeNone: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = -1
 HcsOperationTypeEnumerate: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 0
@@ -236,10 +219,6 @@ HcsOperationTypeGetProcessInfo: win32more.Windows.Win32.System.HostComputeSystem
 HcsOperationTypeGetProcessProperties: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 13
 HcsOperationTypeModifyProcess: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 14
 HcsOperationTypeCrash: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 15
-HcsOperationTypeLiveMigration: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 19
-HcsOperationTypeReserved1: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 16
-HcsOperationTypeReserved2: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 17
-HcsOperationTypeReserved3: win32more.Windows.Win32.System.HostComputeSystem.HCS_OPERATION_TYPE = 18
 HCS_PROCESS = VoidPtr
 class HCS_PROCESS_INFORMATION(Structure):
     ProcessId: UInt32
@@ -251,8 +230,6 @@ HCS_RESOURCE_TYPE = Int32
 HcsResourceTypeNone: win32more.Windows.Win32.System.HostComputeSystem.HCS_RESOURCE_TYPE = 0
 HcsResourceTypeFile: win32more.Windows.Win32.System.HostComputeSystem.HCS_RESOURCE_TYPE = 1
 HcsResourceTypeJob: win32more.Windows.Win32.System.HostComputeSystem.HCS_RESOURCE_TYPE = 2
-HcsResourceTypeComObject: win32more.Windows.Win32.System.HostComputeSystem.HCS_RESOURCE_TYPE = 3
-HcsResourceTypeSocket: win32more.Windows.Win32.System.HostComputeSystem.HCS_RESOURCE_TYPE = 4
 HCS_SYSTEM = VoidPtr
 
 

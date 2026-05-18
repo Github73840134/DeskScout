@@ -1,7 +1,8 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
+import win32more.Windows.Win32.Media
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.Com.StructuredStorage
 import win32more.Windows.Win32.System.Memory
@@ -19,7 +20,7 @@ ACTIVEOBJECT_WEAK: win32more.Windows.Win32.System.Ole.ACTIVEOBJECT_FLAGS = 1
 class ARRAYDESC(Structure):
     tdescElem: win32more.Windows.Win32.System.Com.TYPEDESC
     cDims: UInt16
-    rgbounds: FlexibleArray[win32more.Windows.Win32.System.Com.SAFEARRAYBOUND]
+    rgbounds: win32more.Windows.Win32.System.Com.SAFEARRAYBOUND * 1
 CTL_E_ILLEGALFUNCTIONCALL: Int32 = -2146828283
 CONNECT_E_FIRST: Int32 = -2147220992
 SELFREG_E_FIRST: Int32 = -2147220992
@@ -3006,7 +3007,7 @@ class OLECMDTEXT(Structure):
     cmdtextf: UInt32
     cwActual: UInt32
     cwBuf: UInt32
-    rgwz: FlexibleArray[Char]
+    rgwz: Char * 1
 OLECMDTEXTF = Int32
 OLECMDTEXTF_NONE: win32more.Windows.Win32.System.Ole.OLECMDTEXTF = 0
 OLECMDTEXTF_NAME: win32more.Windows.Win32.System.Ole.OLECMDTEXTF = 1
@@ -3087,7 +3088,7 @@ class OLEUIBUSYA(Structure):
     hInstance: win32more.Windows.Win32.Foundation.HINSTANCE
     lpszTemplate: win32more.Windows.Win32.Foundation.PSTR
     hResource: win32more.Windows.Win32.Foundation.HRSRC
-    hTask: win32more.Windows.Win32.Foundation.HTASK
+    hTask: win32more.Windows.Win32.Media.HTASK
     lphWndDialog: POINTER(win32more.Windows.Win32.Foundation.HWND)
 class OLEUIBUSYW(Structure):
     cbStruct: UInt32
@@ -3099,7 +3100,7 @@ class OLEUIBUSYW(Structure):
     hInstance: win32more.Windows.Win32.Foundation.HINSTANCE
     lpszTemplate: win32more.Windows.Win32.Foundation.PWSTR
     hResource: win32more.Windows.Win32.Foundation.HRSRC
-    hTask: win32more.Windows.Win32.Foundation.HTASK
+    hTask: win32more.Windows.Win32.Media.HTASK
     lphWndDialog: POINTER(win32more.Windows.Win32.Foundation.HWND)
 OLEUIBUSY = UnicodeAlias('OLEUIBUSYW')
 class OLEUICHANGEICONA(Structure):
@@ -3465,7 +3466,7 @@ class PAGESET(Structure):
     fOddPages: win32more.Windows.Win32.Foundation.BOOL
     fEvenPages: win32more.Windows.Win32.Foundation.BOOL
     cPageRange: UInt32
-    rgPages: FlexibleArray[win32more.Windows.Win32.System.Ole.PAGERANGE]
+    rgPages: win32more.Windows.Win32.System.Ole.PAGERANGE * 1
 class PARAMDATA(Structure):
     szName: win32more.Windows.Win32.Foundation.PWSTR
     vt: win32more.Windows.Win32.System.Variant.VARENUM
@@ -3497,7 +3498,6 @@ class PICTDESC(Structure):
     cbSizeofstruct: UInt32
     picType: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         bmp: _bmp_e__Struct
         wmf: _wmf_e__Struct
@@ -3762,7 +3762,7 @@ class _wireSAFEARRAY(Structure):
     cbElements: UInt32
     cLocks: UInt32
     uArrayStructs: win32more.Windows.Win32.System.Ole.SAFEARRAYUNION
-    rgsabound: FlexibleArray[win32more.Windows.Win32.System.Com.SAFEARRAYBOUND]
+    rgsabound: win32more.Windows.Win32.System.Com.SAFEARRAYBOUND * 1
 class _wireVARIANT(Structure):
     clSize: UInt32
     rpcReserved: UInt32
@@ -3771,7 +3771,6 @@ class _wireVARIANT(Structure):
     wReserved2: UInt16
     wReserved3: UInt16
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         llVal: Int64
         lVal: Int32

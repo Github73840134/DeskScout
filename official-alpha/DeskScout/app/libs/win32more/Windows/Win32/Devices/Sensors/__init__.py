@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Devices.PortableDevices
 import win32more.Windows.Win32.Devices.Properties
 import win32more.Windows.Win32.Devices.Sensors
@@ -506,12 +506,10 @@ MagnetometerAccuracy_Approximate: win32more.Windows.Win32.Devices.Sensors.MAGNET
 MagnetometerAccuracy_High: win32more.Windows.Win32.Devices.Sensors.MAGNETOMETER_ACCURACY = 3
 class MATRIX3X3(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
         M: Single * 9
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             A11: Single
             A12: Single
@@ -542,14 +540,7 @@ PedometerStepTypeCount: win32more.Windows.Win32.Devices.Sensors.PEDOMETER_STEP_T
 PROXIMITY_SENSOR_CAPABILITIES = Int32
 Proximity_Sensor_Human_Presence_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 1
 Proximity_Sensor_Human_Engagement_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 2
-Proximity_Sensor_Human_Head_Azimuth_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 4
-Proximity_Sensor_Human_Head_Altitude_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 8
-Proximity_Sensor_Human_Head_Roll_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 16
-Proximity_Sensor_Human_Head_Pitch_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 32
-Proximity_Sensor_Human_Head_Yaw_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 64
-Proximity_Sensor_Human_Identification_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 128
-Proximity_Sensor_Multi_Person_Detection_Capable: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 256
-Proximity_Sensor_Supported_Capabilities: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 511
+Proximity_Sensor_Supported_Capabilities: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_SENSOR_CAPABILITIES = 3
 PROXIMITY_TYPE = Int32
 ProximityType_ObjectProximity: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_TYPE = 0
 ProximityType_HumanProximity: win32more.Windows.Win32.Devices.Sensors.PROXIMITY_TYPE = 1
@@ -562,7 +553,7 @@ class QUATERNION(Structure):
 class SENSOR_COLLECTION_LIST(Structure):
     AllocatedSizeInBytes: UInt32
     Count: UInt32
-    List: FlexibleArray[win32more.Windows.Win32.Devices.Sensors.SENSOR_VALUE_PAIR]
+    List: win32more.Windows.Win32.Devices.Sensors.SENSOR_VALUE_PAIR * 1
 SENSOR_CONNECTION_TYPES = Int32
 SensorConnectionType_Integrated: win32more.Windows.Win32.Devices.Sensors.SENSOR_CONNECTION_TYPES = 0
 SensorConnectionType_Attached: win32more.Windows.Win32.Devices.Sensors.SENSOR_CONNECTION_TYPES = 1
@@ -570,7 +561,7 @@ SensorConnectionType_External: win32more.Windows.Win32.Devices.Sensors.SENSOR_CO
 class SENSOR_PROPERTY_LIST(Structure):
     AllocatedSizeInBytes: UInt32
     Count: UInt32
-    List: FlexibleArray[win32more.Windows.Win32.Foundation.PROPERTYKEY]
+    List: win32more.Windows.Win32.Foundation.PROPERTYKEY * 1
 SENSOR_STATE = Int32
 SensorState_Initializing: win32more.Windows.Win32.Devices.Sensors.SENSOR_STATE = 0
 SensorState_Idle: win32more.Windows.Win32.Devices.Sensors.SENSOR_STATE = 1

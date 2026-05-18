@@ -1,5 +1,6 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.Foundation.Numerics
@@ -7,8 +8,9 @@ import win32more.Windows.Graphics.DirectX
 import win32more.Windows.Perception.Spatial
 import win32more.Windows.Perception.Spatial.Surfaces
 import win32more.Windows.Storage.Streams
+import win32more.Windows.Win32.System.WinRT
 class ISpatialSurfaceInfo(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceInfo'
     _iid_ = Guid('{f8e9ebe7-39b7-3962-bb03-57f56e1fb0a1}')
     @winrt_commethod(6)
@@ -24,7 +26,7 @@ class ISpatialSurfaceInfo(ComPtr):
     Id = property(get_Id, None)
     UpdateTime = property(get_UpdateTime, None)
 class ISpatialSurfaceMesh(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMesh'
     _iid_ = Guid('{108f57d9-df0d-3950-a0fd-f972c77c27b4}')
     @winrt_commethod(6)
@@ -46,7 +48,7 @@ class ISpatialSurfaceMesh(ComPtr):
     VertexPositionScale = property(get_VertexPositionScale, None)
     VertexPositions = property(get_VertexPositions, None)
 class ISpatialSurfaceMeshBuffer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMeshBuffer'
     _iid_ = Guid('{93cf59e0-871f-33f8-98b2-03d101458f6f}')
     @winrt_commethod(6)
@@ -62,7 +64,7 @@ class ISpatialSurfaceMeshBuffer(ComPtr):
     Format = property(get_Format, None)
     Stride = property(get_Stride, None)
 class ISpatialSurfaceMeshOptions(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMeshOptions'
     _iid_ = Guid('{d2759f89-3572-3d2d-a10d-5fee9394aa37}')
     @winrt_commethod(6)
@@ -86,7 +88,7 @@ class ISpatialSurfaceMeshOptions(ComPtr):
     VertexNormalFormat = property(get_VertexNormalFormat, put_VertexNormalFormat)
     VertexPositionFormat = property(get_VertexPositionFormat, put_VertexPositionFormat)
 class ISpatialSurfaceMeshOptionsStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMeshOptionsStatics'
     _iid_ = Guid('{9b340abf-9781-4505-8935-013575caae5e}')
     @winrt_commethod(6)
@@ -99,7 +101,7 @@ class ISpatialSurfaceMeshOptionsStatics(ComPtr):
     SupportedVertexNormalFormats = property(get_SupportedVertexNormalFormats, None)
     SupportedVertexPositionFormats = property(get_SupportedVertexPositionFormats, None)
 class ISpatialSurfaceObserver(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserver'
     _iid_ = Guid('{10b69819-ddca-3483-ac3a-748fe8c86df5}')
     @winrt_commethod(6)
@@ -109,24 +111,24 @@ class ISpatialSurfaceObserver(ComPtr):
     @winrt_commethod(8)
     def SetBoundingVolumes(self, bounds: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Perception.Spatial.SpatialBoundingVolume]) -> Void: ...
     @winrt_commethod(9)
-    def add_ObservedSurfacesChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ObservedSurfacesChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(10)
     def remove_ObservedSurfacesChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    ObservedSurfacesChanged = event(add_ObservedSurfacesChanged, remove_ObservedSurfacesChanged)
+    ObservedSurfacesChanged = event()
 class ISpatialSurfaceObserverStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserverStatics'
     _iid_ = Guid('{165951ed-2108-4168-9175-87e027bc9285}')
     @winrt_commethod(6)
     def RequestAccessAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Perception.Spatial.SpatialPerceptionAccessStatus]: ...
 class ISpatialSurfaceObserverStatics2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserverStatics2'
     _iid_ = Guid('{0f534261-c55d-4e6b-a895-a19de69a42e3}')
     @winrt_commethod(6)
     def IsSupported(self) -> Boolean: ...
 class SpatialSurfaceInfo(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceInfo
     _classid_ = 'Windows.Perception.Spatial.Surfaces.SpatialSurfaceInfo'
     @winrt_mixinmethod
@@ -142,7 +144,7 @@ class SpatialSurfaceInfo(ComPtr):
     Id = property(get_Id, None)
     UpdateTime = property(get_UpdateTime, None)
 class SpatialSurfaceMesh(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMesh
     _classid_ = 'Windows.Perception.Spatial.Surfaces.SpatialSurfaceMesh'
     @winrt_mixinmethod
@@ -164,7 +166,7 @@ class SpatialSurfaceMesh(ComPtr):
     VertexPositionScale = property(get_VertexPositionScale, None)
     VertexPositions = property(get_VertexPositions, None)
 class SpatialSurfaceMeshBuffer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMeshBuffer
     _classid_ = 'Windows.Perception.Spatial.Surfaces.SpatialSurfaceMeshBuffer'
     @winrt_mixinmethod
@@ -182,7 +184,7 @@ class SpatialSurfaceMeshBuffer(ComPtr):
 class _SpatialSurfaceMeshOptions_Meta_(ComPtr.__class__):
     pass
 class SpatialSurfaceMeshOptions(ComPtr, metaclass=_SpatialSurfaceMeshOptions_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceMeshOptions
     _classid_ = 'Windows.Perception.Spatial.Surfaces.SpatialSurfaceMeshOptions'
     def __init__(self, *args, **kwargs):
@@ -224,7 +226,7 @@ class SpatialSurfaceMeshOptions(ComPtr, metaclass=_SpatialSurfaceMeshOptions_Met
     _SpatialSurfaceMeshOptions_Meta_.SupportedVertexNormalFormats = property(get_SupportedVertexNormalFormats, None)
     _SpatialSurfaceMeshOptions_Meta_.SupportedVertexPositionFormats = property(get_SupportedVertexPositionFormats, None)
 class SpatialSurfaceObserver(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserver
     _classid_ = 'Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver'
     def __init__(self, *args, **kwargs):
@@ -243,14 +245,14 @@ class SpatialSurfaceObserver(ComPtr):
     @winrt_mixinmethod
     def SetBoundingVolumes(self: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserver, bounds: win32more.Windows.Foundation.Collections.IIterable[win32more.Windows.Perception.Spatial.SpatialBoundingVolume]) -> Void: ...
     @winrt_mixinmethod
-    def add_ObservedSurfacesChanged(self: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserver, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ObservedSurfacesChanged(self: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserver, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Perception.Spatial.Surfaces.SpatialSurfaceObserver, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_ObservedSurfacesChanged(self: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserver, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def IsSupported(cls: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserverStatics2) -> Boolean: ...
     @winrt_classmethod
     def RequestAccessAsync(cls: win32more.Windows.Perception.Spatial.Surfaces.ISpatialSurfaceObserverStatics) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Perception.Spatial.SpatialPerceptionAccessStatus]: ...
-    ObservedSurfacesChanged = event(add_ObservedSurfacesChanged, remove_ObservedSurfacesChanged)
+    ObservedSurfacesChanged = event()
 
 
 make_ready(__name__)

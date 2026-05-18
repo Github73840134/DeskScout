@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.IO
 @winfunctype('KERNEL32.dll')
@@ -27,7 +27,6 @@ def BindIoCompletionCallback(FileHandle: win32more.Windows.Win32.Foundation.HAND
 class IO_STATUS_BLOCK(Structure):
     Anonymous: _Anonymous_e__Union
     Information: UIntPtr
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Status: win32more.Windows.Win32.Foundation.NTSTATUS
         Pointer: VoidPtr
@@ -38,11 +37,9 @@ class OVERLAPPED(Structure):
     InternalHigh: UIntPtr
     Anonymous: _Anonymous_e__Union
     hEvent: win32more.Windows.Win32.Foundation.HANDLE
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         Pointer: VoidPtr
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Offset: UInt32
             OffsetHigh: UInt32

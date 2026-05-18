@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.Ole
@@ -241,18 +241,15 @@ VT_ILLEGALMASKED: win32more.Windows.Win32.System.Variant.VARENUM = 4095
 VT_TYPEMASK: win32more.Windows.Win32.System.Variant.VARENUM = 4095
 class VARIANT(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         decVal: win32more.Windows.Win32.Foundation.DECIMAL
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             vt: win32more.Windows.Win32.System.Variant.VARENUM
             wReserved1: UInt16
             wReserved2: UInt16
             wReserved3: UInt16
             Anonymous: _Anonymous_e__Union
-            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Union(Union):
                 llVal: Int64
                 lVal: Int32
@@ -300,7 +297,6 @@ class VARIANT(Structure):
                 pintVal: POINTER(Int32)
                 puintVal: POINTER(UInt32)
                 Anonymous: _Anonymous_e__Struct
-                _anonymous_ = ('Anonymous',)
                 class _Anonymous_e__Struct(Structure):
                     pvRecord: VoidPtr
                     pRecInfo: win32more.Windows.Win32.System.Ole.IRecordInfo

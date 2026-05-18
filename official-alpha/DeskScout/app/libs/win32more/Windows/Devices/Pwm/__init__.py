@@ -1,11 +1,13 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Devices.Pwm
 import win32more.Windows.Devices.Pwm.Provider
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
+import win32more.Windows.Win32.System.WinRT
 class IPwmController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Pwm.IPwmController'
     _iid_ = Guid('{c45f5c85-d2e8-42cf-9bd6-cf5ed029e6a7}')
     @winrt_commethod(6)
@@ -25,29 +27,29 @@ class IPwmController(ComPtr):
     MinFrequency = property(get_MinFrequency, None)
     PinCount = property(get_PinCount, None)
 class IPwmControllerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Pwm.IPwmControllerStatics'
     _iid_ = Guid('{4263bda1-8946-4404-bd48-81dd124af4d9}')
     @winrt_commethod(6)
     def GetControllersAsync(self, provider: win32more.Windows.Devices.Pwm.Provider.IPwmProvider) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Devices.Pwm.PwmController]]: ...
 class IPwmControllerStatics2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Pwm.IPwmControllerStatics2'
     _iid_ = Guid('{44fc5b1f-f119-4bdd-97ad-f76ef986736d}')
     @winrt_commethod(6)
     def GetDefaultAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Pwm.PwmController]: ...
 class IPwmControllerStatics3(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Devices.Pwm.IPwmControllerStatics3'
     _iid_ = Guid('{b2581871-0229-4344-ae3f-9b7cd0e66b94}')
     @winrt_commethod(6)
-    def GetDeviceSelector(self) -> hstr: ...
+    def GetDeviceSelector(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def GetDeviceSelectorFromFriendlyName(self, friendlyName: hstr) -> hstr: ...
+    def GetDeviceSelectorFromFriendlyName(self, friendlyName: WinRT_String) -> WinRT_String: ...
     @winrt_commethod(8)
-    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Pwm.PwmController]: ...
+    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Pwm.PwmController]: ...
 class IPwmPin(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Devices.Pwm.IPwmPin'
     _iid_ = Guid('{22972dc8-c6cf-4821-b7f9-c6454fb6af79}')
@@ -71,7 +73,7 @@ class IPwmPin(ComPtr):
     IsStarted = property(get_IsStarted, None)
     Polarity = property(get_Polarity, put_Polarity)
 class PwmController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Devices.Pwm.IPwmController
     _classid_ = 'Windows.Devices.Pwm.PwmController'
     @winrt_mixinmethod
@@ -87,11 +89,11 @@ class PwmController(ComPtr):
     @winrt_mixinmethod
     def OpenPin(self: win32more.Windows.Devices.Pwm.IPwmController, pinNumber: Int32) -> win32more.Windows.Devices.Pwm.PwmPin: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics3) -> hstr: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics3) -> WinRT_String: ...
     @winrt_classmethod
-    def GetDeviceSelectorFromFriendlyName(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics3, friendlyName: hstr) -> hstr: ...
+    def GetDeviceSelectorFromFriendlyName(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics3, friendlyName: WinRT_String) -> WinRT_String: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics3, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Pwm.PwmController]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics3, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Pwm.PwmController]: ...
     @winrt_classmethod
     def GetDefaultAsync(cls: win32more.Windows.Devices.Pwm.IPwmControllerStatics2) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Pwm.PwmController]: ...
     @winrt_classmethod
@@ -101,7 +103,7 @@ class PwmController(ComPtr):
     MinFrequency = property(get_MinFrequency, None)
     PinCount = property(get_PinCount, None)
 class PwmPin(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.Pwm.IPwmPin
     _classid_ = 'Windows.Devices.Pwm.PwmPin'
@@ -127,7 +129,6 @@ class PwmPin(ComPtr):
     IsStarted = property(get_IsStarted, None)
     Polarity = property(get_Polarity, put_Polarity)
 class PwmPulsePolarity(Enum, Int32):
-    _name_ = 'Windows.Devices.Pwm.PwmPulsePolarity'
     ActiveHigh = 0
     ActiveLow = 1
 

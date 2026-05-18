@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.UI.Input
 @winfunctype('USER32.dll')
@@ -48,7 +48,7 @@ MOUSE_MOVE_NOCOALESCE: win32more.Windows.Win32.UI.Input.MOUSE_STATE = 8
 class RAWHID(Structure):
     dwSizeHid: UInt32
     dwCount: UInt32
-    bRawData: FlexibleArray[Byte]
+    bRawData: Byte * 1
 class RAWINPUT(Structure):
     header: win32more.Windows.Win32.UI.Input.RAWINPUTHEADER
     data: _data_e__Union
@@ -94,11 +94,9 @@ class RAWMOUSE(Structure):
     lLastX: Int32
     lLastY: Int32
     ulExtraInformation: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ulButtons: UInt32
         Anonymous: _Anonymous_e__Struct
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             usButtonFlags: UInt16
             usButtonData: UInt16
@@ -113,7 +111,6 @@ class RID_DEVICE_INFO(Structure):
     cbSize: UInt32
     dwType: win32more.Windows.Win32.UI.Input.RID_DEVICE_INFO_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         mouse: win32more.Windows.Win32.UI.Input.RID_DEVICE_INFO_MOUSE
         keyboard: win32more.Windows.Win32.UI.Input.RID_DEVICE_INFO_KEYBOARD

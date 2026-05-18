@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.EventCollector
 EC_VARIANT_TYPE_MASK: UInt32 = 127
@@ -111,7 +111,6 @@ class EC_VARIANT(Structure):
     Anonymous: _Anonymous_e__Union
     Count: UInt32
     Type: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         BooleanVal: win32more.Windows.Win32.Foundation.BOOL
         UInt32Val: UInt32

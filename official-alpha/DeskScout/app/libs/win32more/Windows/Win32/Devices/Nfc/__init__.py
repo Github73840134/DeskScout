@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Devices.Nfc
 import win32more.Windows.Win32.Foundation
 GUID_DEVINTERFACE_NFCDTA: Guid = Guid('{7fd3f30b-5e49-4be1-b3aa-af06260d236a}')
@@ -83,7 +83,7 @@ class NFCRM_SET_RADIO_STATE(Structure):
     MediaRadioOn: win32more.Windows.Win32.Foundation.BOOLEAN
 class NFC_DATA_BUFFER(Structure):
     cbBuffer: UInt16
-    pbBuffer: FlexibleArray[Byte]
+    pbBuffer: Byte * 1
 NFC_DEVICE_TYPE = Int32
 NfcType1Tag: win32more.Windows.Win32.Devices.Nfc.NFC_DEVICE_TYPE = 0
 NfcType2Tag: win32more.Windows.Win32.Devices.Nfc.NFC_DEVICE_TYPE = 1
@@ -104,13 +104,13 @@ LinkDeactivated: win32more.Windows.Win32.Devices.Nfc.NFC_LLCP_LINK_STATUS = 1
 class NFC_LLCP_SERVICE_DISCOVER_REQUEST(Structure):
     hRemoteDev: IntPtr
     NumberOfEntries: UInt32
-    ServiceNameEntries: FlexibleArray[win32more.Windows.Win32.Devices.Nfc.NFC_LLCP_SERVICE_NAME_ENTRY]
+    ServiceNameEntries: win32more.Windows.Win32.Devices.Nfc.NFC_LLCP_SERVICE_NAME_ENTRY * 1
 class NFC_LLCP_SERVICE_DISCOVER_SAP(Structure):
     NumberOfEntries: UInt32
-    SAPEntries: FlexibleArray[Byte]
+    SAPEntries: Byte * 1
 class NFC_LLCP_SERVICE_NAME_ENTRY(Structure):
     cbServiceName: UInt32
-    pbServiceName: FlexibleArray[Byte]
+    pbServiceName: Byte * 1
 class NFC_LLCP_SOCKET_ACCEPT_INFO(Structure):
     hSocket: IntPtr
     sSocketOption: win32more.Windows.Win32.Devices.Nfc.NFC_LLCP_SOCKET_OPTION
@@ -123,7 +123,6 @@ class NFC_LLCP_SOCKET_CONNECT_INFO(Structure):
     hSocket: IntPtr
     eConnectType: win32more.Windows.Win32.Devices.Nfc.NFC_LLCP_SOCKET_CONNECT_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         bSAP: Byte
         sServiceName: win32more.Windows.Win32.Devices.Nfc.NFC_LLCP_SERVICE_NAME_ENTRY
@@ -221,24 +220,23 @@ class NFC_SE_EVENT_INFO(Structure):
     hSecureElement: IntPtr
     eEventType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_EVENT_TYPE
     cbEventData: UInt32
-    pbEventData: FlexibleArray[Byte]
+    pbEventData: Byte * 1
 class NFC_SE_INFO(Structure):
     hSecureElement: IntPtr
     eSecureElementType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_TYPE
 class NFC_SE_LIST(Structure):
     NumberOfEndpoints: UInt32
-    EndpointList: FlexibleArray[win32more.Windows.Win32.Devices.Nfc.NFC_SE_INFO]
+    EndpointList: win32more.Windows.Win32.Devices.Nfc.NFC_SE_INFO * 1
 class NFC_SE_PROTO_ROUTING_INFO(Structure):
     hSecureElement: IntPtr
     bPowerState: Byte
     eRfProtocolType: Byte
 class NFC_SE_ROUTING_TABLE(Structure):
     NumberOfEntries: UInt32
-    TableEntries: FlexibleArray[win32more.Windows.Win32.Devices.Nfc.NFC_SE_ROUTING_TABLE_ENTRY]
+    TableEntries: win32more.Windows.Win32.Devices.Nfc.NFC_SE_ROUTING_TABLE_ENTRY * 1
 class NFC_SE_ROUTING_TABLE_ENTRY(Structure):
     eRoutingType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_ROUTING_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         TechRoutingInfo: win32more.Windows.Win32.Devices.Nfc.NFC_SE_TECH_ROUTING_INFO
         ProtoRoutingInfo: win32more.Windows.Win32.Devices.Nfc.NFC_SE_PROTO_ROUTING_INFO
@@ -298,12 +296,12 @@ class SECURE_ELEMENT_ENDPOINT_INFO(Structure):
     eSecureElementType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_TYPE
 class SECURE_ELEMENT_ENDPOINT_LIST(Structure):
     NumberOfEndpoints: UInt32
-    EndpointList: FlexibleArray[win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_ENDPOINT_INFO]
+    EndpointList: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_ENDPOINT_INFO * 1
 class SECURE_ELEMENT_EVENT_INFO(Structure):
     guidSecureElementId: Guid
     eEventType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_EVENT_TYPE
     cbEventData: UInt32
-    pbEventData: FlexibleArray[Byte]
+    pbEventData: Byte * 1
 class SECURE_ELEMENT_EVENT_SUBSCRIPTION_INFO(Structure):
     guidSecureElementId: Guid
     eEventType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_EVENT_TYPE
@@ -323,7 +321,7 @@ class SECURE_ELEMENT_HCE_ACTIVATION_PAYLOAD(Structure):
 class SECURE_ELEMENT_HCE_DATA_PACKET(Structure):
     bConnectionId: UInt16
     cbPayload: UInt16
-    pbPayload: FlexibleArray[Byte]
+    pbPayload: Byte * 1
 class SECURE_ELEMENT_NFCC_CAPABILITIES(Structure):
     cbMaxRoutingTableSize: UInt16
     IsAidRoutingSupported: win32more.Windows.Win32.Foundation.BOOLEAN
@@ -337,11 +335,10 @@ class SECURE_ELEMENT_PROTO_ROUTING_INFO(Structure):
     eRfProtocolType: Byte
 class SECURE_ELEMENT_ROUTING_TABLE(Structure):
     NumberOfEntries: UInt32
-    TableEntries: FlexibleArray[win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_ROUTING_TABLE_ENTRY]
+    TableEntries: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_ROUTING_TABLE_ENTRY * 1
 class SECURE_ELEMENT_ROUTING_TABLE_ENTRY(Structure):
     eRoutingType: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_ROUTING_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         TechRoutingInfo: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_TECH_ROUTING_INFO
         ProtoRoutingInfo: win32more.Windows.Win32.Devices.Nfc.SECURE_ELEMENT_PROTO_ROUTING_INFO

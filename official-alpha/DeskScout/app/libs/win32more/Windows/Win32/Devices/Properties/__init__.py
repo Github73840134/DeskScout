@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Devices.Properties
 import win32more.Windows.Win32.Foundation
 DEVPROP_TRUE: win32more.Windows.Win32.Devices.Properties.DEVPROP_BOOLEAN = 255
@@ -56,10 +56,6 @@ DEVPKEY_Device_Reported: win32more.Windows.Win32.Foundation.DEVPROPKEY = Constan
 DEVPKEY_Device_Legacy: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{80497100-8c73-48b9-aad9-ce387e19c56e}'), pid=3)
 DEVPKEY_Device_ContainerId: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{8c7ed206-3f8a-4827-b3ab-ae9e1faefc6c}'), pid=2)
 DEVPKEY_Device_InLocalMachineContainer: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{8c7ed206-3f8a-4827-b3ab-ae9e1faefc6c}'), pid=4)
-DEVPKEY_Device_ContainerModelName: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{7d0300e4-4fb7-493d-8a95-656f00e6a271}'), pid=2)
-DEVPKEY_Device_ContainerManufacturer: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{7d0300e4-4fb7-493d-8a95-656f00e6a271}'), pid=3)
-DEVPKEY_Device_ContainerCategories: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{7d0300e4-4fb7-493d-8a95-656f00e6a271}'), pid=4)
-DEVPKEY_Device_ContainerIcon: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{7d0300e4-4fb7-493d-8a95-656f00e6a271}'), pid=5)
 DEVPKEY_Device_Model: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{78c34fc8-104a-4aca-9ea4-524d52996e57}'), pid=39)
 DEVPKEY_Device_ModelId: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{80d81ea6-7473-4b0c-8216-efc11a2c4c8b}'), pid=2)
 DEVPKEY_Device_FriendlyNameAttributes: win32more.Windows.Win32.Foundation.DEVPROPKEY = ConstantLazyLoader(fmtid=Guid('{80d81ea6-7473-4b0c-8216-efc11a2c4c8b}'), pid=3)

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Data.Xml.MsXml
 import win32more.Windows.Win32.Devices.Communication
 import win32more.Windows.Win32.Devices.Display
@@ -70,8 +70,6 @@ class ATTRIBUTE_INFO_4(Structure):
 USB_PRINTER_INTERFACE_CLASSIC: UInt32 = 1
 USB_PRINTER_INTERFACE_IPP: UInt32 = 2
 USB_PRINTER_INTERFACE_DUAL: UInt32 = 3
-USB_PRINT_IPP_COMPAT_ID: UInt32 = 1
-USB_PRINT_IPP_FAXOUT: UInt32 = 2
 USBPRINT_IOCTL_INDEX: UInt32 = 0
 IOCTL_USBPRINT_GET_LPT_STATUS: UInt32 = 2228272
 IOCTL_USBPRINT_GET_1284_ID: UInt32 = 2228276
@@ -86,7 +84,6 @@ IOCTL_USBPRINT_ADD_MSIPP_COMPAT_ID: UInt32 = 2228308
 IOCTL_USBPRINT_SET_DEVICE_ID: UInt32 = 2228312
 IOCTL_USBPRINT_ADD_CHILD_DEVICE: UInt32 = 2228316
 IOCTL_USBPRINT_CYCLE_PORT: UInt32 = 2228320
-IOCTL_USBPRINT_GET_MFG_MDL_ID: UInt32 = 2228324
 TVOT_2STATES: UInt32 = 0
 TVOT_3STATES: UInt32 = 1
 TVOT_UDARROW: UInt32 = 2
@@ -665,7 +662,6 @@ XPS_FP_MERGED_DATAFILE_PATH: String = 'MergedDataFilePath'
 XPS_FP_RESOURCE_DLL_PATHS: String = 'ResourceDLLPaths'
 XPS_FP_JOB_LEVEL_PRINTTICKET: String = 'JobPrintTicket'
 XPS_FP_PRINTDEVICECAPABILITIES: String = 'PrintDeviceCapabilities'
-XPS_FP_FAX_JOB_PROPERTIES: String = 'JobFaxProperties'
 MXDC_ESCAPE: UInt32 = 4122
 MXDCOP_GET_FILENAME: UInt32 = 14
 MXDCOP_PRINTTICKET_FIXED_DOC_SEQ: UInt32 = 22
@@ -768,9 +764,6 @@ TYPE_GLYPHID: UInt32 = 4
 PDEV_ADJUST_PAPER_MARGIN_TYPE: UInt32 = 1
 PDEV_HOSTFONT_ENABLED_TYPE: UInt32 = 2
 PDEV_USE_TRUE_COLOR_TYPE: UInt32 = 3
-PDEV_ADJUST_GRAPHICS_RESOLUTION_TYPE: UInt32 = 4
-PDEV_ADJUST_IMAGEABLE_ORIGIN_AREA_TYPE: UInt32 = 8
-PDEV_ADJUST_PHYSICAL_PAPER_SIZE_TYPE: UInt32 = 16
 OEMCUIP_DOCPROP: UInt32 = 1
 OEMCUIP_PRNPROP: UInt32 = 2
 CUSTOMPARAM_WIDTH: UInt32 = 0
@@ -920,11 +913,7 @@ BOOKLET_PRINT: UInt32 = 2
 NO_COLOR_OPTIMIZATION: UInt32 = 0
 COLOR_OPTIMIZATION: UInt32 = 1
 REVERSE_PAGES_FOR_REVERSE_DUPLEX: UInt32 = 1
-DONT_SEND_EXTRA_PAGES_FOR_DUPLEX: UInt32 = 2
 RIGHT_THEN_DOWN: UInt32 = 1
-DOWN_THEN_RIGHT: UInt32 = 2
-LEFT_THEN_DOWN: UInt32 = 4
-DOWN_THEN_LEFT: UInt32 = 8
 BOOKLET_EDGE_LEFT: UInt32 = 0
 BOOKLET_EDGE_RIGHT: UInt32 = 1
 QCP_DEVICEPROFILE: UInt32 = 0
@@ -1023,7 +1012,6 @@ JOB_CONTROL_LAST_PAGE_EJECTED: UInt32 = 7
 JOB_CONTROL_RETAIN: UInt32 = 8
 JOB_CONTROL_RELEASE: UInt32 = 9
 JOB_CONTROL_SEND_TOAST: UInt32 = 10
-JOB_CONTROL_PENDING_ON_DEVICE: UInt32 = 11
 JOB_STATUS_PAUSED: UInt32 = 1
 JOB_STATUS_ERROR: UInt32 = 2
 JOB_STATUS_DELETING: UInt32 = 4
@@ -1075,13 +1063,9 @@ FORM_USER: UInt32 = 0
 FORM_BUILTIN: UInt32 = 1
 FORM_PRINTER: UInt32 = 2
 PPCAPS_RIGHT_THEN_DOWN: UInt32 = 1
-PPCAPS_DOWN_THEN_RIGHT: UInt32 = 2
-PPCAPS_LEFT_THEN_DOWN: UInt32 = 4
-PPCAPS_DOWN_THEN_LEFT: UInt32 = 8
 PPCAPS_BORDER_PRINT: UInt32 = 1
 PPCAPS_BOOKLET_EDGE: UInt32 = 1
 PPCAPS_REVERSE_PAGES_FOR_REVERSE_DUPLEX: UInt32 = 1
-PPCAPS_DONT_SEND_EXTRA_PAGES_FOR_DUPLEX: UInt32 = 2
 PPCAPS_SQUARE_SCALING: UInt32 = 1
 PORT_TYPE_WRITE: UInt32 = 1
 PORT_TYPE_READ: UInt32 = 2
@@ -1331,7 +1315,6 @@ SPLDS_UNC_NAME: String = 'uNCName'
 SPLDS_URL: String = 'url'
 SPLDS_FLAGS: String = 'flags'
 SPLDS_VERSION_NUMBER: String = 'versionNumber'
-SPLDS_PRINT_IPP_COMPRESSION_SUPPORTED: String = 'ippCompressionSupported'
 SPLDS_PRINTER_NAME_ALIASES: String = 'printerNameAliases'
 SPLDS_PRINTER_LOCATIONS: String = 'printerLocations'
 SPLDS_PRINTER_MODEL: String = 'printerModel'
@@ -1527,9 +1510,9 @@ def EnumJobsA(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE
 def EnumJobsW(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE, FirstJob: UInt32, NoJobs: UInt32, Level: UInt32, pJob: POINTER(Byte), cbBuf: UInt32, pcbNeeded: POINTER(UInt32), pcReturned: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 EnumJobs = UnicodeAlias('EnumJobsW')
 @winfunctype('winspool.drv')
-def AddPrinterA(pName: win32more.Windows.Win32.Foundation.PSTR, Level: UInt32, pPrinter: POINTER(Byte)) -> win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE: ...
+def AddPrinterA(pName: win32more.Windows.Win32.Foundation.PSTR, Level: UInt32, pPrinter: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('winspool.drv')
-def AddPrinterW(pName: win32more.Windows.Win32.Foundation.PWSTR, Level: UInt32, pPrinter: POINTER(Byte)) -> win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE: ...
+def AddPrinterW(pName: win32more.Windows.Win32.Foundation.PWSTR, Level: UInt32, pPrinter: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 AddPrinter = UnicodeAlias('AddPrinterW')
 @winfunctype('winspool.drv')
 def DeletePrinter(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE) -> win32more.Windows.Win32.Foundation.BOOL: ...
@@ -1696,13 +1679,13 @@ DeletePrinterKey = UnicodeAlias('DeletePrinterKeyW')
 @winfunctype('winspool.drv')
 def WaitForPrinterChange(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE, Flags: UInt32) -> UInt32: ...
 @winfunctype('winspool.drv')
-def FindFirstPrinterChangeNotification(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE, fdwFilter: UInt32, fdwOptions: UInt32, pPrinterNotifyOptions: VoidPtr) -> win32more.Windows.Win32.Graphics.Printing.FINDPRINTERCHANGENOTIFICATION_HANDLE: ...
+def FindFirstPrinterChangeNotification(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE, fdwFilter: UInt32, fdwOptions: UInt32, pPrinterNotifyOptions: VoidPtr) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('winspool.drv')
-def FindNextPrinterChangeNotification(hChange: win32more.Windows.Win32.Graphics.Printing.FINDPRINTERCHANGENOTIFICATION_HANDLE, pdwChange: POINTER(UInt32), pvReserved: VoidPtr, ppPrinterNotifyInfo: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def FindNextPrinterChangeNotification(hChange: win32more.Windows.Win32.Foundation.HANDLE, pdwChange: POINTER(UInt32), pvReserved: VoidPtr, ppPrinterNotifyInfo: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('winspool.drv')
 def FreePrinterNotifyInfo(pPrinterNotifyInfo: POINTER(win32more.Windows.Win32.Graphics.Printing.PRINTER_NOTIFY_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('winspool.drv')
-def FindClosePrinterChangeNotification(hChange: win32more.Windows.Win32.Graphics.Printing.FINDPRINTERCHANGENOTIFICATION_HANDLE) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def FindClosePrinterChangeNotification(hChange: win32more.Windows.Win32.Foundation.HANDLE) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('winspool.drv')
 def PrinterMessageBoxA(hPrinter: win32more.Windows.Win32.Graphics.Printing.PRINTER_HANDLE, Error: UInt32, hWnd: win32more.Windows.Win32.Foundation.HWND, pText: win32more.Windows.Win32.Foundation.PSTR, pCaption: win32more.Windows.Win32.Foundation.PSTR, dwType: UInt32) -> UInt32: ...
 @winfunctype('winspool.drv')
@@ -1885,12 +1868,6 @@ def RegisterForPrintAsyncNotifications(pszName: win32more.Windows.Win32.Foundati
 def UnRegisterForPrintAsyncNotifications(param0: win32more.Windows.Win32.Foundation.HANDLE) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('winspool.drv')
 def CreatePrintAsyncNotifyChannel(pszName: win32more.Windows.Win32.Foundation.PWSTR, pNotificationType: POINTER(Guid), eUserFilter: win32more.Windows.Win32.Graphics.Printing.PrintAsyncNotifyUserFilter, eConversationStyle: win32more.Windows.Win32.Graphics.Printing.PrintAsyncNotifyConversationStyle, pCallback: win32more.Windows.Win32.Graphics.Printing.IPrintAsyncNotifyCallback, ppIAsynchNotification: POINTER(win32more.Windows.Win32.Graphics.Printing.IPrintAsyncNotifyChannel)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('SPOOLSS.dll')
-def RouterUnregisterForPrintAsyncNotifications(hNotify: win32more.Windows.Win32.Foundation.HANDLE) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('SPOOLSS.dll')
-def RouterCreatePrintAsyncNotificationChannel(pName: win32more.Windows.Win32.Foundation.PWSTR, pNotificationType: POINTER(Guid), eNotifyFilter: win32more.Windows.Win32.Graphics.Printing.PrintAsyncNotifyUserFilter, eConversationStyle: win32more.Windows.Win32.Graphics.Printing.PrintAsyncNotifyConversationStyle, pCallback: win32more.Windows.Win32.Graphics.Printing.IPrintAsyncNotifyCallback, ppIAsynchNotification: POINTER(win32more.Windows.Win32.Graphics.Printing.IPrintAsyncNotifyChannel)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('SPOOLSS.dll')
-def RouterGetPrintClassObject(pPrinter: win32more.Windows.Win32.Foundation.PWSTR, riid: POINTER(Guid), ppv: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('GDI32.dll')
 def GdiGetSpoolFileHandle(pwszPrinterName: win32more.Windows.Win32.Foundation.PWSTR, pDevmode: POINTER(win32more.Windows.Win32.Graphics.Gdi.DEVMODEW), pwszDocName: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('GDI32.dll')
@@ -1994,7 +1971,7 @@ class BIDI_REQUEST_CONTAINER(Structure):
     Version: UInt32
     Flags: UInt32
     Count: UInt32
-    aData: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.BIDI_REQUEST_DATA]
+    aData: win32more.Windows.Win32.Graphics.Printing.BIDI_REQUEST_DATA * 1
 class BIDI_REQUEST_DATA(Structure):
     dwReqNumber: UInt32
     pSchema: win32more.Windows.Win32.Foundation.PWSTR
@@ -2003,7 +1980,7 @@ class BIDI_RESPONSE_CONTAINER(Structure):
     Version: UInt32
     Flags: UInt32
     Count: UInt32
-    aData: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.BIDI_RESPONSE_DATA]
+    aData: win32more.Windows.Win32.Graphics.Printing.BIDI_RESPONSE_DATA * 1
 class BIDI_RESPONSE_DATA(Structure):
     dwResult: UInt32
     dwReqNumber: UInt32
@@ -2036,7 +2013,7 @@ class BranchOfficeJobData(Structure):
         LogOfflineFileFull: win32more.Windows.Win32.Graphics.Printing.BranchOfficeLogOfflineFileFull
 class BranchOfficeJobDataContainer(Structure):
     cJobDataEntries: UInt32
-    JobData: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.BranchOfficeJobData]
+    JobData: win32more.Windows.Win32.Graphics.Printing.BranchOfficeJobData * 1
 class BranchOfficeJobDataError(Structure):
     LastError: UInt32
     pDocumentName: win32more.Windows.Win32.Foundation.PWSTR
@@ -2115,7 +2092,6 @@ class CPSUICBPARAM(Structure):
     Anonymous: _Anonymous_e__Union
     UserData: UIntPtr
     Result: UIntPtr
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         OldSel: Int32
         pOldSel: POINTER(SByte)
@@ -2162,7 +2138,6 @@ class DLGPAGE(Structure):
     pTabName: POINTER(SByte)
     IconID: UIntPtr
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         DlgTemplateID: UInt16
         hDlgTemplate: win32more.Windows.Win32.Foundation.HANDLE
@@ -2180,7 +2155,7 @@ class DOCEVENT_FILTER(Structure):
     cElementsAllocated: UInt32
     cElementsNeeded: UInt32
     cElementsReturned: UInt32
-    aDocEventCall: FlexibleArray[UInt32]
+    aDocEventCall: UInt32 * 1
 class DOCUMENTPROPERTYHEADER(Structure):
     cbSize: UInt16
     Reserved: UInt16
@@ -2488,7 +2463,6 @@ class EXTPUSH(Structure):
     IconID: UIntPtr
     Anonymous2: _Anonymous2_e__Union
     dwReserved: UIntPtr * 3
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         DlgProc: win32more.Windows.Win32.UI.WindowsAndMessaging.DLGPROC
         pfnCallBack: win32more.Windows.Win32.Foundation.FARPROC
@@ -2539,8 +2513,6 @@ EXpsJobConsumption = Int32
 XpsJob_DocumentSequenceAdded: win32more.Windows.Win32.Graphics.Printing.EXpsJobConsumption = 0
 XpsJob_FixedDocumentAdded: win32more.Windows.Win32.Graphics.Printing.EXpsJobConsumption = 1
 XpsJob_FixedPageAdded: win32more.Windows.Win32.Graphics.Printing.EXpsJobConsumption = 2
-class FINDPRINTERCHANGENOTIFICATION_HANDLE(Structure):
-    Value: VoidPtr
 class FORM_INFO_1A(Structure):
     Flags: UInt32
     pName: win32more.Windows.Win32.Foundation.PSTR
@@ -3621,11 +3593,11 @@ JOB_INFO_4 = UnicodeAlias('JOB_INFO_4W')
 class KERNDATA(Structure):
     dwSize: UInt32
     dwKernPairNum: UInt32
-    KernPair: FlexibleArray[win32more.Windows.Win32.Devices.Display.FD_KERNINGPAIR]
+    KernPair: win32more.Windows.Win32.Devices.Display.FD_KERNINGPAIR * 1
 class MAPTABLE(Structure):
     dwSize: UInt32
     dwGlyphNum: UInt32
-    Trans: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.TRANSDATA]
+    Trans: win32more.Windows.Win32.Graphics.Printing.TRANSDATA * 1
 class MESSAGEBOX_PARAMS(Structure):
     cbSize: UInt32
     pTitle: win32more.Windows.Win32.Foundation.PWSTR
@@ -3723,7 +3695,7 @@ class MXDC_ESCAPE_HEADER_T(Structure):
     _pack_ = 1
 class MXDC_GET_FILENAME_DATA_T(Structure):
     cbOutput: UInt32
-    wszData: FlexibleArray[Char]
+    wszData: Char * 1
     _pack_ = 1
 MXDC_IMAGE_TYPE_ENUMS = Int32
 MXDC_IMAGETYPE_JPEGHIGH_COMPRESSION: win32more.Windows.Win32.Graphics.Printing.MXDC_IMAGE_TYPE_ENUMS = 1
@@ -3736,7 +3708,7 @@ MXDC_LANDSCAPE_ROTATE_NONE: win32more.Windows.Win32.Graphics.Printing.MXDC_LANDS
 MXDC_LANDSCAPE_ROTATE_COUNTERCLOCKWISE_270_DEGREES: win32more.Windows.Win32.Graphics.Printing.MXDC_LANDSCAPE_ROTATION_ENUMS = -90
 class MXDC_PRINTTICKET_DATA_T(Structure):
     dwDataSize: UInt32
-    bData: FlexibleArray[Byte]
+    bData: Byte * 1
     _pack_ = 1
 class MXDC_PRINTTICKET_ESCAPE_T(Structure):
     mxdcEscape: win32more.Windows.Win32.Graphics.Printing.MXDC_ESCAPE_HEADER_T
@@ -3744,7 +3716,7 @@ class MXDC_PRINTTICKET_ESCAPE_T(Structure):
     _pack_ = 1
 class MXDC_S0PAGE_DATA_T(Structure):
     dwSize: UInt32
-    bData: FlexibleArray[Byte]
+    bData: Byte * 1
     _pack_ = 1
 class MXDC_S0PAGE_PASSTHROUGH_ESCAPE_T(Structure):
     mxdcEscape: win32more.Windows.Win32.Graphics.Printing.MXDC_ESCAPE_HEADER_T
@@ -3770,7 +3742,7 @@ class MXDC_XPS_S0PAGE_RESOURCE_T(Structure):
     dwResourceType: UInt32
     szUri: Byte * 260
     dwDataSize: UInt32
-    bData: FlexibleArray[Byte]
+    bData: Byte * 1
     _pack_ = 1
 NOTIFICATION_CALLBACK_COMMANDS = Int32
 NOTIFICATION_COMMAND_NOTIFY: win32more.Windows.Win32.Graphics.Printing.NOTIFICATION_CALLBACK_COMMANDS = 0
@@ -3872,7 +3844,6 @@ class OPTITEM(Structure):
     wReserved: UInt16
     pOIExt: POINTER(win32more.Windows.Win32.Graphics.Printing.OIEXT)
     dwReserved: UIntPtr * 3
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Sel: Int32
         pSel: POINTER(SByte)
@@ -4018,7 +3989,7 @@ class PORT_DATA_2(Structure):
 class PORT_DATA_LIST_1(Structure):
     dwVersion: UInt32
     cPortData: UInt32
-    pPortData: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.PORT_DATA_2]
+    pPortData: win32more.Windows.Win32.Graphics.Printing.PORT_DATA_2 * 1
 class PORT_INFO_1A(Structure):
     pName: win32more.Windows.Win32.Foundation.PSTR
 class PORT_INFO_1W(Structure):
@@ -4207,7 +4178,7 @@ class PRINTER_NOTIFY_INFO(Structure):
     Version: UInt32
     Flags: UInt32
     Count: UInt32
-    aData: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.PRINTER_NOTIFY_INFO_DATA]
+    aData: win32more.Windows.Win32.Graphics.Printing.PRINTER_NOTIFY_INFO_DATA * 1
 class PRINTER_NOTIFY_INFO_DATA(Structure):
     Type: UInt16
     Field: UInt16
@@ -4480,7 +4451,6 @@ class PROPSHEETUI_INFO_HEADER(Structure):
     hWndParent: win32more.Windows.Win32.Foundation.HWND
     hInst: win32more.Windows.Win32.Foundation.HINSTANCE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         hIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
         IconID: UIntPtr
@@ -4741,7 +4711,7 @@ class WIDTHRUN(Structure):
 class WIDTHTABLE(Structure):
     dwSize: UInt32
     dwRunNum: UInt32
-    WidthRun: FlexibleArray[win32more.Windows.Win32.Graphics.Printing.WIDTHRUN]
+    WidthRun: win32more.Windows.Win32.Graphics.Printing.WIDTHRUN * 1
 XPSRAS_BACKGROUND_COLOR = Int32
 XPSRAS_BACKGROUND_COLOR_TRANSPARENT: win32more.Windows.Win32.Graphics.Printing.XPSRAS_BACKGROUND_COLOR = 0
 XPSRAS_BACKGROUND_COLOR_OPAQUE: win32more.Windows.Win32.Graphics.Printing.XPSRAS_BACKGROUND_COLOR = 1

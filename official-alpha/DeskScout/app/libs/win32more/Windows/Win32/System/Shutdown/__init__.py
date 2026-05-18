@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Shutdown
 MAX_REASON_NAME_LEN: UInt32 = 64
@@ -79,7 +79,6 @@ SHUTDOWN_ARSO: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_FLAGS = 8192
 SHUTDOWN_CHECK_SAFE_FOR_SERVER: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_FLAGS = 16384
 SHUTDOWN_VAIL_CONTAINER: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_FLAGS = 32768
 SHUTDOWN_SYSTEM_INITIATED: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_FLAGS = 65536
-SHUTDOWN_UPDATE_POWEROFF: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_FLAGS = 131072
 SHUTDOWN_REASON = UInt32
 SHTDN_REASON_NONE: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_REASON = 0
 SHTDN_REASON_FLAG_COMMENT_REQUIRED: win32more.Windows.Win32.System.Shutdown.SHUTDOWN_REASON = 16777216

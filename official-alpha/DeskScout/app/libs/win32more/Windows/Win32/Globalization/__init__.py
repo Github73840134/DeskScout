@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Globalization
 import win32more.Windows.Win32.Graphics.Gdi
@@ -8,11 +8,6 @@ LANG_SYSTEM_DEFAULT: Int32 = 2048
 LANG_USER_DEFAULT: Int32 = 1024
 LOCALE_SYSTEM_DEFAULT: UInt32 = 2048
 LOCALE_USER_DEFAULT: UInt32 = 1024
-LOCALE_CUSTOM_DEFAULT: UInt32 = 3072
-LOCALE_CUSTOM_UNSPECIFIED: UInt32 = 4096
-LOCALE_CUSTOM_UI_DEFAULT: UInt32 = 5120
-LOCALE_NEUTRAL: UInt32 = 0
-LOCALE_INVARIANT: UInt32 = 127
 ALL_SERVICE_TYPES: UInt32 = 0
 HIGHLEVEL_SERVICE_TYPES: UInt32 = 1
 LOWLEVEL_SERVICE_TYPES: UInt32 = 2
@@ -1610,8 +1605,6 @@ def ucnv_openCCSID(codepage: Int32, platform: win32more.Windows.Win32.Globalizat
 def ucnv_openPackage(packageName: win32more.Windows.Win32.Foundation.PSTR, converterName: win32more.Windows.Win32.Foundation.PSTR, err: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UConverter): ...
 @cfunctype('icuuc.dll')
 def ucnv_safeClone(cnv: POINTER(win32more.Windows.Win32.Globalization.UConverter), stackBuffer: VoidPtr, pBufferSize: POINTER(Int32), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UConverter): ...
-@cfunctype('icu.dll')
-def ucnv_clone(cnv: POINTER(win32more.Windows.Win32.Globalization.UConverter), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UConverter): ...
 @cfunctype('icuuc.dll')
 def ucnv_close(converter: POINTER(win32more.Windows.Win32.Globalization.UConverter)) -> Void: ...
 @cfunctype('icuuc.dll')
@@ -1742,8 +1735,6 @@ def u_catclose(catd: POINTER(win32more.Windows.Win32.Globalization.UResourceBund
 def u_catgets(catd: POINTER(win32more.Windows.Win32.Globalization.UResourceBundle), set_num: Int32, msg_num: Int32, s: POINTER(UInt16), len: POINTER(Int32), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(UInt16): ...
 @cfunctype('icuuc.dll')
 def u_hasBinaryProperty(c: Int32, which: win32more.Windows.Win32.Globalization.UProperty) -> SByte: ...
-@cfunctype('icu.dll')
-def u_stringHasBinaryProperty(s: POINTER(UInt16), length: Int32, which: win32more.Windows.Win32.Globalization.UProperty) -> SByte: ...
 @cfunctype('icu.dll')
 def u_getBinaryPropertySet(property: win32more.Windows.Win32.Globalization.UProperty, pErrorCode: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.USet): ...
 @cfunctype('icuuc.dll')
@@ -2042,28 +2033,16 @@ def uset_remove(set: POINTER(win32more.Windows.Win32.Globalization.USet), c: Int
 def uset_removeRange(set: POINTER(win32more.Windows.Win32.Globalization.USet), start: Int32, end: Int32) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_removeString(set: POINTER(win32more.Windows.Win32.Globalization.USet), str: POINTER(UInt16), strLen: Int32) -> Void: ...
-@cfunctype('icu.dll')
-def uset_removeAllCodePoints(set: POINTER(win32more.Windows.Win32.Globalization.USet), str: POINTER(UInt16), length: Int32) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_removeAll(set: POINTER(win32more.Windows.Win32.Globalization.USet), removeSet: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_retain(set: POINTER(win32more.Windows.Win32.Globalization.USet), start: Int32, end: Int32) -> Void: ...
-@cfunctype('icu.dll')
-def uset_retainString(set: POINTER(win32more.Windows.Win32.Globalization.USet), str: POINTER(UInt16), length: Int32) -> Void: ...
-@cfunctype('icu.dll')
-def uset_retainAllCodePoints(set: POINTER(win32more.Windows.Win32.Globalization.USet), str: POINTER(UInt16), length: Int32) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_retainAll(set: POINTER(win32more.Windows.Win32.Globalization.USet), retain: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_compact(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_complement(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Void: ...
-@cfunctype('icu.dll')
-def uset_complementRange(set: POINTER(win32more.Windows.Win32.Globalization.USet), start: Int32, end: Int32) -> Void: ...
-@cfunctype('icu.dll')
-def uset_complementString(set: POINTER(win32more.Windows.Win32.Globalization.USet), str: POINTER(UInt16), length: Int32) -> Void: ...
-@cfunctype('icu.dll')
-def uset_complementAllCodePoints(set: POINTER(win32more.Windows.Win32.Globalization.USet), str: POINTER(UInt16), length: Int32) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_complementAll(set: POINTER(win32more.Windows.Win32.Globalization.USet), complement: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Void: ...
 @cfunctype('icuuc.dll')
@@ -2074,8 +2053,6 @@ def uset_closeOver(set: POINTER(win32more.Windows.Win32.Globalization.USet), att
 def uset_removeAllStrings(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Void: ...
 @cfunctype('icuuc.dll')
 def uset_isEmpty(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> SByte: ...
-@cfunctype('icu.dll')
-def uset_hasStrings(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> SByte: ...
 @cfunctype('icuuc.dll')
 def uset_contains(set: POINTER(win32more.Windows.Win32.Globalization.USet), c: Int32) -> SByte: ...
 @cfunctype('icuuc.dll')
@@ -2088,8 +2065,6 @@ def uset_indexOf(set: POINTER(win32more.Windows.Win32.Globalization.USet), c: In
 def uset_charAt(set: POINTER(win32more.Windows.Win32.Globalization.USet), charIndex: Int32) -> Int32: ...
 @cfunctype('icuuc.dll')
 def uset_size(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Int32: ...
-@cfunctype('icu.dll')
-def uset_getRangeCount(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Int32: ...
 @cfunctype('icuuc.dll')
 def uset_getItemCount(set: POINTER(win32more.Windows.Win32.Globalization.USet)) -> Int32: ...
 @cfunctype('icuuc.dll')
@@ -2368,8 +2343,6 @@ def ubrk_openRules(rules: POINTER(UInt16), rulesLength: Int32, text: POINTER(UIn
 def ubrk_openBinaryRules(binaryRules: POINTER(Byte), rulesLength: Int32, text: POINTER(UInt16), textLength: Int32, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UBreakIterator): ...
 @cfunctype('icuuc.dll')
 def ubrk_safeClone(bi: POINTER(win32more.Windows.Win32.Globalization.UBreakIterator), stackBuffer: VoidPtr, pBufferSize: POINTER(Int32), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UBreakIterator): ...
-@cfunctype('icu.dll')
-def ubrk_clone(bi: POINTER(win32more.Windows.Win32.Globalization.UBreakIterator), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UBreakIterator): ...
 @cfunctype('icuuc.dll')
 def ubrk_close(bi: POINTER(win32more.Windows.Win32.Globalization.UBreakIterator)) -> Void: ...
 @cfunctype('icuuc.dll')
@@ -2500,8 +2473,6 @@ def ucal_getTimeZoneTransitionDate(cal: POINTER(VoidPtr), type: win32more.Window
 def ucal_getWindowsTimeZoneID(id: POINTER(UInt16), len: Int32, winid: POINTER(UInt16), winidCapacity: Int32, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Int32: ...
 @cfunctype('icuin.dll')
 def ucal_getTimeZoneIDForWindowsID(winid: POINTER(UInt16), len: Int32, region: win32more.Windows.Win32.Foundation.PSTR, id: POINTER(UInt16), idCapacity: Int32, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Int32: ...
-@cfunctype('icu.dll')
-def ucal_getTimeZoneOffsetFromLocal(cal: POINTER(VoidPtr), nonExistingTimeOpt: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption, duplicatedTimeOpt: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption, rawOffset: POINTER(Int32), dstOffset: POINTER(Int32), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Void: ...
 @cfunctype('icuin.dll')
 def ucol_open(loc: win32more.Windows.Win32.Foundation.PSTR, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UCollator): ...
 @cfunctype('icuin.dll')
@@ -2574,8 +2545,6 @@ def ucol_getMaxVariable(coll: POINTER(win32more.Windows.Win32.Globalization.UCol
 def ucol_getVariableTop(coll: POINTER(win32more.Windows.Win32.Globalization.UCollator), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> UInt32: ...
 @cfunctype('icuin.dll')
 def ucol_safeClone(coll: POINTER(win32more.Windows.Win32.Globalization.UCollator), stackBuffer: VoidPtr, pBufferSize: POINTER(Int32), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UCollator): ...
-@cfunctype('icu.dll')
-def ucol_clone(coll: POINTER(win32more.Windows.Win32.Globalization.UCollator), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UCollator): ...
 @cfunctype('icuin.dll')
 def ucol_getRulesEx(coll: POINTER(win32more.Windows.Win32.Globalization.UCollator), delta: win32more.Windows.Win32.Globalization.UColRuleOption, buffer: POINTER(UInt16), bufferLen: Int32) -> Int32: ...
 @cfunctype('icuin.dll')
@@ -2710,12 +2679,6 @@ def udtitvfmt_resultAsValue(uresult: POINTER(win32more.Windows.Win32.Globalizati
 def udtitvfmt_closeResult(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedDateInterval)) -> Void: ...
 @cfunctype('icuin.dll')
 def udtitvfmt_format(formatter: POINTER(win32more.Windows.Win32.Globalization.UDateIntervalFormat), fromDate: Double, toDate: Double, result: POINTER(UInt16), resultCapacity: Int32, position: POINTER(win32more.Windows.Win32.Globalization.UFieldPosition), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Int32: ...
-@cfunctype('icu.dll')
-def udtitvfmt_formatToResult(formatter: POINTER(win32more.Windows.Win32.Globalization.UDateIntervalFormat), fromDate: Double, toDate: Double, result: POINTER(win32more.Windows.Win32.Globalization.UFormattedDateInterval), status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Void: ...
-@cfunctype('icu.dll')
-def udtitvfmt_setContext(formatter: POINTER(win32more.Windows.Win32.Globalization.UDateIntervalFormat), value: win32more.Windows.Win32.Globalization.UDisplayContext, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Void: ...
-@cfunctype('icu.dll')
-def udtitvfmt_getContext(formatter: POINTER(win32more.Windows.Win32.Globalization.UDateIntervalFormat), type: win32more.Windows.Win32.Globalization.UDisplayContextType, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> win32more.Windows.Win32.Globalization.UDisplayContext: ...
 @cfunctype('icuin.dll')
 def ugender_getInstance(locale: win32more.Windows.Win32.Foundation.PSTR, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UGenderInfo): ...
 @cfunctype('icuin.dll')
@@ -2973,8 +2936,6 @@ def udatpg_openBaseSkeletons(dtpg: POINTER(VoidPtr), pErrorCode: POINTER(win32mo
 @cfunctype('icuin.dll')
 def udatpg_getPatternForSkeleton(dtpg: POINTER(VoidPtr), skeleton: POINTER(UInt16), skeletonLength: Int32, pLength: POINTER(Int32)) -> POINTER(UInt16): ...
 @cfunctype('icu.dll')
-def udatpg_getDefaultHourCycle(dtpg: POINTER(VoidPtr), pErrorCode: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> win32more.Windows.Win32.Globalization.UDateFormatHourCycle: ...
-@cfunctype('icu.dll')
 def unumf_openForSkeletonAndLocale(skeleton: POINTER(UInt16), skeletonLen: Int32, locale: win32more.Windows.Win32.Foundation.PSTR, ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UNumberFormatter): ...
 @cfunctype('icu.dll')
 def unumf_openForSkeletonAndLocaleWithError(skeleton: POINTER(UInt16), skeletonLen: Int32, locale: win32more.Windows.Win32.Foundation.PSTR, perror: POINTER(win32more.Windows.Win32.Globalization.UParseError), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UNumberFormatter): ...
@@ -2995,31 +2956,9 @@ def unumf_resultNextFieldPosition(uresult: POINTER(win32more.Windows.Win32.Globa
 @cfunctype('icu.dll')
 def unumf_resultGetAllFieldPositions(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumber), ufpositer: POINTER(win32more.Windows.Win32.Globalization.UFieldPositionIterator), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Void: ...
 @cfunctype('icu.dll')
-def unumf_resultToDecimalNumber(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumber), dest: win32more.Windows.Win32.Foundation.PSTR, destCapacity: Int32, ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Int32: ...
-@cfunctype('icu.dll')
 def unumf_close(uformatter: POINTER(win32more.Windows.Win32.Globalization.UNumberFormatter)) -> Void: ...
 @cfunctype('icu.dll')
 def unumf_closeResult(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumber)) -> Void: ...
-@cfunctype('icu.dll')
-def unumrf_openForSkeletonWithCollapseAndIdentityFallback(skeleton: POINTER(UInt16), skeletonLen: Int32, collapse: win32more.Windows.Win32.Globalization.UNumberRangeCollapse, identityFallback: win32more.Windows.Win32.Globalization.UNumberRangeIdentityFallback, locale: win32more.Windows.Win32.Foundation.PSTR, perror: POINTER(win32more.Windows.Win32.Globalization.UParseError), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UNumberRangeFormatter): ...
-@cfunctype('icu.dll')
-def unumrf_openResult(ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange): ...
-@cfunctype('icu.dll')
-def unumrf_formatDoubleRange(uformatter: POINTER(win32more.Windows.Win32.Globalization.UNumberRangeFormatter), first: Double, second: Double, uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Void: ...
-@cfunctype('icu.dll')
-def unumrf_formatDecimalRange(uformatter: POINTER(win32more.Windows.Win32.Globalization.UNumberRangeFormatter), first: win32more.Windows.Win32.Foundation.PSTR, firstLen: Int32, second: win32more.Windows.Win32.Foundation.PSTR, secondLen: Int32, uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Void: ...
-@cfunctype('icu.dll')
-def unumrf_resultAsValue(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UFormattedValue): ...
-@cfunctype('icu.dll')
-def unumrf_resultGetIdentityResult(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange), ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> win32more.Windows.Win32.Globalization.UNumberRangeIdentityResult: ...
-@cfunctype('icu.dll')
-def unumrf_resultGetFirstDecimalNumber(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange), dest: win32more.Windows.Win32.Foundation.PSTR, destCapacity: Int32, ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Int32: ...
-@cfunctype('icu.dll')
-def unumrf_resultGetSecondDecimalNumber(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange), dest: win32more.Windows.Win32.Foundation.PSTR, destCapacity: Int32, ec: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> Int32: ...
-@cfunctype('icu.dll')
-def unumrf_close(uformatter: POINTER(win32more.Windows.Win32.Globalization.UNumberRangeFormatter)) -> Void: ...
-@cfunctype('icu.dll')
-def unumrf_closeResult(uresult: POINTER(win32more.Windows.Win32.Globalization.UFormattedNumberRange)) -> Void: ...
 @cfunctype('icuin.dll')
 def unumsys_open(locale: win32more.Windows.Win32.Foundation.PSTR, status: POINTER(win32more.Windows.Win32.Globalization.UErrorCode)) -> POINTER(win32more.Windows.Win32.Globalization.UNumberingSystem): ...
 @cfunctype('icuin.dll')
@@ -4042,8 +3981,8 @@ class MAPPING_ENUM_OPTIONS(Structure):
     pszInputContentType: win32more.Windows.Win32.Foundation.PWSTR
     pszOutputContentType: win32more.Windows.Win32.Foundation.PWSTR
     pGuid: POINTER(Guid)
-    OnlineService: Annotated[UInt32, NativeBitfieldAttribute(2)]
-    ServiceType: Annotated[UInt32, NativeBitfieldAttribute(2)]
+    OnlineService: Annotated[UInt32, 2]
+    ServiceType: Annotated[UInt32, 2]
 class MAPPING_OPTIONS(Structure):
     Size: UIntPtr
     pszInputLanguage: win32more.Windows.Win32.Foundation.PWSTR
@@ -4060,7 +3999,7 @@ class MAPPING_OPTIONS(Structure):
     pActionCallerData: VoidPtr
     dwActionCallerDataSize: UInt32
     dwServiceFlag: UInt32
-    GetActionDisplayName: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    GetActionDisplayName: Annotated[UInt32, 1]
 class MAPPING_PROPERTY_BAG(Structure):
     Size: UIntPtr
     prgResultRanges: POINTER(win32more.Windows.Win32.Globalization.MAPPING_DATA_RANGE)
@@ -4095,10 +4034,10 @@ class MAPPING_SERVICE_INFO(Structure):
     dwPrivateDataSize: UInt32
     pPrivateData: VoidPtr
     pContext: VoidPtr
-    IsOneToOneLanguageMapping: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    HasSubservices: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    OnlineOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    ServiceType: Annotated[UInt32, NativeBitfieldAttribute(2)]
+    IsOneToOneLanguageMapping: Annotated[UInt32, 1]
+    HasSubservices: Annotated[UInt32, 1]
+    OnlineOnly: Annotated[UInt32, 1]
+    ServiceType: Annotated[UInt32, 2]
 MIMECONTF = Int32
 MIMECONTF_MAILNEWS: win32more.Windows.Win32.Globalization.MIMECONTF = 1
 MIMECONTF_BROWSER: win32more.Windows.Win32.Globalization.MIMECONTF = 2
@@ -4270,34 +4209,34 @@ class SCRIPTINFO(Structure):
     wszFixedWidthFont: Char * 32
     wszProportionalFont: Char * 32
 class SCRIPT_ANALYSIS(Structure):
-    eScript: Annotated[UInt16, NativeBitfieldAttribute(10)]
-    fRTL: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fLayoutRTL: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fLinkBefore: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fLinkAfter: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fLogicalOrder: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fNoGlyphIndex: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    eScript: Annotated[UInt16, 10]
+    fRTL: Annotated[UInt16, 1]
+    fLayoutRTL: Annotated[UInt16, 1]
+    fLinkBefore: Annotated[UInt16, 1]
+    fLinkAfter: Annotated[UInt16, 1]
+    fLogicalOrder: Annotated[UInt16, 1]
+    fNoGlyphIndex: Annotated[UInt16, 1]
     s: win32more.Windows.Win32.Globalization.SCRIPT_STATE
 class SCRIPT_CHARPROP(Structure):
-    fCanGlyphAlone: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    reserved: Annotated[UInt16, NativeBitfieldAttribute(15)]
+    fCanGlyphAlone: Annotated[UInt16, 1]
+    reserved: Annotated[UInt16, 15]
 class SCRIPT_CONTROL(Structure):
-    uDefaultLanguage: Annotated[UInt32, NativeBitfieldAttribute(16)]
-    fContextDigits: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fInvertPreBoundDir: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fInvertPostBoundDir: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fLinkStringBefore: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fLinkStringAfter: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fNeutralOverride: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fNumericOverride: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fLegacyBidiClass: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fMergeNeutralItems: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fUseStandardBidi: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fReserved: Annotated[UInt32, NativeBitfieldAttribute(6)]
+    uDefaultLanguage: Annotated[UInt32, 16]
+    fContextDigits: Annotated[UInt32, 1]
+    fInvertPreBoundDir: Annotated[UInt32, 1]
+    fInvertPostBoundDir: Annotated[UInt32, 1]
+    fLinkStringBefore: Annotated[UInt32, 1]
+    fLinkStringAfter: Annotated[UInt32, 1]
+    fNeutralOverride: Annotated[UInt32, 1]
+    fNumericOverride: Annotated[UInt32, 1]
+    fLegacyBidiClass: Annotated[UInt32, 1]
+    fMergeNeutralItems: Annotated[UInt32, 1]
+    fUseStandardBidi: Annotated[UInt32, 1]
+    fReserved: Annotated[UInt32, 6]
 class SCRIPT_DIGITSUBSTITUTE(Structure):
-    NationalDigitLanguage: Annotated[UInt32, NativeBitfieldAttribute(16)]
-    TraditionalDigitLanguage: Annotated[UInt32, NativeBitfieldAttribute(16)]
-    DigitSubstitute: Annotated[UInt32, NativeBitfieldAttribute(8)]
+    NationalDigitLanguage: Annotated[UInt32, 16]
+    TraditionalDigitLanguage: Annotated[UInt32, 16]
+    DigitSubstitute: Annotated[UInt32, 8]
     dwReserved: UInt32
 class SCRIPT_FONTPROPERTIES(Structure):
     cBytes: Int32
@@ -4334,52 +4273,52 @@ SCRIPT_JUSTIFY_ARABIC_BARA: win32more.Windows.Win32.Globalization.SCRIPT_JUSTIFY
 SCRIPT_JUSTIFY_ARABIC_SEEN: win32more.Windows.Win32.Globalization.SCRIPT_JUSTIFY = 14
 SCRIPT_JUSTIFY_ARABIC_SEEN_M: win32more.Windows.Win32.Globalization.SCRIPT_JUSTIFY = 15
 class SCRIPT_LOGATTR(Structure):
-    fSoftBreak: Annotated[Byte, NativeBitfieldAttribute(1)]
-    fWhiteSpace: Annotated[Byte, NativeBitfieldAttribute(1)]
-    fCharStop: Annotated[Byte, NativeBitfieldAttribute(1)]
-    fWordStop: Annotated[Byte, NativeBitfieldAttribute(1)]
-    fInvalid: Annotated[Byte, NativeBitfieldAttribute(1)]
-    fReserved: Annotated[Byte, NativeBitfieldAttribute(3)]
+    fSoftBreak: Annotated[Byte, 1]
+    fWhiteSpace: Annotated[Byte, 1]
+    fCharStop: Annotated[Byte, 1]
+    fWordStop: Annotated[Byte, 1]
+    fInvalid: Annotated[Byte, 1]
+    fReserved: Annotated[Byte, 3]
 class SCRIPT_PROPERTIES(Structure):
-    langid: Annotated[UInt32, NativeBitfieldAttribute(16)]
-    fNumeric: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fComplex: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fNeedsWordBreaking: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fNeedsCaretInfo: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    bCharSet: Annotated[UInt32, NativeBitfieldAttribute(8)]
-    fControl: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fPrivateUseArea: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fNeedsCharacterJustify: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fInvalidGlyph: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fInvalidLogAttr: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fCDM: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fAmbiguousCharSet: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fClusterSizeVaries: Annotated[UInt32, NativeBitfieldAttribute(1)]
-    fRejectInvalid: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    langid: Annotated[UInt32, 16]
+    fNumeric: Annotated[UInt32, 1]
+    fComplex: Annotated[UInt32, 1]
+    fNeedsWordBreaking: Annotated[UInt32, 1]
+    fNeedsCaretInfo: Annotated[UInt32, 1]
+    bCharSet: Annotated[UInt32, 8]
+    fControl: Annotated[UInt32, 1]
+    fPrivateUseArea: Annotated[UInt32, 1]
+    fNeedsCharacterJustify: Annotated[UInt32, 1]
+    fInvalidGlyph: Annotated[UInt32, 1]
+    fInvalidLogAttr: Annotated[UInt32, 1]
+    fCDM: Annotated[UInt32, 1]
+    fAmbiguousCharSet: Annotated[UInt32, 1]
+    fClusterSizeVaries: Annotated[UInt32, 1]
+    fRejectInvalid: Annotated[UInt32, 1]
 class SCRIPT_STATE(Structure):
-    uBidiLevel: Annotated[UInt16, NativeBitfieldAttribute(5)]
-    fOverrideDirection: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fInhibitSymSwap: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fCharShape: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fDigitSubstitute: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fInhibitLigate: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fDisplayZWG: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fArabicNumContext: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fGcpClusters: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fReserved: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fEngineReserved: Annotated[UInt16, NativeBitfieldAttribute(2)]
+    uBidiLevel: Annotated[UInt16, 5]
+    fOverrideDirection: Annotated[UInt16, 1]
+    fInhibitSymSwap: Annotated[UInt16, 1]
+    fCharShape: Annotated[UInt16, 1]
+    fDigitSubstitute: Annotated[UInt16, 1]
+    fInhibitLigate: Annotated[UInt16, 1]
+    fDisplayZWG: Annotated[UInt16, 1]
+    fArabicNumContext: Annotated[UInt16, 1]
+    fGcpClusters: Annotated[UInt16, 1]
+    fReserved: Annotated[UInt16, 1]
+    fEngineReserved: Annotated[UInt16, 2]
 class SCRIPT_TABDEF(Structure):
     cTabStops: Int32
     iScale: Int32
     pTabStops: POINTER(Int32)
     iTabOrigin: Int32
 class SCRIPT_VISATTR(Structure):
-    uJustification: Annotated[UInt16, NativeBitfieldAttribute(4)]
-    fClusterStart: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fDiacritic: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fZeroWidth: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fReserved: Annotated[UInt16, NativeBitfieldAttribute(1)]
-    fShapeReserved: Annotated[UInt16, NativeBitfieldAttribute(8)]
+    uJustification: Annotated[UInt16, 4]
+    fClusterStart: Annotated[UInt16, 1]
+    fDiacritic: Annotated[UInt16, 1]
+    fZeroWidth: Annotated[UInt16, 1]
+    fReserved: Annotated[UInt16, 1]
+    fShapeReserved: Annotated[UInt16, 8]
 SYSGEOCLASS = Int32
 GEOCLASS_NATION: win32more.Windows.Win32.Globalization.SYSGEOCLASS = 16
 GEOCLASS_REGION: win32more.Windows.Win32.Globalization.SYSGEOCLASS = 14
@@ -5147,7 +5086,6 @@ UCurrNameStyle = Int32
 UCURR_SYMBOL_NAME: win32more.Windows.Win32.Globalization.UCurrNameStyle = 0
 UCURR_LONG_NAME: win32more.Windows.Win32.Globalization.UCurrNameStyle = 1
 UCURR_NARROW_SYMBOL_NAME: win32more.Windows.Win32.Globalization.UCurrNameStyle = 2
-UCURR_VARIANT_SYMBOL_NAME: win32more.Windows.Win32.Globalization.UCurrNameStyle = 3
 UCurrencySpacing = Int32
 UNUM_CURRENCY_MATCH: win32more.Windows.Win32.Globalization.UCurrencySpacing = 0
 UNUM_CURRENCY_SURROUNDING_MATCH: win32more.Windows.Win32.Globalization.UCurrencySpacing = 1
@@ -5221,11 +5159,6 @@ UDAT_TIMEZONE_ISO_FIELD: win32more.Windows.Win32.Globalization.UDateFormatField 
 UDAT_TIMEZONE_ISO_LOCAL_FIELD: win32more.Windows.Win32.Globalization.UDateFormatField = 33
 UDAT_AM_PM_MIDNIGHT_NOON_FIELD: win32more.Windows.Win32.Globalization.UDateFormatField = 35
 UDAT_FLEXIBLE_DAY_PERIOD_FIELD: win32more.Windows.Win32.Globalization.UDateFormatField = 36
-UDateFormatHourCycle = Int32
-UDAT_HOUR_CYCLE_11: win32more.Windows.Win32.Globalization.UDateFormatHourCycle = 0
-UDAT_HOUR_CYCLE_12: win32more.Windows.Win32.Globalization.UDateFormatHourCycle = 1
-UDAT_HOUR_CYCLE_23: win32more.Windows.Win32.Globalization.UDateFormatHourCycle = 2
-UDAT_HOUR_CYCLE_24: win32more.Windows.Win32.Globalization.UDateFormatHourCycle = 3
 UDateFormatStyle = Int32
 UDAT_FULL: win32more.Windows.Win32.Globalization.UDateFormatStyle = 0
 UDAT_LONG: win32more.Windows.Win32.Globalization.UDateFormatStyle = 1
@@ -5268,8 +5201,6 @@ UDAT_CYCLIC_YEARS_NARROW: win32more.Windows.Win32.Globalization.UDateFormatSymbo
 UDAT_ZODIAC_NAMES_WIDE: win32more.Windows.Win32.Globalization.UDateFormatSymbolType = 25
 UDAT_ZODIAC_NAMES_ABBREVIATED: win32more.Windows.Win32.Globalization.UDateFormatSymbolType = 26
 UDAT_ZODIAC_NAMES_NARROW: win32more.Windows.Win32.Globalization.UDateFormatSymbolType = 27
-UDAT_NARROW_QUARTERS: win32more.Windows.Win32.Globalization.UDateFormatSymbolType = 28
-UDAT_STANDALONE_NARROW_QUARTERS: win32more.Windows.Win32.Globalization.UDateFormatSymbolType = 29
 UDateFormatSymbols = IntPtr
 UDateIntervalFormat = IntPtr
 UDateRelativeDateTimeFormatterStyle = Int32
@@ -5417,7 +5348,6 @@ U_INVALID_STATE_ERROR: win32more.Windows.Win32.Globalization.UErrorCode = 27
 U_COLLATOR_VERSION_MISMATCH: win32more.Windows.Win32.Globalization.UErrorCode = 28
 U_USELESS_COLLATOR_ERROR: win32more.Windows.Win32.Globalization.UErrorCode = 29
 U_NO_WRITE_PERMISSION: win32more.Windows.Win32.Globalization.UErrorCode = 30
-U_INPUT_TOO_LONG_ERROR: win32more.Windows.Win32.Globalization.UErrorCode = 31
 U_BAD_VARIABLE_DEFINITION: win32more.Windows.Win32.Globalization.UErrorCode = 65536
 U_PARSE_ERROR_START: win32more.Windows.Win32.Globalization.UErrorCode = 65536
 U_MALFORMED_RULE: win32more.Windows.Win32.Globalization.UErrorCode = 65537
@@ -5538,7 +5468,6 @@ UFIELD_CATEGORY_RELATIVE_DATETIME: win32more.Windows.Win32.Globalization.UFieldC
 UFIELD_CATEGORY_DATE_INTERVAL: win32more.Windows.Win32.Globalization.UFieldCategory = 5
 UFIELD_CATEGORY_LIST_SPAN: win32more.Windows.Win32.Globalization.UFieldCategory = 4099
 UFIELD_CATEGORY_DATE_INTERVAL_SPAN: win32more.Windows.Win32.Globalization.UFieldCategory = 4101
-UFIELD_CATEGORY_NUMBER_RANGE_SPAN: win32more.Windows.Win32.Globalization.UFieldCategory = 4098
 class UFieldPosition(Structure):
     field: Int32
     beginIndex: Int32
@@ -5761,8 +5690,6 @@ U_JG_MALAYALAM_SSA: win32more.Windows.Win32.Globalization.UJoiningGroup = 98
 U_JG_MALAYALAM_TTA: win32more.Windows.Win32.Globalization.UJoiningGroup = 99
 U_JG_HANIFI_ROHINGYA_KINNA_YA: win32more.Windows.Win32.Globalization.UJoiningGroup = 100
 U_JG_HANIFI_ROHINGYA_PA: win32more.Windows.Win32.Globalization.UJoiningGroup = 101
-U_JG_THIN_YEH: win32more.Windows.Win32.Globalization.UJoiningGroup = 102
-U_JG_VERTICAL_TAIL: win32more.Windows.Win32.Globalization.UJoiningGroup = 103
 UJoiningType = Int32
 U_JT_NON_JOINING: win32more.Windows.Win32.Globalization.UJoiningType = 0
 U_JT_JOIN_CAUSING: win32more.Windows.Win32.Globalization.UJoiningType = 1
@@ -5976,9 +5903,6 @@ UNUM_PERMILL_FIELD: win32more.Windows.Win32.Globalization.UNumberFormatFields = 
 UNUM_SIGN_FIELD: win32more.Windows.Win32.Globalization.UNumberFormatFields = 10
 UNUM_MEASURE_UNIT_FIELD: win32more.Windows.Win32.Globalization.UNumberFormatFields = 11
 UNUM_COMPACT_FIELD: win32more.Windows.Win32.Globalization.UNumberFormatFields = 12
-UNumberFormatMinimumGroupingDigits = Int32
-UNUM_MINIMUM_GROUPING_DIGITS_AUTO: win32more.Windows.Win32.Globalization.UNumberFormatMinimumGroupingDigits = -2
-UNUM_MINIMUM_GROUPING_DIGITS_MIN2: win32more.Windows.Win32.Globalization.UNumberFormatMinimumGroupingDigits = -3
 UNumberFormatPadPosition = Int32
 UNUM_PAD_BEFORE_PREFIX: win32more.Windows.Win32.Globalization.UNumberFormatPadPosition = 0
 UNUM_PAD_AFTER_PREFIX: win32more.Windows.Win32.Globalization.UNumberFormatPadPosition = 1
@@ -5993,9 +5917,6 @@ UNUM_ROUND_HALFEVEN: win32more.Windows.Win32.Globalization.UNumberFormatRounding
 UNUM_ROUND_HALFDOWN: win32more.Windows.Win32.Globalization.UNumberFormatRoundingMode = 5
 UNUM_ROUND_HALFUP: win32more.Windows.Win32.Globalization.UNumberFormatRoundingMode = 6
 UNUM_ROUND_UNNECESSARY: win32more.Windows.Win32.Globalization.UNumberFormatRoundingMode = 7
-UNUM_ROUND_HALF_ODD: win32more.Windows.Win32.Globalization.UNumberFormatRoundingMode = 8
-UNUM_ROUND_HALF_CEILING: win32more.Windows.Win32.Globalization.UNumberFormatRoundingMode = 9
-UNUM_ROUND_HALF_FLOOR: win32more.Windows.Win32.Globalization.UNumberFormatRoundingMode = 10
 UNumberFormatStyle = Int32
 UNUM_PATTERN_DECIMAL: win32more.Windows.Win32.Globalization.UNumberFormatStyle = 0
 UNUM_DECIMAL: win32more.Windows.Win32.Globalization.UNumberFormatStyle = 1
@@ -6066,7 +5987,6 @@ UNUM_RANGE_COLLAPSE_AUTO: win32more.Windows.Win32.Globalization.UNumberRangeColl
 UNUM_RANGE_COLLAPSE_NONE: win32more.Windows.Win32.Globalization.UNumberRangeCollapse = 1
 UNUM_RANGE_COLLAPSE_UNIT: win32more.Windows.Win32.Globalization.UNumberRangeCollapse = 2
 UNUM_RANGE_COLLAPSE_ALL: win32more.Windows.Win32.Globalization.UNumberRangeCollapse = 3
-UNumberRangeFormatter = IntPtr
 UNumberRangeIdentityFallback = Int32
 UNUM_IDENTITY_FALLBACK_SINGLE_VALUE: win32more.Windows.Win32.Globalization.UNumberRangeIdentityFallback = 0
 UNUM_IDENTITY_FALLBACK_APPROXIMATELY_OR_SINGLE_VALUE: win32more.Windows.Win32.Globalization.UNumberRangeIdentityFallback = 1
@@ -6084,21 +6004,14 @@ UNUM_SIGN_ACCOUNTING: win32more.Windows.Win32.Globalization.UNumberSignDisplay =
 UNUM_SIGN_ACCOUNTING_ALWAYS: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 4
 UNUM_SIGN_EXCEPT_ZERO: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 5
 UNUM_SIGN_ACCOUNTING_EXCEPT_ZERO: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 6
-UNUM_SIGN_NEGATIVE: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 7
-UNUM_SIGN_ACCOUNTING_NEGATIVE: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 8
-UNUM_SIGN_COUNT: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 9
-UNumberTrailingZeroDisplay = Int32
-UNUM_TRAILING_ZERO_AUTO: win32more.Windows.Win32.Globalization.UNumberTrailingZeroDisplay = 0
-UNUM_TRAILING_ZERO_HIDE_IF_WHOLE: win32more.Windows.Win32.Globalization.UNumberTrailingZeroDisplay = 1
+UNUM_SIGN_COUNT: win32more.Windows.Win32.Globalization.UNumberSignDisplay = 7
 UNumberUnitWidth = Int32
 UNUM_UNIT_WIDTH_NARROW: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 0
 UNUM_UNIT_WIDTH_SHORT: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 1
 UNUM_UNIT_WIDTH_FULL_NAME: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 2
 UNUM_UNIT_WIDTH_ISO_CODE: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 3
-UNUM_UNIT_WIDTH_FORMAL: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 4
-UNUM_UNIT_WIDTH_VARIANT: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 5
-UNUM_UNIT_WIDTH_HIDDEN: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 6
-UNUM_UNIT_WIDTH_COUNT: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 7
+UNUM_UNIT_WIDTH_HIDDEN: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 4
+UNUM_UNIT_WIDTH_COUNT: win32more.Windows.Win32.Globalization.UNumberUnitWidth = 5
 UNumberingSystem = IntPtr
 UNumericType = Int32
 U_NT_NONE: win32more.Windows.Win32.Globalization.UNumericType = 0
@@ -6696,13 +6609,6 @@ UTimeZoneFormatTimeType = Int32
 UTZFMT_TIME_TYPE_UNKNOWN: win32more.Windows.Win32.Globalization.UTimeZoneFormatTimeType = 0
 UTZFMT_TIME_TYPE_STANDARD: win32more.Windows.Win32.Globalization.UTimeZoneFormatTimeType = 1
 UTZFMT_TIME_TYPE_DAYLIGHT: win32more.Windows.Win32.Globalization.UTimeZoneFormatTimeType = 2
-UTimeZoneLocalOption = Int32
-UCAL_TZ_LOCAL_FORMER: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption = 4
-UCAL_TZ_LOCAL_LATTER: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption = 12
-UCAL_TZ_LOCAL_STANDARD_FORMER: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption = 5
-UCAL_TZ_LOCAL_STANDARD_LATTER: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption = 13
-UCAL_TZ_LOCAL_DAYLIGHT_FORMER: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption = 7
-UCAL_TZ_LOCAL_DAYLIGHT_LATTER: win32more.Windows.Win32.Globalization.UTimeZoneLocalOption = 15
 UTimeZoneNameType = Int32
 UTZNM_UNKNOWN: win32more.Windows.Win32.Globalization.UTimeZoneNameType = 0
 UTZNM_LONG_GENERIC: win32more.Windows.Win32.Globalization.UTimeZoneNameType = 1

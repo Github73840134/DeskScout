@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security.Authorization
 import win32more.Windows.Win32.Storage.IndexServer
@@ -1160,8 +1160,6 @@ RTVector: UInt32 = 7
 RTNatLanguage: UInt32 = 8
 GENERATE_METHOD_PREFIXMATCH: UInt32 = 1
 GENERATE_METHOD_STEMMED: UInt32 = 2
-GENERATE_METHOD_WITH_BM25: UInt32 = 5
-GENERATE_METHOD_WITH_TFDOCLEN: UInt32 = 6
 PRRE: UInt32 = 6
 PRAllBits: UInt32 = 7
 PRSomeBits: UInt32 = 8
@@ -3195,7 +3193,6 @@ GTHR_E_LOCAL_GROUPS_EXPANSION_INTERNAL_ERROR: Int32 = -2147216867
 PRTH_E_HTTPS_CERTIFICATE_ERROR: Int32 = -2147216861
 PRTH_E_HTTPS_REQUIRE_CERTIFICATE: Int32 = -2147216860
 PRTH_S_TRY_IMPERSONATING: Int32 = 266789
-PRTH_E_TRANSACTION_FAILED: Int32 = -2147216858
 CMDLINE_E_UNEXPECTED: Int32 = -2147216127
 CMDLINE_E_PAREN: Int32 = -2147216126
 CMDLINE_E_PARAM_SIZE: Int32 = -2147216125
@@ -3449,9 +3446,6 @@ CI_E_NO_PROTECTED_USER: win32more.Windows.Win32.Foundation.HRESULT = -1073473484
 CI_E_MULTIPLE_PROTECTED_USERS_UNSUPPORTED: win32more.Windows.Win32.Foundation.HRESULT = -1073473483
 CI_E_PROTECTED_CATALOG_SID_MISMATCH: win32more.Windows.Win32.Foundation.HRESULT = -1073473482
 CI_E_PROTECTED_CATALOG_NON_INTERACTIVE_USER: win32more.Windows.Win32.Foundation.HRESULT = -1073473481
-CI_DATABASE_DECRYPTION_FAILED: win32more.Windows.Win32.Foundation.HRESULT = -1073473480
-CI_DATABASE_ENCRYPTION_FAILED: win32more.Windows.Win32.Foundation.HRESULT = -1073473479
-FILTER_E_NO_IMAGE_FRAMES: win32more.Windows.Win32.Foundation.HRESULT = -2147215602
 MSG_CI_MASTER_MERGE_STARTED: win32more.Windows.Win32.Foundation.HRESULT = 1073745926
 MSG_CI_MASTER_MERGE_COMPLETED: win32more.Windows.Win32.Foundation.HRESULT = 1073745927
 MSG_CI_MASTER_MERGE_ABORTED: win32more.Windows.Win32.Foundation.HRESULT = 1073745928
@@ -3976,7 +3970,6 @@ class CATEGORIZATION(Structure):
     ulCatType: UInt32
     Anonymous: _Anonymous_e__Union
     csColumns: win32more.Windows.Win32.System.Search.COLUMNSET
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cClusters: UInt32
         bucket: win32more.Windows.Win32.System.Search.BUCKETCATEGORIZE
@@ -5210,7 +5203,7 @@ class DB_VARNUMERIC(Structure):
     precision: Byte
     scale: SByte
     sign: Byte
-    val: FlexibleArray[Byte]
+    val: Byte * 1
 class DCINFO(Structure):
     eInfoType: UInt32
     vData: win32more.Windows.Win32.System.Variant.VARIANT
@@ -6339,11 +6332,6 @@ class ISearchCatalogManager2(ComPtr):
     _iid_ = Guid('{7ac3286d-4d1d-4817-84fc-c1c85e3af0d9}')
     @commethod(29)
     def PrioritizeMatchingURLs(self, pszPattern: win32more.Windows.Win32.Foundation.PWSTR, dwPrioritizeFlags: win32more.Windows.Win32.System.Search.PRIORITIZE_FLAGS) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class ISearchCatalogManager3(ComPtr):
-    extends: win32more.Windows.Win32.System.Search.ISearchCatalogManager2
-    _iid_ = Guid('{de837e8f-634f-4ab0-bdfc-9fc3a1fc50dc}')
-    @commethod(30)
-    def IsContainsSemanticSupported(self, isContainsSemanticSupported: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class ISearchCrawlScopeManager(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{ab310581-ac80-11d1-8df3-00c04fb6ef55}')
@@ -6982,7 +6970,6 @@ class ODBC_VS_ARGS(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
     RetCode: Int16
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         wszArg: win32more.Windows.Win32.Foundation.PWSTR
         szArg: win32more.Windows.Win32.Foundation.PSTR
@@ -7333,7 +7320,6 @@ class SSVARIANT(Structure):
     dwReserved1: UInt32
     dwReserved2: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         bTinyIntVal: Byte
         sShortIntVal: Int16

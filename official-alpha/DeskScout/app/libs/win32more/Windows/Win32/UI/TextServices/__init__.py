@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -2286,7 +2286,6 @@ TF_ATTR_OTHER: win32more.Windows.Win32.UI.TextServices.TF_DA_ATTR_INFO = -1
 class TF_DA_COLOR(Structure):
     type: win32more.Windows.Win32.UI.TextServices.TF_DA_COLORTYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         nIndex: Int32
         cr: win32more.Windows.Win32.Foundation.COLORREF
@@ -2342,7 +2341,6 @@ class TF_LMLATTELEMENT(Structure):
     dwFlags: UInt32
     Anonymous: _Anonymous_e__Union
     bstrText: win32more.Windows.Win32.Foundation.BSTR
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         iCost: Int32
 class TF_PERSISTENT_PROPERTY_HEADER_ACP(Structure):

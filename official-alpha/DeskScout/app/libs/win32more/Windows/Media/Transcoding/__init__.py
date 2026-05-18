@@ -1,5 +1,6 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.Media.Core
@@ -7,8 +8,9 @@ import win32more.Windows.Media.MediaProperties
 import win32more.Windows.Media.Transcoding
 import win32more.Windows.Storage
 import win32more.Windows.Storage.Streams
+import win32more.Windows.Win32.System.WinRT
 class IMediaTranscoder(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.Transcoding.IMediaTranscoder'
     _iid_ = Guid('{190c99d2-a0aa-4d34-86bc-eed1b12c2f5b}')
     @winrt_commethod(6)
@@ -28,13 +30,13 @@ class IMediaTranscoder(ComPtr):
     @winrt_commethod(13)
     def get_HardwareAccelerationEnabled(self) -> Boolean: ...
     @winrt_commethod(14)
-    def AddAudioEffect(self, activatableClassId: hstr) -> Void: ...
+    def AddAudioEffect(self, activatableClassId: WinRT_String) -> Void: ...
     @winrt_commethod(15)
-    def AddAudioEffectWithSettings(self, activatableClassId: hstr, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def AddAudioEffectWithSettings(self, activatableClassId: WinRT_String, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(16)
-    def AddVideoEffect(self, activatableClassId: hstr) -> Void: ...
+    def AddVideoEffect(self, activatableClassId: WinRT_String) -> Void: ...
     @winrt_commethod(17)
-    def AddVideoEffectWithSettings(self, activatableClassId: hstr, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def AddVideoEffectWithSettings(self, activatableClassId: WinRT_String, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(18)
     def ClearEffects(self) -> Void: ...
     @winrt_commethod(19)
@@ -46,7 +48,7 @@ class IMediaTranscoder(ComPtr):
     TrimStartTime = property(get_TrimStartTime, put_TrimStartTime)
     TrimStopTime = property(get_TrimStopTime, put_TrimStopTime)
 class IMediaTranscoder2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.Transcoding.IMediaTranscoder2'
     _iid_ = Guid('{40531d74-35e0-4f04-8574-ca8bc4e5a082}')
     @winrt_commethod(6)
@@ -57,7 +59,7 @@ class IMediaTranscoder2(ComPtr):
     def get_VideoProcessingAlgorithm(self) -> win32more.Windows.Media.Transcoding.MediaVideoProcessingAlgorithm: ...
     VideoProcessingAlgorithm = property(get_VideoProcessingAlgorithm, put_VideoProcessingAlgorithm)
 class IPrepareTranscodeResult(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.Transcoding.IPrepareTranscodeResult'
     _iid_ = Guid('{05f25dce-994f-4a34-9d68-97ccce1730d6}')
     @winrt_commethod(6)
@@ -69,7 +71,7 @@ class IPrepareTranscodeResult(ComPtr):
     CanTranscode = property(get_CanTranscode, None)
     FailureReason = property(get_FailureReason, None)
 class MediaTranscoder(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.Transcoding.IMediaTranscoder
     _classid_ = 'Windows.Media.Transcoding.MediaTranscoder'
     def __init__(self, *args, **kwargs):
@@ -98,13 +100,13 @@ class MediaTranscoder(ComPtr):
     @winrt_mixinmethod
     def get_HardwareAccelerationEnabled(self: win32more.Windows.Media.Transcoding.IMediaTranscoder) -> Boolean: ...
     @winrt_mixinmethod
-    def AddAudioEffect(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: hstr) -> Void: ...
+    def AddAudioEffect(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def AddAudioEffectWithSettings(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: hstr, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def AddAudioEffectWithSettings(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: WinRT_String, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
-    def AddVideoEffect(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: hstr) -> Void: ...
+    def AddVideoEffect(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def AddVideoEffectWithSettings(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: hstr, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def AddVideoEffectWithSettings(self: win32more.Windows.Media.Transcoding.IMediaTranscoder, activatableClassId: WinRT_String, effectRequired: Boolean, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
     def ClearEffects(self: win32more.Windows.Media.Transcoding.IMediaTranscoder) -> Void: ...
     @winrt_mixinmethod
@@ -123,11 +125,10 @@ class MediaTranscoder(ComPtr):
     TrimStopTime = property(get_TrimStopTime, put_TrimStopTime)
     VideoProcessingAlgorithm = property(get_VideoProcessingAlgorithm, put_VideoProcessingAlgorithm)
 class MediaVideoProcessingAlgorithm(Enum, Int32):
-    _name_ = 'Windows.Media.Transcoding.MediaVideoProcessingAlgorithm'
     Default = 0
     MrfCrf444 = 1
 class PrepareTranscodeResult(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.Transcoding.IPrepareTranscodeResult
     _classid_ = 'Windows.Media.Transcoding.PrepareTranscodeResult'
     @winrt_mixinmethod
@@ -139,7 +140,6 @@ class PrepareTranscodeResult(ComPtr):
     CanTranscode = property(get_CanTranscode, None)
     FailureReason = property(get_FailureReason, None)
 class TranscodeFailureReason(Enum, Int32):
-    _name_ = 'Windows.Media.Transcoding.TranscodeFailureReason'
     None_ = 0
     Unknown = 1
     InvalidProfile = 2

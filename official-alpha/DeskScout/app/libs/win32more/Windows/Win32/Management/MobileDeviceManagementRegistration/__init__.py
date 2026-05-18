@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Management.MobileDeviceManagementRegistration
 MENROLL_E_DEVICE_MESSAGE_FORMAT_ERROR: win32more.Windows.Win32.Foundation.HRESULT = -2145910783
@@ -43,7 +43,6 @@ MENROLL_E_EMPTY_MESSAGE: win32more.Windows.Win32.Foundation.HRESULT = -214591074
 MENROLL_E_USER_CANCELLED: win32more.Windows.Win32.Foundation.HRESULT = -2145910736
 MENROLL_E_MDM_NOT_CONFIGURED: win32more.Windows.Win32.Foundation.HRESULT = -2145910735
 MENROLL_E_CUSTOMSERVERERROR: win32more.Windows.Win32.Foundation.HRESULT = -2145910734
-MENROLL_E_SERVER429: win32more.Windows.Win32.Foundation.HRESULT = -2145910733
 MDM_REGISTRATION_FACILITY_CODE: UInt32 = 25
 DEVICE_ENROLLER_FACILITY_CODE: UInt32 = 24
 MREGISTER_E_DEVICE_MESSAGE_FORMAT_ERROR: win32more.Windows.Win32.Foundation.HRESULT = -2145845247

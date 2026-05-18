@@ -1,11 +1,13 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.System.Power
+import win32more.Windows.Win32.System.WinRT
 class _BackgroundEnergyManager_Meta_(ComPtr.__class__):
     pass
 class BackgroundEnergyManager(ComPtr, metaclass=_BackgroundEnergyManager_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Power.BackgroundEnergyManager'
     @winrt_classmethod
     def get_LowUsageLevel(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics) -> UInt32: ...
@@ -24,11 +26,11 @@ class BackgroundEnergyManager(ComPtr, metaclass=_BackgroundEnergyManager_Meta_):
     @winrt_classmethod
     def get_RecentEnergyUsageLevel(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics) -> UInt32: ...
     @winrt_classmethod
-    def add_RecentEnergyUsageIncreased(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageIncreased(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RecentEnergyUsageIncreased(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_RecentEnergyUsageReturnedToLow(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageReturnedToLow(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RecentEnergyUsageReturnedToLow(cls: win32more.Windows.System.Power.IBackgroundEnergyManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     _BackgroundEnergyManager_Meta_.ExcessiveUsageLevel = property(get_ExcessiveUsageLevel, None)
@@ -39,23 +41,19 @@ class BackgroundEnergyManager(ComPtr, metaclass=_BackgroundEnergyManager_Meta_):
     _BackgroundEnergyManager_Meta_.RecentEnergyUsage = property(get_RecentEnergyUsage, None)
     _BackgroundEnergyManager_Meta_.RecentEnergyUsageLevel = property(get_RecentEnergyUsageLevel, None)
     _BackgroundEnergyManager_Meta_.TerminationUsageLevel = property(get_TerminationUsageLevel, None)
-    _BackgroundEnergyManager_Meta_.RecentEnergyUsageIncreased = event(add_RecentEnergyUsageIncreased, remove_RecentEnergyUsageIncreased)
-    _BackgroundEnergyManager_Meta_.RecentEnergyUsageReturnedToLow = event(add_RecentEnergyUsageReturnedToLow, remove_RecentEnergyUsageReturnedToLow)
 class BatteryStatus(Enum, Int32):
-    _name_ = 'Windows.System.Power.BatteryStatus'
     NotPresent = 0
     Discharging = 1
     Idle = 2
     Charging = 3
 class EnergySaverStatus(Enum, Int32):
-    _name_ = 'Windows.System.Power.EnergySaverStatus'
     Disabled = 0
     Off = 1
     On = 2
 class _ForegroundEnergyManager_Meta_(ComPtr.__class__):
     pass
 class ForegroundEnergyManager(ComPtr, metaclass=_ForegroundEnergyManager_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Power.ForegroundEnergyManager'
     @winrt_classmethod
     def get_LowUsageLevel(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics) -> UInt32: ...
@@ -70,11 +68,11 @@ class ForegroundEnergyManager(ComPtr, metaclass=_ForegroundEnergyManager_Meta_):
     @winrt_classmethod
     def get_RecentEnergyUsageLevel(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics) -> UInt32: ...
     @winrt_classmethod
-    def add_RecentEnergyUsageIncreased(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageIncreased(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RecentEnergyUsageIncreased(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_RecentEnergyUsageReturnedToLow(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageReturnedToLow(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RecentEnergyUsageReturnedToLow(cls: win32more.Windows.System.Power.IForegroundEnergyManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     _ForegroundEnergyManager_Meta_.ExcessiveUsageLevel = property(get_ExcessiveUsageLevel, None)
@@ -83,10 +81,8 @@ class ForegroundEnergyManager(ComPtr, metaclass=_ForegroundEnergyManager_Meta_):
     _ForegroundEnergyManager_Meta_.NearMaxAcceptableUsageLevel = property(get_NearMaxAcceptableUsageLevel, None)
     _ForegroundEnergyManager_Meta_.RecentEnergyUsage = property(get_RecentEnergyUsage, None)
     _ForegroundEnergyManager_Meta_.RecentEnergyUsageLevel = property(get_RecentEnergyUsageLevel, None)
-    _ForegroundEnergyManager_Meta_.RecentEnergyUsageIncreased = event(add_RecentEnergyUsageIncreased, remove_RecentEnergyUsageIncreased)
-    _ForegroundEnergyManager_Meta_.RecentEnergyUsageReturnedToLow = event(add_RecentEnergyUsageReturnedToLow, remove_RecentEnergyUsageReturnedToLow)
 class IBackgroundEnergyManagerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Power.IBackgroundEnergyManagerStatics'
     _iid_ = Guid('{b3161d95-1180-4376-96e1-4095568147ce}')
     @winrt_commethod(6)
@@ -106,11 +102,11 @@ class IBackgroundEnergyManagerStatics(ComPtr):
     @winrt_commethod(13)
     def get_RecentEnergyUsageLevel(self) -> UInt32: ...
     @winrt_commethod(14)
-    def add_RecentEnergyUsageIncreased(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageIncreased(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_RecentEnergyUsageIncreased(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
-    def add_RecentEnergyUsageReturnedToLow(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageReturnedToLow(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
     def remove_RecentEnergyUsageReturnedToLow(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     ExcessiveUsageLevel = property(get_ExcessiveUsageLevel, None)
@@ -121,10 +117,10 @@ class IBackgroundEnergyManagerStatics(ComPtr):
     RecentEnergyUsage = property(get_RecentEnergyUsage, None)
     RecentEnergyUsageLevel = property(get_RecentEnergyUsageLevel, None)
     TerminationUsageLevel = property(get_TerminationUsageLevel, None)
-    RecentEnergyUsageIncreased = event(add_RecentEnergyUsageIncreased, remove_RecentEnergyUsageIncreased)
-    RecentEnergyUsageReturnedToLow = event(add_RecentEnergyUsageReturnedToLow, remove_RecentEnergyUsageReturnedToLow)
+    RecentEnergyUsageIncreased = event()
+    RecentEnergyUsageReturnedToLow = event()
 class IForegroundEnergyManagerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Power.IForegroundEnergyManagerStatics'
     _iid_ = Guid('{9ff86872-e677-4814-9a20-5337ca732b98}')
     @winrt_commethod(6)
@@ -140,11 +136,11 @@ class IForegroundEnergyManagerStatics(ComPtr):
     @winrt_commethod(11)
     def get_RecentEnergyUsageLevel(self) -> UInt32: ...
     @winrt_commethod(12)
-    def add_RecentEnergyUsageIncreased(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageIncreased(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(13)
     def remove_RecentEnergyUsageIncreased(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(14)
-    def add_RecentEnergyUsageReturnedToLow(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecentEnergyUsageReturnedToLow(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_RecentEnergyUsageReturnedToLow(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     ExcessiveUsageLevel = property(get_ExcessiveUsageLevel, None)
@@ -153,40 +149,40 @@ class IForegroundEnergyManagerStatics(ComPtr):
     NearMaxAcceptableUsageLevel = property(get_NearMaxAcceptableUsageLevel, None)
     RecentEnergyUsage = property(get_RecentEnergyUsage, None)
     RecentEnergyUsageLevel = property(get_RecentEnergyUsageLevel, None)
-    RecentEnergyUsageIncreased = event(add_RecentEnergyUsageIncreased, remove_RecentEnergyUsageIncreased)
-    RecentEnergyUsageReturnedToLow = event(add_RecentEnergyUsageReturnedToLow, remove_RecentEnergyUsageReturnedToLow)
+    RecentEnergyUsageIncreased = event()
+    RecentEnergyUsageReturnedToLow = event()
 class IPowerManagerStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Power.IPowerManagerStatics'
     _iid_ = Guid('{1394825d-62ce-4364-98d5-aa28c7fbd15b}')
     @winrt_commethod(6)
     def get_EnergySaverStatus(self) -> win32more.Windows.System.Power.EnergySaverStatus: ...
     @winrt_commethod(7)
-    def add_EnergySaverStatusChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_EnergySaverStatusChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(8)
     def remove_EnergySaverStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(9)
     def get_BatteryStatus(self) -> win32more.Windows.System.Power.BatteryStatus: ...
     @winrt_commethod(10)
-    def add_BatteryStatusChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BatteryStatusChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_BatteryStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(12)
     def get_PowerSupplyStatus(self) -> win32more.Windows.System.Power.PowerSupplyStatus: ...
     @winrt_commethod(13)
-    def add_PowerSupplyStatusChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PowerSupplyStatusChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(14)
     def remove_PowerSupplyStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(15)
     def get_RemainingChargePercent(self) -> Int32: ...
     @winrt_commethod(16)
-    def add_RemainingChargePercentChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RemainingChargePercentChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
     def remove_RemainingChargePercentChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(18)
     def get_RemainingDischargeTime(self) -> win32more.Windows.Foundation.TimeSpan: ...
     @winrt_commethod(19)
-    def add_RemainingDischargeTimeChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RemainingDischargeTimeChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(20)
     def remove_RemainingDischargeTimeChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     BatteryStatus = property(get_BatteryStatus, None)
@@ -194,44 +190,44 @@ class IPowerManagerStatics(ComPtr):
     PowerSupplyStatus = property(get_PowerSupplyStatus, None)
     RemainingChargePercent = property(get_RemainingChargePercent, None)
     RemainingDischargeTime = property(get_RemainingDischargeTime, None)
-    BatteryStatusChanged = event(add_BatteryStatusChanged, remove_BatteryStatusChanged)
-    EnergySaverStatusChanged = event(add_EnergySaverStatusChanged, remove_EnergySaverStatusChanged)
-    PowerSupplyStatusChanged = event(add_PowerSupplyStatusChanged, remove_PowerSupplyStatusChanged)
-    RemainingChargePercentChanged = event(add_RemainingChargePercentChanged, remove_RemainingChargePercentChanged)
-    RemainingDischargeTimeChanged = event(add_RemainingDischargeTimeChanged, remove_RemainingDischargeTimeChanged)
+    EnergySaverStatusChanged = event()
+    BatteryStatusChanged = event()
+    PowerSupplyStatusChanged = event()
+    RemainingChargePercentChanged = event()
+    RemainingDischargeTimeChanged = event()
 class _PowerManager_Meta_(ComPtr.__class__):
     pass
 class PowerManager(ComPtr, metaclass=_PowerManager_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.System.Power.PowerManager'
     @winrt_classmethod
     def get_EnergySaverStatus(cls: win32more.Windows.System.Power.IPowerManagerStatics) -> win32more.Windows.System.Power.EnergySaverStatus: ...
     @winrt_classmethod
-    def add_EnergySaverStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_EnergySaverStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_EnergySaverStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def get_BatteryStatus(cls: win32more.Windows.System.Power.IPowerManagerStatics) -> win32more.Windows.System.Power.BatteryStatus: ...
     @winrt_classmethod
-    def add_BatteryStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_BatteryStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_BatteryStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def get_PowerSupplyStatus(cls: win32more.Windows.System.Power.IPowerManagerStatics) -> win32more.Windows.System.Power.PowerSupplyStatus: ...
     @winrt_classmethod
-    def add_PowerSupplyStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PowerSupplyStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_PowerSupplyStatusChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def get_RemainingChargePercent(cls: win32more.Windows.System.Power.IPowerManagerStatics) -> Int32: ...
     @winrt_classmethod
-    def add_RemainingChargePercentChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RemainingChargePercentChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RemainingChargePercentChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def get_RemainingDischargeTime(cls: win32more.Windows.System.Power.IPowerManagerStatics) -> win32more.Windows.Foundation.TimeSpan: ...
     @winrt_classmethod
-    def add_RemainingDischargeTimeChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RemainingDischargeTimeChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RemainingDischargeTimeChanged(cls: win32more.Windows.System.Power.IPowerManagerStatics, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     _PowerManager_Meta_.BatteryStatus = property(get_BatteryStatus, None)
@@ -239,13 +235,7 @@ class PowerManager(ComPtr, metaclass=_PowerManager_Meta_):
     _PowerManager_Meta_.PowerSupplyStatus = property(get_PowerSupplyStatus, None)
     _PowerManager_Meta_.RemainingChargePercent = property(get_RemainingChargePercent, None)
     _PowerManager_Meta_.RemainingDischargeTime = property(get_RemainingDischargeTime, None)
-    _PowerManager_Meta_.BatteryStatusChanged = event(add_BatteryStatusChanged, remove_BatteryStatusChanged)
-    _PowerManager_Meta_.EnergySaverStatusChanged = event(add_EnergySaverStatusChanged, remove_EnergySaverStatusChanged)
-    _PowerManager_Meta_.PowerSupplyStatusChanged = event(add_PowerSupplyStatusChanged, remove_PowerSupplyStatusChanged)
-    _PowerManager_Meta_.RemainingChargePercentChanged = event(add_RemainingChargePercentChanged, remove_RemainingChargePercentChanged)
-    _PowerManager_Meta_.RemainingDischargeTimeChanged = event(add_RemainingDischargeTimeChanged, remove_RemainingDischargeTimeChanged)
 class PowerSupplyStatus(Enum, Int32):
-    _name_ = 'Windows.System.Power.PowerSupplyStatus'
     NotPresent = 0
     Inadequate = 1
     Adequate = 2

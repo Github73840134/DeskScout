@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.NetShell
 NETSH_ERROR_BASE: UInt32 = 15000
@@ -57,6 +57,7 @@ class CMD_ENTRY(Structure):
     dwCmdHlpToken: UInt32
     dwFlags: UInt32
     pOsVersionCheck: win32more.Windows.Win32.NetworkManagement.NetShell.PNS_OSVERSIONCHECK
+    pfnCustomHelpFn: win32more.Windows.Win32.NetworkManagement.NetShell.PFN_CUSTOM_HELP
 class CMD_GROUP_ENTRY(Structure):
     pwszCmdGroupToken: win32more.Windows.Win32.Foundation.PWSTR
     dwShortCmdHelpToken: UInt32
@@ -87,11 +88,9 @@ class NS_CONTEXT_ATTRIBUTES(Structure):
     pfnConnectFn: win32more.Windows.Win32.NetworkManagement.NetShell.PNS_CONTEXT_CONNECT_FN
     pReserved: VoidPtr
     pfnOsVersionCheck: win32more.Windows.Win32.NetworkManagement.NetShell.PNS_OSVERSIONCHECK
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         _ullAlign: UInt64
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             dwVersion: UInt32
             dwReserved: UInt32
@@ -106,11 +105,9 @@ class NS_HELPER_ATTRIBUTES(Structure):
     guidHelper: Guid
     pfnStart: win32more.Windows.Win32.NetworkManagement.NetShell.PNS_HELPER_START_FN
     pfnStop: win32more.Windows.Win32.NetworkManagement.NetShell.PNS_HELPER_STOP_FN
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         _ullAlign: UInt64
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             dwVersion: UInt32
             dwReserved: UInt32
@@ -125,6 +122,8 @@ NS_REQ_ZERO: win32more.Windows.Win32.NetworkManagement.NetShell.NS_REQS = 0
 NS_REQ_PRESENT: win32more.Windows.Win32.NetworkManagement.NetShell.NS_REQS = 1
 NS_REQ_ALLOW_MULTIPLE: win32more.Windows.Win32.NetworkManagement.NetShell.NS_REQS = 2
 NS_REQ_ONE_OR_MORE: win32more.Windows.Win32.NetworkManagement.NetShell.NS_REQS = 3
+@winfunctype_pointer
+def PFN_CUSTOM_HELP(hModule: win32more.Windows.Win32.Foundation.HANDLE, pwszCmdToken: win32more.Windows.Win32.Foundation.PWSTR) -> Void: ...
 @winfunctype_pointer
 def PFN_HANDLE_CMD(pwszMachine: win32more.Windows.Win32.Foundation.PWSTR, ppwcArguments: POINTER(win32more.Windows.Win32.Foundation.PWSTR), dwCurrentIndex: UInt32, dwArgCount: UInt32, dwFlags: UInt32, pvData: VoidPtr, pbDone: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> UInt32: ...
 @winfunctype_pointer

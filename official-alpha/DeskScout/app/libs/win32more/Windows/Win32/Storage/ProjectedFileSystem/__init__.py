@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Storage.ProjectedFileSystem
 @winfunctype('PROJECTEDFSLIB.dll')
@@ -69,7 +69,6 @@ def PRJ_CANCEL_COMMAND_CB(callbackData: POINTER(win32more.Windows.Win32.Storage.
 class PRJ_COMPLETE_COMMAND_EXTENDED_PARAMETERS(Structure):
     CommandType: win32more.Windows.Win32.Storage.ProjectedFileSystem.PRJ_COMPLETE_COMMAND_TYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Notification: _Notification_e__Struct
         Enumeration: _Enumeration_e__Struct
@@ -87,7 +86,6 @@ class PRJ_EXTENDED_INFO(Structure):
     InfoType: win32more.Windows.Win32.Storage.ProjectedFileSystem.PRJ_EXT_INFO_TYPE
     NextInfoOffset: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Symlink: _Symlink_e__Struct
         class _Symlink_e__Struct(Structure):
@@ -167,7 +165,7 @@ class PRJ_PLACEHOLDER_INFO(Structure):
     SecurityInformation: _SecurityInformation_e__Struct
     StreamsInformation: _StreamsInformation_e__Struct
     VersionInfo: win32more.Windows.Win32.Storage.ProjectedFileSystem.PRJ_PLACEHOLDER_VERSION_INFO
-    VariableData: FlexibleArray[Byte]
+    VariableData: Byte * 1
     class _EaInformation_e__Struct(Structure):
         EaBufferSize: UInt32
         OffsetToFirstEa: UInt32

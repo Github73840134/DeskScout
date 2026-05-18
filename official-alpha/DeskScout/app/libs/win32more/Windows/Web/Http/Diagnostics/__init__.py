@@ -1,12 +1,14 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.System.Diagnostics
 import win32more.Windows.Web.Http
 import win32more.Windows.Web.Http.Diagnostics
+import win32more.Windows.Win32.System.WinRT
 class HttpDiagnosticProvider(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProvider
     _classid_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticProvider'
     @winrt_mixinmethod
@@ -27,11 +29,11 @@ class HttpDiagnosticProvider(ComPtr):
     def remove_RequestResponseCompleted(self: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProvider, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def CreateFromProcessDiagnosticInfo(cls: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderStatics, processDiagnosticInfo: win32more.Windows.System.Diagnostics.ProcessDiagnosticInfo) -> win32more.Windows.Web.Http.Diagnostics.HttpDiagnosticProvider: ...
-    RequestResponseCompleted = event(add_RequestResponseCompleted, remove_RequestResponseCompleted)
-    RequestSent = event(add_RequestSent, remove_RequestSent)
-    ResponseReceived = event(add_ResponseReceived, remove_ResponseReceived)
+    RequestSent = event()
+    ResponseReceived = event()
+    RequestResponseCompleted = event()
 class HttpDiagnosticProviderRequestResponseCompletedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderRequestResponseCompletedEventArgs
     _classid_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticProviderRequestResponseCompletedEventArgs'
     @winrt_mixinmethod
@@ -56,7 +58,7 @@ class HttpDiagnosticProviderRequestResponseCompletedEventArgs(ComPtr):
     ThreadId = property(get_ThreadId, None)
     Timestamps = property(get_Timestamps, None)
 class HttpDiagnosticProviderRequestResponseTimestamps(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderRequestResponseTimestamps
     _classid_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticProviderRequestResponseTimestamps'
     @winrt_mixinmethod
@@ -87,7 +89,7 @@ class HttpDiagnosticProviderRequestResponseTimestamps(ComPtr):
     ResponseReceivedTimestamp = property(get_ResponseReceivedTimestamp, None)
     SslNegotiatedTimestamp = property(get_SslNegotiatedTimestamp, None)
 class HttpDiagnosticProviderRequestSentEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderRequestSentEventArgs
     _classid_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticProviderRequestSentEventArgs'
     @winrt_mixinmethod
@@ -112,7 +114,7 @@ class HttpDiagnosticProviderRequestSentEventArgs(ComPtr):
     ThreadId = property(get_ThreadId, None)
     Timestamp = property(get_Timestamp, None)
 class HttpDiagnosticProviderResponseReceivedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderResponseReceivedEventArgs
     _classid_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticProviderResponseReceivedEventArgs'
     @winrt_mixinmethod
@@ -125,7 +127,6 @@ class HttpDiagnosticProviderResponseReceivedEventArgs(ComPtr):
     Message = property(get_Message, None)
     Timestamp = property(get_Timestamp, None)
 class HttpDiagnosticRequestInitiator(Enum, Int32):
-    _name_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticRequestInitiator'
     ParsedElement = 0
     Script = 1
     Image = 2
@@ -140,7 +141,7 @@ class HttpDiagnosticRequestInitiator(Enum, Int32):
     Fetch = 11
     Beacon = 12
 class HttpDiagnosticSourceLocation(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Web.Http.Diagnostics.IHttpDiagnosticSourceLocation
     _classid_ = 'Windows.Web.Http.Diagnostics.HttpDiagnosticSourceLocation'
     @winrt_mixinmethod
@@ -154,7 +155,7 @@ class HttpDiagnosticSourceLocation(ComPtr):
     SourceUri = property(get_SourceUri, None)
 HttpDiagnosticsContract: UInt32 = 131072
 class IHttpDiagnosticProvider(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticProvider'
     _iid_ = Guid('{bd811501-a056-4d39-b174-833b7b03b02c}')
     @winrt_commethod(6)
@@ -173,11 +174,11 @@ class IHttpDiagnosticProvider(ComPtr):
     def add_RequestResponseCompleted(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Web.Http.Diagnostics.HttpDiagnosticProvider, win32more.Windows.Web.Http.Diagnostics.HttpDiagnosticProviderRequestResponseCompletedEventArgs]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(13)
     def remove_RequestResponseCompleted(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    RequestResponseCompleted = event(add_RequestResponseCompleted, remove_RequestResponseCompleted)
-    RequestSent = event(add_RequestSent, remove_RequestSent)
-    ResponseReceived = event(add_ResponseReceived, remove_ResponseReceived)
+    RequestSent = event()
+    ResponseReceived = event()
+    RequestResponseCompleted = event()
 class IHttpDiagnosticProviderRequestResponseCompletedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderRequestResponseCompletedEventArgs'
     _iid_ = Guid('{735f98ee-94f6-4532-b26e-61e1b1e4efd4}')
     @winrt_commethod(6)
@@ -202,7 +203,7 @@ class IHttpDiagnosticProviderRequestResponseCompletedEventArgs(ComPtr):
     ThreadId = property(get_ThreadId, None)
     Timestamps = property(get_Timestamps, None)
 class IHttpDiagnosticProviderRequestResponseTimestamps(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderRequestResponseTimestamps'
     _iid_ = Guid('{e0afde10-55cf-4c01-91d4-a20557d849f0}')
     @winrt_commethod(6)
@@ -233,7 +234,7 @@ class IHttpDiagnosticProviderRequestResponseTimestamps(ComPtr):
     ResponseReceivedTimestamp = property(get_ResponseReceivedTimestamp, None)
     SslNegotiatedTimestamp = property(get_SslNegotiatedTimestamp, None)
 class IHttpDiagnosticProviderRequestSentEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderRequestSentEventArgs'
     _iid_ = Guid('{3f5196d0-4c1f-4ebe-a57a-06930771c50d}')
     @winrt_commethod(6)
@@ -258,7 +259,7 @@ class IHttpDiagnosticProviderRequestSentEventArgs(ComPtr):
     ThreadId = property(get_ThreadId, None)
     Timestamp = property(get_Timestamp, None)
 class IHttpDiagnosticProviderResponseReceivedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderResponseReceivedEventArgs'
     _iid_ = Guid('{a0a2566c-ab5f-4d66-bb2d-084cf41635d0}')
     @winrt_commethod(6)
@@ -271,13 +272,13 @@ class IHttpDiagnosticProviderResponseReceivedEventArgs(ComPtr):
     Message = property(get_Message, None)
     Timestamp = property(get_Timestamp, None)
 class IHttpDiagnosticProviderStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticProviderStatics'
     _iid_ = Guid('{5b824ec1-6a6c-47cc-afec-1e86bc26053b}')
     @winrt_commethod(6)
     def CreateFromProcessDiagnosticInfo(self, processDiagnosticInfo: win32more.Windows.System.Diagnostics.ProcessDiagnosticInfo) -> win32more.Windows.Web.Http.Diagnostics.HttpDiagnosticProvider: ...
 class IHttpDiagnosticSourceLocation(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Web.Http.Diagnostics.IHttpDiagnosticSourceLocation'
     _iid_ = Guid('{54a9d260-8860-423f-b6fa-d77716f647a7}')
     @winrt_commethod(6)

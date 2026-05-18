@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Media
 import win32more.Windows.Win32.Media.DirectShow
@@ -30,9 +30,6 @@ class ALLOCATOR_PROPERTIES_EX(Structure):
     NumberPins: UInt32
 APO_CLASS_UUID = Guid('{5989fce8-9cd0-467d-8a6a-5419e31529d4}')
 AUDIOENDPOINT_CLASS_UUID = Guid('{c166523c-fe0c-4a94-a586-f1a80cfbbf3e}')
-AUDIOLOOPBACK_TAPPOINT_TYPE = Int32
-AUDIOLOOPBACK_TAPPOINT_PREVOLUMEMUTE: win32more.Windows.Win32.Media.KernelStreaming.AUDIOLOOPBACK_TAPPOINT_TYPE = 0
-AUDIOLOOPBACK_TAPPOINT_POSTVOLUMEMUTE: win32more.Windows.Win32.Media.KernelStreaming.AUDIOLOOPBACK_TAPPOINT_TYPE = 1
 AUDIOPOSTURE_ORIENTATION = Int32
 AUDIOPOSTURE_ORIENTATION_NOTROTATED: win32more.Windows.Win32.Media.KernelStreaming.AUDIOPOSTURE_ORIENTATION = 0
 AUDIOPOSTURE_ORIENTATION_ROTATED90DEGREESCOUNTERCLOCKWISE: win32more.Windows.Win32.Media.KernelStreaming.AUDIOPOSTURE_ORIENTATION = 1
@@ -663,8 +660,6 @@ KSCAMERA_EXTENDEDPROP_BACKGROUNDSEGMENTATION_MASK: UInt64 = 2
 KSCAMERA_EXTENDEDPROP_BACKGROUNDSEGMENTATION_SHALLOWFOCUS: UInt64 = 4
 KSCAMERA_EXTENDEDPROP_DIGITALWINDOW_MANUAL: UInt64 = 0
 KSCAMERA_EXTENDEDPROP_DIGITALWINDOW_AUTOFACEFRAMING: UInt64 = 1
-KSCAMERA_EXTENDEDPROP_FRAMERATE_THROTTLE_OFF: UInt64 = 0
-KSCAMERA_EXTENDEDPROP_FRAMERATE_THROTTLE_ON: UInt64 = 1
 KSCAMERAPROFILE_FLAGS_VIDEOSTABLIZATION: UInt64 = 1
 KSCAMERAPROFILE_FLAGS_VIDEOHDR: UInt64 = 2
 KSCAMERAPROFILE_FLAGS_PHOTOHDR: UInt64 = 4
@@ -693,8 +688,6 @@ MAX_SINK_DESCRIPTION_NAME_LENGTH: UInt32 = 32
 JACKDESC2_PRESENCE_DETECT_CAPABILITY: UInt32 = 1
 JACKDESC2_DYNAMIC_FORMAT_CHANGE_CAPABILITY: UInt32 = 2
 KSPROPERTY_AUDIO_BUFFER_DURATION: UInt32 = 1
-AUDIOLOOPBACK_TAPPOINT_CAPS_PREVOLUMEMUTE: UInt32 = 1
-AUDIOLOOPBACK_TAPPOINT_CAPS_POSTVOLUMEMUTE: UInt32 = 2
 MAX_RESOURCEGROUPID_LENGTH: UInt32 = 256
 AUDIOMODULE_MAX_DATA_SIZE: UInt32 = 64000
 AUDIOMODULE_MAX_NAME_CCH_SIZE: UInt32 = 128
@@ -795,7 +788,6 @@ class DS3DVECTOR(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
     Anonymous3: _Anonymous3_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         x: Single
         dvX: Single
@@ -1147,7 +1139,6 @@ class KSALLOCATOR_FRAMING(Structure):
     FrameSize: UInt32
     Anonymous2: _Anonymous2_e__Union
     Reserved: UInt32
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         OptionsFlags: UInt32
         RequirementsFlags: UInt32
@@ -1159,17 +1150,12 @@ class KSALLOCATOR_FRAMING_EX(Structure):
     PinFlags: UInt32
     OutputCompression: win32more.Windows.Win32.Media.KernelStreaming.KS_COMPRESSION
     PinWeight: UInt32
-    FramingItem: FlexibleArray[win32more.Windows.Win32.Media.KernelStreaming.KS_FRAMING_ITEM]
+    FramingItem: win32more.Windows.Win32.Media.KernelStreaming.KS_FRAMING_ITEM * 1
 class KSATTRIBUTE(Structure):
     Size: UInt32
     Flags: UInt32
     Attribute: Guid
-KSATTRIBUTEID_AUDIOLOOPBACK_TAPPOINT = Guid('{2795a0f7-1688-44fe-bc14-bf8273992141}')
 KSATTRIBUTEID_AUDIOSIGNALPROCESSING_MODE = Guid('{e1f89eb5-5f46-419b-967b-ff6770b98401}')
-KSATTRIBUTEID_VIDEOFORMAT_DX12 = Guid('{fc9d87b5-0b02-438e-89b0-e241fce889ad}')
-class KSATTRIBUTE_AUDIOLOOPBACK_TAPPOINT(Structure):
-    AttributeHeader: win32more.Windows.Win32.Media.KernelStreaming.KSATTRIBUTE
-    TapPoint: win32more.Windows.Win32.Media.KernelStreaming.AUDIOLOOPBACK_TAPPOINT_TYPE
 class KSATTRIBUTE_AUDIOSIGNALPROCESSING_MODE(Structure):
     AttributeHeader: win32more.Windows.Win32.Media.KernelStreaming.KSATTRIBUTE
     SignalProcessingMode: Guid
@@ -1247,7 +1233,6 @@ class KSAUDIOMODULE_DESCRIPTOR(Structure):
     Name: Char * 128
 class KSAUDIOMODULE_NOTIFICATION(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ProviderId: _ProviderId_e__Struct
         Alignment: Int64
@@ -1285,11 +1270,11 @@ class KSAUDIO_MIC_ARRAY_GEOMETRY(Structure):
     usFrequencyBandLo: UInt16
     usFrequencyBandHi: UInt16
     usNumberOfMicrophones: UInt16
-    KsMicCoord: FlexibleArray[win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_MICROPHONE_COORDINATES]
+    KsMicCoord: win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_MICROPHONE_COORDINATES * 1
 class KSAUDIO_MIXCAP_TABLE(Structure):
     InputChannels: UInt32
     OutputChannels: UInt32
-    Capabilities: FlexibleArray[win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_MIX_CAPS]
+    Capabilities: win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_MIX_CAPS * 1
 class KSAUDIO_MIXLEVEL(Structure):
     Mute: win32more.Windows.Win32.Foundation.BOOL
     Level: Int32
@@ -1298,7 +1283,6 @@ class KSAUDIO_MIX_CAPS(Structure):
     Minimum: Int32
     Maximum: Int32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Reset: Int32
         Resolution: Int32
@@ -1307,13 +1291,13 @@ class KSAUDIO_PACKETSIZE_CONSTRAINTS(Structure):
     PacketSizeFileAlignment: UInt32
     Reserved: UInt32
     NumProcessingModeConstraints: UInt32
-    ProcessingModeConstraints: FlexibleArray[win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_PACKETSIZE_PROCESSINGMODE_CONSTRAINT]
+    ProcessingModeConstraints: win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_PACKETSIZE_PROCESSINGMODE_CONSTRAINT * 1
 class KSAUDIO_PACKETSIZE_CONSTRAINTS2(Structure):
     MinPacketPeriodInHns: UInt32
     PacketSizeFileAlignment: UInt32
     MaxPacketSizeInBytes: UInt32
     NumProcessingModeConstraints: UInt32
-    ProcessingModeConstraints: FlexibleArray[win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_PACKETSIZE_PROCESSINGMODE_CONSTRAINT]
+    ProcessingModeConstraints: win32more.Windows.Win32.Media.KernelStreaming.KSAUDIO_PACKETSIZE_PROCESSINGMODE_CONSTRAINT * 1
 class KSAUDIO_PACKETSIZE_PROCESSINGMODE_CONSTRAINT(Structure):
     ProcessingMode: Guid
     SamplesPerProcessingPacket: UInt32
@@ -1384,11 +1368,6 @@ class KSCAMERA_EXTENDEDPROP_FIELDOFVIEW(Structure):
     NormalizedFocalLengthX: UInt32
     NormalizedFocalLengthY: UInt32
     Flag: UInt32
-    Reserved: UInt32
-class KSCAMERA_EXTENDEDPROP_FIELDOFVIEW2_CONFIGCAPS(Structure):
-    DefaultDiagonalFieldOfViewInDegrees: UInt16
-    DiscreteFoVStopsCount: UInt16
-    DiscreteFoVStops: UInt16 * 360
     Reserved: UInt32
 KSCAMERA_EXTENDEDPROP_FOCUSSTATE = Int32
 KSCAMERA_EXTENDEDPROP_FOCUSSTATE_UNINITIALIZED: win32more.Windows.Win32.Media.KernelStreaming.KSCAMERA_EXTENDEDPROP_FOCUSSTATE = 0
@@ -1498,7 +1477,7 @@ class KSCAMERA_METADATA_BACKGROUNDSEGMENTATIONMASK(Structure):
     MaskCoverageBoundingBox: win32more.Windows.Win32.Foundation.RECT
     MaskResolution: win32more.Windows.Win32.Foundation.SIZE
     ForegroundBoundingBox: win32more.Windows.Win32.Foundation.RECT
-    MaskData: FlexibleArray[Byte]
+    MaskData: Byte * 1
 class KSCAMERA_METADATA_CAPTURESTATS(Structure):
     Header: win32more.Windows.Win32.Media.KernelStreaming.KSCAMERA_METADATA_ITEMHEADER
     Flags: UInt32
@@ -1606,11 +1585,9 @@ class KSCAMERA_PROFILE_PININFO(Structure):
     Anonymous: _Anonymous_e__Union
     MediaInfoCount: UInt32
     MediaInfos: POINTER(win32more.Windows.Win32.Media.KernelStreaming.KSCAMERA_PROFILE_MEDIAINFO)
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         Reserved: UInt32
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             PinIndex: UInt16
             ProfileSensorType: UInt16
@@ -1667,7 +1644,6 @@ class KSCORRELATED_TIME(Structure):
 class KSDATAFORMAT(Union):
     Anonymous: _Anonymous_e__Struct
     Alignment: Int64
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         FormatSize: UInt32
         Flags: UInt32
@@ -1713,7 +1689,6 @@ KSDATAFORMAT_SUBTYPE_IEC61937_DOLBY_DIGITAL_PLUS = Guid('{0000000a-0cea-0010-800
 KSDATAFORMAT_SUBTYPE_IEC61937_DOLBY_DIGITAL_PLUS_ATMOS = Guid('{0000010a-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_DOLBY_MAT20 = Guid('{0000010c-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_DOLBY_MAT21 = Guid('{0000030c-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_DOLBY_MAT21_PROFILE4 = Guid('{0000070c-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_DOLBY_MLP = Guid('{0000000c-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_DST = Guid('{0000000d-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_DTS = Guid('{00000008-0000-0010-8000-00aa00389b71}')
@@ -1723,16 +1698,6 @@ KSDATAFORMAT_SUBTYPE_IEC61937_DTS_HD = Guid('{0000000b-0cea-0010-8000-00aa00389b
 KSDATAFORMAT_SUBTYPE_IEC61937_MPEG1 = Guid('{00000003-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_MPEG2 = Guid('{00000004-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_MPEG3 = Guid('{00000005-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL1_BL = Guid('{000210bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL1_LC = Guid('{000110bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL2_BL = Guid('{000220bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL2_LC = Guid('{000120bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL3_BL = Guid('{000230bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL3_LC = Guid('{000130bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL4_BL = Guid('{000240bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL4_LC = Guid('{000140bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL5_BL = Guid('{000250bf-0cea-0010-8000-00aa00389b71}')
-KSDATAFORMAT_SUBTYPE_IEC61937_MPEGH_LEVEL5_LC = Guid('{000150bf-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_ONE_BIT_AUDIO = Guid('{00000009-0cea-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IEC61937_WMA_PRO = Guid('{00000164-0000-0010-8000-00aa00389b71}')
 KSDATAFORMAT_SUBTYPE_IMAGE_RGB32 = Guid('{00000016-0000-0010-8000-00aa00389b71}')
@@ -1775,7 +1740,6 @@ KSDATAFORMAT_SUBTYPE_STANDARD_MPEG2_AUDIO = Guid('{36523b24-8ee5-11d1-8ca3-0060b
 KSDATAFORMAT_SUBTYPE_STANDARD_MPEG2_VIDEO = Guid('{36523b23-8ee5-11d1-8ca3-0060b057664a}')
 KSDATAFORMAT_SUBTYPE_SUBPICTURE = Guid('{e06d802d-db46-11cf-b4d1-00805f6cbbea}')
 KSDATAFORMAT_SUBTYPE_TELETEXT = Guid('{f72a76e3-eb0a-11d0-ace4-0000c0cc16ba}')
-KSDATAFORMAT_SUBTYPE_UNIVERSALMIDIPACKET = Guid('{fbffd49e-ce26-464a-9dfc-fee42456c81c}')
 KSDATAFORMAT_SUBTYPE_VPVBI = Guid('{5a9b6a41-1a22-11d1-bad9-00609744111a}')
 KSDATAFORMAT_SUBTYPE_VPVideo = Guid('{5a9b6a40-1a22-11d1-bad9-00609744111a}')
 KSDATAFORMAT_SUBTYPE_WAVEFORMATEX = Guid('{00000000-0000-0010-8000-00aa00389b71}')
@@ -1824,7 +1788,6 @@ class KSDEVICE_PROFILE_INFO(Structure):
     Type: UInt32
     Size: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Camera: _Camera_e__Struct
         class _Camera_e__Struct(Structure):
@@ -1839,7 +1802,7 @@ class KSDISPLAYCHANGE(Structure):
     PelsWidth: UInt32
     PelsHeight: UInt32
     BitsPerPel: UInt32
-    DeviceID: FlexibleArray[Char]
+    DeviceID: Char * 1
 class KSDS3D_BUFFER_ALL(Structure):
     Position: win32more.Windows.Win32.Media.KernelStreaming.DS3DVECTOR
     Velocity: win32more.Windows.Win32.Media.KernelStreaming.DS3DVECTOR
@@ -1917,7 +1880,6 @@ class KSERROR(Structure):
 class KSEVENTDATA(Structure):
     NotificationType: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         EventHandle: _EventHandle_e__Struct
         SemaphoreHandle: _SemaphoreHandle_e__Struct
@@ -1990,7 +1952,6 @@ KSEVENT_LOOPEDSTREAMING_POSITION: win32more.Windows.Win32.Media.KernelStreaming.
 KSEVENT_PINCAPS_CHANGENOTIFICATIONS = Int32
 KSEVENT_PINCAPS_FORMATCHANGE: win32more.Windows.Win32.Media.KernelStreaming.KSEVENT_PINCAPS_CHANGENOTIFICATIONS = 0
 KSEVENT_PINCAPS_JACKINFOCHANGE: win32more.Windows.Win32.Media.KernelStreaming.KSEVENT_PINCAPS_CHANGENOTIFICATIONS = 1
-KSEVENT_PINCAPS_INVALIDATECLIENTS: win32more.Windows.Win32.Media.KernelStreaming.KSEVENT_PINCAPS_CHANGENOTIFICATIONS = 2
 KSEVENT_SOUNDDETECTOR = Int32
 KSEVENT_SOUNDDETECTOR_MATCHDETECTED: win32more.Windows.Win32.Media.KernelStreaming.KSEVENT_SOUNDDETECTOR = 1
 KSEVENT_STREAMALLOCATOR = Int32
@@ -2045,11 +2006,9 @@ class KSGOP_USERDATA(Structure):
     l21Data: win32more.Windows.Win32.Foundation.CHAR * 3
 class KSIDENTIFIER(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         Alignment: Int64
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Set: Guid
             Id: UInt32
@@ -2143,20 +2102,6 @@ KSMICARRAY_MICTYPE_SUPERCARDIOID: win32more.Windows.Win32.Media.KernelStreaming.
 KSMICARRAY_MICTYPE_HYPERCARDIOID: win32more.Windows.Win32.Media.KernelStreaming.KSMICARRAY_MICTYPE = 4
 KSMICARRAY_MICTYPE_8SHAPED: win32more.Windows.Win32.Media.KernelStreaming.KSMICARRAY_MICTYPE = 5
 KSMICARRAY_MICTYPE_VENDORDEFINED: win32more.Windows.Win32.Media.KernelStreaming.KSMICARRAY_MICTYPE = 15
-class KSMIDILOOPED_BUFFER(Structure):
-    BufferAddress: VoidPtr
-    ActualBufferSize: UInt32
-class KSMIDILOOPED_BUFFER_PROPERTY(Structure):
-    Property: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
-    RequestedBufferSize: UInt32
-class KSMIDILOOPED_EVENT(Structure):
-    WriteEvent: win32more.Windows.Win32.Foundation.HANDLE
-class KSMIDILOOPED_EVENT2(Structure):
-    WriteEvent: win32more.Windows.Win32.Foundation.HANDLE
-    ReadEvent: win32more.Windows.Win32.Foundation.HANDLE
-class KSMIDILOOPED_REGISTERS(Structure):
-    WritePosition: VoidPtr
-    ReadPosition: VoidPtr
 class KSMPEGVID_RECT(Structure):
     StartX: UInt32
     StartY: UInt32
@@ -2357,7 +2302,7 @@ class KSPIN_MDL_CACHING_NOTIFICATION32(Structure):
 class KSPIN_PHYSICALCONNECTION(Structure):
     Size: UInt32
     Pin: UInt32
-    SymbolicLinkName: FlexibleArray[Char]
+    SymbolicLinkName: Char * 1
 KSPPROPERTY_ALLOCATOR_MDLCACHING = Int32
 KSPROPERTY_ALLOCATOR_CLEANUP_CACHEDMDLPAGES: win32more.Windows.Win32.Media.KernelStreaming.KSPPROPERTY_ALLOCATOR_MDLCACHING = 1
 class KSPRIORITY(Structure):
@@ -2366,7 +2311,6 @@ class KSPRIORITY(Structure):
 KSPROPERTYSETID_ExtendedCameraControl = Guid('{1cb79112-c0d2-4213-9ca6-cd4fdb927972}')
 KSPROPERTYSETID_NetworkCameraControl = Guid('{0e780f09-5745-4e3a-bc9f-f226ea43a6ec}')
 KSPROPERTYSETID_PerFrameSettingControl = Guid('{f1f3e261-dee6-4537-bff5-ee206db54aac}')
-KSPROPERTYSETID_WindowsCameraEffect = Guid('{1666d655-21a6-4982-9728-52c39e869f90}')
 KSPROPERTY_AC3 = Int32
 KSPROPERTY_AC3_ERROR_CONCEALMENT: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AC3 = 1
 KSPROPERTY_AC3_ALTERNATE_AUDIO: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AC3 = 2
@@ -2462,8 +2406,6 @@ KSPROPERTY_AUDIOENGINE_BUFFER_SIZE_RANGE: win32more.Windows.Win32.Media.KernelSt
 KSPROPERTY_AUDIOENGINE_LOOPBACK_PROTECTION: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AUDIOENGINE = 8
 KSPROPERTY_AUDIOENGINE_VOLUMELEVEL: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AUDIOENGINE = 9
 KSPROPERTY_AUDIOENGINE_DEVICECONTROLS: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AUDIOENGINE = 10
-KSPROPERTY_AUDIOLOOPBACK = Int32
-KSPROPERTY_AUDIOLOOPBACK_TAPPOINT_CAPS: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AUDIOLOOPBACK = 0
 KSPROPERTY_AUDIOMODULE = Int32
 KSPROPERTY_AUDIOMODULE_DESCRIPTORS: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AUDIOMODULE = 1
 KSPROPERTY_AUDIOMODULE_COMMAND: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_AUDIOMODULE = 2
@@ -2514,7 +2456,6 @@ KSPROPERTY_BIBLIOGRAPHIC_SERIESSTATEMENTUNIFORMTITLE: win32more.Windows.Win32.Me
 class KSPROPERTY_BOUNDS_LONG(Union):
     Anonymous1: _Anonymous1_e__Struct
     Anonymous2: _Anonymous2_e__Struct
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Struct(Structure):
         SignedMinimum: Int32
         SignedMaximum: Int32
@@ -2524,7 +2465,6 @@ class KSPROPERTY_BOUNDS_LONG(Union):
 class KSPROPERTY_BOUNDS_LONGLONG(Union):
     Anonymous1: _Anonymous1_e__Struct
     Anonymous2: _Anonymous2_e__Struct
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Struct(Structure):
         SignedMinimum: Int64
         SignedMaximum: Int64
@@ -2579,11 +2519,8 @@ KSPROPERTY_CAMERACONTROL_EXTENDED_EYEGAZECORRECTION: win32more.Windows.Win32.Med
 KSPROPERTY_CAMERACONTROL_EXTENDED_BACKGROUNDSEGMENTATION: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 41
 KSPROPERTY_CAMERACONTROL_EXTENDED_DIGITALWINDOW_CONFIGCAPS: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 42
 KSPROPERTY_CAMERACONTROL_EXTENDED_DIGITALWINDOW: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 43
-KSPROPERTY_CAMERACONTROL_EXTENDED_FRAMERATE_THROTTLE: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 44
-KSPROPERTY_CAMERACONTROL_EXTENDED_FIELDOFVIEW2_CONFIGCAPS: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 45
-KSPROPERTY_CAMERACONTROL_EXTENDED_FIELDOFVIEW2: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 46
-KSPROPERTY_CAMERACONTROL_EXTENDED_END: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 47
-KSPROPERTY_CAMERACONTROL_EXTENDED_END2: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 47
+KSPROPERTY_CAMERACONTROL_EXTENDED_END: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 44
+KSPROPERTY_CAMERACONTROL_EXTENDED_END2: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_EXTENDED_PROPERTY = 44
 KSPROPERTY_CAMERACONTROL_FLASH = Int32
 KSPROPERTY_CAMERACONTROL_FLASH_PROPERTY_ID: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_CAMERACONTROL_FLASH = 0
 class KSPROPERTY_CAMERACONTROL_FLASH_S(Structure):
@@ -2627,7 +2564,6 @@ class KSPROPERTY_CAMERACONTROL_REGION_OF_INTEREST_S(Structure):
     AutoExposureLock: win32more.Windows.Win32.Foundation.BOOL
     AutoWhitebalanceLock: win32more.Windows.Win32.Foundation.BOOL
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Capabilities: UInt32
         Configuration: UInt32
@@ -2854,10 +2790,6 @@ class KSPROPERTY_MEMBERSHEADER(Structure):
     MembersSize: UInt32
     MembersCount: UInt32
     Flags: UInt32
-KSPROPERTY_MIDILOOPEDSTREAMING = Int32
-KSPROPERTY_MIDILOOPEDSTREAMING_BUFFER: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_MIDILOOPEDSTREAMING = 0
-KSPROPERTY_MIDILOOPEDSTREAMING_REGISTERS: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_MIDILOOPEDSTREAMING = 1
-KSPROPERTY_MIDILOOPEDSTREAMING_NOTIFICATION_EVENT: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_MIDILOOPEDSTREAMING = 2
 KSPROPERTY_MPEG2VID = Int32
 KSPROPERTY_MPEG2VID_MODES: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_MPEG2VID = 0
 KSPROPERTY_MPEG2VID_CUR_MODE: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_MPEG2VID = 1
@@ -2868,7 +2800,7 @@ KSPROPERTY_MPEG4_MEDIATYPE_ATTRIBUTES = Int32
 KSPROPERTY_MPEG4_MEDIATYPE_SD_BOX: win32more.Windows.Win32.Media.KernelStreaming.KSPROPERTY_MPEG4_MEDIATYPE_ATTRIBUTES = 1
 class KSPROPERTY_NETWORKCAMERACONTROL_EVENT_INFO(Structure):
     Header: win32more.Windows.Win32.Media.KernelStreaming.KSCAMERA_METADATA_ITEMHEADER
-    EventFilter: FlexibleArray[Char]
+    EventFilter: Char * 1
 class KSPROPERTY_NETWORKCAMERACONTROL_METADATA_INFO(Structure):
     MetadataItems: UInt32
     Size: UInt32
@@ -3341,7 +3273,6 @@ KSPROPSETID_Audio = Guid('{45ffaaa0-6e1b-11d0-bcf2-444553540000}')
 KSPROPSETID_AudioBufferDuration = Guid('{4e73c07f-23cc-4955-a7ea-3da502496290}')
 KSPROPSETID_AudioDecoderOut = Guid('{6ca6e020-43bd-11d0-bd6a-003505c103a9}')
 KSPROPSETID_AudioEngine = Guid('{3a2f82dc-886f-4baa-9eb4-082b9025c536}')
-KSPROPSETID_AudioLoopback = Guid('{b3648bc8-5b91-468a-b94d-f4641250917c}')
 KSPROPSETID_AudioModule = Guid('{c034fdb0-ff75-47c8-aa3c-ee46716b50c6}')
 KSPROPSETID_AudioPosture = Guid('{a3fb7b0d-474e-4f51-a379-51282dd4fa8f}')
 KSPROPSETID_AudioResourceManagement = Guid('{d0b305e1-b2cc-484c-8f23-e5d28ad9cf88}')
@@ -3366,7 +3297,6 @@ KSPROPSETID_Jack = Guid('{4509f757-2d46-4637-8e62-ce7db944f57b}')
 KSPROPSETID_MPEG4_MediaType_Attributes = Guid('{ff6c4bfa-07a9-4c7b-a237-672f9d68065f}')
 KSPROPSETID_MediaSeeking = Guid('{ee904f0c-d09b-11d0-abe9-00a0c9223196}')
 KSPROPSETID_MemoryTransport = Guid('{0a3d1c5d-5243-4819-9ed0-aee8044cee2b}')
-KSPROPSETID_MidiLoopedStreaming = Guid('{1f306ba6-fd9b-427a-bcb3-27cbcf0e0f19}')
 KSPROPSETID_Mpeg2Vid = Guid('{c8e11b60-0cc9-11d0-bd69-003505c103a9}')
 KSPROPSETID_OverlayUpdate = Guid('{490ea5cf-7681-11d1-a21c-00a0c9223196}')
 KSPROPSETID_Pin = Guid('{8c134960-51ad-11cf-878a-94f801c10000}')
@@ -3398,7 +3328,6 @@ class KSP_PIN(Structure):
     Property: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     PinId: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Reserved: UInt32
         Flags: UInt32
@@ -3434,7 +3363,6 @@ class KSRELATIVEEVENT(Structure):
     Reserved: VoidPtr
     Event: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     EventData: win32more.Windows.Win32.Media.KernelStreaming.KSEVENTDATA
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ObjectHandle: win32more.Windows.Win32.Foundation.HANDLE
         ObjectPointer: VoidPtr
@@ -3572,14 +3500,12 @@ class KSSTREAM_UVC_METADATATYPE_TIMESTAMP(Structure):
     Anonymous: _Anonymous_e__Union
     Reserved0: UInt16
     Reserved1: UInt32
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         SCRToken: UInt16
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Counter: Annotated[UInt16, NativeBitfieldAttribute(11)]
-            Reserved: Annotated[UInt16, NativeBitfieldAttribute(5)]
+            Counter: Annotated[UInt16, 11]
+            Reserved: Annotated[UInt16, 5]
 class KSTELEPHONY_CALLCONTROL(Structure):
     CallType: win32more.Windows.Win32.Media.KernelStreaming.TELEPHONY_CALLTYPE
     CallControlOp: win32more.Windows.Win32.Media.KernelStreaming.TELEPHONY_CALLCONTROLOP
@@ -3764,14 +3690,14 @@ class KS_BITMAPINFOHEADER(Structure):
     biClrUsed: UInt32
     biClrImportant: UInt32
 class KS_COLCON(Structure):
-    emph1col: Annotated[Byte, NativeBitfieldAttribute(4)]
-    emph2col: Annotated[Byte, NativeBitfieldAttribute(4)]
-    backcol: Annotated[Byte, NativeBitfieldAttribute(4)]
-    patcol: Annotated[Byte, NativeBitfieldAttribute(4)]
-    emph1con: Annotated[Byte, NativeBitfieldAttribute(4)]
-    emph2con: Annotated[Byte, NativeBitfieldAttribute(4)]
-    backcon: Annotated[Byte, NativeBitfieldAttribute(4)]
-    patcon: Annotated[Byte, NativeBitfieldAttribute(4)]
+    emph1col: Annotated[Byte, 4]
+    emph2col: Annotated[Byte, 4]
+    backcol: Annotated[Byte, 4]
+    patcol: Annotated[Byte, 4]
+    emph1con: Annotated[Byte, 4]
+    emph2con: Annotated[Byte, 4]
+    backcon: Annotated[Byte, 4]
+    patcon: Annotated[Byte, 4]
 class KS_COMPRESSION(Structure):
     RatioNumerator: UInt32
     RatioDenominator: UInt32
@@ -3885,7 +3811,7 @@ KS_DVDCOPYSTATE_AUTHENTICATION_REQUIRED: win32more.Windows.Win32.Media.KernelStr
 KS_DVDCOPYSTATE_DONE: win32more.Windows.Win32.Media.KernelStreaming.KS_DVDCOPYSTATE = 4
 class KS_DVDCOPY_BUSKEY(Structure):
     BusKey: Byte * 5
-    Reserved: FlexibleArray[Byte]
+    Reserved: Byte * 1
 class KS_DVDCOPY_CHLGKEY(Structure):
     ChlgKey: Byte * 10
     Reserved: Byte * 2
@@ -3923,14 +3849,12 @@ class KS_FRAME_INFO(Structure):
     Anonymous1: _Anonymous1_e__Union
     Reserved2: UInt32
     Anonymous2: _Anonymous2_e__Union
-    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         lSurfacePitch: Int32
         Reserved1: UInt32
     class _Anonymous2_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         FrameCompletionNumber: UInt64
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Reserved3: UInt32
             Reserved4: UInt32
@@ -3945,7 +3869,6 @@ class KS_FRAMING_ITEM(Structure):
     MemoryTypeWeight: UInt32
     PhysicalRange: win32more.Windows.Win32.Media.KernelStreaming.KS_FRAMING_RANGE
     FramingRange: win32more.Windows.Win32.Media.KernelStreaming.KS_FRAMING_RANGE_WEIGHTED
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FileAlignment: UInt32
         FramePitch: Int32
@@ -4008,7 +3931,7 @@ class KS_MPEG1VIDEOINFO(Structure):
     hdr: win32more.Windows.Win32.Media.KernelStreaming.KS_VIDEOINFOHEADER
     dwStartTimeCode: UInt32
     cbSequenceHeader: UInt32
-    bSequenceHeader: FlexibleArray[Byte]
+    bSequenceHeader: Byte * 1
 KS_MPEG2Level = Int32
 KS_MPEG2Level_Low: win32more.Windows.Win32.Media.KernelStreaming.KS_MPEG2Level = 0
 KS_MPEG2Level_Main: win32more.Windows.Win32.Media.KernelStreaming.KS_MPEG2Level = 1
@@ -4032,7 +3955,7 @@ class KS_MPEGVIDEOINFO2(Structure):
     dwProfile: UInt32
     dwLevel: UInt32
     dwFlags: UInt32
-    bSequenceHeader: FlexibleArray[UInt32]
+    bSequenceHeader: UInt32 * 1
 KS_PhysicalConnectorType = Int32
 KS_PhysConn_Video_Tuner: win32more.Windows.Win32.Media.KernelStreaming.KS_PhysicalConnectorType = 1
 KS_PhysConn_Video_Composite: win32more.Windows.Win32.Media.KernelStreaming.KS_PhysicalConnectorType = 2
@@ -4128,7 +4051,6 @@ class KS_VIDEOINFO(Structure):
     AvgTimePerFrame: Int64
     bmiHeader: win32more.Windows.Win32.Media.KernelStreaming.KS_BITMAPINFOHEADER
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         bmiColors: win32more.Windows.Win32.Media.KernelStreaming.KS_RGBQUAD * 256
         dwBitMasks: UInt32 * 3
@@ -4153,7 +4075,6 @@ class KS_VIDEOINFOHEADER2(Structure):
     Anonymous: _Anonymous_e__Union
     dwReserved2: UInt32
     bmiHeader: win32more.Windows.Win32.Media.KernelStreaming.KS_BITMAPINFOHEADER
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwControlFlags: UInt32
         dwReserved1: UInt32
@@ -4381,9 +4302,6 @@ TunerLockType = Int32
 Tuner_LockType_None: win32more.Windows.Win32.Media.KernelStreaming.TunerLockType = 0
 Tuner_LockType_Within_Scan_Sensing_Range: win32more.Windows.Win32.Media.KernelStreaming.TunerLockType = 1
 Tuner_LockType_Locked: win32more.Windows.Win32.Media.KernelStreaming.TunerLockType = 2
-class UMPDATAFORMAT(Structure):
-    Position: Int64
-    ByteCount: UInt32
 class VBICAP_PROPERTIES_PROTECTION_S(Structure):
     Property: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     StreamIndex: UInt32
@@ -4437,11 +4355,6 @@ class VBICODECFILTERING_STATISTICS_TELETEXT(Structure):
     Common: win32more.Windows.Win32.Media.KernelStreaming.VBICODECFILTERING_STATISTICS_COMMON
 class VBICODECFILTERING_STATISTICS_TELETEXT_PIN(Structure):
     Common: win32more.Windows.Win32.Media.KernelStreaming.VBICODECFILTERING_STATISTICS_COMMON_PIN
-class VIDEOFORMAT_DX12(Structure):
-    Header: win32more.Windows.Win32.Media.KernelStreaming.KSATTRIBUTE
-    resourceLayout: UInt32
-    resourceFlags: UInt32
-    customLayout: Guid
 class VRAM_SURFACE_INFO(Structure):
     hSurface: UIntPtr
     VramPhysicalAddress: Int64

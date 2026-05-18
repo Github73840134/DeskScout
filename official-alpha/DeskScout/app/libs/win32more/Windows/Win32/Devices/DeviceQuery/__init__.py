@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Devices.DeviceQuery
 import win32more.Windows.Win32.Devices.Properties
 import win32more.Windows.Win32.Foundation
@@ -95,7 +95,6 @@ DevObjectTypeDeviceInterfaceDisplay: win32more.Windows.Win32.Devices.DeviceQuery
 DevObjectTypeDeviceContainerDisplay: win32more.Windows.Win32.Devices.DeviceQuery.DEV_OBJECT_TYPE = 9
 DevObjectTypeAEPService: win32more.Windows.Win32.Devices.DeviceQuery.DEV_OBJECT_TYPE = 10
 DevObjectTypeDevicePanel: win32more.Windows.Win32.Devices.DeviceQuery.DEV_OBJECT_TYPE = 11
-DevObjectTypeAEPProtocol: win32more.Windows.Win32.Devices.DeviceQuery.DEV_OBJECT_TYPE = 12
 DEV_QUERY_FLAGS = Int32
 DevQueryFlagNone: win32more.Windows.Win32.Devices.DeviceQuery.DEV_QUERY_FLAGS = 0
 DevQueryFlagUpdateResults: win32more.Windows.Win32.Devices.DeviceQuery.DEV_QUERY_FLAGS = 1

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Networking.ActiveDirectory
 import win32more.Windows.Win32.Networking.WinSock
@@ -63,7 +63,6 @@ ADSTYPE_DN_WITH_STRING: win32more.Windows.Win32.Networking.ActiveDirectory.ADSTY
 class ADSVALUE(Structure):
     dwType: win32more.Windows.Win32.Networking.ActiveDirectory.ADSTYPE
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         DNString: POINTER(UInt16)
         CaseExactString: POINTER(UInt16)
@@ -587,7 +586,6 @@ DS_DIRECTORY_SERVICE_8_REQUIRED: UInt32 = 2097152
 DS_DIRECTORY_SERVICE_9_REQUIRED: UInt32 = 4194304
 DS_DIRECTORY_SERVICE_10_REQUIRED: UInt32 = 8388608
 DS_KEY_LIST_SUPPORT_REQUIRED: UInt32 = 16777216
-DS_DIRECTORY_SERVICE_13_REQUIRED: UInt32 = 33554432
 DS_RETURN_DNS_NAME: UInt32 = 1073741824
 DS_RETURN_FLAT_NAME: UInt32 = 2147483648
 DS_PDC_FLAG: UInt32 = 1
@@ -607,7 +605,6 @@ DS_DS_8_FLAG: UInt32 = 16384
 DS_DS_9_FLAG: UInt32 = 32768
 DS_DS_10_FLAG: UInt32 = 65536
 DS_KEY_LIST_FLAG: UInt32 = 131072
-DS_DS_13_FLAG: UInt32 = 262144
 DS_PING_FLAGS: UInt32 = 1048575
 DS_DNS_CONTROLLER_FLAG: UInt32 = 536870912
 DS_DNS_DOMAIN_FLAG: UInt32 = 1073741824
@@ -665,7 +662,6 @@ DS_BEHAVIOR_WIN2008R2: UInt32 = 4
 DS_BEHAVIOR_WIN2012: UInt32 = 5
 DS_BEHAVIOR_WIN2012R2: UInt32 = 6
 DS_BEHAVIOR_WIN2016: UInt32 = 7
-DS_BEHAVIOR_WIN2025: UInt32 = 10
 DS_BEHAVIOR_LONGHORN: UInt32 = 3
 DS_BEHAVIOR_WIN7: UInt32 = 4
 DS_BEHAVIOR_WIN8: UInt32 = 5
@@ -889,9 +885,6 @@ GUID_RECYCLE_BIN_OPTIONAL_FEATURE_A: String = 'd8dc6d76d0ac5e44f3b9a7f9b6744f2a'
 GUID_RECYCLE_BIN_OPTIONAL_FEATURE_W: String = 'd8dc6d76d0ac5e44f3b9a7f9b6744f2a'
 GUID_PRIVILEGED_ACCESS_MANAGEMENT_OPTIONAL_FEATURE_A: String = '73e843ece8cc4046b4ab07ffe4ab5bcd'
 GUID_PRIVILEGED_ACCESS_MANAGEMENT_OPTIONAL_FEATURE_W: String = '73e843ece8cc4046b4ab07ffe4ab5bcd'
-GUID_DATABASE_32K_PAGES_OPTIONAL_FEATURE_A: String = 'c62a9852731e4f75ae2473ae2775aab8'
-GUID_DATABASE_32K_PAGES_OPTIONAL_FEATURE_W: String = 'c62a9852731e4f75ae2473ae2775aab8'
-GUID_DATABASE_32K_PAGES_OPTIONAL_FEATURE_BYTE: String = "\xc6*\x98Rs\x1eOu\xae$s\xae'u\xaa\xb8"
 CFSTR_DSOP_DS_SELECTION_LIST: String = 'CFSTR_DSOP_DS_SELECTION_LIST'
 DSOP_SCOPE_TYPE_TARGET_COMPUTER: UInt32 = 1
 DSOP_SCOPE_TYPE_UPLEVEL_JOINED_DOMAIN: UInt32 = 2
@@ -1578,7 +1571,7 @@ DOMAIN_CONTROLLER_INFO = UnicodeAlias('DOMAIN_CONTROLLER_INFOW')
 class DOMAIN_TREE(Structure):
     dsSize: UInt32
     dwCount: UInt32
-    aDomains: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DOMAINDESC]
+    aDomains: win32more.Windows.Win32.Networking.ActiveDirectory.DOMAINDESC * 1
 class DSA_NEWOBJ_DISPINFO(Structure):
     dwSize: UInt32
     hObjClassIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
@@ -1643,7 +1636,7 @@ class DSCLASSCREATIONINFO(Structure):
     clsidWizardDialog: Guid
     clsidWizardPrimaryPage: Guid
     cWizardExtensions: UInt32
-    aWizardExtensions: FlexibleArray[Guid]
+    aWizardExtensions: Guid * 1
 class DSCOLUMN(Structure):
     dwFlags: UInt32
     fmt: Int32
@@ -1667,7 +1660,7 @@ class DSOBJECT(Structure):
 class DSOBJECTNAMES(Structure):
     clsidNamespace: Guid
     cItems: UInt32
-    aObjects: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DSOBJECT]
+    aObjects: win32more.Windows.Win32.Networking.ActiveDirectory.DSOBJECT * 1
 class DSOP_FILTER_FLAGS(Structure):
     Uplevel: win32more.Windows.Win32.Networking.ActiveDirectory.DSOP_UPLEVEL_FILTER_FLAGS
     flDownlevel: UInt32
@@ -1696,7 +1689,7 @@ class DSPROPERTYPAGEINFO(Structure):
 class DSQUERYCLASSLIST(Structure):
     cbStruct: UInt32
     cClasses: Int32
-    offsetClass: FlexibleArray[UInt32]
+    offsetClass: UInt32 * 1
 class DSQUERYINITPARAMS(Structure):
     cbStruct: UInt32
     dwFlags: UInt32
@@ -1712,7 +1705,7 @@ class DSQUERYPARAMS(Structure):
     offsetQuery: Int32
     iColumns: Int32
     dwReserved: UInt32
-    aColumns: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DSCOLUMN]
+    aColumns: win32more.Windows.Win32.Networking.ActiveDirectory.DSCOLUMN * 1
 DSROLE_MACHINE_ROLE = Int32
 DsRole_RoleStandaloneWorkstation: win32more.Windows.Win32.Networking.ActiveDirectory.DSROLE_MACHINE_ROLE = 0
 DsRole_RoleMemberWorkstation: win32more.Windows.Win32.Networking.ActiveDirectory.DSROLE_MACHINE_ROLE = 1
@@ -1919,30 +1912,30 @@ class DS_REPL_ATTR_META_DATA_BLOB(Structure):
 class DS_REPL_ATTR_VALUE_META_DATA(Structure):
     cNumEntries: UInt32
     dwEnumerationContext: UInt32
-    rgMetaData: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_VALUE_META_DATA]
+    rgMetaData: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_VALUE_META_DATA * 1
 class DS_REPL_ATTR_VALUE_META_DATA_2(Structure):
     cNumEntries: UInt32
     dwEnumerationContext: UInt32
-    rgMetaData: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_VALUE_META_DATA_2]
+    rgMetaData: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_VALUE_META_DATA_2 * 1
 class DS_REPL_ATTR_VALUE_META_DATA_EXT(Structure):
     cNumEntries: UInt32
     dwEnumerationContext: UInt32
-    rgMetaData: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_VALUE_META_DATA_EXT]
+    rgMetaData: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_VALUE_META_DATA_EXT * 1
 class DS_REPL_CURSOR(Structure):
     uuidSourceDsaInvocationID: Guid
     usnAttributeFilter: Int64
 class DS_REPL_CURSORS(Structure):
     cNumCursors: UInt32
     dwReserved: UInt32
-    rgCursor: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_CURSOR]
+    rgCursor: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_CURSOR * 1
 class DS_REPL_CURSORS_2(Structure):
     cNumCursors: UInt32
     dwEnumerationContext: UInt32
-    rgCursor: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_CURSOR_2]
+    rgCursor: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_CURSOR_2 * 1
 class DS_REPL_CURSORS_3W(Structure):
     cNumCursors: UInt32
     dwEnumerationContext: UInt32
-    rgCursor: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_CURSOR_3W]
+    rgCursor: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_CURSOR_3W * 1
 class DS_REPL_CURSOR_2(Structure):
     uuidSourceDsaInvocationID: Guid
     usnAttributeFilter: Int64
@@ -1974,7 +1967,7 @@ DS_REPL_INFO_TYPE_MAX: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REP
 class DS_REPL_KCC_DSA_FAILURESW(Structure):
     cNumEntries: UInt32
     dwReserved: UInt32
-    rgDsaFailure: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_KCC_DSA_FAILUREW]
+    rgDsaFailure: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_KCC_DSA_FAILUREW * 1
 class DS_REPL_KCC_DSA_FAILUREW(Structure):
     pszDsaDN: win32more.Windows.Win32.Foundation.PWSTR
     uuidDsaObjGuid: Guid
@@ -1990,7 +1983,7 @@ class DS_REPL_KCC_DSA_FAILUREW_BLOB(Structure):
 class DS_REPL_NEIGHBORSW(Structure):
     cNumNeighbors: UInt32
     dwReserved: UInt32
-    rgNeighbor: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_NEIGHBORW]
+    rgNeighbor: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_NEIGHBORW * 1
 class DS_REPL_NEIGHBORW(Structure):
     pszNamingContext: win32more.Windows.Win32.Foundation.PWSTR
     pszSourceDsaDN: win32more.Windows.Win32.Foundation.PWSTR
@@ -2028,11 +2021,11 @@ class DS_REPL_NEIGHBORW_BLOB(Structure):
 class DS_REPL_OBJ_META_DATA(Structure):
     cNumEntries: UInt32
     dwReserved: UInt32
-    rgMetaData: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_ATTR_META_DATA]
+    rgMetaData: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_ATTR_META_DATA * 1
 class DS_REPL_OBJ_META_DATA_2(Structure):
     cNumEntries: UInt32
     dwReserved: UInt32
-    rgMetaData: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_ATTR_META_DATA_2]
+    rgMetaData: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_ATTR_META_DATA_2 * 1
 class DS_REPL_OPW(Structure):
     ftimeEnqueued: win32more.Windows.Win32.Foundation.FILETIME
     ulSerialNumber: UInt32
@@ -2064,7 +2057,7 @@ DS_REPL_OP_TYPE_UPDATE_REFS: win32more.Windows.Win32.Networking.ActiveDirectory.
 class DS_REPL_PENDING_OPSW(Structure):
     ftimeCurrentOpStarted: win32more.Windows.Win32.Foundation.FILETIME
     cNumPendingOps: UInt32
-    rgPendingOp: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_OPW]
+    rgPendingOp: win32more.Windows.Win32.Networking.ActiveDirectory.DS_REPL_OPW * 1
 class DS_REPL_QUEUE_STATISTICSW(Structure):
     ftimeCurrentOpStarted: win32more.Windows.Win32.Foundation.FILETIME
     cNumPendingOps: UInt32
@@ -2204,7 +2197,7 @@ class DS_SELECTION(Structure):
 class DS_SELECTION_LIST(Structure):
     cItems: UInt32
     cFetchedAttributes: UInt32
-    aDsSelection: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.DS_SELECTION]
+    aDsSelection: win32more.Windows.Win32.Networking.ActiveDirectory.DS_SELECTION * 1
 class DS_SITE_COST_INFO(Structure):
     errorCode: UInt32
     cost: UInt32
@@ -3791,7 +3784,6 @@ class OPENQUERYWINDOW(Structure):
     clsidDefaultForm: Guid
     pPersistQuery: win32more.Windows.Win32.Networking.ActiveDirectory.IPersistQuery
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pFormParameters: VoidPtr
         ppbFormParameters: win32more.Windows.Win32.System.Com.StructuredStorage.IPropertyBag
@@ -3806,7 +3798,7 @@ class SCHEDULE(Structure):
     Size: UInt32
     Bandwidth: UInt32
     NumberOfSchedules: UInt32
-    Schedules: FlexibleArray[win32more.Windows.Win32.Networking.ActiveDirectory.SCHEDULE_HEADER]
+    Schedules: win32more.Windows.Win32.Networking.ActiveDirectory.SCHEDULE_HEADER * 1
 class SCHEDULE_HEADER(Structure):
     Type: UInt32
     Offset: UInt32

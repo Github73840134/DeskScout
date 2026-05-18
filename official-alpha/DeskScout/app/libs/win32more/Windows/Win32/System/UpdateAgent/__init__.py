@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.UpdateAgent
@@ -123,11 +123,6 @@ WU_E_CALL_CANCELLED_BY_INTERACTIVE_SEARCH: win32more.Windows.Win32.Foundation.HR
 WU_E_INSTALL_JOB_RESUME_NOT_ALLOWED: win32more.Windows.Win32.Foundation.HRESULT = -2145124252
 WU_E_INSTALL_JOB_NOT_SUSPENDED: win32more.Windows.Win32.Foundation.HRESULT = -2145124251
 WU_E_INSTALL_USERCONTEXT_ACCESSDENIED: win32more.Windows.Win32.Foundation.HRESULT = -2145124250
-WU_E_STANDBY_ACTIVITY_NOT_ALLOWED: win32more.Windows.Win32.Foundation.HRESULT = -2145124249
-WU_E_COULD_NOT_EVALUATE_PROPERTY: win32more.Windows.Win32.Foundation.HRESULT = -2145124248
-WU_E_SERVICE_UNEXPECTED_EXIT: win32more.Windows.Win32.Foundation.HRESULT = -2145124247
-WU_E_ACCESS_DENIED_CALLER_IDENTITY: win32more.Windows.Win32.Foundation.HRESULT = -2145124246
-WU_E_SERVICE_REENABLE_ACCESS_DENIED: win32more.Windows.Win32.Foundation.HRESULT = -2145124245
 WU_E_UNEXPECTED: win32more.Windows.Win32.Foundation.HRESULT = -2145120257
 WU_E_MSI_WRONG_VERSION: win32more.Windows.Win32.Foundation.HRESULT = -2145120255
 WU_E_MSI_NOT_CONFIGURED: win32more.Windows.Win32.Foundation.HRESULT = -2145120254
@@ -180,7 +175,6 @@ WU_E_PT_CONFIG_PROP_MISSING: win32more.Windows.Win32.Foundation.HRESULT = -21451
 WU_E_PT_HTTP_STATUS_NOT_MAPPED: win32more.Windows.Win32.Foundation.HRESULT = -2145107925
 WU_E_PT_WINHTTP_NAME_NOT_RESOLVED: win32more.Windows.Win32.Foundation.HRESULT = -2145107924
 WU_E_PT_LOAD_SHEDDING: win32more.Windows.Win32.Foundation.HRESULT = -2145107923
-WU_E_PT_CLIENT_ENFORCED_LOAD_SHEDDING: win32more.Windows.Win32.Foundation.HRESULT = -2145107922
 WU_E_PT_SAME_REDIR_ID: win32more.Windows.Win32.Foundation.HRESULT = -2145103827
 WU_E_PT_NO_MANAGED_RECOVER: win32more.Windows.Win32.Foundation.HRESULT = -2145103826
 WU_E_PT_ECP_SUCCEEDED_WITH_ERRORS: win32more.Windows.Win32.Foundation.HRESULT = -2145107921
@@ -351,8 +345,6 @@ WU_E_UH_APPX_DEFAULT_PACKAGE_VOLUME_UNAVAILABLE: win32more.Windows.Win32.Foundat
 WU_E_UH_APPX_INSTALLED_PACKAGE_VOLUME_UNAVAILABLE: win32more.Windows.Win32.Foundation.HRESULT = -2145116126
 WU_E_UH_APPX_PACKAGE_FAMILY_NOT_FOUND: win32more.Windows.Win32.Foundation.HRESULT = -2145116125
 WU_E_UH_APPX_SYSTEM_VOLUME_NOT_FOUND: win32more.Windows.Win32.Foundation.HRESULT = -2145116124
-WU_E_UH_UA_SESSION_INFO_VERSION_NOT_SUPPORTED: win32more.Windows.Win32.Foundation.HRESULT = -2145116123
-WU_E_UH_RESERVICING_REQUIRED_BASELINE: win32more.Windows.Win32.Foundation.HRESULT = -2145116122
 WU_E_UH_UNEXPECTED: win32more.Windows.Win32.Foundation.HRESULT = -2145112065
 WU_E_DM_URLNOTAVAILABLE: win32more.Windows.Win32.Foundation.HRESULT = -2145099775
 WU_E_DM_INCORRECTFILEHASH: win32more.Windows.Win32.Foundation.HRESULT = -2145099774
@@ -382,7 +374,6 @@ WU_E_DM_DOWNLOAD_VOLUME_CONFLICT: win32more.Windows.Win32.Foundation.HRESULT = -
 WU_E_DM_SANDBOX_HASH_MISMATCH: win32more.Windows.Win32.Foundation.HRESULT = -2145099748
 WU_E_DM_HARDRESERVEID_CONFLICT: win32more.Windows.Win32.Foundation.HRESULT = -2145099747
 WU_E_DM_DOSVC_REQUIRED: win32more.Windows.Win32.Foundation.HRESULT = -2145099746
-WU_E_DM_DOWNLOADTYPE_CONFLICT: win32more.Windows.Win32.Foundation.HRESULT = -2145099745
 WU_E_DM_UNEXPECTED: win32more.Windows.Win32.Foundation.HRESULT = -2145095681
 WU_E_SETUP_INVALID_INFDATA: win32more.Windows.Win32.Foundation.HRESULT = -2145071103
 WU_E_SETUP_INVALID_IDENTDATA: win32more.Windows.Win32.Foundation.HRESULT = -2145071102
@@ -487,8 +478,6 @@ WU_E_FILETRUST_DUALSIGNATURE_RSA: win32more.Windows.Win32.Foundation.HRESULT = -
 WU_E_FILETRUST_DUALSIGNATURE_ECC: win32more.Windows.Win32.Foundation.HRESULT = -2145078526
 WU_E_TRUST_SUBJECT_NOT_TRUSTED: win32more.Windows.Win32.Foundation.HRESULT = -2145078525
 WU_E_TRUST_PROVIDER_UNKNOWN: win32more.Windows.Win32.Foundation.HRESULT = -2145078524
-c_szUpdatePropertyName_ContainsUpdateBootstrapper: String = 'ContainsUpdateBootstrapper'
-c_szUpdatePropertyName_DoesUpdateRequireReboot: String = 'DoesUpdateRequireReboot'
 AutoDownloadMode = Int32
 adLetWindowsUpdateDecide: win32more.Windows.Win32.System.UpdateAgent.AutoDownloadMode = 0
 adNeverAutoDownload: win32more.Windows.Win32.System.UpdateAgent.AutoDownloadMode = 1
@@ -538,9 +527,6 @@ dpLow: win32more.Windows.Win32.System.UpdateAgent.DownloadPriority = 1
 dpNormal: win32more.Windows.Win32.System.UpdateAgent.DownloadPriority = 2
 dpHigh: win32more.Windows.Win32.System.UpdateAgent.DownloadPriority = 3
 dpExtraHigh: win32more.Windows.Win32.System.UpdateAgent.DownloadPriority = 4
-DownloadType = Int32
-downloadTypeFull: win32more.Windows.Win32.System.UpdateAgent.DownloadType = 0
-downloadTypeUpdateBootstrapper: win32more.Windows.Win32.System.UpdateAgent.DownloadType = 1
 class IAutomaticUpdates(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IDispatch
     _iid_ = Guid('{673425bf-c082-4c7c-bdfd-569464b8e0ce}')
@@ -1048,20 +1034,6 @@ class IUpdateDownloader(ComPtr):
     def Download(self, retval: POINTER(win32more.Windows.Win32.System.UpdateAgent.IDownloadResult)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(17)
     def EndDownload(self, value: win32more.Windows.Win32.System.UpdateAgent.IDownloadJob, retval: POINTER(win32more.Windows.Win32.System.UpdateAgent.IDownloadResult)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IUpdateDownloaderEx(ComPtr):
-    extends: win32more.Windows.Win32.System.UpdateAgent.IUpdateDownloader
-    _iid_ = Guid('{94726306-f12a-482a-a774-fb4f870d98c0}')
-    @commethod(18)
-    def BeginDownload2(self, downloadType: win32more.Windows.Win32.System.UpdateAgent.DownloadType, onProgressChanged: win32more.Windows.Win32.System.Com.IUnknown, onCompleted: win32more.Windows.Win32.System.Com.IUnknown, state: win32more.Windows.Win32.System.Variant.VARIANT, retval: POINTER(win32more.Windows.Win32.System.UpdateAgent.IDownloadJob)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(19)
-    def Download2(self, downloadType: win32more.Windows.Win32.System.UpdateAgent.DownloadType, retval: POINTER(win32more.Windows.Win32.System.UpdateAgent.IDownloadResult)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-class IUpdateEx(ComPtr):
-    extends: win32more.Windows.Win32.System.UpdateAgent.IUpdate5
-    _iid_ = Guid('{769355a3-c5a0-497c-a606-560a36d2121c}')
-    @commethod(60)
-    def get_ExtendedStaticProperty(self, propertyName: win32more.Windows.Win32.Foundation.BSTR, retval: POINTER(win32more.Windows.Win32.System.Variant.VARIANT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-    @commethod(61)
-    def EvaluateExtendedDynamicProperty(self, propertyName: win32more.Windows.Win32.Foundation.BSTR, retval: POINTER(win32more.Windows.Win32.System.Variant.VARIANT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IUpdateException(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IDispatch
     _iid_ = Guid('{a376dd5e-09d4-427f-af7c-fed5b6e1c1d6}')

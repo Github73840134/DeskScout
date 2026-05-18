@@ -1,5 +1,6 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.ApplicationModel.AppService
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
@@ -9,8 +10,9 @@ import win32more.Windows.Graphics.Imaging
 import win32more.Windows.Media
 import win32more.Windows.Storage
 import win32more.Windows.Storage.Streams
+import win32more.Windows.Win32.System.WinRT
 class AudioBuffer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.IAudioBuffer
     _classid_ = 'Windows.Media.AudioBuffer'
@@ -27,12 +29,11 @@ class AudioBuffer(ComPtr):
     Capacity = property(get_Capacity, None)
     Length = property(get_Length, put_Length)
 class AudioBufferAccessMode(Enum, Int32):
-    _name_ = 'Windows.Media.AudioBufferAccessMode'
     Read = 0
     ReadWrite = 1
     Write = 2
 class AudioFrame(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.IAudioFrame
     _classid_ = 'Windows.Media.AudioFrame'
@@ -48,7 +49,7 @@ class AudioFrame(ComPtr):
     @winrt_mixinmethod
     def LockBuffer(self: win32more.Windows.Media.IAudioFrame, mode: win32more.Windows.Media.AudioBufferAccessMode) -> win32more.Windows.Media.AudioBuffer: ...
     @winrt_mixinmethod
-    def get_Type(self: win32more.Windows.Media.IMediaFrame) -> hstr: ...
+    def get_Type(self: win32more.Windows.Media.IMediaFrame) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_IsReadOnly(self: win32more.Windows.Media.IMediaFrame) -> Boolean: ...
     @winrt_mixinmethod
@@ -79,18 +80,17 @@ class AudioFrame(ComPtr):
     SystemRelativeTime = property(get_SystemRelativeTime, put_SystemRelativeTime)
     Type = property(get_Type, None)
 class AudioProcessing(Enum, Int32):
-    _name_ = 'Windows.Media.AudioProcessing'
     Default = 0
     Raw = 1
 class AutoRepeatModeChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IAutoRepeatModeChangeRequestedEventArgs
     _classid_ = 'Windows.Media.AutoRepeatModeChangeRequestedEventArgs'
     @winrt_mixinmethod
     def get_RequestedAutoRepeatMode(self: win32more.Windows.Media.IAutoRepeatModeChangeRequestedEventArgs) -> win32more.Windows.Media.MediaPlaybackAutoRepeatMode: ...
     RequestedAutoRepeatMode = property(get_RequestedAutoRepeatMode, None)
 class IAudioBuffer(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Media.IAudioBuffer'
     _iid_ = Guid('{35175827-724b-4c6a-b130-f6537f9ae0d0}')
@@ -103,101 +103,101 @@ class IAudioBuffer(ComPtr):
     Capacity = property(get_Capacity, None)
     Length = property(get_Length, put_Length)
 class IAudioFrame(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Media.IAudioFrame'
     _iid_ = Guid('{e36ac304-aab2-4277-9ed0-43cedf8e29c6}')
     @winrt_commethod(6)
     def LockBuffer(self, mode: win32more.Windows.Media.AudioBufferAccessMode) -> win32more.Windows.Media.AudioBuffer: ...
 class IAudioFrameFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IAudioFrameFactory'
     _iid_ = Guid('{91a90ade-2422-40a6-b9ad-30d02404317d}')
     @winrt_commethod(6)
     def Create(self, capacity: UInt32) -> win32more.Windows.Media.AudioFrame: ...
 class IAutoRepeatModeChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IAutoRepeatModeChangeRequestedEventArgs'
     _iid_ = Guid('{ea137efa-d852-438e-882b-c990109a78f4}')
     @winrt_commethod(6)
     def get_RequestedAutoRepeatMode(self) -> win32more.Windows.Media.MediaPlaybackAutoRepeatMode: ...
     RequestedAutoRepeatMode = property(get_RequestedAutoRepeatMode, None)
 class IImageDisplayProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IImageDisplayProperties'
     _iid_ = Guid('{cd0bc7ef-54e7-411f-9933-f0e98b0a96d2}')
     @winrt_commethod(6)
-    def get_Title(self) -> hstr: ...
+    def get_Title(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def put_Title(self, value: hstr) -> Void: ...
+    def put_Title(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(8)
-    def get_Subtitle(self) -> hstr: ...
+    def get_Subtitle(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def put_Subtitle(self, value: hstr) -> Void: ...
+    def put_Subtitle(self, value: WinRT_String) -> Void: ...
     Subtitle = property(get_Subtitle, put_Subtitle)
     Title = property(get_Title, put_Title)
 class IMediaControl(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaControl'
     _iid_ = Guid('{98f1fbe1-7a8d-42cb-b6fe-8fe698264f13}')
     @winrt_commethod(6)
-    def add_SoundLevelChanged(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_SoundLevelChanged(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(7)
     def remove_SoundLevelChanged(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(8)
-    def add_PlayPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PlayPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(9)
     def remove_PlayPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(10)
-    def add_PausePressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PausePressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(11)
     def remove_PausePressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(12)
-    def add_StopPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StopPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(13)
     def remove_StopPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(14)
-    def add_PlayPauseTogglePressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PlayPauseTogglePressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_PlayPauseTogglePressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
-    def add_RecordPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecordPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
     def remove_RecordPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(18)
-    def add_NextTrackPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_NextTrackPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(19)
     def remove_NextTrackPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(20)
-    def add_PreviousTrackPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PreviousTrackPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(21)
     def remove_PreviousTrackPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(22)
-    def add_FastForwardPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_FastForwardPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(23)
     def remove_FastForwardPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(24)
-    def add_RewindPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RewindPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(25)
     def remove_RewindPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(26)
-    def add_ChannelUpPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ChannelUpPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(27)
     def remove_ChannelUpPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(28)
-    def add_ChannelDownPressed(self, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ChannelDownPressed(self, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(29)
     def remove_ChannelDownPressed(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(30)
     def get_SoundLevel(self) -> win32more.Windows.Media.SoundLevel: ...
     @winrt_commethod(31)
-    def put_TrackName(self, value: hstr) -> Void: ...
+    def put_TrackName(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(32)
-    def get_TrackName(self) -> hstr: ...
+    def get_TrackName(self) -> WinRT_String: ...
     @winrt_commethod(33)
-    def put_ArtistName(self, value: hstr) -> Void: ...
+    def put_ArtistName(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(34)
-    def get_ArtistName(self) -> hstr: ...
+    def get_ArtistName(self) -> WinRT_String: ...
     @winrt_commethod(35)
     def put_IsPlaying(self, value: Boolean) -> Void: ...
     @winrt_commethod(36)
@@ -211,65 +211,65 @@ class IMediaControl(ComPtr):
     IsPlaying = property(get_IsPlaying, put_IsPlaying)
     SoundLevel = property(get_SoundLevel, None)
     TrackName = property(get_TrackName, put_TrackName)
-    ChannelDownPressed = event(add_ChannelDownPressed, remove_ChannelDownPressed)
-    ChannelUpPressed = event(add_ChannelUpPressed, remove_ChannelUpPressed)
-    FastForwardPressed = event(add_FastForwardPressed, remove_FastForwardPressed)
-    NextTrackPressed = event(add_NextTrackPressed, remove_NextTrackPressed)
-    PausePressed = event(add_PausePressed, remove_PausePressed)
-    PlayPauseTogglePressed = event(add_PlayPauseTogglePressed, remove_PlayPauseTogglePressed)
-    PlayPressed = event(add_PlayPressed, remove_PlayPressed)
-    PreviousTrackPressed = event(add_PreviousTrackPressed, remove_PreviousTrackPressed)
-    RecordPressed = event(add_RecordPressed, remove_RecordPressed)
-    RewindPressed = event(add_RewindPressed, remove_RewindPressed)
-    SoundLevelChanged = event(add_SoundLevelChanged, remove_SoundLevelChanged)
-    StopPressed = event(add_StopPressed, remove_StopPressed)
+    SoundLevelChanged = event()
+    PlayPressed = event()
+    PausePressed = event()
+    StopPressed = event()
+    PlayPauseTogglePressed = event()
+    RecordPressed = event()
+    NextTrackPressed = event()
+    PreviousTrackPressed = event()
+    FastForwardPressed = event()
+    RewindPressed = event()
+    ChannelUpPressed = event()
+    ChannelDownPressed = event()
 class IMediaExtension(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaExtension'
     _iid_ = Guid('{07915118-45df-442b-8a3f-f7826a6370ab}')
     @winrt_commethod(6)
     def SetProperties(self, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
 class IMediaExtensionManager(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaExtensionManager'
     _iid_ = Guid('{4a25eaf5-242d-4dfb-97f4-69b7c42576ff}')
     @winrt_commethod(6)
-    def RegisterSchemeHandler(self, activatableClassId: hstr, scheme: hstr) -> Void: ...
+    def RegisterSchemeHandler(self, activatableClassId: WinRT_String, scheme: WinRT_String) -> Void: ...
     @winrt_commethod(7)
-    def RegisterSchemeHandlerWithSettings(self, activatableClassId: hstr, scheme: hstr, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterSchemeHandlerWithSettings(self, activatableClassId: WinRT_String, scheme: WinRT_String, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(8)
-    def RegisterByteStreamHandler(self, activatableClassId: hstr, fileExtension: hstr, mimeType: hstr) -> Void: ...
+    def RegisterByteStreamHandler(self, activatableClassId: WinRT_String, fileExtension: WinRT_String, mimeType: WinRT_String) -> Void: ...
     @winrt_commethod(9)
-    def RegisterByteStreamHandlerWithSettings(self, activatableClassId: hstr, fileExtension: hstr, mimeType: hstr, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterByteStreamHandlerWithSettings(self, activatableClassId: WinRT_String, fileExtension: WinRT_String, mimeType: WinRT_String, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(10)
-    def RegisterAudioDecoder(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterAudioDecoder(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_commethod(11)
-    def RegisterAudioDecoderWithSettings(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterAudioDecoderWithSettings(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(12)
-    def RegisterAudioEncoder(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterAudioEncoder(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_commethod(13)
-    def RegisterAudioEncoderWithSettings(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterAudioEncoderWithSettings(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(14)
-    def RegisterVideoDecoder(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterVideoDecoder(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_commethod(15)
-    def RegisterVideoDecoderWithSettings(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterVideoDecoderWithSettings(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_commethod(16)
-    def RegisterVideoEncoder(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterVideoEncoder(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_commethod(17)
-    def RegisterVideoEncoderWithSettings(self, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterVideoEncoderWithSettings(self, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
 class IMediaExtensionManager2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaExtensionManager2'
     _iid_ = Guid('{5bcebf47-4043-4fed-acaf-54ec29dfb1f7}')
     @winrt_commethod(6)
     def RegisterMediaExtensionForAppService(self, extension: win32more.Windows.Media.IMediaExtension, connection: win32more.Windows.ApplicationModel.AppService.AppServiceConnection) -> Void: ...
 class IMediaFrame(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Media.IMediaFrame'
     _iid_ = Guid('{bfb52f8c-5943-47d8-8e10-05308aa5fbd0}')
     @winrt_commethod(6)
-    def get_Type(self) -> hstr: ...
+    def get_Type(self) -> WinRT_String: ...
     @winrt_commethod(7)
     def get_IsReadOnly(self) -> Boolean: ...
     @winrt_commethod(8)
@@ -298,41 +298,41 @@ class IMediaFrame(ComPtr):
     SystemRelativeTime = property(get_SystemRelativeTime, put_SystemRelativeTime)
     Type = property(get_Type, None)
 class IMediaMarker(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaMarker'
     _iid_ = Guid('{1803def8-dca5-4b6f-9c20-e3d3c0643625}')
     @winrt_commethod(6)
     def get_Time(self) -> win32more.Windows.Foundation.TimeSpan: ...
     @winrt_commethod(7)
-    def get_MediaMarkerType(self) -> hstr: ...
+    def get_MediaMarkerType(self) -> WinRT_String: ...
     @winrt_commethod(8)
-    def get_Text(self) -> hstr: ...
+    def get_Text(self) -> WinRT_String: ...
     MediaMarkerType = property(get_MediaMarkerType, None)
     Text = property(get_Text, None)
     Time = property(get_Time, None)
 class IMediaMarkerTypesStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaMarkerTypesStatics'
     _iid_ = Guid('{bb198040-482f-4743-8832-45853821ece0}')
     @winrt_commethod(6)
-    def get_Bookmark(self) -> hstr: ...
+    def get_Bookmark(self) -> WinRT_String: ...
     Bookmark = property(get_Bookmark, None)
 class IMediaMarkers(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaMarkers'
     _iid_ = Guid('{afeab189-f8dd-466e-aa10-920b52353fdf}')
     @winrt_commethod(6)
     def get_Markers(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Media.IMediaMarker]: ...
     Markers = property(get_Markers, None)
 class IMediaProcessingTriggerDetails(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaProcessingTriggerDetails'
     _iid_ = Guid('{eb8564ac-a351-4f4e-b4f0-9bf2408993db}')
     @winrt_commethod(6)
     def get_Arguments(self) -> win32more.Windows.Foundation.Collections.ValueSet: ...
     Arguments = property(get_Arguments, None)
 class IMediaTimelineController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaTimelineController'
     _iid_ = Guid('{8ed361f3-0b78-4360-bf71-0c841999ea1b}')
     @winrt_commethod(6)
@@ -352,20 +352,20 @@ class IMediaTimelineController(ComPtr):
     @winrt_commethod(13)
     def get_State(self) -> win32more.Windows.Media.MediaTimelineControllerState: ...
     @winrt_commethod(14)
-    def add_PositionChanged(self, positionChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PositionChanged(self, positionChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_PositionChanged(self, eventCookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
-    def add_StateChanged(self, stateChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StateChanged(self, stateChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(17)
     def remove_StateChanged(self, eventCookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     ClockRate = property(get_ClockRate, put_ClockRate)
     Position = property(get_Position, put_Position)
     State = property(get_State, None)
-    PositionChanged = event(add_PositionChanged, remove_PositionChanged)
-    StateChanged = event(add_StateChanged, remove_StateChanged)
+    PositionChanged = event()
+    StateChanged = event()
 class IMediaTimelineController2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaTimelineController2'
     _iid_ = Guid('{ef74ea38-9e72-4df9-8355-6e90c81bbadd}')
     @winrt_commethod(6)
@@ -381,58 +381,58 @@ class IMediaTimelineController2(ComPtr):
     @winrt_commethod(11)
     def remove_Failed(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(12)
-    def add_Ended(self, eventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_Ended(self, eventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(13)
     def remove_Ended(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Duration = property(get_Duration, put_Duration)
     IsLoopingEnabled = property(get_IsLoopingEnabled, put_IsLoopingEnabled)
-    Ended = event(add_Ended, remove_Ended)
-    Failed = event(add_Failed, remove_Failed)
+    Failed = event()
+    Ended = event()
 class IMediaTimelineControllerFailedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMediaTimelineControllerFailedEventArgs'
     _iid_ = Guid('{8821f81d-3e77-43fb-be26-4fc87a044834}')
     @winrt_commethod(6)
     def get_ExtendedError(self) -> win32more.Windows.Foundation.HResult: ...
     ExtendedError = property(get_ExtendedError, None)
 class IMusicDisplayProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMusicDisplayProperties'
     _iid_ = Guid('{6bbf0c59-d0a0-4d26-92a0-f978e1d18e7b}')
     @winrt_commethod(6)
-    def get_Title(self) -> hstr: ...
+    def get_Title(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def put_Title(self, value: hstr) -> Void: ...
+    def put_Title(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(8)
-    def get_AlbumArtist(self) -> hstr: ...
+    def get_AlbumArtist(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def put_AlbumArtist(self, value: hstr) -> Void: ...
+    def put_AlbumArtist(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(10)
-    def get_Artist(self) -> hstr: ...
+    def get_Artist(self) -> WinRT_String: ...
     @winrt_commethod(11)
-    def put_Artist(self, value: hstr) -> Void: ...
+    def put_Artist(self, value: WinRT_String) -> Void: ...
     AlbumArtist = property(get_AlbumArtist, put_AlbumArtist)
     Artist = property(get_Artist, put_Artist)
     Title = property(get_Title, put_Title)
 class IMusicDisplayProperties2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMusicDisplayProperties2'
     _iid_ = Guid('{00368462-97d3-44b9-b00f-008afcefaf18}')
     @winrt_commethod(6)
-    def get_AlbumTitle(self) -> hstr: ...
+    def get_AlbumTitle(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def put_AlbumTitle(self, value: hstr) -> Void: ...
+    def put_AlbumTitle(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(8)
     def get_TrackNumber(self) -> UInt32: ...
     @winrt_commethod(9)
     def put_TrackNumber(self, value: UInt32) -> Void: ...
     @winrt_commethod(10)
-    def get_Genres(self) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
+    def get_Genres(self) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
     AlbumTitle = property(get_AlbumTitle, put_AlbumTitle)
     Genres = property(get_Genres, None)
     TrackNumber = property(get_TrackNumber, put_TrackNumber)
 class IMusicDisplayProperties3(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IMusicDisplayProperties3'
     _iid_ = Guid('{4db51ac1-0681-4e8c-9401-b8159d9eefc7}')
     @winrt_commethod(6)
@@ -441,28 +441,28 @@ class IMusicDisplayProperties3(ComPtr):
     def put_AlbumTrackCount(self, value: UInt32) -> Void: ...
     AlbumTrackCount = property(get_AlbumTrackCount, put_AlbumTrackCount)
 class IPlaybackPositionChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IPlaybackPositionChangeRequestedEventArgs'
     _iid_ = Guid('{b4493f88-eb28-4961-9c14-335e44f3e125}')
     @winrt_commethod(6)
     def get_RequestedPlaybackPosition(self) -> win32more.Windows.Foundation.TimeSpan: ...
     RequestedPlaybackPosition = property(get_RequestedPlaybackPosition, None)
 class IPlaybackRateChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IPlaybackRateChangeRequestedEventArgs'
     _iid_ = Guid('{2ce2c41f-3cd6-4f77-9ba7-eb27c26a2140}')
     @winrt_commethod(6)
     def get_RequestedPlaybackRate(self) -> Double: ...
     RequestedPlaybackRate = property(get_RequestedPlaybackRate, None)
 class IShuffleEnabledChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IShuffleEnabledChangeRequestedEventArgs'
     _iid_ = Guid('{49b593fe-4fd0-4666-a314-c0e01940d302}')
     @winrt_commethod(6)
     def get_RequestedShuffleEnabled(self) -> Boolean: ...
     RequestedShuffleEnabled = property(get_RequestedShuffleEnabled, None)
 class ISystemMediaTransportControls(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControls'
     _iid_ = Guid('{99fa3ff4-1742-42a6-902e-087d41f965ec}')
     @winrt_commethod(6)
@@ -539,10 +539,10 @@ class ISystemMediaTransportControls(ComPtr):
     IsStopEnabled = property(get_IsStopEnabled, put_IsStopEnabled)
     PlaybackStatus = property(get_PlaybackStatus, put_PlaybackStatus)
     SoundLevel = property(get_SoundLevel, None)
-    ButtonPressed = event(add_ButtonPressed, remove_ButtonPressed)
-    PropertyChanged = event(add_PropertyChanged, remove_PropertyChanged)
+    ButtonPressed = event()
+    PropertyChanged = event()
 class ISystemMediaTransportControls2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControls2'
     _iid_ = Guid('{ea98d2f6-7f3c-4af2-a586-72889808efb1}')
     @winrt_commethod(6)
@@ -578,19 +578,19 @@ class ISystemMediaTransportControls2(ComPtr):
     AutoRepeatMode = property(get_AutoRepeatMode, put_AutoRepeatMode)
     PlaybackRate = property(get_PlaybackRate, put_PlaybackRate)
     ShuffleEnabled = property(get_ShuffleEnabled, put_ShuffleEnabled)
-    AutoRepeatModeChangeRequested = event(add_AutoRepeatModeChangeRequested, remove_AutoRepeatModeChangeRequested)
-    PlaybackPositionChangeRequested = event(add_PlaybackPositionChangeRequested, remove_PlaybackPositionChangeRequested)
-    PlaybackRateChangeRequested = event(add_PlaybackRateChangeRequested, remove_PlaybackRateChangeRequested)
-    ShuffleEnabledChangeRequested = event(add_ShuffleEnabledChangeRequested, remove_ShuffleEnabledChangeRequested)
+    PlaybackPositionChangeRequested = event()
+    PlaybackRateChangeRequested = event()
+    ShuffleEnabledChangeRequested = event()
+    AutoRepeatModeChangeRequested = event()
 class ISystemMediaTransportControlsButtonPressedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControlsButtonPressedEventArgs'
     _iid_ = Guid('{b7f47116-a56f-4dc8-9e11-92031f4a87c2}')
     @winrt_commethod(6)
     def get_Button(self) -> win32more.Windows.Media.SystemMediaTransportControlsButton: ...
     Button = property(get_Button, None)
 class ISystemMediaTransportControlsDisplayUpdater(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControlsDisplayUpdater'
     _iid_ = Guid('{8abbc53e-fa55-4ecf-ad8e-c984e5dd1550}')
     @winrt_commethod(6)
@@ -598,9 +598,9 @@ class ISystemMediaTransportControlsDisplayUpdater(ComPtr):
     @winrt_commethod(7)
     def put_Type(self, value: win32more.Windows.Media.MediaPlaybackType) -> Void: ...
     @winrt_commethod(8)
-    def get_AppMediaId(self) -> hstr: ...
+    def get_AppMediaId(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def put_AppMediaId(self, value: hstr) -> Void: ...
+    def put_AppMediaId(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(10)
     def get_Thumbnail(self) -> win32more.Windows.Storage.Streams.RandomAccessStreamReference: ...
     @winrt_commethod(11)
@@ -624,20 +624,20 @@ class ISystemMediaTransportControlsDisplayUpdater(ComPtr):
     Type = property(get_Type, put_Type)
     VideoProperties = property(get_VideoProperties, None)
 class ISystemMediaTransportControlsPropertyChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControlsPropertyChangedEventArgs'
     _iid_ = Guid('{d0ca0936-339b-4cb3-8eeb-737607f56e08}')
     @winrt_commethod(6)
     def get_Property(self) -> win32more.Windows.Media.SystemMediaTransportControlsProperty: ...
     Property = property(get_Property, None)
 class ISystemMediaTransportControlsStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControlsStatics'
     _iid_ = Guid('{43ba380a-eca4-4832-91ab-d415fae484c6}')
     @winrt_commethod(6)
     def GetForCurrentView(self) -> win32more.Windows.Media.SystemMediaTransportControls: ...
 class ISystemMediaTransportControlsTimelineProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.ISystemMediaTransportControlsTimelineProperties'
     _iid_ = Guid('{5125316a-c3a2-475b-8507-93534dc88f15}')
     @winrt_commethod(6)
@@ -666,35 +666,35 @@ class ISystemMediaTransportControlsTimelineProperties(ComPtr):
     Position = property(get_Position, put_Position)
     StartTime = property(get_StartTime, put_StartTime)
 class IVideoDisplayProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IVideoDisplayProperties'
     _iid_ = Guid('{5609fdb1-5d2d-4872-8170-45dee5bc2f5c}')
     @winrt_commethod(6)
-    def get_Title(self) -> hstr: ...
+    def get_Title(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def put_Title(self, value: hstr) -> Void: ...
+    def put_Title(self, value: WinRT_String) -> Void: ...
     @winrt_commethod(8)
-    def get_Subtitle(self) -> hstr: ...
+    def get_Subtitle(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def put_Subtitle(self, value: hstr) -> Void: ...
+    def put_Subtitle(self, value: WinRT_String) -> Void: ...
     Subtitle = property(get_Subtitle, put_Subtitle)
     Title = property(get_Title, put_Title)
 class IVideoDisplayProperties2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IVideoDisplayProperties2'
     _iid_ = Guid('{b410e1ce-ab52-41ab-a486-cc10fab152f9}')
     @winrt_commethod(6)
-    def get_Genres(self) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
+    def get_Genres(self) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
     Genres = property(get_Genres, None)
 class IVideoEffectsStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IVideoEffectsStatics'
     _iid_ = Guid('{1fcda5e8-baf1-4521-980c-3bcebb44cf38}')
     @winrt_commethod(6)
-    def get_VideoStabilization(self) -> hstr: ...
+    def get_VideoStabilization(self) -> WinRT_String: ...
     VideoStabilization = property(get_VideoStabilization, None)
 class IVideoFrame(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Media.IVideoFrame'
     _iid_ = Guid('{0cc06625-90fc-4c92-bd95-7ded21819d1c}')
@@ -707,13 +707,13 @@ class IVideoFrame(ComPtr):
     Direct3DSurface = property(get_Direct3DSurface, None)
     SoftwareBitmap = property(get_SoftwareBitmap, None)
 class IVideoFrame2(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IVideoFrame2'
     _iid_ = Guid('{3837840d-336c-4366-8d46-060798736c5d}')
     @winrt_commethod(6)
     def CopyToWithBoundsAsync(self, frame: win32more.Windows.Media.VideoFrame, sourceBounds: win32more.Windows.Foundation.IReference[win32more.Windows.Graphics.Imaging.BitmapBounds], destinationBounds: win32more.Windows.Foundation.IReference[win32more.Windows.Graphics.Imaging.BitmapBounds]) -> win32more.Windows.Foundation.IAsyncAction: ...
 class IVideoFrameFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IVideoFrameFactory'
     _iid_ = Guid('{014b6d69-2228-4c92-92ff-50c380d3e776}')
     @winrt_commethod(6)
@@ -721,7 +721,7 @@ class IVideoFrameFactory(ComPtr):
     @winrt_commethod(7)
     def CreateWithAlpha(self, format: win32more.Windows.Graphics.Imaging.BitmapPixelFormat, width: Int32, height: Int32, alpha: win32more.Windows.Graphics.Imaging.BitmapAlphaMode) -> win32more.Windows.Media.VideoFrame: ...
 class IVideoFrameStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.IVideoFrameStatics'
     _iid_ = Guid('{ab2a556f-6111-4b33-8ec3-2b209a02e17a}')
     @winrt_commethod(6)
@@ -733,82 +733,82 @@ class IVideoFrameStatics(ComPtr):
     @winrt_commethod(9)
     def CreateWithDirect3D11Surface(self, surface: win32more.Windows.Graphics.DirectX.Direct3D11.IDirect3DSurface) -> win32more.Windows.Media.VideoFrame: ...
 class ImageDisplayProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IImageDisplayProperties
     _classid_ = 'Windows.Media.ImageDisplayProperties'
     @winrt_mixinmethod
-    def get_Title(self: win32more.Windows.Media.IImageDisplayProperties) -> hstr: ...
+    def get_Title(self: win32more.Windows.Media.IImageDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Title(self: win32more.Windows.Media.IImageDisplayProperties, value: hstr) -> Void: ...
+    def put_Title(self: win32more.Windows.Media.IImageDisplayProperties, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def get_Subtitle(self: win32more.Windows.Media.IImageDisplayProperties) -> hstr: ...
+    def get_Subtitle(self: win32more.Windows.Media.IImageDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Subtitle(self: win32more.Windows.Media.IImageDisplayProperties, value: hstr) -> Void: ...
+    def put_Subtitle(self: win32more.Windows.Media.IImageDisplayProperties, value: WinRT_String) -> Void: ...
     Subtitle = property(get_Subtitle, put_Subtitle)
     Title = property(get_Title, put_Title)
 class _MediaControl_Meta_(ComPtr.__class__):
     pass
 class MediaControl(ComPtr, metaclass=_MediaControl_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.MediaControl'
     @winrt_classmethod
-    def add_SoundLevelChanged(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_SoundLevelChanged(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_SoundLevelChanged(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_PlayPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PlayPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_PlayPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_PausePressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PausePressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_PausePressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_StopPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StopPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_StopPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_PlayPauseTogglePressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PlayPauseTogglePressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_PlayPauseTogglePressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_RecordPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RecordPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RecordPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_NextTrackPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_NextTrackPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_NextTrackPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_PreviousTrackPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PreviousTrackPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_PreviousTrackPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_FastForwardPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_FastForwardPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_FastForwardPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_RewindPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_RewindPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_RewindPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_ChannelUpPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ChannelUpPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_ChannelUpPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def add_ChannelDownPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_ChannelDownPressed(cls: win32more.Windows.Media.IMediaControl, handler: win32more.Windows.Foundation.EventHandler[win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_classmethod
     def remove_ChannelDownPressed(cls: win32more.Windows.Media.IMediaControl, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
     def get_SoundLevel(cls: win32more.Windows.Media.IMediaControl) -> win32more.Windows.Media.SoundLevel: ...
     @winrt_classmethod
-    def put_TrackName(cls: win32more.Windows.Media.IMediaControl, value: hstr) -> Void: ...
+    def put_TrackName(cls: win32more.Windows.Media.IMediaControl, value: WinRT_String) -> Void: ...
     @winrt_classmethod
-    def get_TrackName(cls: win32more.Windows.Media.IMediaControl) -> hstr: ...
+    def get_TrackName(cls: win32more.Windows.Media.IMediaControl) -> WinRT_String: ...
     @winrt_classmethod
-    def put_ArtistName(cls: win32more.Windows.Media.IMediaControl, value: hstr) -> Void: ...
+    def put_ArtistName(cls: win32more.Windows.Media.IMediaControl, value: WinRT_String) -> Void: ...
     @winrt_classmethod
-    def get_ArtistName(cls: win32more.Windows.Media.IMediaControl) -> hstr: ...
+    def get_ArtistName(cls: win32more.Windows.Media.IMediaControl) -> WinRT_String: ...
     @winrt_classmethod
     def put_IsPlaying(cls: win32more.Windows.Media.IMediaControl, value: Boolean) -> Void: ...
     @winrt_classmethod
@@ -822,21 +822,9 @@ class MediaControl(ComPtr, metaclass=_MediaControl_Meta_):
     _MediaControl_Meta_.IsPlaying = property(get_IsPlaying, put_IsPlaying)
     _MediaControl_Meta_.SoundLevel = property(get_SoundLevel, None)
     _MediaControl_Meta_.TrackName = property(get_TrackName, put_TrackName)
-    _MediaControl_Meta_.ChannelDownPressed = event(add_ChannelDownPressed, remove_ChannelDownPressed)
-    _MediaControl_Meta_.ChannelUpPressed = event(add_ChannelUpPressed, remove_ChannelUpPressed)
-    _MediaControl_Meta_.FastForwardPressed = event(add_FastForwardPressed, remove_FastForwardPressed)
-    _MediaControl_Meta_.NextTrackPressed = event(add_NextTrackPressed, remove_NextTrackPressed)
-    _MediaControl_Meta_.PausePressed = event(add_PausePressed, remove_PausePressed)
-    _MediaControl_Meta_.PlayPauseTogglePressed = event(add_PlayPauseTogglePressed, remove_PlayPauseTogglePressed)
-    _MediaControl_Meta_.PlayPressed = event(add_PlayPressed, remove_PlayPressed)
-    _MediaControl_Meta_.PreviousTrackPressed = event(add_PreviousTrackPressed, remove_PreviousTrackPressed)
-    _MediaControl_Meta_.RecordPressed = event(add_RecordPressed, remove_RecordPressed)
-    _MediaControl_Meta_.RewindPressed = event(add_RewindPressed, remove_RewindPressed)
-    _MediaControl_Meta_.SoundLevelChanged = event(add_SoundLevelChanged, remove_SoundLevelChanged)
-    _MediaControl_Meta_.StopPressed = event(add_StopPressed, remove_StopPressed)
 MediaControlContract: UInt32 = 65536
 class MediaExtensionManager(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IMediaExtensionManager
     _classid_ = 'Windows.Media.MediaExtensionManager'
     def __init__(self, *args, **kwargs):
@@ -849,70 +837,66 @@ class MediaExtensionManager(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Windows.Media.MediaExtensionManager: ...
     @winrt_mixinmethod
-    def RegisterSchemeHandler(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, scheme: hstr) -> Void: ...
+    def RegisterSchemeHandler(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, scheme: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def RegisterSchemeHandlerWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, scheme: hstr, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterSchemeHandlerWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, scheme: WinRT_String, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
-    def RegisterByteStreamHandler(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, fileExtension: hstr, mimeType: hstr) -> Void: ...
+    def RegisterByteStreamHandler(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, fileExtension: WinRT_String, mimeType: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def RegisterByteStreamHandlerWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, fileExtension: hstr, mimeType: hstr, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterByteStreamHandlerWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, fileExtension: WinRT_String, mimeType: WinRT_String, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
-    def RegisterAudioDecoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterAudioDecoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_mixinmethod
-    def RegisterAudioDecoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterAudioDecoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
-    def RegisterAudioEncoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterAudioEncoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_mixinmethod
-    def RegisterAudioEncoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterAudioEncoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
-    def RegisterVideoDecoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterVideoDecoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_mixinmethod
-    def RegisterVideoDecoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterVideoDecoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
-    def RegisterVideoEncoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
+    def RegisterVideoEncoder(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid) -> Void: ...
     @winrt_mixinmethod
-    def RegisterVideoEncoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: hstr, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
+    def RegisterVideoEncoderWithSettings(self: win32more.Windows.Media.IMediaExtensionManager, activatableClassId: WinRT_String, inputSubtype: Guid, outputSubtype: Guid, configuration: win32more.Windows.Foundation.Collections.IPropertySet) -> Void: ...
     @winrt_mixinmethod
     def RegisterMediaExtensionForAppService(self: win32more.Windows.Media.IMediaExtensionManager2, extension: win32more.Windows.Media.IMediaExtension, connection: win32more.Windows.ApplicationModel.AppService.AppServiceConnection) -> Void: ...
 class _MediaMarkerTypes_Meta_(ComPtr.__class__):
     pass
 class MediaMarkerTypes(ComPtr, metaclass=_MediaMarkerTypes_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.MediaMarkerTypes'
     @winrt_classmethod
-    def get_Bookmark(cls: win32more.Windows.Media.IMediaMarkerTypesStatics) -> hstr: ...
+    def get_Bookmark(cls: win32more.Windows.Media.IMediaMarkerTypesStatics) -> WinRT_String: ...
     _MediaMarkerTypes_Meta_.Bookmark = property(get_Bookmark, None)
 class MediaPlaybackAutoRepeatMode(Enum, Int32):
-    _name_ = 'Windows.Media.MediaPlaybackAutoRepeatMode'
     None_ = 0
     Track = 1
     List = 2
 class MediaPlaybackStatus(Enum, Int32):
-    _name_ = 'Windows.Media.MediaPlaybackStatus'
     Closed = 0
     Changing = 1
     Stopped = 2
     Playing = 3
     Paused = 4
 class MediaPlaybackType(Enum, Int32):
-    _name_ = 'Windows.Media.MediaPlaybackType'
     Unknown = 0
     Music = 1
     Video = 2
     Image = 3
 class MediaProcessingTriggerDetails(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IMediaProcessingTriggerDetails
     _classid_ = 'Windows.Media.MediaProcessingTriggerDetails'
     @winrt_mixinmethod
     def get_Arguments(self: win32more.Windows.Media.IMediaProcessingTriggerDetails) -> win32more.Windows.Foundation.Collections.ValueSet: ...
     Arguments = property(get_Arguments, None)
 class MediaTimeRange(Structure):
-    _name_ = 'Windows.Media.MediaTimeRange'
     Start: win32more.Windows.Foundation.TimeSpan
     End: win32more.Windows.Foundation.TimeSpan
 class MediaTimelineController(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IMediaTimelineController
     _classid_ = 'Windows.Media.MediaTimelineController'
     def __init__(self, *args, **kwargs):
@@ -941,11 +925,11 @@ class MediaTimelineController(ComPtr):
     @winrt_mixinmethod
     def get_State(self: win32more.Windows.Media.IMediaTimelineController) -> win32more.Windows.Media.MediaTimelineControllerState: ...
     @winrt_mixinmethod
-    def add_PositionChanged(self: win32more.Windows.Media.IMediaTimelineController, positionChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_PositionChanged(self: win32more.Windows.Media.IMediaTimelineController, positionChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_PositionChanged(self: win32more.Windows.Media.IMediaTimelineController, eventCookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_StateChanged(self: win32more.Windows.Media.IMediaTimelineController, stateChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StateChanged(self: win32more.Windows.Media.IMediaTimelineController, stateChangedEventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_StateChanged(self: win32more.Windows.Media.IMediaTimelineController, eventCookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -961,7 +945,7 @@ class MediaTimelineController(ComPtr):
     @winrt_mixinmethod
     def remove_Failed(self: win32more.Windows.Media.IMediaTimelineController2, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_Ended(self: win32more.Windows.Media.IMediaTimelineController2, eventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_Ended(self: win32more.Windows.Media.IMediaTimelineController2, eventHandler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Media.MediaTimelineController, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_Ended(self: win32more.Windows.Media.IMediaTimelineController2, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     ClockRate = property(get_ClockRate, put_ClockRate)
@@ -969,49 +953,48 @@ class MediaTimelineController(ComPtr):
     IsLoopingEnabled = property(get_IsLoopingEnabled, put_IsLoopingEnabled)
     Position = property(get_Position, put_Position)
     State = property(get_State, None)
-    Ended = event(add_Ended, remove_Ended)
-    Failed = event(add_Failed, remove_Failed)
-    PositionChanged = event(add_PositionChanged, remove_PositionChanged)
-    StateChanged = event(add_StateChanged, remove_StateChanged)
+    PositionChanged = event()
+    StateChanged = event()
+    Failed = event()
+    Ended = event()
 class MediaTimelineControllerFailedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IMediaTimelineControllerFailedEventArgs
     _classid_ = 'Windows.Media.MediaTimelineControllerFailedEventArgs'
     @winrt_mixinmethod
     def get_ExtendedError(self: win32more.Windows.Media.IMediaTimelineControllerFailedEventArgs) -> win32more.Windows.Foundation.HResult: ...
     ExtendedError = property(get_ExtendedError, None)
 class MediaTimelineControllerState(Enum, Int32):
-    _name_ = 'Windows.Media.MediaTimelineControllerState'
     Paused = 0
     Running = 1
     Stalled = 2
     Error = 3
 class MusicDisplayProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IMusicDisplayProperties
     _classid_ = 'Windows.Media.MusicDisplayProperties'
     @winrt_mixinmethod
-    def get_Title(self: win32more.Windows.Media.IMusicDisplayProperties) -> hstr: ...
+    def get_Title(self: win32more.Windows.Media.IMusicDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Title(self: win32more.Windows.Media.IMusicDisplayProperties, value: hstr) -> Void: ...
+    def put_Title(self: win32more.Windows.Media.IMusicDisplayProperties, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def get_AlbumArtist(self: win32more.Windows.Media.IMusicDisplayProperties) -> hstr: ...
+    def get_AlbumArtist(self: win32more.Windows.Media.IMusicDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_AlbumArtist(self: win32more.Windows.Media.IMusicDisplayProperties, value: hstr) -> Void: ...
+    def put_AlbumArtist(self: win32more.Windows.Media.IMusicDisplayProperties, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def get_Artist(self: win32more.Windows.Media.IMusicDisplayProperties) -> hstr: ...
+    def get_Artist(self: win32more.Windows.Media.IMusicDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Artist(self: win32more.Windows.Media.IMusicDisplayProperties, value: hstr) -> Void: ...
+    def put_Artist(self: win32more.Windows.Media.IMusicDisplayProperties, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def get_AlbumTitle(self: win32more.Windows.Media.IMusicDisplayProperties2) -> hstr: ...
+    def get_AlbumTitle(self: win32more.Windows.Media.IMusicDisplayProperties2) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_AlbumTitle(self: win32more.Windows.Media.IMusicDisplayProperties2, value: hstr) -> Void: ...
+    def put_AlbumTitle(self: win32more.Windows.Media.IMusicDisplayProperties2, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_TrackNumber(self: win32more.Windows.Media.IMusicDisplayProperties2) -> UInt32: ...
     @winrt_mixinmethod
     def put_TrackNumber(self: win32more.Windows.Media.IMusicDisplayProperties2, value: UInt32) -> Void: ...
     @winrt_mixinmethod
-    def get_Genres(self: win32more.Windows.Media.IMusicDisplayProperties2) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
+    def get_Genres(self: win32more.Windows.Media.IMusicDisplayProperties2) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
     @winrt_mixinmethod
     def get_AlbumTrackCount(self: win32more.Windows.Media.IMusicDisplayProperties3) -> UInt32: ...
     @winrt_mixinmethod
@@ -1024,33 +1007,32 @@ class MusicDisplayProperties(ComPtr):
     Title = property(get_Title, put_Title)
     TrackNumber = property(get_TrackNumber, put_TrackNumber)
 class PlaybackPositionChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IPlaybackPositionChangeRequestedEventArgs
     _classid_ = 'Windows.Media.PlaybackPositionChangeRequestedEventArgs'
     @winrt_mixinmethod
     def get_RequestedPlaybackPosition(self: win32more.Windows.Media.IPlaybackPositionChangeRequestedEventArgs) -> win32more.Windows.Foundation.TimeSpan: ...
     RequestedPlaybackPosition = property(get_RequestedPlaybackPosition, None)
 class PlaybackRateChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IPlaybackRateChangeRequestedEventArgs
     _classid_ = 'Windows.Media.PlaybackRateChangeRequestedEventArgs'
     @winrt_mixinmethod
     def get_RequestedPlaybackRate(self: win32more.Windows.Media.IPlaybackRateChangeRequestedEventArgs) -> Double: ...
     RequestedPlaybackRate = property(get_RequestedPlaybackRate, None)
 class ShuffleEnabledChangeRequestedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IShuffleEnabledChangeRequestedEventArgs
     _classid_ = 'Windows.Media.ShuffleEnabledChangeRequestedEventArgs'
     @winrt_mixinmethod
     def get_RequestedShuffleEnabled(self: win32more.Windows.Media.IShuffleEnabledChangeRequestedEventArgs) -> Boolean: ...
     RequestedShuffleEnabled = property(get_RequestedShuffleEnabled, None)
 class SoundLevel(Enum, Int32):
-    _name_ = 'Windows.Media.SoundLevel'
     Muted = 0
     Low = 1
     Full = 2
 class SystemMediaTransportControls(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.ISystemMediaTransportControls
     _classid_ = 'Windows.Media.SystemMediaTransportControls'
     @winrt_mixinmethod
@@ -1162,14 +1144,13 @@ class SystemMediaTransportControls(ComPtr):
     PlaybackStatus = property(get_PlaybackStatus, put_PlaybackStatus)
     ShuffleEnabled = property(get_ShuffleEnabled, put_ShuffleEnabled)
     SoundLevel = property(get_SoundLevel, None)
-    AutoRepeatModeChangeRequested = event(add_AutoRepeatModeChangeRequested, remove_AutoRepeatModeChangeRequested)
-    ButtonPressed = event(add_ButtonPressed, remove_ButtonPressed)
-    PlaybackPositionChangeRequested = event(add_PlaybackPositionChangeRequested, remove_PlaybackPositionChangeRequested)
-    PlaybackRateChangeRequested = event(add_PlaybackRateChangeRequested, remove_PlaybackRateChangeRequested)
-    PropertyChanged = event(add_PropertyChanged, remove_PropertyChanged)
-    ShuffleEnabledChangeRequested = event(add_ShuffleEnabledChangeRequested, remove_ShuffleEnabledChangeRequested)
+    ButtonPressed = event()
+    PropertyChanged = event()
+    PlaybackPositionChangeRequested = event()
+    PlaybackRateChangeRequested = event()
+    ShuffleEnabledChangeRequested = event()
+    AutoRepeatModeChangeRequested = event()
 class SystemMediaTransportControlsButton(Enum, Int32):
-    _name_ = 'Windows.Media.SystemMediaTransportControlsButton'
     Play = 0
     Pause = 1
     Stop = 2
@@ -1181,14 +1162,14 @@ class SystemMediaTransportControlsButton(Enum, Int32):
     ChannelUp = 8
     ChannelDown = 9
 class SystemMediaTransportControlsButtonPressedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.ISystemMediaTransportControlsButtonPressedEventArgs
     _classid_ = 'Windows.Media.SystemMediaTransportControlsButtonPressedEventArgs'
     @winrt_mixinmethod
     def get_Button(self: win32more.Windows.Media.ISystemMediaTransportControlsButtonPressedEventArgs) -> win32more.Windows.Media.SystemMediaTransportControlsButton: ...
     Button = property(get_Button, None)
 class SystemMediaTransportControlsDisplayUpdater(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater
     _classid_ = 'Windows.Media.SystemMediaTransportControlsDisplayUpdater'
     @winrt_mixinmethod
@@ -1196,9 +1177,9 @@ class SystemMediaTransportControlsDisplayUpdater(ComPtr):
     @winrt_mixinmethod
     def put_Type(self: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater, value: win32more.Windows.Media.MediaPlaybackType) -> Void: ...
     @winrt_mixinmethod
-    def get_AppMediaId(self: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater) -> hstr: ...
+    def get_AppMediaId(self: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_AppMediaId(self: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater, value: hstr) -> Void: ...
+    def put_AppMediaId(self: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
     def get_Thumbnail(self: win32more.Windows.Media.ISystemMediaTransportControlsDisplayUpdater) -> win32more.Windows.Storage.Streams.RandomAccessStreamReference: ...
     @winrt_mixinmethod
@@ -1222,17 +1203,16 @@ class SystemMediaTransportControlsDisplayUpdater(ComPtr):
     Type = property(get_Type, put_Type)
     VideoProperties = property(get_VideoProperties, None)
 class SystemMediaTransportControlsProperty(Enum, Int32):
-    _name_ = 'Windows.Media.SystemMediaTransportControlsProperty'
     SoundLevel = 0
 class SystemMediaTransportControlsPropertyChangedEventArgs(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.ISystemMediaTransportControlsPropertyChangedEventArgs
     _classid_ = 'Windows.Media.SystemMediaTransportControlsPropertyChangedEventArgs'
     @winrt_mixinmethod
     def get_Property(self: win32more.Windows.Media.ISystemMediaTransportControlsPropertyChangedEventArgs) -> win32more.Windows.Media.SystemMediaTransportControlsProperty: ...
     Property = property(get_Property, None)
 class SystemMediaTransportControlsTimelineProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.ISystemMediaTransportControlsTimelineProperties
     _classid_ = 'Windows.Media.SystemMediaTransportControlsTimelineProperties'
     def __init__(self, *args, **kwargs):
@@ -1270,32 +1250,32 @@ class SystemMediaTransportControlsTimelineProperties(ComPtr):
     Position = property(get_Position, put_Position)
     StartTime = property(get_StartTime, put_StartTime)
 class VideoDisplayProperties(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Media.IVideoDisplayProperties
     _classid_ = 'Windows.Media.VideoDisplayProperties'
     @winrt_mixinmethod
-    def get_Title(self: win32more.Windows.Media.IVideoDisplayProperties) -> hstr: ...
+    def get_Title(self: win32more.Windows.Media.IVideoDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Title(self: win32more.Windows.Media.IVideoDisplayProperties, value: hstr) -> Void: ...
+    def put_Title(self: win32more.Windows.Media.IVideoDisplayProperties, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def get_Subtitle(self: win32more.Windows.Media.IVideoDisplayProperties) -> hstr: ...
+    def get_Subtitle(self: win32more.Windows.Media.IVideoDisplayProperties) -> WinRT_String: ...
     @winrt_mixinmethod
-    def put_Subtitle(self: win32more.Windows.Media.IVideoDisplayProperties, value: hstr) -> Void: ...
+    def put_Subtitle(self: win32more.Windows.Media.IVideoDisplayProperties, value: WinRT_String) -> Void: ...
     @winrt_mixinmethod
-    def get_Genres(self: win32more.Windows.Media.IVideoDisplayProperties2) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
+    def get_Genres(self: win32more.Windows.Media.IVideoDisplayProperties2) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
     Genres = property(get_Genres, None)
     Subtitle = property(get_Subtitle, put_Subtitle)
     Title = property(get_Title, put_Title)
 class _VideoEffects_Meta_(ComPtr.__class__):
     pass
 class VideoEffects(ComPtr, metaclass=_VideoEffects_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Media.VideoEffects'
     @winrt_classmethod
-    def get_VideoStabilization(cls: win32more.Windows.Media.IVideoEffectsStatics) -> hstr: ...
+    def get_VideoStabilization(cls: win32more.Windows.Media.IVideoEffectsStatics) -> WinRT_String: ...
     _VideoEffects_Meta_.VideoStabilization = property(get_VideoStabilization, None)
 class VideoFrame(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Media.IVideoFrame
     _classid_ = 'Windows.Media.VideoFrame'
@@ -1319,7 +1299,7 @@ class VideoFrame(ComPtr):
     @winrt_mixinmethod
     def get_Direct3DSurface(self: win32more.Windows.Media.IVideoFrame) -> win32more.Windows.Graphics.DirectX.Direct3D11.IDirect3DSurface: ...
     @winrt_mixinmethod
-    def get_Type(self: win32more.Windows.Media.IMediaFrame) -> hstr: ...
+    def get_Type(self: win32more.Windows.Media.IMediaFrame) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_IsReadOnly(self: win32more.Windows.Media.IMediaFrame) -> Boolean: ...
     @winrt_mixinmethod

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Devices.PortableDevices
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Storage.EnhancedStorage
@@ -536,22 +536,16 @@ PKEY_SourcePackageFamilyName: win32more.Windows.Win32.Foundation.PROPERTYKEY = C
 PKEY_StartDate: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{48fd6ec8-8a12-4cdf-a03e-4ec5a511edde}'), pid=100)
 PKEY_Status: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{000214a1-0000-0000-c000-000000000046}'), pid=9)
 PKEY_StorageProviderCallerVersionInformation: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=7)
-PKEY_StorageProviderCustomPrimaryIcon: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=12)
-STORAGEPROVIDERCUSTOM_ICON_PHONE: UInt32 = 0
 PKEY_StorageProviderError: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=109)
 PKEY_StorageProviderFileChecksum: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=5)
 PKEY_StorageProviderFileCreatedBy: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=10)
-PKEY_StorageProviderFileDateShared: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=14)
 PKEY_StorageProviderFileFlags: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=8)
 PKEY_StorageProviderFileHasConflict: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=9)
 PKEY_StorageProviderFileIdentifier: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=3)
 PKEY_StorageProviderFileModifiedBy: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=11)
-PKEY_StorageProviderFileRemoteLocation: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=16)
 PKEY_StorageProviderFileRemoteUri: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=112)
-PKEY_StorageProviderFileSharedBy: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=15)
 PKEY_StorageProviderFileVersion: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=4)
 PKEY_StorageProviderFileVersionWaterline: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=6)
-PKEY_StorageProviderFullyQualifiedId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=119)
 PKEY_StorageProviderId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=108)
 PKEY_StorageProviderShareStatuses: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=111)
 STORAGE_PROVIDER_SHARE_STATUS_PRIVATE: String = 'Private'
@@ -569,11 +563,6 @@ STORAGE_PROVIDER_SHARINGSTATUS_SHARED_COOWNED: UInt32 = 5
 STORAGE_PROVIDER_SHARINGSTATUS_PUBLIC_OWNED: UInt32 = 6
 STORAGE_PROVIDER_SHARINGSTATUS_PUBLIC_COOWNED: UInt32 = 7
 PKEY_StorageProviderStatus: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=110)
-PKEY_StorageProviderUserAccountKind: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=17)
-STORAGEPROVIDERUSERACCOUNTKIND_UNKNOWN: UInt32 = 0
-STORAGEPROVIDERUSERACCOUNTKIND_CONSUMER: UInt32 = 1
-STORAGEPROVIDERUSERACCOUNTKIND_BUSINESS: UInt32 = 2
-PKEY_StorageProviderUserId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b2f9b9d6-fec4-4dd5-94d7-8957488c807b}'), pid=13)
 PKEY_Subject: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{f29f85e0-4ff9-1068-ab91-08002b27b3d9}'), pid=3)
 PKEY_SyncTransferStatus: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{fceff153-e839-4cf3-a9e7-ea22832094b8}'), pid=103)
 PKEY_Thumbnail: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{f29f85e0-4ff9-1068-ab91-08002b27b3d9}'), pid=17)
@@ -639,7 +628,6 @@ BLUETOOTH_ADDRESS_TYPE_RANDOM: UInt32 = 1
 PKEY_Devices_Aep_Bluetooth_Le_Appearance: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{995ef0b0-7eb3-4a8b-b9ce-068bb3f4af69}'), pid=1)
 PKEY_Devices_Aep_Bluetooth_Le_Appearance_Category: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{995ef0b0-7eb3-4a8b-b9ce-068bb3f4af69}'), pid=5)
 PKEY_Devices_Aep_Bluetooth_Le_Appearance_Subcategory: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{995ef0b0-7eb3-4a8b-b9ce-068bb3f4af69}'), pid=6)
-PKEY_Devices_Aep_Bluetooth_Le_IsCallControlClient: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{995ef0b0-7eb3-4a8b-b9ce-068bb3f4af69}'), pid=12)
 PKEY_Devices_Aep_Bluetooth_Le_IsConnectable: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{995ef0b0-7eb3-4a8b-b9ce-068bb3f4af69}'), pid=8)
 PKEY_Devices_Aep_CanPair: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{e7c3fb29-caa7-4f47-8c8b-be59b330d4c5}'), pid=3)
 PKEY_Devices_Aep_Category: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{a35996ab-11cf-4935-8b61-a6761081ecdf}'), pid=17)
@@ -691,7 +679,6 @@ PKEY_Devices_AepService_ProtocolId: win32more.Windows.Win32.Foundation.PROPERTYK
 PKEY_Devices_AepService_ServiceClassId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{71724756-3e74-4432-9b59-e7b2f668a593}'), pid=3)
 PKEY_Devices_AepService_ServiceId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{c9c141a9-1b4c-4f17-a9d1-f298538cadb8}'), pid=2)
 PKEY_Devices_AppPackageFamilyName: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{51236583-0c4a-4fe8-b81f-166aec13f510}'), pid=100)
-PKEY_Devices_AudioDevice_Microphone_EqCoefficientsDb: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{8943b373-388c-4395-b557-bc6dbaffafdb}'), pid=7)
 PKEY_Devices_AudioDevice_Microphone_IsFarField: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{8943b373-388c-4395-b557-bc6dbaffafdb}'), pid=6)
 PKEY_Devices_AudioDevice_Microphone_SensitivityInDbfs: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{8943b373-388c-4395-b557-bc6dbaffafdb}'), pid=3)
 PKEY_Devices_AudioDevice_Microphone_SensitivityInDbfs2: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{8943b373-388c-4395-b557-bc6dbaffafdb}'), pid=5)
@@ -1026,20 +1013,12 @@ PKEY_Message_ToAddress: win32more.Windows.Win32.Foundation.PROPERTYKEY = Constan
 PKEY_Message_ToDoFlags: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1f856a9f-6900-4aba-9505-2d5f1b4d66cb}'), pid=100)
 PKEY_Message_ToDoTitle: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{bccc8a3c-8cef-42e5-9b1c-c69079398bc7}'), pid=100)
 PKEY_Message_ToName: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{e3e0584c-b788-4a5a-bb20-7f5a44c9acdd}'), pid=17)
-PKEY_MsGraph_ActivityType: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=14)
 PKEY_MsGraph_CompositeId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=2)
-PKEY_MsGraph_DateLastShared: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=9)
 PKEY_MsGraph_DriveId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=3)
-PKEY_MsGraph_GraphFileType: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=16)
-PKEY_MsGraph_IconUrl: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=15)
 PKEY_MsGraph_ItemId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=4)
-PKEY_MsGraph_PrimaryActivityActorDisplayName: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=13)
-PKEY_MsGraph_PrimaryActivityActorUpn: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=12)
 PKEY_MsGraph_RecommendationReason: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=8)
 PKEY_MsGraph_RecommendationReferenceId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=5)
 PKEY_MsGraph_RecommendationResultSourceId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=7)
-PKEY_MsGraph_SharedByEmail: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=11)
-PKEY_MsGraph_SharedByName: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=10)
 PKEY_MsGraph_WebAccountId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{4f85567e-fff0-4df5-b1d9-98b314ff0729}'), pid=6)
 PKEY_Music_AlbumArtist: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{56a3372e-ce9c-11d2-9f0e-006097c686f6}'), pid=13)
 PKEY_Music_AlbumArtistSortOverride: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{f1fdb4af-f78c-466c-bb05-56e92db0b8ec}'), pid=103)
@@ -1267,7 +1246,6 @@ PKEY_RecordedTV_RecordingTime: win32more.Windows.Win32.Foundation.PROPERTYKEY = 
 PKEY_RecordedTV_StationCallSign: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{6d748de2-8d38-4cc3-ac60-f009b057c557}'), pid=5)
 PKEY_RecordedTV_StationName: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{1b5439e7-eba1-4af8-bdd7-7af1d4549493}'), pid=100)
 PKEY_LocationEmptyString: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{62d2d9ab-8b64-498d-b865-402d4796f865}'), pid=3)
-PKEY_Search_AutoCategory: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b725f130-47ef-101a-a5f1-02608c9eebac}'), pid=31)
 PKEY_Search_AutoSummary: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{560c36c0-503a-11cf-baa1-00004c752a9a}'), pid=2)
 PKEY_Search_ContainerHash: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{bceee283-35df-4d53-826a-f36a3eefc6be}'), pid=100)
 PKEY_Search_Contents: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b725f130-47ef-101a-a5f1-02608c9eebac}'), pid=19)
@@ -1277,11 +1255,6 @@ PKEY_Search_GatherTime: win32more.Windows.Win32.Foundation.PROPERTYKEY = Constan
 PKEY_Search_HitCount: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{49691c90-7e17-101a-a91c-08002b2ecda9}'), pid=4)
 PKEY_Search_IsClosedDirectory: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{0b63e343-9ccc-11d0-bcdb-00805fccce04}'), pid=23)
 PKEY_Search_IsFullyContained: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{0b63e343-9ccc-11d0-bcdb-00805fccce04}'), pid=24)
-PKEY_Search_MatchKind: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{49691c90-7e17-101a-a91c-08002b2ecda9}'), pid=29)
-MATCH_KIND_LEXICAL: Int32 = 1
-MATCH_KIND_SEMANTIC: Int32 = 2
-PKEY_Search_MatchTags: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{49691c90-7e17-101a-a91c-08002b2ecda9}'), pid=30)
-PKEY_Search_OcrContent: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{b725f130-47ef-101a-a5f1-02608c9eebac}'), pid=28)
 PKEY_Search_QueryFocusedSummary: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{560c36c0-503a-11cf-baa1-00004c752a9a}'), pid=3)
 PKEY_Search_QueryFocusedSummaryWithFallback: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{560c36c0-503a-11cf-baa1-00004c752a9a}'), pid=4)
 PKEY_Search_QueryPropertyHits: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{49691c90-7e17-101a-a91c-08002b2ecda9}'), pid=21)
@@ -1295,8 +1268,6 @@ PKEY_Supplemental_Location: win32more.Windows.Win32.Foundation.PROPERTYKEY = Con
 PKEY_Supplemental_Person: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{0c73b141-39d6-4653-a683-cab291eaf95b}'), pid=7)
 PKEY_Supplemental_ResourceId: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{0c73b141-39d6-4653-a683-cab291eaf95b}'), pid=3)
 PKEY_Supplemental_Tag: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{0c73b141-39d6-4653-a683-cab291eaf95b}'), pid=4)
-PKEY_ActivityDate: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=23)
-PKEY_ActivityIcon: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=24)
 PKEY_ActivityInfo: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=17)
 PKEY_DescriptionID: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{28636aa6-953d-11d2-b5d6-00c04fd918d0}'), pid=2)
 PKEY_Home_Grouping: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=2)
@@ -1305,19 +1276,13 @@ HOMEGROUPING_FREQUENT: UInt32 = 1
 HOMEGROUPING_PINNED: UInt32 = 2
 HOMEGROUPING_RECENT: UInt32 = 3
 HOMEGROUPING_RECOMMENDATIONS: UInt32 = 4
-HOMEGROUPING_SHARED: UInt32 = 5
 PKEY_Home_IsPinned: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=4)
 PKEY_Home_ItemFolderPathDisplay: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=6)
-PKEY_Home_RecommendationActivityDate: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=22)
-PKEY_Home_RecommendationProviderSource: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{5ca9b1cb-c69f-404b-abc6-fd336793a6a7}'), pid=22)
-PKEY_Home_RecommendationReasonIcon: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=21)
-PKEY_Home_Recommended: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=20)
 PKEY_InternalName: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{0cef7d53-fa64-11d1-a203-0000f81fedee}'), pid=5)
 PKEY_LibraryLocationsCount: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{908696c7-8f87-44f2-80ed-a8c1c6894575}'), pid=2)
 PKEY_Link_TargetSFGAOFlagsStrings: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d6942081-d53b-443d-ad47-5e059d9cd27a}'), pid=3)
 PKEY_Link_TargetUrl: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{5cbf2787-48cf-4208-b90e-ee5e5d420294}'), pid=2)
 PKEY_NamespaceCLSID: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{28636aa6-953d-11d2-b5d6-00c04fd918d0}'), pid=6)
-PKEY_Shell_CopilotKeyProviderFastPathMessage: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{38652bca-4329-4e74-86f9-39cf29345eea}'), pid=2)
 PKEY_Shell_SFGAOFlagsStrings: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{d6942081-d53b-443d-ad47-5e059d9cd27a}'), pid=2)
 SFGAOSTR_FILESYS: String = 'filesys'
 SFGAOSTR_FILEANC: String = 'fileanc'
@@ -1346,7 +1311,7 @@ STORAGEPROVIDERSTATE_WARNING: UInt32 = 8
 STORAGEPROVIDERSTATE_EXCLUDED: UInt32 = 9
 STORAGEPROVIDERSTATE_PENDING_UNSPECIFIED: UInt32 = 10
 PKEY_StorageProviderTransferProgress: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{e77e90df-6271-4f5b-834f-2dd1f245dda4}'), pid=4)
-PKEY_WebAccountID: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{30c8eef4-a832-41e2-ab32-e3c3ca28fd29}'), pid=7)
+PKEY_StorageProviderUIStatus: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{e77e90df-6271-4f5b-834f-2dd1f245dda4}'), pid=2)
 PKEY_AppUserModel_ExcludeFromShowInNewInstall: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{9f4c2855-9f79-4b39-a8d0-e1d42de1d5f3}'), pid=8)
 PKEY_AppUserModel_ID: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{9f4c2855-9f79-4b39-a8d0-e1d42de1d5f3}'), pid=5)
 PKEY_AppUserModel_IsDestListSeparator: win32more.Windows.Win32.Foundation.PROPERTYKEY = ConstantLazyLoader(fmtid=Guid('{9f4c2855-9f79-4b39-a8d0-e1d42de1d5f3}'), pid=6)

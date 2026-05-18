@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct2D.Common
 import win32more.Windows.Win32.Graphics.Dxgi.Common
@@ -101,12 +101,10 @@ class D2D_COLOR_F(Structure):
     a: Single
 class D2D_MATRIX_3X2_F(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
         m: Single * 6
-        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             m11: Single
             m12: Single
@@ -123,11 +121,9 @@ class D2D_MATRIX_3X2_F(Structure):
             _32: Single
 class D2D_MATRIX_4X3_F(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         m: Single * 12
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             _11: Single
             _12: Single
@@ -143,11 +139,9 @@ class D2D_MATRIX_4X3_F(Structure):
             _43: Single
 class D2D_MATRIX_4X4_F(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         m: Single * 16
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             _11: Single
             _12: Single
@@ -167,11 +161,9 @@ class D2D_MATRIX_4X4_F(Structure):
             _44: Single
 class D2D_MATRIX_5X4_F(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         m: Single * 20
-        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             _11: Single
             _12: Single

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.UI.Shell
@@ -61,7 +61,6 @@ GUID_IO_VOLUME_INFO_MAKE_COMPAT: Guid = Guid('{3ab9a0d2-ef80-45cf-8cdc-cbe02a212
 GUID_IO_VOLUME_PREPARING_EJECT: Guid = Guid('{c79eb16e-0dac-4e7a-a86c-b25ceeaa88f6}')
 GUID_IO_VOLUME_BACKGROUND_FORMAT: Guid = Guid('{a2e5fc86-d5cd-4038-b2e3-4445065c2377}')
 GUID_IO_VOLUME_PHYSICAL_CONFIGURATION_CHANGE: Guid = Guid('{2de97f84-4c06-11d2-a532-00609713055a}')
-GUID_IO_VOLUME_PREPARE_DELETE: Guid = Guid('{ac0707fb-4a9a-4c81-9e2e-385b79a8fd28}')
 GUID_IO_VOLUME_UNIQUE_ID_CHANGE: Guid = Guid('{af39da42-6622-41f5-970b-139d092fa3d9}')
 GUID_IO_VOLUME_FVE_STATUS_CHANGE: Guid = Guid('{062998b2-ee1f-4b6a-b857-e76cbbe9a6da}')
 GUID_IO_VOLUME_DEVICE_INTERFACE: Guid = Guid('{53f5630d-b6bf-11d0-94f2-00a0c91efb8b}')
@@ -96,7 +95,6 @@ __WARNING_RETURN_UNINIT_VAR: UInt32 = 6101
 __WARNING_DEREF_NULL_PTR: UInt32 = 6011
 __WARNING_MISSING_ZERO_TERMINATION2: UInt32 = 6054
 __WARNING_INVALID_PARAM_VALUE_1: UInt32 = 6387
-__WARNING_UNSAFE_STRING_FUNCTION: UInt32 = 25025
 __WARNING_INCORRECT_ANNOTATION: UInt32 = 26007
 __WARNING_POTENTIAL_BUFFER_OVERFLOW_HIGH_PRIORITY: UInt32 = 26015
 __WARNING_PRECONDITION_NULLTERMINATION_VIOLATION: UInt32 = 26035
@@ -179,7 +177,6 @@ ISOLATIONPOLICY_MANIFEST_RESOURCE_ID: UInt32 = 4
 ISOLATIONPOLICY_BROWSER_MANIFEST_RESOURCE_ID: UInt32 = 5
 MINIMUM_RESERVED_MANIFEST_RESOURCE_ID: UInt32 = 1
 MAXIMUM_RESERVED_MANIFEST_RESOURCE_ID: UInt32 = 16
-SB_MIN: UInt32 = 0
 HIDE_WINDOW: UInt32 = 0
 SHOW_OPENWINDOW: UInt32 = 1
 SHOW_ICONWINDOW: UInt32 = 2
@@ -224,7 +221,6 @@ WTS_SESSION_UNLOCK: UInt32 = 8
 WTS_SESSION_REMOTE_CONTROL: UInt32 = 9
 WTS_SESSION_CREATE: UInt32 = 10
 WTS_SESSION_TERMINATE: UInt32 = 11
-WTS_SESSION_DESKTOP_READY: UInt32 = 15
 MSGF_DIALOGBOX: UInt32 = 0
 MSGF_MESSAGEBOX: UInt32 = 1
 MSGF_MENU: UInt32 = 2
@@ -644,7 +640,6 @@ ISMEX_CALLBACK: UInt32 = 4
 ISMEX_REPLIED: UInt32 = 8
 HWND_DESKTOP: win32more.Windows.Win32.Foundation.HWND = 0
 PW_RENDERFULLCONTENT: UInt32 = 2
-SWP_NONE: UInt32 = 0
 HWND_TOP: win32more.Windows.Win32.Foundation.HWND = 0
 HWND_BOTTOM: win32more.Windows.Win32.Foundation.HWND = 1
 HWND_TOPMOST: win32more.Windows.Win32.Foundation.HWND = -1
@@ -700,18 +695,6 @@ SM_RESERVED3: UInt32 = 26
 SM_RESERVED4: UInt32 = 27
 SM_CMETRICS: UInt32 = 76
 SM_CARETBLINKINGENABLED: UInt32 = 8194
-MENU_GET_ITEM_INFO: UInt32 = 1
-MENU_GET_ITEM_DATA: UInt32 = 2
-MENU_GET_SUBMENU: UInt32 = 4
-MENU_INSERT_MENU: UInt32 = 8
-MENU_INSERT_ITEM: UInt32 = 16
-MENU_DELETE_MENU: UInt32 = 32
-MENU_SET_ITEM_INFO: UInt32 = 64
-MENU_ENABLE_ITEM: UInt32 = 128
-MENU_CHECK_ITEM: UInt32 = 256
-MENU_SET_DEFAULT_ITEM: UInt32 = 512
-MENU_SET_ITEM_DATA: UInt32 = 1024
-MENU_SET_SUBMENU: UInt32 = 2048
 PMB_ACTIVE: UInt32 = 1
 MNC_IGNORE: UInt32 = 0
 MNC_CLOSE: UInt32 = 1
@@ -1372,7 +1355,6 @@ STATE_SYSTEM_PROTECTED: UInt32 = 536870912
 STATE_SYSTEM_VALID: UInt32 = 1073741823
 CCHILDREN_TITLEBAR: UInt32 = 5
 CCHILDREN_SCROLLBAR: UInt32 = 5
-CURSOR_INVISIBLE: UInt32 = 0
 RIM_INPUT: UInt32 = 0
 RIM_INPUTSINK: UInt32 = 1
 RIM_TYPEMAX: UInt32 = 2
@@ -1416,8 +1398,6 @@ PDC_MAPPING_CHANGE: UInt32 = 256
 PDC_RESOLUTION: UInt32 = 512
 PDC_ORIGIN: UInt32 = 1024
 PDC_MODE_ASPECTRATIOPRESERVED: UInt32 = 2048
-TOUCHPAD_PARAMETERS_VERSION_1: UInt32 = 1
-TOUCHPAD_PARAMETERS_VERSION_2: UInt32 = 2
 GF_BEGIN: UInt32 = 1
 GF_INERTIA: UInt32 = 2
 GF_END: UInt32 = 4
@@ -1430,10 +1410,7 @@ NID_EXTERNAL_PEN: UInt32 = 8
 NID_MULTI_INPUT: UInt32 = 64
 NID_READY: UInt32 = 128
 MAX_STR_BLOCKREASON: UInt32 = 256
-WM_INTERCEPTED_WINDOW_ACTION: UInt32 = 838
 WM_TOOLTIPDISMISS: UInt32 = 837
-INVALID_MONITOR_TOPOLOGY_ID: UInt32 = 0
-WM_CLOAKED_STATE_CHANGED: UInt32 = 839
 HBMMENU_CALLBACK: win32more.Windows.Win32.Graphics.Gdi.HBITMAP = -1
 HBMMENU_SYSTEM: win32more.Windows.Win32.Graphics.Gdi.HBITMAP = 1
 HBMMENU_MBAR_RESTORE: win32more.Windows.Win32.Graphics.Gdi.HBITMAP = 2
@@ -1817,9 +1794,6 @@ def IsCharUpperW(ch: Char) -> win32more.Windows.Win32.Foundation.BOOL: ...
 IsCharUpper = UnicodeAlias('IsCharUpperW')
 @winfunctype('USER32.dll')
 def IsCharLowerA(ch: win32more.Windows.Win32.Foundation.CHAR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def IsCharLowerW(ch: Char) -> win32more.Windows.Win32.Foundation.BOOL: ...
-IsCharLower = UnicodeAlias('IsCharLowerW')
 @winfunctype('USER32.dll')
 def GetInputState() -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
@@ -2337,25 +2311,9 @@ def ChangeWindowMessageFilter(message: UInt32, dwFlag: win32more.Windows.Win32.U
 @winfunctype('USER32.dll')
 def ChangeWindowMessageFilterEx(hwnd: win32more.Windows.Win32.Foundation.HWND, message: UInt32, action: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_MESSAGE_FILTER_ACTION, pChangeFilterStruct: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.CHANGEFILTERSTRUCT)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def ConvertToInterceptWindow(topLevelWindow: win32more.Windows.Win32.Foundation.HWND) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def IsInterceptWindow(topLevelWindow: win32more.Windows.Win32.Foundation.HWND, isIntercept: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def ApplyWindowAction(hwnd: win32more.Windows.Win32.Foundation.HWND, pAction: POINTER(win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
 def SetAdditionalForegroundBoostProcesses(topLevelWindow: win32more.Windows.Win32.Foundation.HWND, processHandleCount: UInt32, processHandleArray: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
 def RegisterForTooltipDismissNotification(hWnd: win32more.Windows.Win32.Foundation.HWND, tdFlags: win32more.Windows.Win32.UI.WindowsAndMessaging.TOOLTIP_DISMISS_FLAGS) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def ConvertPrimaryPointerToMouseDrag() -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def IsWindowArranged(hwnd: win32more.Windows.Win32.Foundation.HWND) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def GetCurrentMonitorTopologyId() -> UInt32: ...
-@winfunctype('USER32.dll')
-def RegisterCloakedNotification(hwnd: win32more.Windows.Win32.Foundation.HWND, fRegister: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('USER32.dll')
-def EnterMoveSizeLoop(hwnd: win32more.Windows.Win32.Foundation.HWND, ptCursor: win32more.Windows.Win32.Foundation.POINT, moveSizeCode: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('MrmSupport.dll')
 def CreateResourceIndexer(projectRoot: win32more.Windows.Win32.Foundation.PWSTR, extensionDllPath: win32more.Windows.Win32.Foundation.PWSTR, ppResourceIndexer: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('MrmSupport.dll')
@@ -2410,6 +2368,8 @@ def MrmCreateConfig(platformVersion: win32more.Windows.Win32.UI.WindowsAndMessag
 def MrmCreateConfigInMemory(platformVersion: win32more.Windows.Win32.UI.WindowsAndMessaging.MrmPlatformVersion, defaultQualifiers: win32more.Windows.Win32.Foundation.PWSTR, outputXmlData: POINTER(POINTER(Byte)), outputXmlSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('MrmSupport.dll')
 def MrmGetPriFileContentChecksum(priFile: win32more.Windows.Win32.Foundation.PWSTR, checksum: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('USER32.dll')
+def IsWindowArranged(hwnd: win32more.Windows.Win32.Foundation.HWND) -> win32more.Windows.Win32.Foundation.BOOL: ...
 CASCADE_WINDOWS_HOW = UInt32
 MDITILE_SKIPDISABLED: win32more.Windows.Win32.UI.WindowsAndMessaging.CASCADE_WINDOWS_HOW = 2
 MDITILE_ZORDER: win32more.Windows.Win32.UI.WindowsAndMessaging.CASCADE_WINDOWS_HOW = 4
@@ -2526,13 +2486,13 @@ class DEV_BROADCAST_DEVICEINTERFACE_A(Structure):
     dbcc_devicetype: UInt32
     dbcc_reserved: UInt32
     dbcc_classguid: Guid
-    dbcc_name: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
+    dbcc_name: win32more.Windows.Win32.Foundation.CHAR * 1
 class DEV_BROADCAST_DEVICEINTERFACE_W(Structure):
     dbcc_size: UInt32
     dbcc_devicetype: UInt32
     dbcc_reserved: UInt32
     dbcc_classguid: Guid
-    dbcc_name: FlexibleArray[Char]
+    dbcc_name: Char * 1
 DEV_BROADCAST_DEVICEINTERFACE = UnicodeAlias('DEV_BROADCAST_DEVICEINTERFACE_W')
 class DEV_BROADCAST_DEVNODE(Structure):
     dbcd_size: UInt32
@@ -2547,7 +2507,7 @@ class DEV_BROADCAST_HANDLE(Structure):
     dbch_hdevnotify: win32more.Windows.Win32.UI.WindowsAndMessaging.HDEVNOTIFY
     dbch_eventguid: Guid
     dbch_nameoffset: Int32
-    dbch_data: FlexibleArray[Byte]
+    dbch_data: Byte * 1
 class DEV_BROADCAST_HANDLE32(Structure):
     dbch_size: UInt32
     dbch_devicetype: UInt32
@@ -2556,7 +2516,7 @@ class DEV_BROADCAST_HANDLE32(Structure):
     dbch_hdevnotify: UInt32
     dbch_eventguid: Guid
     dbch_nameoffset: Int32
-    dbch_data: FlexibleArray[Byte]
+    dbch_data: Byte * 1
 class DEV_BROADCAST_HANDLE64(Structure):
     dbch_size: UInt32
     dbch_devicetype: UInt32
@@ -2565,7 +2525,7 @@ class DEV_BROADCAST_HANDLE64(Structure):
     dbch_hdevnotify: UInt64
     dbch_eventguid: Guid
     dbch_nameoffset: Int32
-    dbch_data: FlexibleArray[Byte]
+    dbch_data: Byte * 1
 class DEV_BROADCAST_HDR(Structure):
     dbch_size: UInt32
     dbch_devicetype: win32more.Windows.Win32.UI.WindowsAndMessaging.DEV_BROADCAST_HDR_DEVICE_TYPE
@@ -2592,12 +2552,12 @@ class DEV_BROADCAST_PORT_A(Structure):
     dbcp_size: UInt32
     dbcp_devicetype: UInt32
     dbcp_reserved: UInt32
-    dbcp_name: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
+    dbcp_name: win32more.Windows.Win32.Foundation.CHAR * 1
 class DEV_BROADCAST_PORT_W(Structure):
     dbcp_size: UInt32
     dbcp_devicetype: UInt32
     dbcp_reserved: UInt32
-    dbcp_name: FlexibleArray[Char]
+    dbcp_name: Char * 1
 DEV_BROADCAST_PORT = UnicodeAlias('DEV_BROADCAST_PORT_W')
 class DEV_BROADCAST_VOLUME(Structure):
     dbcv_size: UInt32
@@ -2669,11 +2629,6 @@ FLASHW_TRAY: win32more.Windows.Win32.UI.WindowsAndMessaging.FLASHWINFO_FLAGS = 2
 FOREGROUND_WINDOW_LOCK_CODE = UInt32
 LSFW_LOCK: win32more.Windows.Win32.UI.WindowsAndMessaging.FOREGROUND_WINDOW_LOCK_CODE = 1
 LSFW_UNLOCK: win32more.Windows.Win32.UI.WindowsAndMessaging.FOREGROUND_WINDOW_LOCK_CODE = 2
-class FRAME_MARGIN(Structure):
-    left: Int16
-    right: Int16
-    top: Int16
-    bottom: Int16
 GDI_IMAGE_TYPE = UInt32
 IMAGE_BITMAP: win32more.Windows.Win32.UI.WindowsAndMessaging.GDI_IMAGE_TYPE = 0
 IMAGE_CURSOR: win32more.Windows.Win32.UI.WindowsAndMessaging.GDI_IMAGE_TYPE = 2
@@ -2822,10 +2777,6 @@ LLKHF_LOWER_IL_INJECTED: win32more.Windows.Win32.UI.WindowsAndMessaging.KBDLLHOO
 LAYERED_WINDOW_ATTRIBUTES_FLAGS = UInt32
 LWA_ALPHA: win32more.Windows.Win32.UI.WindowsAndMessaging.LAYERED_WINDOW_ATTRIBUTES_FLAGS = 2
 LWA_COLORKEY: win32more.Windows.Win32.UI.WindowsAndMessaging.LAYERED_WINDOW_ATTRIBUTES_FLAGS = 1
-LEGACY_TOUCHPAD_FEATURES = Int32
-LEGACY_TOUCHPAD_FEATURE_NONE: win32more.Windows.Win32.UI.WindowsAndMessaging.LEGACY_TOUCHPAD_FEATURES = 0
-LEGACY_TOUCHPAD_FEATURE_ENABLE_DISABLE: win32more.Windows.Win32.UI.WindowsAndMessaging.LEGACY_TOUCHPAD_FEATURES = 1
-LEGACY_TOUCHPAD_FEATURE_REVERSE_SCROLL_DIRECTION: win32more.Windows.Win32.UI.WindowsAndMessaging.LEGACY_TOUCHPAD_FEATURES = 4
 class MDICREATESTRUCTA(Structure):
     szClass: win32more.Windows.Win32.Foundation.PSTR
     szTitle: win32more.Windows.Win32.Foundation.PSTR
@@ -2856,9 +2807,9 @@ class MENUBARINFO(Structure):
     rcBar: win32more.Windows.Win32.Foundation.RECT
     hMenu: win32more.Windows.Win32.UI.WindowsAndMessaging.HMENU
     hwndMenu: win32more.Windows.Win32.Foundation.HWND
-    fBarFocused: Annotated[Int32, NativeBitfieldAttribute(1)]
-    fFocused: Annotated[Int32, NativeBitfieldAttribute(1)]
-    fUnused: Annotated[Int32, NativeBitfieldAttribute(30)]
+    fBarFocused: Annotated[Int32, 1]
+    fFocused: Annotated[Int32, 1]
+    fUnused: Annotated[Int32, 30]
 class MENUEX_TEMPLATE_HEADER(Structure):
     wVersion: UInt16
     wOffset: UInt16
@@ -2868,7 +2819,7 @@ class MENUEX_TEMPLATE_ITEM(Structure):
     dwState: UInt32
     uId: UInt32
     wFlags: UInt16
-    szText: FlexibleArray[Char]
+    szText: Char * 1
 class MENUGETOBJECTINFO(Structure):
     dwFlags: win32more.Windows.Win32.UI.WindowsAndMessaging.MENUGETOBJECTINFO_FLAGS
     uPos: UInt32
@@ -2930,22 +2881,21 @@ MENUITEMINFO = UnicodeAlias('MENUITEMINFOW')
 class MENUITEMTEMPLATE(Structure):
     mtOption: UInt16
     mtID: UInt16
-    mtString: FlexibleArray[Char]
+    mtString: Char * 1
 class MENUITEMTEMPLATEHEADER(Structure):
     versionNumber: UInt16
     offset: UInt16
 class MENUTEMPLATEEX(Structure):
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Menu: _Menu_e__Struct
         MenuEx: _MenuEx_e__Struct
         class _Menu_e__Struct(Structure):
             mitHeader: win32more.Windows.Win32.UI.WindowsAndMessaging.MENUITEMTEMPLATEHEADER
-            miTemplate: FlexibleArray[win32more.Windows.Win32.UI.WindowsAndMessaging.MENUITEMTEMPLATE]
+            miTemplate: win32more.Windows.Win32.UI.WindowsAndMessaging.MENUITEMTEMPLATE * 1
         class _MenuEx_e__Struct(Structure):
             mexHeader: win32more.Windows.Win32.UI.WindowsAndMessaging.MENUEX_TEMPLATE_HEADER
-            mexItem: FlexibleArray[win32more.Windows.Win32.UI.WindowsAndMessaging.MENUEX_TEMPLATE_ITEM]
+            mexItem: win32more.Windows.Win32.UI.WindowsAndMessaging.MENUEX_TEMPLATE_ITEM * 1
 MENU_ITEM_FLAGS = UInt32
 MF_BYCOMMAND: win32more.Windows.Win32.UI.WindowsAndMessaging.MENU_ITEM_FLAGS = 0
 MF_BYPOSITION: win32more.Windows.Win32.UI.WindowsAndMessaging.MENU_ITEM_FLAGS = 1024
@@ -3062,11 +3012,11 @@ class MESSAGE_RESOURCE_BLOCK(Structure):
     OffsetToEntries: UInt32
 class MESSAGE_RESOURCE_DATA(Structure):
     NumberOfBlocks: UInt32
-    Blocks: FlexibleArray[win32more.Windows.Win32.UI.WindowsAndMessaging.MESSAGE_RESOURCE_BLOCK]
+    Blocks: win32more.Windows.Win32.UI.WindowsAndMessaging.MESSAGE_RESOURCE_BLOCK * 1
 class MESSAGE_RESOURCE_ENTRY(Structure):
     Length: UInt16
     Flags: UInt16
-    Text: FlexibleArray[Byte]
+    Text: Byte * 1
 class MINIMIZEDMETRICS(Structure):
     cbSize: UInt32
     iWidth: Int32
@@ -3092,16 +3042,6 @@ class MOUSEHOOKSTRUCT(Structure):
 class MOUSEHOOKSTRUCTEX(Structure):
     Base: win32more.Windows.Win32.UI.WindowsAndMessaging.MOUSEHOOKSTRUCT
     mouseData: UInt32
-MOVESIZE_OPERATION = Int32
-MSO_SIZE_LEFT: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 1
-MSO_SIZE_RIGHT: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 2
-MSO_SIZE_TOP: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 3
-MSO_SIZE_TOPLEFT: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 4
-MSO_SIZE_TOPRIGHT: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 5
-MSO_SIZE_BOTTOM: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 6
-MSO_SIZE_BOTTOMLEFT: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 7
-MSO_SIZE_BOTTOMRIGHT: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 8
-MSO_MOVE: win32more.Windows.Win32.UI.WindowsAndMessaging.MOVESIZE_OPERATION = 9
 class MSG(Structure):
     hwnd: win32more.Windows.Win32.Foundation.HWND
     message: UInt32
@@ -3644,8 +3584,6 @@ SPI_GETLOGICALDPIOVERRIDE: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM
 SPI_SETLOGICALDPIOVERRIDE: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 159
 SPI_GETMENURECT: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 162
 SPI_SETMENURECT: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 163
-SPI_GETTOUCHPADPARAMETERS: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 174
-SPI_SETTOUCHPADPARAMETERS: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 175
 SPI_GETACTIVEWINDOWTRACKING: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 4096
 SPI_SETACTIVEWINDOWTRACKING: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 4097
 SPI_GETMENUANIMATION: win32more.Windows.Win32.UI.WindowsAndMessaging.SYSTEM_PARAMETERS_INFO_ACTION = 4098
@@ -3761,47 +3699,6 @@ class TITLEBARINFOEX(Structure):
 TOOLTIP_DISMISS_FLAGS = Int32
 TDF_REGISTER: win32more.Windows.Win32.UI.WindowsAndMessaging.TOOLTIP_DISMISS_FLAGS = 1
 TDF_UNREGISTER: win32more.Windows.Win32.UI.WindowsAndMessaging.TOOLTIP_DISMISS_FLAGS = 2
-class TOUCHPAD_PARAMETERS_V1(Structure):
-    versionNumber: UInt32
-    maxSupportedContacts: UInt32
-    legacyTouchpadFeatures: win32more.Windows.Win32.UI.WindowsAndMessaging.LEGACY_TOUCHPAD_FEATURES
-    touchpadPresent: Annotated[Int32, NativeBitfieldAttribute(1)]
-    legacyTouchpadPresent: Annotated[Int32, NativeBitfieldAttribute(1)]
-    externalMousePresent: Annotated[Int32, NativeBitfieldAttribute(1)]
-    touchpadEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    touchpadActive: Annotated[Int32, NativeBitfieldAttribute(1)]
-    feedbackSupported: Annotated[Int32, NativeBitfieldAttribute(1)]
-    clickForceSupported: Annotated[Int32, NativeBitfieldAttribute(1)]
-    Reserved1: Annotated[Int32, NativeBitfieldAttribute(25)]
-    allowActiveWhenMousePresent: Annotated[Int32, NativeBitfieldAttribute(1)]
-    feedbackEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    tapEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    tapAndDragEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    twoFingerTapEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    rightClickZoneEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    mouseAccelSettingHonored: Annotated[Int32, NativeBitfieldAttribute(1)]
-    panEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    zoomEnabled: Annotated[Int32, NativeBitfieldAttribute(1)]
-    scrollDirectionReversed: Annotated[Int32, NativeBitfieldAttribute(1)]
-    Reserved2: Annotated[Int32, NativeBitfieldAttribute(22)]
-    sensitivityLevel: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_SENSITIVITY_LEVEL
-    cursorSpeed: UInt32
-    feedbackIntensity: UInt32
-    clickForceSensitivity: UInt32
-    rightClickZoneWidth: UInt32
-    rightClickZoneHeight: UInt32
-class TOUCHPAD_PARAMETERS_V2(Structure):
-    Base: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_PARAMETERS_V1
-    button1Supported: Annotated[Int32, NativeBitfieldAttribute(1)]
-    button2Supported: Annotated[Int32, NativeBitfieldAttribute(1)]
-    button3Supported: Annotated[Int32, NativeBitfieldAttribute(1)]
-    Reserved3: Annotated[Int32, NativeBitfieldAttribute(29)]
-TOUCHPAD_SENSITIVITY_LEVEL = Int32
-TOUCHPAD_SENSITIVITY_LEVEL_MOST_SENSITIVE: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_SENSITIVITY_LEVEL = 0
-TOUCHPAD_SENSITIVITY_LEVEL_HIGH_SENSITIVITY: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_SENSITIVITY_LEVEL = 1
-TOUCHPAD_SENSITIVITY_LEVEL_MEDIUM_SENSITIVITY: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_SENSITIVITY_LEVEL = 2
-TOUCHPAD_SENSITIVITY_LEVEL_LOW_SENSITIVITY: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_SENSITIVITY_LEVEL = 3
-TOUCHPAD_SENSITIVITY_LEVEL_LEAST_SENSITIVE: win32more.Windows.Win32.UI.WindowsAndMessaging.TOUCHPAD_SENSITIVITY_LEVEL = 4
 class TOUCHPREDICTIONPARAMETERS(Structure):
     cbSize: UInt32
     dwLatency: UInt32
@@ -3900,46 +3797,6 @@ WH_MOUSE_LL: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID = 14
 WH_MSGFILTER: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID = -1
 WH_SHELL: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID = 10
 WH_SYSMSGFILTER: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOWS_HOOK_ID = 6
-class WINDOW_ACTION(Structure):
-    kinds: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS
-    modifiers: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS
-    visible: win32more.Windows.Win32.Foundation.BOOL
-    position: win32more.Windows.Win32.Foundation.POINT
-    size: win32more.Windows.Win32.Foundation.SIZE
-    insertAfter: win32more.Windows.Win32.Foundation.HWND
-    placementState: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_PLACEMENT_STATE
-    normalRect: win32more.Windows.Win32.Foundation.RECT
-    workArea: win32more.Windows.Win32.Foundation.RECT
-    dpi: UInt32
-    pointOnMonitor: win32more.Windows.Win32.Foundation.POINT
-    monitorTopologyId: UInt32
-WINDOW_ACTION_KINDS = Int32
-WAK_NONE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 0
-WAK_VISIBILITY: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 1
-WAK_POSITION: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 2
-WAK_SIZE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 4
-WAK_INSERT_AFTER: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 8
-WAK_ACTIVATE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 16
-WAK_PLACEMENT_STATE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 32
-WAK_NORMAL_RECT: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 64
-WAK_MOVE_TO_MONITOR: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 128
-WAK_FIT_TO_MONITOR: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 256
-WAK_DISPLAY_CHANGE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 512
-WAK_SYSTEM_OPERATION: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 1024
-WAK_COALESCEABLE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_KINDS = 31
-WINDOW_ACTION_MODIFIERS = Int32
-WAM_NONE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 0
-WAM_FRAME_BOUNDS: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 1
-WAM_ACTIVATE_FOREGROUND: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 2
-WAM_ACTIVATE_INPUT: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 4
-WAM_ACTIVATE_NO_ZORDER: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 8
-WAM_INSERT_AFTER_NO_OWNER: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 16
-WAM_RESTORE_TO_NORMAL: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 32
-WAM_RESTORE_TO_MAXIMIZED: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 64
-WAM_RESTORE_TO_ARRANGED: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 128
-WAM_WORK_AREA: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 256
-WAM_DPI: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 512
-WAM_SCALED_TO_MONITOR: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_ACTION_MODIFIERS = 1024
 WINDOW_DISPLAY_AFFINITY = UInt32
 WDA_NONE: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_DISPLAY_AFFINITY = 0
 WDA_MONITOR: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_DISPLAY_AFFINITY = 1
@@ -3989,11 +3846,6 @@ WINDOW_MESSAGE_FILTER_ACTION = UInt32
 MSGFLT_ALLOW: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_MESSAGE_FILTER_ACTION = 1
 MSGFLT_DISALLOW: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_MESSAGE_FILTER_ACTION = 2
 MSGFLT_RESET: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_MESSAGE_FILTER_ACTION = 0
-WINDOW_PLACEMENT_STATE = Int32
-WPS_NORMAL: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_PLACEMENT_STATE = 0
-WPS_MAXIMIZED: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_PLACEMENT_STATE = 1
-WPS_MINIMIZED: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_PLACEMENT_STATE = 2
-WPS_ARRANGED: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_PLACEMENT_STATE = 3
 WINDOW_STYLE = UInt32
 WS_OVERLAPPED: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_STYLE = 0
 WS_POPUP: win32more.Windows.Win32.UI.WindowsAndMessaging.WINDOW_STYLE = 2147483648
@@ -4097,7 +3949,7 @@ class _DEV_BROADCAST_HEADER(Structure):
     dbcd_reserved: UInt32
 class _DEV_BROADCAST_USERDEFINED(Structure):
     dbud_dbh: win32more.Windows.Win32.UI.WindowsAndMessaging.DEV_BROADCAST_HDR
-    dbud_szName: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
+    dbud_szName: win32more.Windows.Win32.Foundation.CHAR * 1
 
 
 make_ready(__name__)

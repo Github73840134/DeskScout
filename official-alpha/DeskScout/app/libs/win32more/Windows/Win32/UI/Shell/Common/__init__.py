@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.UI.Shell.Common
@@ -97,12 +97,11 @@ class SHELLDETAILS(Structure):
     _pack_ = 1
 class SHITEMID(Structure):
     cb: UInt16
-    abID: FlexibleArray[Byte]
+    abID: Byte * 1
     _pack_ = 1
 class STRRET(Structure):
     uType: UInt32
     Anonymous: _Anonymous_e__Union
-    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pOleStr: win32more.Windows.Win32.Foundation.PWSTR
         uOffset: UInt32

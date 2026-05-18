@@ -1,16 +1,17 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.Security.Authentication.OnlineId
 import win32more.Windows.System
+import win32more.Windows.Win32.System.WinRT
 class CredentialPromptType(Enum, Int32):
-    _name_ = 'Windows.Security.Authentication.OnlineId.CredentialPromptType'
     PromptIfNeeded = 0
     RetypeCredentials = 1
     DoNotPrompt = 2
 class IOnlineIdAuthenticator(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdAuthenticator'
     _iid_ = Guid('{a003f58a-29ab-4817-b884-d7516dad18b9}')
     @winrt_commethod(6)
@@ -26,16 +27,16 @@ class IOnlineIdAuthenticator(ComPtr):
     @winrt_commethod(11)
     def get_CanSignOut(self) -> Boolean: ...
     @winrt_commethod(12)
-    def get_AuthenticatedSafeCustomerId(self) -> hstr: ...
+    def get_AuthenticatedSafeCustomerId(self) -> WinRT_String: ...
     ApplicationId = property(get_ApplicationId, put_ApplicationId)
     AuthenticatedSafeCustomerId = property(get_AuthenticatedSafeCustomerId, None)
     CanSignOut = property(get_CanSignOut, None)
 class IOnlineIdServiceTicket(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicket'
     _iid_ = Guid('{c95c547f-d781-4a94-acb8-c59874238c26}')
     @winrt_commethod(6)
-    def get_Value(self) -> hstr: ...
+    def get_Value(self) -> WinRT_String: ...
     @winrt_commethod(7)
     def get_Request(self) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
     @winrt_commethod(8)
@@ -44,25 +45,25 @@ class IOnlineIdServiceTicket(ComPtr):
     Request = property(get_Request, None)
     Value = property(get_Value, None)
 class IOnlineIdServiceTicketRequest(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequest'
     _iid_ = Guid('{297445d3-fb63-4135-8909-4e354c061466}')
     @winrt_commethod(6)
-    def get_Service(self) -> hstr: ...
+    def get_Service(self) -> WinRT_String: ...
     @winrt_commethod(7)
-    def get_Policy(self) -> hstr: ...
+    def get_Policy(self) -> WinRT_String: ...
     Policy = property(get_Policy, None)
     Service = property(get_Service, None)
 class IOnlineIdServiceTicketRequestFactory(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequestFactory'
     _iid_ = Guid('{bebb0a08-9e73-4077-9614-08614c0bc245}')
     @winrt_commethod(6)
-    def CreateOnlineIdServiceTicketRequest(self, service: hstr, policy: hstr) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
+    def CreateOnlineIdServiceTicketRequest(self, service: WinRT_String, policy: WinRT_String) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
     @winrt_commethod(7)
-    def CreateOnlineIdServiceTicketRequestAdvanced(self, service: hstr) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
+    def CreateOnlineIdServiceTicketRequestAdvanced(self, service: WinRT_String) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
 class IOnlineIdSystemAuthenticatorForUser(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdSystemAuthenticatorForUser'
     _iid_ = Guid('{5798befb-1de4-4186-a2e6-b563f86aaf44}')
     @winrt_commethod(6)
@@ -76,7 +77,7 @@ class IOnlineIdSystemAuthenticatorForUser(ComPtr):
     ApplicationId = property(get_ApplicationId, put_ApplicationId)
     User = property(get_User, None)
 class IOnlineIdSystemAuthenticatorStatics(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdSystemAuthenticatorStatics'
     _iid_ = Guid('{85047792-f634-41e3-96a4-5164e902c740}')
     @winrt_commethod(6)
@@ -85,17 +86,17 @@ class IOnlineIdSystemAuthenticatorStatics(ComPtr):
     def GetForUser(self, user: win32more.Windows.System.User) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdSystemAuthenticatorForUser: ...
     Default = property(get_Default, None)
 class IOnlineIdSystemIdentity(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdSystemIdentity'
     _iid_ = Guid('{743cd20d-b6ca-434d-8124-53ea12685307}')
     @winrt_commethod(6)
     def get_Ticket(self) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicket: ...
     @winrt_commethod(7)
-    def get_Id(self) -> hstr: ...
+    def get_Id(self) -> WinRT_String: ...
     Id = property(get_Id, None)
     Ticket = property(get_Ticket, None)
 class IOnlineIdSystemTicketResult(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IOnlineIdSystemTicketResult'
     _iid_ = Guid('{db0a5ff8-b098-4acd-9d13-9e640652b5b6}')
     @winrt_commethod(6)
@@ -108,21 +109,21 @@ class IOnlineIdSystemTicketResult(ComPtr):
     Identity = property(get_Identity, None)
     Status = property(get_Status, None)
 class IUserIdentity(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.IUserIdentity'
     _iid_ = Guid('{2146d9cd-0742-4be3-8a1c-7c7ae679aa88}')
     @winrt_commethod(6)
     def get_Tickets(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicket]: ...
     @winrt_commethod(7)
-    def get_Id(self) -> hstr: ...
+    def get_Id(self) -> WinRT_String: ...
     @winrt_commethod(8)
-    def get_SafeCustomerId(self) -> hstr: ...
+    def get_SafeCustomerId(self) -> WinRT_String: ...
     @winrt_commethod(9)
-    def get_SignInName(self) -> hstr: ...
+    def get_SignInName(self) -> WinRT_String: ...
     @winrt_commethod(10)
-    def get_FirstName(self) -> hstr: ...
+    def get_FirstName(self) -> WinRT_String: ...
     @winrt_commethod(11)
-    def get_LastName(self) -> hstr: ...
+    def get_LastName(self) -> WinRT_String: ...
     @winrt_commethod(12)
     def get_IsBetaAccount(self) -> Boolean: ...
     @winrt_commethod(13)
@@ -136,7 +137,7 @@ class IUserIdentity(ComPtr):
     SignInName = property(get_SignInName, None)
     Tickets = property(get_Tickets, None)
 class OnlineIdAuthenticator(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdAuthenticator
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdAuthenticator'
     def __init__(self, *args, **kwargs):
@@ -161,16 +162,16 @@ class OnlineIdAuthenticator(ComPtr):
     @winrt_mixinmethod
     def get_CanSignOut(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdAuthenticator) -> Boolean: ...
     @winrt_mixinmethod
-    def get_AuthenticatedSafeCustomerId(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdAuthenticator) -> hstr: ...
+    def get_AuthenticatedSafeCustomerId(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdAuthenticator) -> WinRT_String: ...
     ApplicationId = property(get_ApplicationId, put_ApplicationId)
     AuthenticatedSafeCustomerId = property(get_AuthenticatedSafeCustomerId, None)
     CanSignOut = property(get_CanSignOut, None)
 class OnlineIdServiceTicket(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicket
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdServiceTicket'
     @winrt_mixinmethod
-    def get_Value(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicket) -> hstr: ...
+    def get_Value(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicket) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_Request(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicket) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
     @winrt_mixinmethod
@@ -179,7 +180,7 @@ class OnlineIdServiceTicket(ComPtr):
     Request = property(get_Request, None)
     Value = property(get_Value, None)
 class OnlineIdServiceTicketRequest(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequest
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest'
     def __init__(self, *args, **kwargs):
@@ -192,19 +193,19 @@ class OnlineIdServiceTicketRequest(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateOnlineIdServiceTicketRequestAdvanced(cls: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequestFactory, service: hstr) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
+    def CreateOnlineIdServiceTicketRequestAdvanced(cls: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequestFactory, service: WinRT_String) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
     @winrt_factorymethod
-    def CreateOnlineIdServiceTicketRequest(cls: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequestFactory, service: hstr, policy: hstr) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
+    def CreateOnlineIdServiceTicketRequest(cls: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequestFactory, service: WinRT_String, policy: WinRT_String) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicketRequest: ...
     @winrt_mixinmethod
-    def get_Service(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequest) -> hstr: ...
+    def get_Service(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequest) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_Policy(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequest) -> hstr: ...
+    def get_Policy(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdServiceTicketRequest) -> WinRT_String: ...
     Policy = property(get_Policy, None)
     Service = property(get_Service, None)
 class _OnlineIdSystemAuthenticator_Meta_(ComPtr.__class__):
     pass
 class OnlineIdSystemAuthenticator(ComPtr, metaclass=_OnlineIdSystemAuthenticator_Meta_):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdSystemAuthenticator'
     @winrt_classmethod
     def get_Default(cls: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemAuthenticatorStatics) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdSystemAuthenticatorForUser: ...
@@ -212,7 +213,7 @@ class OnlineIdSystemAuthenticator(ComPtr, metaclass=_OnlineIdSystemAuthenticator
     def GetForUser(cls: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemAuthenticatorStatics, user: win32more.Windows.System.User) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdSystemAuthenticatorForUser: ...
     _OnlineIdSystemAuthenticator_Meta_.Default = property(get_Default, None)
 class OnlineIdSystemAuthenticatorForUser(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemAuthenticatorForUser
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdSystemAuthenticatorForUser'
     @winrt_mixinmethod
@@ -226,17 +227,17 @@ class OnlineIdSystemAuthenticatorForUser(ComPtr):
     ApplicationId = property(get_ApplicationId, put_ApplicationId)
     User = property(get_User, None)
 class OnlineIdSystemIdentity(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemIdentity
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdSystemIdentity'
     @winrt_mixinmethod
     def get_Ticket(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemIdentity) -> win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicket: ...
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemIdentity) -> hstr: ...
+    def get_Id(self: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemIdentity) -> WinRT_String: ...
     Id = property(get_Id, None)
     Ticket = property(get_Ticket, None)
 class OnlineIdSystemTicketResult(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IOnlineIdSystemTicketResult
     _classid_ = 'Windows.Security.Authentication.OnlineId.OnlineIdSystemTicketResult'
     @winrt_mixinmethod
@@ -249,12 +250,11 @@ class OnlineIdSystemTicketResult(ComPtr):
     Identity = property(get_Identity, None)
     Status = property(get_Status, None)
 class OnlineIdSystemTicketStatus(Enum, Int32):
-    _name_ = 'Windows.Security.Authentication.OnlineId.OnlineIdSystemTicketStatus'
     Success = 0
     Error = 1
     ServiceConnectionError = 2
 class SignOutUserOperation(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[AwaitableProtocol]
     default_interface: win32more.Windows.Foundation.IAsyncAction
     _classid_ = 'Windows.Security.Authentication.OnlineId.SignOutUserOperation'
@@ -279,7 +279,7 @@ class SignOutUserOperation(ComPtr):
     Id = property(get_Id, None)
     Status = property(get_Status, None)
 class UserAuthenticationOperation(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     implements: Tuple[AwaitableProtocol]
     default_interface: win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Security.Authentication.OnlineId.UserIdentity]
     _classid_ = 'Windows.Security.Authentication.OnlineId.UserAuthenticationOperation'
@@ -304,21 +304,21 @@ class UserAuthenticationOperation(ComPtr):
     Id = property(get_Id, None)
     Status = property(get_Status, None)
 class UserIdentity(ComPtr):
-    extends: IInspectable
+    extends: win32more.Windows.Win32.System.WinRT.IInspectable
     default_interface: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity
     _classid_ = 'Windows.Security.Authentication.OnlineId.UserIdentity'
     @winrt_mixinmethod
     def get_Tickets(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Security.Authentication.OnlineId.OnlineIdServiceTicket]: ...
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> hstr: ...
+    def get_Id(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_SafeCustomerId(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> hstr: ...
+    def get_SafeCustomerId(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_SignInName(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> hstr: ...
+    def get_SignInName(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_FirstName(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> hstr: ...
+    def get_FirstName(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> WinRT_String: ...
     @winrt_mixinmethod
-    def get_LastName(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> hstr: ...
+    def get_LastName(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> WinRT_String: ...
     @winrt_mixinmethod
     def get_IsBetaAccount(self: win32more.Windows.Security.Authentication.OnlineId.IUserIdentity) -> Boolean: ...
     @winrt_mixinmethod

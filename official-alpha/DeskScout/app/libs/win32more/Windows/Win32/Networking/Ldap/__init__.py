@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Networking.Ldap
 import win32more.Windows.Win32.Security.Authentication.Identity
@@ -119,7 +119,6 @@ LDAP_OPT_SCH_FLAGS: UInt32 = 67
 LDAP_OPT_SOCKET_BIND_ADDRESSES: UInt32 = 68
 LDAP_OPT_CLDAP_TIMEOUT: UInt32 = 69
 LDAP_OPT_CLDAP_TRIES: UInt32 = 70
-LDAP_OPT_ANONYMOUS_MAX_VAL_RANGE: UInt32 = 71
 LDAP_CHASE_SUBORDINATE_REFERRALS: UInt32 = 32
 LDAP_CHASE_EXTERNAL_REFERRALS: UInt32 = 64
 LDAP_SCOPE_BASE: UInt32 = 0
@@ -786,7 +785,6 @@ class LDAP(Structure):
     ld_cldaptimeout: UInt32
     ld_refhoplimit: UInt32
     ld_options: UInt32
-    ld_anonymousmaxvalrange: UInt32
     class _ld_sb_e__Struct(Structure):
         sb_sd: UIntPtr
         Reserved1: Byte * 41

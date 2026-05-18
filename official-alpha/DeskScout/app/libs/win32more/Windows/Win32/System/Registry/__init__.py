@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.Registry
@@ -18,8 +18,6 @@ REG_USE_CURRENT_SECURITY_CONTEXT: UInt32 = 2
 PROVIDER_KEEPS_VALUE_LENGTH: UInt32 = 1
 REG_MUI_STRING_TRUNCATE: UInt32 = 1
 REG_SECURE_CONNECTION: UInt32 = 1
-REG_ALLOW_TRANSPORT_FALLBACK: UInt32 = 2
-REG_ALLOW_UNSECURE_CONNECTION: UInt32 = 4
 REGSTR_KEY_CLASS: String = 'Class'
 REGSTR_KEY_CONFIG: String = 'Config'
 REGSTR_KEY_ENUM: String = 'Enum'

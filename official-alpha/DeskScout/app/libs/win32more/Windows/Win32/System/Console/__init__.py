@@ -1,70 +1,9 @@
 from __future__ import annotations
-from win32more._prelude import *
+from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
 import win32more.Windows.Win32.Foundation
-import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.Console
-import win32more.Windows.Win32.UI.WindowsAndMessaging
-ALLOC_CONSOLE_MODE = Int32
-ALLOC_CONSOLE_MODE_DEFAULT: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_MODE = 0
-ALLOC_CONSOLE_MODE_NEW_WINDOW: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_MODE = 1
-ALLOC_CONSOLE_MODE_NO_WINDOW: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_MODE = 2
-class ALLOC_CONSOLE_OPTIONS(Structure):
-    mode: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_MODE
-    useShowWindow: win32more.Windows.Win32.Foundation.BOOL
-    showWindow: UInt16
-ALLOC_CONSOLE_RESULT = Int32
-ALLOC_CONSOLE_RESULT_NO_CONSOLE: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_RESULT = 0
-ALLOC_CONSOLE_RESULT_NEW_CONSOLE: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_RESULT = 1
-ALLOC_CONSOLE_RESULT_EXISTING_CONSOLE: win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_RESULT = 2
-class APPKEY(Structure):
-    Modifier: UInt16
-    ScanCode: UInt16
 CONSOLE_TEXTMODE_BUFFER: UInt32 = 1
-CONSOLE_SELECTION_INVERTED: UInt32 = 16
-VDM_HIDE_WINDOW: UInt32 = 1
-VDM_IS_ICONIC: UInt32 = 2
-VDM_CLIENT_RECT: UInt32 = 3
-VDM_CLIENT_TO_SCREEN: UInt32 = 4
-VDM_SCREEN_TO_CLIENT: UInt32 = 5
-VDM_IS_HIDDEN: UInt32 = 6
-VDM_FULLSCREEN_NOPAINT: UInt32 = 7
-VDM_SET_VIDEO_MODE: UInt32 = 8
-CONSOLE_UNREGISTER_VDM: UInt32 = 0
-CONSOLE_REGISTER_VDM: UInt32 = 1
-CONSOLE_REGISTER_WOW: UInt32 = 2
-CONSOLE_NOSHORTCUTKEY: UInt32 = 0
-CONSOLE_ALTTAB: UInt32 = 1
-CONSOLE_ALTESC: UInt32 = 2
-CONSOLE_ALTSPACE: UInt32 = 4
-CONSOLE_ALTENTER: UInt32 = 8
-CONSOLE_ALTPRTSC: UInt32 = 16
-CONSOLE_PRTSC: UInt32 = 32
-CONSOLE_CTRLESC: UInt32 = 64
-CONSOLE_MODIFIER_SHIFT: UInt32 = 3
-CONSOLE_MODIFIER_CONTROL: UInt32 = 4
-CONSOLE_MODIFIER_ALT: UInt32 = 8
-CHAR_TYPE_SBCS: UInt32 = 0
-CHAR_TYPE_LEADING: UInt32 = 2
-CHAR_TYPE_TRAILING: UInt32 = 3
-CONSOLE_HANDLE_SIGNATURE: UInt32 = 3
-CONSOLE_HANDLE_NEVERSET: UInt32 = 268435456
-CONSOLE_INPUT_STRING: String = 'CONIN$'
-CONSOLE_OUTPUT_STRING: String = 'CONOUT$'
-CONSOLE_GENERIC: String = 'CON'
-PID_CONSOLE_FORCEV2: UInt32 = 1
-PID_CONSOLE_WRAPTEXT: UInt32 = 2
-PID_CONSOLE_FILTERONPASTE: UInt32 = 3
-PID_CONSOLE_CTRLKEYSDISABLED: UInt32 = 4
-PID_CONSOLE_LINESELECTION: UInt32 = 5
-PID_CONSOLE_WINDOWTRANSPARENCY: UInt32 = 6
-PID_CONSOLE_WINDOWMAXIMIZED: UInt32 = 7
-PID_CONSOLE_CURSOR_TYPE: UInt32 = 8
-PID_CONSOLE_CURSOR_COLOR: UInt32 = 9
-PID_CONSOLE_INTERCEPT_COPY_PASTE: UInt32 = 10
-PID_CONSOLE_DEFAULTFOREGROUND: UInt32 = 11
-PID_CONSOLE_DEFAULTBACKGROUND: UInt32 = 12
-PID_CONSOLE_TERMINALSCROLLING: UInt32 = 13
 ATTACH_PARENT_PROCESS: UInt32 = 4294967295
 CTRL_C_EVENT: UInt32 = 0
 CTRL_BREAK_EVENT: UInt32 = 1
@@ -116,8 +55,6 @@ FOCUS_EVENT: UInt32 = 16
 @winfunctype('KERNEL32.dll')
 def AllocConsole() -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
-def AllocConsoleWithOptions(options: POINTER(win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_OPTIONS), result: POINTER(win32more.Windows.Win32.System.Console.ALLOC_CONSOLE_RESULT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
-@winfunctype('KERNEL32.dll')
 def FreeConsole() -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
 def AttachConsole(dwProcessId: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
@@ -159,8 +96,6 @@ def CreatePseudoConsole(size: win32more.Windows.Win32.System.Console.COORD, hInp
 def ResizePseudoConsole(hPC: win32more.Windows.Win32.System.Console.HPCON, size: win32more.Windows.Win32.System.Console.COORD) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNEL32.dll')
 def ClosePseudoConsole(hPC: win32more.Windows.Win32.System.Console.HPCON) -> Void: ...
-@winfunctype('KERNEL32.dll')
-def ReleasePseudoConsole(hPC: win32more.Windows.Win32.System.Console.HPCON) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNEL32.dll')
 def FillConsoleOutputCharacterA(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, cCharacter: win32more.Windows.Win32.Foundation.CHAR, nLength: UInt32, dwWriteCoord: win32more.Windows.Win32.System.Console.COORD, lpNumberOfCharsWritten: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
@@ -323,93 +258,6 @@ def GetConsoleCommandHistoryW(Commands: win32more.Windows.Win32.Foundation.PWSTR
 GetConsoleCommandHistory = UnicodeAlias('GetConsoleCommandHistoryW')
 @winfunctype('KERNEL32.dll')
 def GetConsoleProcessList(lpdwProcessList: POINTER(UInt32), dwProcessCount: UInt32) -> UInt32: ...
-@winfunctype('user32.dll')
-def GetConsoleKeyboardLayoutNameA(pszLayout: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('user32.dll')
-def GetConsoleKeyboardLayoutNameW(pszLayout: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-GetConsoleKeyboardLayoutName = UnicodeAlias('GetConsoleKeyboardLayoutNameW')
-@winfunctype('KERNEL32.dll')
-def InvalidateConsoleDIBits(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, lpRect: POINTER(win32more.Windows.Win32.System.Console.SMALL_RECT)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetLastConsoleEventActive() -> Void: ...
-@winfunctype('KERNEL32.dll')
-def VDMConsoleOperation(iFunction: UInt32, lpData: VoidPtr) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleIcon(hIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleFont(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, nFont: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleFontInfo(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, bMaximumWindow: win32more.Windows.Win32.Foundation.BOOL, nLength: UInt32, lpConsoleFontInfo: POINTER(win32more.Windows.Win32.System.Console.CONSOLE_FONT_INFO)) -> UInt32: ...
-@winfunctype('KERNEL32.dll')
-def GetNumberOfConsoleFonts() -> UInt32: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleCursor(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, hCursor: win32more.Windows.Win32.UI.WindowsAndMessaging.HCURSOR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def ShowConsoleCursor(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, bShow: win32more.Windows.Win32.Foundation.BOOL) -> Int32: ...
-@winfunctype('KERNEL32.dll')
-def ConsoleMenuControl(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, dwCommandIdLow: UInt32, dwCommandIdHigh: UInt32) -> win32more.Windows.Win32.UI.WindowsAndMessaging.HMENU: ...
-@winfunctype('KERNEL32.dll')
-def SetConsolePalette(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, hPalette: win32more.Windows.Win32.Graphics.Gdi.HPALETTE, dwUsage: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def RegisterConsoleVDM(dwRegisterFlags: UInt32, hStartHardwareEvent: win32more.Windows.Win32.Foundation.HANDLE, hEndHardwareEvent: win32more.Windows.Win32.Foundation.HANDLE, hErrorhardwareEvent: win32more.Windows.Win32.Foundation.HANDLE, Reserved: UInt32, lpStateLength: POINTER(UInt32), lpState: POINTER(VoidPtr), VDMBufferSize: win32more.Windows.Win32.System.Console.COORD, lpVDMBuffer: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleHardwareState(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, lpResolution: POINTER(win32more.Windows.Win32.System.Console.COORD), lpFontSize: POINTER(win32more.Windows.Win32.System.Console.COORD)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleHardwareState(hConsoleOutput: win32more.Windows.Win32.Foundation.HANDLE, dwResolution: win32more.Windows.Win32.System.Console.COORD, dwFontSize: win32more.Windows.Win32.System.Console.COORD) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleKeyShortcuts(bSet: win32more.Windows.Win32.Foundation.BOOL, bReserveKeys: Byte, lpAppKeys: POINTER(win32more.Windows.Win32.System.Console.APPKEY), dwNumAppKeys: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleMenuClose(bEnable: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleInputExeNameA(nBufferLength: UInt32, lpBuffer: win32more.Windows.Win32.Foundation.PSTR) -> UInt32: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleInputExeNameW(nBufferLength: UInt32, lpBuffer: win32more.Windows.Win32.Foundation.PWSTR) -> UInt32: ...
-GetConsoleInputExeName = UnicodeAlias('GetConsoleInputExeNameW')
-@winfunctype('KERNEL32.dll')
-def SetConsoleInputExeNameA(lpExeName: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleInputExeNameW(lpExeName: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-SetConsoleInputExeName = UnicodeAlias('SetConsoleInputExeNameW')
-@winfunctype('KERNEL32.dll')
-def ReadConsoleInputExA(hConsoleInput: win32more.Windows.Win32.Foundation.HANDLE, lpBuffer: POINTER(win32more.Windows.Win32.System.Console.INPUT_RECORD), nLength: UInt32, lpNumberOfEventsRead: POINTER(UInt32), wFlags: UInt16) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def ReadConsoleInputExW(hConsoleInput: win32more.Windows.Win32.Foundation.HANDLE, lpBuffer: POINTER(win32more.Windows.Win32.System.Console.INPUT_RECORD), nLength: UInt32, lpNumberOfEventsRead: POINTER(UInt32), wFlags: UInt16) -> win32more.Windows.Win32.Foundation.BOOL: ...
-ReadConsoleInputEx = UnicodeAlias('ReadConsoleInputExW')
-@winfunctype('KERNEL32.dll')
-def WriteConsoleInputVDMA(hConsoleInput: win32more.Windows.Win32.Foundation.HANDLE, lpBuffer: POINTER(win32more.Windows.Win32.System.Console.INPUT_RECORD), nLength: UInt32, lpNumberOfEventsWritten: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def WriteConsoleInputVDMW(hConsoleInput: win32more.Windows.Win32.Foundation.HANDLE, lpBuffer: POINTER(win32more.Windows.Win32.System.Console.INPUT_RECORD), nLength: UInt32, lpNumberOfEventsWritten: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-WriteConsoleInputVDM = UnicodeAlias('WriteConsoleInputVDMW')
-@winfunctype('KERNEL32.dll')
-def GetConsoleNlsMode(hConsole: win32more.Windows.Win32.Foundation.HANDLE, lpdwNlsMode: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleNlsMode(hConsole: win32more.Windows.Win32.Foundation.HANDLE, fdwNlsMode: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleCharType(hConsole: win32more.Windows.Win32.Foundation.HANDLE, coordCheck: win32more.Windows.Win32.System.Console.COORD, pdwType: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleLocalEUDC(hConsoleHandle: win32more.Windows.Win32.Foundation.HANDLE, wCodePoint: UInt16, cFontSize: win32more.Windows.Win32.System.Console.COORD, lpSB: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleCursorMode(hConsoleHandle: win32more.Windows.Win32.Foundation.HANDLE, Blink: win32more.Windows.Win32.Foundation.BOOL, DBEnable: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleCursorMode(hConsoleHandle: win32more.Windows.Win32.Foundation.HANDLE, pbBlink: POINTER(win32more.Windows.Win32.Foundation.BOOL), pbDBEnable: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def RegisterConsoleOS2(fOs2Register: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def SetConsoleOS2OemFormat(fOs2OemFormat: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def RegisterConsoleIME(hWndConsoleIME: win32more.Windows.Win32.Foundation.HWND, lpdwConsoleThreadId: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def UnregisterConsoleIME() -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def OpenConsoleW(lpConsoleDevice: win32more.Windows.Win32.Foundation.PWSTR, dwDesiredAccess: UInt32, bInheritHandle: win32more.Windows.Win32.Foundation.BOOL, dwShareMode: UInt32) -> win32more.Windows.Win32.Foundation.HANDLE: ...
-@winfunctype('KERNEL32.dll')
-def DuplicateConsoleHandle(hSourceHandle: win32more.Windows.Win32.Foundation.HANDLE, dwDesiredAccess: UInt32, bInheritHandle: win32more.Windows.Win32.Foundation.BOOL, dwOptions: UInt32) -> win32more.Windows.Win32.Foundation.HANDLE: ...
-@winfunctype('KERNEL32.dll')
-def CloseConsoleHandle(hConsole: win32more.Windows.Win32.Foundation.HANDLE) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def VerifyConsoleIoHandle(hIoHandle: win32more.Windows.Win32.Foundation.HANDLE) -> win32more.Windows.Win32.Foundation.BOOL: ...
-@winfunctype('KERNEL32.dll')
-def GetConsoleInputWaitHandle() -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('USER32.dll')
 def ConsoleControl(Command: win32more.Windows.Win32.System.Console.CONSOLECONTROL, ConsoleInformation: VoidPtr, ConsoleInformationLength: UInt32) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype('KERNEL32.dll')
@@ -478,12 +326,6 @@ class CONSOLE_FONT_INFOEX(Structure):
     FontFamily: UInt32
     FontWeight: UInt32
     FaceName: Char * 32
-class CONSOLE_GRAPHICS_BUFFER_INFO(Structure):
-    dwBitMapInfoLength: UInt32
-    lpBitMapInfo: POINTER(win32more.Windows.Win32.Graphics.Gdi.BITMAPINFO)
-    dwUsage: UInt32
-    hMutex: win32more.Windows.Win32.Foundation.HANDLE
-    lpBitMap: VoidPtr
 class CONSOLE_HISTORY_INFO(Structure):
     cbSize: UInt32
     HistoryBufferSize: UInt32
@@ -536,17 +378,6 @@ class CONSOLE_SELECTION_INFO(Structure):
 class COORD(Structure):
     X: Int16
     Y: Int16
-class ExtKeyDef(Structure):
-    keys: win32more.Windows.Win32.System.Console.ExtKeySubst * 3
-class ExtKeyDefBuf(Structure):
-    dwVersion: UInt32
-    dwCheckSum: UInt32
-    table: win32more.Windows.Win32.System.Console.ExtKeyDef * 26
-    _pack_ = 2
-class ExtKeySubst(Structure):
-    wMod: UInt16
-    wVirKey: UInt16
-    wUnicodeChar: Char
 class FOCUS_EVENT_RECORD(Structure):
     bSetFocus: win32more.Windows.Win32.Foundation.BOOL
 HPCON = IntPtr
