@@ -1267,7 +1267,7 @@ def openDeskScout(icon,item):
 		# Bring to front
 		SetForegroundWindow(hwnd)
 	else:
-		subprocess.Popen("../core/pythonw.exe DeskScoutApp.py",shell=True,start_new_session=True)
+		subprocess.Popen("../core/pythonw.exe DeskScoutApp.py",start_new_session=True)
 
 				
 					
