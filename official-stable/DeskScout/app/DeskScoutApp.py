@@ -2,8 +2,8 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "1.2"
-__build__ = "29"
+__version__ = "1.2.1"
+__build__ = "30"
 supported_service = ["22","23","24","25"]
 from tkinter import messagebox
 
@@ -578,7 +578,10 @@ class App(XamlApplication):
 	def NotImplemented(self,*args):
 		messagebox.showerror("Work in progress","Feature is not implemented")
 	def launchOOBE(self):
-		self.win.Visible = Visibility.Collapsed
+		import psutil
+		subprocess.Popen("../core/pythonw.exe DeskScoutSetup.py")
+		p = psutil.Process(os.getpid())
+		p.kill()
 	def doRestore(self,path):
 		
 		from zipfile import ZipFile
