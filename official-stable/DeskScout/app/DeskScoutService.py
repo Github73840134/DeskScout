@@ -63,7 +63,7 @@ attemptingConnection = False
 intent = None
 from mods import gdr
 __version__ = "8"
-__build__ = "25"
+__build__ = "26"
 __channel__ = "developer"
 __release__ = "stable"
 vinfo = json.load(open('versioninfo.json'))

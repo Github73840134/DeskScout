@@ -4,7 +4,7 @@
 # Anyways
 __version__ = "1.2.1"
 __build__ = "30"
-supported_service = ["22","23","24","25"]
+supported_service = ["22","23","24","25","26"]
 from tkinter import messagebox
 
 import os, sys,json,_thread,time,logging,subprocess
