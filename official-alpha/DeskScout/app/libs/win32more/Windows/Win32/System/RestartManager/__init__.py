@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.RestartManager
 CCH_RM_SESSION_KEY: UInt32 = 32
@@ -56,6 +56,7 @@ class RM_FILTER_INFO(Structure):
     FilterTrigger: win32more.Windows.Win32.System.RestartManager.RM_FILTER_TRIGGER
     cbNextOffset: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         strFilename: win32more.Windows.Win32.Foundation.PWSTR
         Process: win32more.Windows.Win32.System.RestartManager.RM_UNIQUE_PROCESS

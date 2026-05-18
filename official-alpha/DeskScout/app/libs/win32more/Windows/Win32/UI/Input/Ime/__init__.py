@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -815,7 +815,7 @@ class CANDIDATELIST(Structure):
     dwSelection: UInt32
     dwPageStart: UInt32
     dwPageSize: UInt32
-    dwOffset: UInt32 * 1
+    dwOffset: FlexibleArray[UInt32]
 CActiveIMM = Guid('{4955dd33-b159-11d0-8fcf-00aa006bcc59}')
 class COMPOSITIONFORM(Structure):
     dwStyle: UInt32
@@ -1430,7 +1430,7 @@ class IMEDP(Structure):
 class IMEFAREASTINFO(Structure):
     dwSize: UInt32
     dwType: UInt32
-    dwData: UInt32 * 1
+    dwData: FlexibleArray[UInt32]
 IMEFMT = Int32
 IFED_UNKNOWN: win32more.Windows.Win32.UI.Input.Ime.IMEFMT = 0
 IFED_MSIME2_BIN_SYSTEM: win32more.Windows.Win32.UI.Input.Ime.IMEFMT = 1
@@ -1473,7 +1473,7 @@ class IMEITEM(Structure):
     lpItemData: VoidPtr
 class IMEITEMCANDIDATE(Structure):
     uCount: UInt32
-    imeItem: win32more.Windows.Win32.UI.Input.Ime.IMEITEM * 1
+    imeItem: FlexibleArray[win32more.Windows.Win32.UI.Input.Ime.IMEITEM]
 class IMEKMS(Structure):
     cbSize: Int32
     hIMC: win32more.Windows.Win32.UI.Input.Ime.HIMC
@@ -1501,6 +1501,7 @@ class IMEKMSKEY(Structure):
     dwVKEY: UInt32
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     _pack_ = 1
     class _Anonymous1_e__Union(Union):
         dwControl: UInt32
@@ -1584,14 +1585,14 @@ class IMESHF(Structure):
     _pack_ = 1
 class IMESTRINGCANDIDATE(Structure):
     uCount: UInt32
-    lpwstr: win32more.Windows.Win32.Foundation.PWSTR * 1
+    lpwstr: FlexibleArray[win32more.Windows.Win32.Foundation.PWSTR]
 class IMESTRINGCANDIDATEINFO(Structure):
     dwFarEastId: UInt32
     lpFarEastInfo: POINTER(win32more.Windows.Win32.UI.Input.Ime.IMEFAREASTINFO)
     fInfoMask: UInt32
     iSelIndex: Int32
     uCount: UInt32
-    lpwstr: win32more.Windows.Win32.Foundation.PWSTR * 1
+    lpwstr: FlexibleArray[win32more.Windows.Win32.Foundation.PWSTR]
 class IMESTRINGINFO(Structure):
     dwFarEastId: UInt32
     lpwstr: win32more.Windows.Win32.Foundation.PWSTR
@@ -1609,10 +1610,12 @@ class IMEWRD(Structure):
     cbComment: Int32
     uct: win32more.Windows.Win32.UI.Input.Ime.IMEUCT
     pvComment: VoidPtr
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         ulPos: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Struct(Structure):
             nPos1: UInt16
@@ -1745,6 +1748,7 @@ class MORRSLT(Structure):
     cWDD: Int32
     pPrivate: VoidPtr
     BLKBuff: Char * 1
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     _pack_ = 1
     class _Anonymous1_e__Union(Union):
         pwchRead: win32more.Windows.Win32.Foundation.PWSTR
@@ -1821,7 +1825,7 @@ class TRANSMSG(Structure):
     lParam: win32more.Windows.Win32.Foundation.LPARAM
 class TRANSMSGLIST(Structure):
     uMsgCount: UInt32
-    TransMsg: win32more.Windows.Win32.UI.Input.Ime.TRANSMSG * 1
+    TransMsg: FlexibleArray[win32more.Windows.Win32.UI.Input.Ime.TRANSMSG]
 class WDD(Structure):
     wDispPos: UInt16
     Anonymous1: _Anonymous1_e__Union
@@ -1829,14 +1833,15 @@ class WDD(Structure):
     Anonymous2: _Anonymous2_e__Union
     WDD_nReserve1: UInt32
     nPos: UInt16
-    fPhrase: Annotated[UInt16, 1]
-    fAutoCorrect: Annotated[UInt16, 1]
-    fNumericPrefix: Annotated[UInt16, 1]
-    fUserRegistered: Annotated[UInt16, 1]
-    fUnknown: Annotated[UInt16, 1]
-    fRecentUsed: Annotated[UInt16, 1]
-    Anonymous3: Annotated[UInt16, 10]
+    fPhrase: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    fAutoCorrect: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    fNumericPrefix: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    fUserRegistered: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    fUnknown: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    fRecentUsed: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    Anonymous3: Annotated[UInt16, NativeBitfieldAttribute(10)]
     pReserved: VoidPtr
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     _pack_ = 1
     class _Anonymous1_e__Union(Union):
         wReadPos: UInt16

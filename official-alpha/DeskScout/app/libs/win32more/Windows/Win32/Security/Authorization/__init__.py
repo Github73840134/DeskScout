@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Security.Authorization
@@ -66,6 +66,7 @@ class ACTRL_OVERLAPPED(Structure):
     Anonymous: _Anonymous_e__Union
     Reserved2: UInt32
     hEvent: win32more.Windows.Win32.Foundation.HANDLE
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Provider: VoidPtr
         Reserved1: UInt32
@@ -95,6 +96,7 @@ class AUDIT_PARAM(Structure):
     Flags: UInt32
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Data0: UIntPtr
         String: win32more.Windows.Win32.Foundation.PWSTR
@@ -262,7 +264,8 @@ class AUTHZ_SOURCE_SCHEMA_REGISTRATION(Structure):
     szExecutableImagePath: win32more.Windows.Win32.Foundation.PWSTR
     Anonymous: _Anonymous_e__Union
     dwObjectTypeNameCount: UInt32
-    ObjectTypeNames: win32more.Windows.Win32.Security.Authorization.AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET * 1
+    ObjectTypeNames: FlexibleArray[win32more.Windows.Win32.Security.Authorization.AUTHZ_REGISTRATION_OBJECT_TYPE_NAME_OFFSET]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pReserved: VoidPtr
         pProviderGuid: POINTER(Guid)
@@ -497,6 +500,8 @@ SDDL_SERVICE_ASSERTED: String = 'SS'
 SDDL_PROTECTED_USERS: String = 'AP'
 SDDL_KEY_ADMINS: String = 'KA'
 SDDL_ENTERPRISE_KEY_ADMINS: String = 'EK'
+SDDL_USER_MODE_HARDWARE_OPERATORS: String = 'HO'
+SDDL_OPENSSH_USERS: String = 'SH'
 SDDL_ML_LOW: String = 'LW'
 SDDL_ML_MEDIUM: String = 'ME'
 SDDL_ML_MEDIUM_PLUS: String = 'MP'

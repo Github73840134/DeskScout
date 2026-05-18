@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.Diagnostics.Debug
@@ -1527,6 +1527,7 @@ class PROFILER_HEAP_OBJECT(Structure):
     flags: UInt32
     unused: UInt16
     optionalInfoCount: UInt16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         objectId: UIntPtr
         externalObjectAddress: VoidPtr
@@ -1547,6 +1548,7 @@ PROFILER_HEAP_OBJECT_FLAGS_WINRT_NAMESPACE: win32more.Windows.Win32.System.Diagn
 class PROFILER_HEAP_OBJECT_OPTIONAL_INFO(Structure):
     infoType: win32more.Windows.Win32.System.Diagnostics.Debug.ActiveScript.PROFILER_HEAP_OBJECT_OPTIONAL_INFO_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         prototype: UIntPtr
         functionName: win32more.Windows.Win32.Foundation.PWSTR
@@ -1580,6 +1582,7 @@ class PROFILER_HEAP_OBJECT_RELATIONSHIP(Structure):
     relationshipId: UInt32
     relationshipInfo: win32more.Windows.Win32.System.Diagnostics.Debug.ActiveScript.PROFILER_RELATIONSHIP_INFO
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         numberValue: Double
         stringValue: win32more.Windows.Win32.Foundation.PWSTR
@@ -1595,10 +1598,10 @@ PROFILER_HEAP_OBJECT_RELATIONSHIP_FLAGS_LET_VARIABLE: win32more.Windows.Win32.Sy
 PROFILER_HEAP_OBJECT_RELATIONSHIP_FLAGS_CONST_VARIABLE: win32more.Windows.Win32.System.Diagnostics.Debug.ActiveScript.PROFILER_HEAP_OBJECT_RELATIONSHIP_FLAGS = 524288
 class PROFILER_HEAP_OBJECT_RELATIONSHIP_LIST(Structure):
     count: UInt32
-    elements: win32more.Windows.Win32.System.Diagnostics.Debug.ActiveScript.PROFILER_HEAP_OBJECT_RELATIONSHIP * 1
+    elements: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Debug.ActiveScript.PROFILER_HEAP_OBJECT_RELATIONSHIP]
 class PROFILER_HEAP_OBJECT_SCOPE_LIST(Structure):
     count: UInt32
-    scopes: UIntPtr * 1
+    scopes: FlexibleArray[UIntPtr]
 class PROFILER_HEAP_SUMMARY(Structure):
     version: win32more.Windows.Win32.System.Diagnostics.Debug.ActiveScript.PROFILER_HEAP_SUMMARY_VERSION
     totalHeapSize: UInt32

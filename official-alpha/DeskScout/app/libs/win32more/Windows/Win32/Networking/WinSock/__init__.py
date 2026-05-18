@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Networking.WinSock
 import win32more.Windows.Win32.System.Com
@@ -131,6 +131,27 @@ class ADDRINFOEX6(Structure):
     ai_numservers: UInt32
     ai_servers: POINTER(win32more.Windows.Win32.Networking.WinSock.ADDRINFO_DNS_SERVER)
     ai_responseflags: UInt64
+class ADDRINFOEX7(Structure):
+    ai_flags: Int32
+    ai_family: Int32
+    ai_socktype: Int32
+    ai_protocol: Int32
+    ai_addrlen: UIntPtr
+    ai_canonname: win32more.Windows.Win32.Foundation.PWSTR
+    ai_addr: POINTER(win32more.Windows.Win32.Networking.WinSock.SOCKADDR)
+    ai_blob: VoidPtr
+    ai_bloblen: UIntPtr
+    ai_provider: POINTER(Guid)
+    ai_next: POINTER(win32more.Windows.Win32.Networking.WinSock.ADDRINFOEX7)
+    ai_version: Int32
+    ai_fqdn: win32more.Windows.Win32.Foundation.PWSTR
+    ai_interfaceindex: Int32
+    ai_resolutionhandle: win32more.Windows.Win32.Foundation.HANDLE
+    ai_ttl: UInt32
+    ai_numservers: UInt32
+    ai_servers: POINTER(win32more.Windows.Win32.Networking.WinSock.ADDRINFO_DNS_SERVER)
+    ai_responseflags: UInt64
+    ai_extraflags: UInt64
 class ADDRINFOEXA(Structure):
     ai_flags: Int32
     ai_family: Int32
@@ -172,8 +193,10 @@ class ADDRINFO_DNS_SERVER(Structure):
     ai_addrlen: UInt32
     ai_addr: POINTER(win32more.Windows.Win32.Networking.WinSock.SOCKADDR)
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ai_template: win32more.Windows.Win32.Foundation.PWSTR
+        ai_hostname: win32more.Windows.Win32.Foundation.PWSTR
 class AFPROTOCOLS(Structure):
     iAddressFamily: Int32
     iProtocol: Int32
@@ -186,7 +209,7 @@ class ARP_HEADER(Structure):
     HardwareAddressLength: Byte
     ProtocolAddressLength: Byte
     Opcode: UInt16
-    SenderHardwareAddress: Byte * 1
+    SenderHardwareAddress: FlexibleArray[Byte]
 ARP_OPCODE = Int32
 ARP_REQUEST: win32more.Windows.Win32.Networking.WinSock.ARP_OPCODE = 1
 ARP_RESPONSE: win32more.Windows.Win32.Networking.WinSock.ARP_OPCODE = 2
@@ -262,7 +285,7 @@ class ATM_TRANSIT_NETWORK_SELECTION_IE(Structure):
     TypeOfNetworkId: Byte
     NetworkIdPlan: Byte
     NetworkIdLength: Byte
-    NetworkId: Byte * 1
+    NetworkId: FlexibleArray[Byte]
 SOCKET_DEFAULT2_QM_POLICY: Guid = Guid('{aec2ef9c-3a4d-4d3e-8842-239942e39a47}')
 REAL_TIME_NOTIFICATION_CAPABILITY: Guid = Guid('{6b59819a-5cae-492d-a901-2a3c2c50164f}')
 REAL_TIME_NOTIFICATION_CAPABILITY_EX: Guid = Guid('{6843da03-154a-4616-a508-44371295f96b}')
@@ -404,6 +427,8 @@ SO_REUSE_UNICASTPORT: Int32 = 12295
 SO_REUSE_MULTICASTPORT: Int32 = 12296
 SO_ORIGINAL_DST: UInt32 = 12303
 IP6T_SO_ORIGINAL_DST: UInt32 = 12303
+SO_RECEIVED_HOPLIMIT: UInt32 = 12304
+SO_RECEIVED_PROCESSOR: UInt32 = 12305
 WSK_SO_BASE: UInt32 = 16384
 TCP_NODELAY: Int32 = 1
 _SS_MAXSIZE: UInt32 = 128
@@ -534,11 +559,14 @@ ADDRINFOEX_VERSION_3: UInt32 = 3
 ADDRINFOEX_VERSION_4: UInt32 = 4
 ADDRINFOEX_VERSION_5: UInt32 = 5
 ADDRINFOEX_VERSION_6: UInt32 = 6
+ADDRINFOEX_VERSION_7: UInt32 = 7
 AI_DNS_SERVER_TYPE_UDP: UInt32 = 1
 AI_DNS_SERVER_TYPE_DOH: UInt32 = 2
+AI_DNS_SERVER_TYPE_DOT: UInt32 = 3
 AI_DNS_SERVER_UDP_FALLBACK: UInt32 = 1
 AI_DNS_RESPONSE_SECURE: UInt32 = 1
 AI_DNS_RESPONSE_HOSTFILE: UInt32 = 2
+AI_EXTRA_DNSSEC_REQUIRED: UInt64 = 1
 NS_ALL: UInt32 = 0
 NS_SAP: UInt32 = 1
 NS_NDS: UInt32 = 2
@@ -1003,6 +1031,7 @@ LUP_SECURE: UInt32 = 32768
 LUP_RETURN_PREFERRED_NAMES: UInt32 = 65536
 LUP_DNS_ONLY: UInt32 = 131072
 LUP_RETURN_RESPONSE_FLAGS: UInt32 = 262144
+LUP_RESERVED_UNUSED: UInt32 = 524288
 LUP_ADDRCONFIG: UInt32 = 1048576
 LUP_DUAL_ADDR: UInt32 = 2097152
 LUP_FILESERVER: UInt32 = 4194304
@@ -1354,6 +1383,7 @@ ND_OPT_RDNSS_MIN_LEN: UInt32 = 24
 ND_OPT_DNSSL_MIN_LEN: UInt32 = 16
 IN6_EMBEDDEDV4_UOCTET_POSITION: UInt32 = 8
 IN6_EMBEDDEDV4_BITS_IN_BYTE: UInt32 = 8
+TH_MAX_LEN: UInt32 = 60
 TH_FIN: UInt32 = 1
 TH_SYN: UInt32 = 2
 TH_RST: UInt32 = 4
@@ -1370,6 +1400,7 @@ TH_OPT_SACK_PERMITTED: UInt32 = 4
 TH_OPT_SACK: UInt32 = 5
 TH_OPT_TS: UInt32 = 8
 TH_OPT_FASTOPEN: UInt32 = 34
+NMR_REG_KEY_PATH: String = '\\Registry\\Machine\\System\\CurrentControlSet\\Control\\NMR\\providers'
 INVALID_SOCKET: win32more.Windows.Win32.Networking.WinSock.SOCKET = -1
 WSA_INFINITE: UInt32 = 4294967295
 WSA_INVALID_EVENT: win32more.Windows.Win32.Networking.WinSock.WSAEVENT = 0
@@ -1873,6 +1904,7 @@ class DL_EI64(Union):
 class DL_EUI48(Union):
     Byte: Byte * 6
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         Oui: win32more.Windows.Win32.Networking.WinSock.DL_OUI
         Ei48: win32more.Windows.Win32.Networking.WinSock.DL_EI48
@@ -1880,12 +1912,15 @@ class DL_EUI64(Union):
     Byte: Byte * 8
     Value: UInt64
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         Oui: win32more.Windows.Win32.Networking.WinSock.DL_OUI
         Anonymous: _Anonymous_e__Union
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             Ei64: win32more.Windows.Win32.Networking.WinSock.DL_EI64
             Anonymous: _Anonymous_e__Struct
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 Type: Byte
                 Tse: Byte
@@ -1893,16 +1928,19 @@ class DL_EUI64(Union):
 class DL_OUI(Union):
     Byte: Byte * 3
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        Group: Annotated[Byte, 1]
-        Local: Annotated[Byte, 1]
+        Group: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Local: Annotated[Byte, NativeBitfieldAttribute(1)]
 class DL_TEREDO_ADDRESS(Structure):
     Reserved: Byte * 6
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         Eui64: win32more.Windows.Win32.Networking.WinSock.DL_EUI64
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Struct(Structure):
             Flags: UInt16
@@ -1912,10 +1950,12 @@ class DL_TEREDO_ADDRESS(Structure):
 class DL_TEREDO_ADDRESS_PRV(Structure):
     Reserved: Byte * 6
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         Eui64: win32more.Windows.Win32.Networking.WinSock.DL_EUI64
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Struct(Structure):
             Flags: UInt16
@@ -1929,11 +1969,12 @@ class DL_TEREDO_ADDRESS_PRV(Structure):
 class DL_TUNNEL_ADDRESS(Structure):
     CompartmentId: win32more.Windows.Win32.System.Kernel.COMPARTMENT_ID
     ScopeId: win32more.Windows.Win32.Networking.WinSock.SCOPE_ID
-    IpAddress: Byte * 1
+    IpAddress: FlexibleArray[Byte]
 class ETHERNET_HEADER(Structure):
     Destination: win32more.Windows.Win32.Networking.WinSock.DL_EUI48
     Source: win32more.Windows.Win32.Networking.WinSock.DL_EUI48
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Type: UInt16
         Length: UInt16
@@ -1957,7 +1998,7 @@ class GROUP_FILTER(Structure):
     gf_group: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_STORAGE
     gf_fmode: win32more.Windows.Win32.Networking.WinSock.MULTICAST_MODE_TYPE
     gf_numsrc: UInt32
-    gf_slist: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_STORAGE * 1
+    gf_slist: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.SOCKADDR_STORAGE]
 class GROUP_REQ(Structure):
     gr_interface: UInt32
     gr_group: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_STORAGE
@@ -2025,25 +2066,28 @@ class IGMPV3_QUERY_HEADER(Structure):
     Anonymous1: _Anonymous1_e__Union
     Checksum: UInt16
     MulticastAddress: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
-    QuerierRobustnessVariable: Annotated[Byte, 3]
-    SuppressRouterSideProcessing: Annotated[Byte, 1]
-    Reserved: Annotated[Byte, 4]
+    QuerierRobustnessVariable: Annotated[Byte, NativeBitfieldAttribute(3)]
+    SuppressRouterSideProcessing: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[Byte, NativeBitfieldAttribute(4)]
     Anonymous2: _Anonymous2_e__Union
     SourceCount: UInt16
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         MaxRespCode: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            MaxRespCodeMantissa: Annotated[Byte, 4]
-            MaxRespCodeExponent: Annotated[Byte, 3]
-            MaxRespCodeType: Annotated[Byte, 1]
+            MaxRespCodeMantissa: Annotated[Byte, NativeBitfieldAttribute(4)]
+            MaxRespCodeExponent: Annotated[Byte, NativeBitfieldAttribute(3)]
+            MaxRespCodeType: Annotated[Byte, NativeBitfieldAttribute(1)]
     class _Anonymous2_e__Union(Union):
         QueriersQueryInterfaceCode: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            QQCMantissa: Annotated[Byte, 4]
-            QQCExponent: Annotated[Byte, 3]
-            QQCType: Annotated[Byte, 1]
+            QQCMantissa: Annotated[Byte, NativeBitfieldAttribute(4)]
+            QQCExponent: Annotated[Byte, NativeBitfieldAttribute(3)]
+            QQCType: Annotated[Byte, NativeBitfieldAttribute(1)]
 class IGMPV3_REPORT_HEADER(Structure):
     Type: Byte
     Reserved: Byte
@@ -2060,12 +2104,14 @@ class IGMP_HEADER(Structure):
     Anonymous2: _Anonymous2_e__Union
     Checksum: UInt16
     MulticastAddress: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         VersionType: Byte
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Type: Annotated[Byte, 4]
-            Version: Annotated[Byte, 4]
+            Type: Annotated[Byte, NativeBitfieldAttribute(4)]
+            Version: Annotated[Byte, NativeBitfieldAttribute(4)]
     class _Anonymous2_e__Union(Union):
         Reserved: Byte
         MaxRespTime: Byte
@@ -2181,37 +2227,43 @@ class IPV4_HEADER(Structure):
     HeaderChecksum: UInt16
     SourceAddress: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
     DestinationAddress: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         VersionAndHeaderLength: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            HeaderLength: Annotated[Byte, 4]
-            Version: Annotated[Byte, 4]
+            HeaderLength: Annotated[Byte, NativeBitfieldAttribute(4)]
+            Version: Annotated[Byte, NativeBitfieldAttribute(4)]
     class _Anonymous2_e__Union(Union):
         TypeOfServiceAndEcnField: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            EcnField: Annotated[Byte, 2]
-            TypeOfService: Annotated[Byte, 6]
+            EcnField: Annotated[Byte, NativeBitfieldAttribute(2)]
+            TypeOfService: Annotated[Byte, NativeBitfieldAttribute(6)]
     class _Anonymous3_e__Union(Union):
         FlagsAndOffset: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            DontUse1: Annotated[UInt16, 5]
-            MoreFragments: Annotated[UInt16, 1]
-            DontFragment: Annotated[UInt16, 1]
-            Reserved: Annotated[UInt16, 1]
-            DontUse2: Annotated[UInt16, 8]
+            DontUse1: Annotated[UInt16, NativeBitfieldAttribute(5)]
+            MoreFragments: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            DontFragment: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            DontUse2: Annotated[UInt16, NativeBitfieldAttribute(8)]
 class IPV4_OPTION_HEADER(Structure):
     Anonymous: _Anonymous_e__Union
     OptionLength: Byte
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         OptionType: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            OptionNumber: Annotated[Byte, 5]
-            OptionClass: Annotated[Byte, 2]
-            CopiedFlag: Annotated[Byte, 1]
+            OptionNumber: Annotated[Byte, NativeBitfieldAttribute(5)]
+            OptionClass: Annotated[Byte, NativeBitfieldAttribute(2)]
+            CopiedFlag: Annotated[Byte, NativeBitfieldAttribute(1)]
 IPV4_OPTION_TYPE = Int32
 IP_OPT_EOL: win32more.Windows.Win32.Networking.WinSock.IPV4_OPTION_TYPE = 0
 IP_OPT_NOP: win32more.Windows.Win32.Networking.WinSock.IPV4_OPTION_TYPE = 1
@@ -2230,12 +2282,14 @@ class IPV4_TIMESTAMP_OPTION(Structure):
     OptionHeader: win32more.Windows.Win32.Networking.WinSock.IPV4_OPTION_HEADER
     Pointer: Byte
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FlagsOverflow: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Flags: Annotated[Byte, 4]
-            Overflow: Annotated[Byte, 4]
+            Flags: Annotated[Byte, NativeBitfieldAttribute(4)]
+            Overflow: Annotated[Byte, NativeBitfieldAttribute(4)]
 class IPV6_EXTENSION_HEADER(Structure):
     NextHeader: Byte
     Length: Byte
@@ -2244,14 +2298,16 @@ class IPV6_FRAGMENT_HEADER(Structure):
     Reserved: Byte
     Anonymous: _Anonymous_e__Union
     Id: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         OffsetAndFlags: UInt16
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            DontUse1: Annotated[UInt16, 8]
-            MoreFragments: Annotated[UInt16, 1]
-            ReservedBits: Annotated[UInt16, 2]
-            DontUse2: Annotated[UInt16, 5]
+            DontUse1: Annotated[UInt16, NativeBitfieldAttribute(8)]
+            MoreFragments: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            ReservedBits: Annotated[UInt16, NativeBitfieldAttribute(2)]
+            DontUse2: Annotated[UInt16, NativeBitfieldAttribute(5)]
 class IPV6_HEADER(Structure):
     Anonymous: _Anonymous_e__Union
     PayloadLength: UInt16
@@ -2259,24 +2315,27 @@ class IPV6_HEADER(Structure):
     HopLimit: Byte
     SourceAddress: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
     DestinationAddress: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         VersionClassFlow: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Anonymous1: Annotated[UInt32, 4]
-            Version: Annotated[UInt32, 4]
-            Anonymous2: Annotated[UInt32, 24]
+            Anonymous1: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Version: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Anonymous2: Annotated[UInt32, NativeBitfieldAttribute(24)]
 class IPV6_MREQ(Structure):
     ipv6mr_multiaddr: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
     ipv6mr_interface: UInt32
 class IPV6_NEIGHBOR_ADVERTISEMENT_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     Value: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        Reserved1: Annotated[Byte, 5]
-        Override: Annotated[Byte, 1]
-        Solicited: Annotated[Byte, 1]
-        Router: Annotated[Byte, 1]
+        Reserved1: Annotated[Byte, NativeBitfieldAttribute(5)]
+        Override: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Solicited: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Router: Annotated[Byte, NativeBitfieldAttribute(1)]
         Reserved2: Byte * 3
 class IPV6_OPTION_HEADER(Structure):
     Type: Byte
@@ -2297,12 +2356,13 @@ IP6OPT_NSAP_ADDR: win32more.Windows.Win32.Networking.WinSock.IPV6_OPTION_TYPE = 
 class IPV6_ROUTER_ADVERTISEMENT_FLAGS(Union):
     Anonymous: _Anonymous_e__Struct
     Value: Byte
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        Reserved: Annotated[Byte, 3]
-        Preference: Annotated[Byte, 2]
-        HomeAgent: Annotated[Byte, 1]
-        OtherStatefulConfiguration: Annotated[Byte, 1]
-        ManagedAddressConfiguration: Annotated[Byte, 1]
+        Reserved: Annotated[Byte, NativeBitfieldAttribute(3)]
+        Preference: Annotated[Byte, NativeBitfieldAttribute(2)]
+        HomeAgent: Annotated[Byte, NativeBitfieldAttribute(1)]
+        OtherStatefulConfiguration: Annotated[Byte, NativeBitfieldAttribute(1)]
+        ManagedAddressConfiguration: Annotated[Byte, NativeBitfieldAttribute(1)]
 class IPV6_ROUTING_HEADER(Structure):
     NextHeader: Byte
     Length: Byte
@@ -2354,7 +2414,7 @@ class IP_MSFILTER(Structure):
     imsf_interface: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
     imsf_fmode: win32more.Windows.Win32.Networking.WinSock.MULTICAST_MODE_TYPE
     imsf_numsrc: UInt32
-    imsf_slist: win32more.Windows.Win32.Networking.WinSock.IN_ADDR * 1
+    imsf_slist: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.IN_ADDR]
 IP_OPTION_TIMESTAMP_FLAGS = Int32
 IP_OPTION_TIMESTAMP_ONLY: win32more.Windows.Win32.Networking.WinSock.IP_OPTION_TIMESTAMP_FLAGS = 0
 IP_OPTION_TIMESTAMP_ADDRESS: win32more.Windows.Win32.Networking.WinSock.IP_OPTION_TIMESTAMP_FLAGS = 1
@@ -2582,26 +2642,29 @@ class MLDV2_QUERY_HEADER(Structure):
     Anonymous1: _Anonymous1_e__Union
     Reserved: UInt16
     MulticastAddress: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
-    QuerierRobustnessVariable: Annotated[Byte, 3]
-    SuppressRouterSideProcessing: Annotated[Byte, 1]
-    QueryReserved: Annotated[Byte, 4]
+    QuerierRobustnessVariable: Annotated[Byte, NativeBitfieldAttribute(3)]
+    SuppressRouterSideProcessing: Annotated[Byte, NativeBitfieldAttribute(1)]
+    QueryReserved: Annotated[Byte, NativeBitfieldAttribute(4)]
     Anonymous2: _Anonymous2_e__Union
     SourceCount: UInt16
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         MaxRespCode: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            MaxRespCodeMantissaHi: Annotated[UInt16, 4]
-            MaxRespCodeExponent: Annotated[UInt16, 3]
-            MaxRespCodeType: Annotated[UInt16, 1]
-            MaxRespCodeMantissaLo: Annotated[UInt16, 8]
+            MaxRespCodeMantissaHi: Annotated[UInt16, NativeBitfieldAttribute(4)]
+            MaxRespCodeExponent: Annotated[UInt16, NativeBitfieldAttribute(3)]
+            MaxRespCodeType: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            MaxRespCodeMantissaLo: Annotated[UInt16, NativeBitfieldAttribute(8)]
     class _Anonymous2_e__Union(Union):
         QueriersQueryInterfaceCode: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            QQCMantissa: Annotated[Byte, 4]
-            QQCExponent: Annotated[Byte, 3]
-            QQCType: Annotated[Byte, 1]
+            QQCMantissa: Annotated[Byte, NativeBitfieldAttribute(4)]
+            QQCExponent: Annotated[Byte, NativeBitfieldAttribute(3)]
+            QQCType: Annotated[Byte, NativeBitfieldAttribute(1)]
 class MLDV2_REPORT_HEADER(Structure):
     IcmpHeader: win32more.Windows.Win32.Networking.WinSock.ICMP_HEADER
     Reserved: UInt16
@@ -2659,6 +2722,19 @@ class ND_OPTION_MTU(Structure):
     nd_opt_mtu_len: Byte
     nd_opt_mtu_reserved: UInt16
     nd_opt_mtu_mtu: UInt32
+class ND_OPTION_PREF64(Structure):
+    nd_opt_p64_type: Byte
+    nd_opt_p64_len: Byte
+    Anonymous: _Anonymous_e__Union
+    nd_opt_p64_prefix: Byte * 12
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Union(Union):
+        nd_opt_p64_lifetime_plc: UInt16
+        Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
+        class _Anonymous_e__Struct(Structure):
+            nd_opt_p64_prefix_length_code: Annotated[UInt16, NativeBitfieldAttribute(3)]
+            nd_opt_p64_scaled_lifetime: Annotated[UInt16, NativeBitfieldAttribute(13)]
 class ND_OPTION_PREFIX_INFO(Structure):
     nd_opt_pi_type: Byte
     nd_opt_pi_len: Byte
@@ -2668,19 +2744,21 @@ class ND_OPTION_PREFIX_INFO(Structure):
     nd_opt_pi_preferred_time: UInt32
     Anonymous2: _Anonymous2_e__Union
     nd_opt_pi_prefix: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         nd_opt_pi_flags_reserved: Byte
         Flags: _Flags_e__Struct
         class _Flags_e__Struct(Structure):
-            Route: Annotated[Byte, 1]
-            Reserved1: Annotated[Byte, 3]
-            SitePrefix: Annotated[Byte, 1]
-            RouterAddress: Annotated[Byte, 1]
-            Autonomous: Annotated[Byte, 1]
-            OnLink: Annotated[Byte, 1]
+            Route: Annotated[Byte, NativeBitfieldAttribute(1)]
+            Reserved1: Annotated[Byte, NativeBitfieldAttribute(3)]
+            SitePrefix: Annotated[Byte, NativeBitfieldAttribute(1)]
+            RouterAddress: Annotated[Byte, NativeBitfieldAttribute(1)]
+            Autonomous: Annotated[Byte, NativeBitfieldAttribute(1)]
+            OnLink: Annotated[Byte, NativeBitfieldAttribute(1)]
     class _Anonymous2_e__Union(Union):
         nd_opt_pi_reserved2: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             nd_opt_pi_reserved3: Byte * 3
             nd_opt_pi_site_prefix_len: Byte
@@ -2701,12 +2779,13 @@ class ND_OPTION_ROUTE_INFO(Structure):
     Anonymous: _Anonymous_e__Union
     nd_opt_ri_route_lifetime: UInt32
     nd_opt_ri_prefix: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         nd_opt_ri_flags_reserved: Byte
         Flags: _Flags_e__Struct
         class _Flags_e__Struct(Structure):
-            Reserved: Annotated[Byte, 3]
-            Preference: Annotated[Byte, 2]
+            Reserved: Annotated[Byte, NativeBitfieldAttribute(3)]
+            Preference: Annotated[Byte, NativeBitfieldAttribute(2)]
 ND_OPTION_TYPE = Int32
 ND_OPT_SOURCE_LINKADDR: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TYPE = 1
 ND_OPT_TARGET_LINKADDR: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TYPE = 2
@@ -2721,6 +2800,14 @@ ND_OPT_TARGET_ADDR_LIST: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TY
 ND_OPT_ROUTE_INFO: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TYPE = 24
 ND_OPT_RDNSS: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TYPE = 25
 ND_OPT_DNSSL: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TYPE = 31
+ND_OPT_PREF64: win32more.Windows.Win32.Networking.WinSock.ND_OPTION_TYPE = 38
+ND_OPT_PREF64_PREFIX_LENGTH_CODE = Int32
+ND_OPT_PREF64_PREFIX_LENGTH_96: win32more.Windows.Win32.Networking.WinSock.ND_OPT_PREF64_PREFIX_LENGTH_CODE = 0
+ND_OPT_PREF64_PREFIX_LENGTH_64: win32more.Windows.Win32.Networking.WinSock.ND_OPT_PREF64_PREFIX_LENGTH_CODE = 1
+ND_OPT_PREF64_PREFIX_LENGTH_56: win32more.Windows.Win32.Networking.WinSock.ND_OPT_PREF64_PREFIX_LENGTH_CODE = 2
+ND_OPT_PREF64_PREFIX_LENGTH_48: win32more.Windows.Win32.Networking.WinSock.ND_OPT_PREF64_PREFIX_LENGTH_CODE = 3
+ND_OPT_PREF64_PREFIX_LENGTH_40: win32more.Windows.Win32.Networking.WinSock.ND_OPT_PREF64_PREFIX_LENGTH_CODE = 4
+ND_OPT_PREF64_PREFIX_LENGTH_32: win32more.Windows.Win32.Networking.WinSock.ND_OPT_PREF64_PREFIX_LENGTH_CODE = 5
 class ND_REDIRECT_HEADER(Structure):
     nd_rd_hdr: win32more.Windows.Win32.Networking.WinSock.ICMP_MESSAGE
     nd_rd_target: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
@@ -2772,9 +2859,9 @@ class NLA_BLOB(Structure):
         class _interfaceData_e__Struct(Structure):
             dwType: UInt32
             dwSpeed: UInt32
-            adapterName: win32more.Windows.Win32.Foundation.CHAR * 1
+            adapterName: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
         class _locationData_e__Struct(Structure):
-            information: win32more.Windows.Win32.Foundation.CHAR * 1
+            information: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
         class _connectivity_e__Struct(Structure):
             type: win32more.Windows.Win32.Networking.WinSock.NLA_CONNECTIVITY_TYPE
             internet: win32more.Windows.Win32.Networking.WinSock.NLA_INTERNET
@@ -2834,14 +2921,14 @@ NlincPrivate: win32more.Windows.Win32.Networking.WinSock.NL_INTERFACE_NETWORK_CA
 NlincDomainAuthenticated: win32more.Windows.Win32.Networking.WinSock.NL_INTERFACE_NETWORK_CATEGORY_STATE = 3
 NlincCategoryStateMax: win32more.Windows.Win32.Networking.WinSock.NL_INTERFACE_NETWORK_CATEGORY_STATE = 4
 class NL_INTERFACE_OFFLOAD_ROD(Structure):
-    NlChecksumSupported: Annotated[Byte, 1]
-    NlOptionsSupported: Annotated[Byte, 1]
-    TlDatagramChecksumSupported: Annotated[Byte, 1]
-    TlStreamChecksumSupported: Annotated[Byte, 1]
-    TlStreamOptionsSupported: Annotated[Byte, 1]
-    FastPathCompatible: Annotated[Byte, 1]
-    TlLargeSendOffloadSupported: Annotated[Byte, 1]
-    TlGiantSendOffloadSupported: Annotated[Byte, 1]
+    NlChecksumSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    NlOptionsSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    TlDatagramChecksumSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    TlStreamChecksumSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    TlStreamOptionsSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    FastPathCompatible: Annotated[Byte, NativeBitfieldAttribute(1)]
+    TlLargeSendOffloadSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    TlGiantSendOffloadSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
 NL_LINK_LOCAL_ADDRESS_BEHAVIOR = Int32
 LinkLocalAlwaysOff: win32more.Windows.Win32.Networking.WinSock.NL_LINK_LOCAL_ADDRESS_BEHAVIOR = 0
 LinkLocalDelayed: win32more.Windows.Win32.Networking.WinSock.NL_LINK_LOCAL_ADDRESS_BEHAVIOR = 1
@@ -2984,6 +3071,7 @@ class NPI_MODULEID(Structure):
     Length: UInt16
     Type: win32more.Windows.Win32.Networking.WinSock.NPI_MODULEID_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Guid: Guid
         IfLuid: win32more.Windows.Win32.Foundation.LUID
@@ -3065,7 +3153,7 @@ class PROTOENT(Structure):
 class Q2931_IE(Structure):
     IEType: win32more.Windows.Win32.Networking.WinSock.Q2931_IE_TYPE
     IELength: UInt32
-    IE: Byte * 1
+    IE: FlexibleArray[Byte]
 Q2931_IE_TYPE = Int32
 IE_AALParameters: win32more.Windows.Win32.Networking.WinSock.Q2931_IE_TYPE = 0
 IE_TrafficDescriptor: win32more.Windows.Win32.Networking.WinSock.Q2931_IE_TYPE = 1
@@ -3139,6 +3227,7 @@ class RIO_EXTENSION_FUNCTION_TABLE(Structure):
 class RIO_NOTIFICATION_COMPLETION(Structure):
     Type: win32more.Windows.Win32.Networking.WinSock.RIO_NOTIFICATION_COMPLETION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Event: _Event_e__Struct
         Iocp: _Iocp_e__Struct
@@ -3199,12 +3288,14 @@ class RSS_SCALABILITY_INFO(Structure):
     RssEnabled: win32more.Windows.Win32.Foundation.BOOLEAN
 class SCOPE_ID(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         Value: UInt32
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Zone: Annotated[UInt32, 28]
-            Level: Annotated[UInt32, 4]
+            Zone: Annotated[UInt32, NativeBitfieldAttribute(28)]
+            Level: Annotated[UInt32, NativeBitfieldAttribute(4)]
 SCOPE_LEVEL = Int32
 ScopeLevelInterface: win32more.Windows.Win32.Networking.WinSock.SCOPE_LEVEL = 1
 ScopeLevelLink: win32more.Windows.Win32.Networking.WinSock.SCOPE_LEVEL = 2
@@ -3241,7 +3332,7 @@ class SERVICE_ADDRESS(Structure):
     lpPrincipal: POINTER(Byte)
 class SERVICE_ADDRESSES(Structure):
     dwAddressCount: UInt32
-    Addresses: win32more.Windows.Win32.Networking.WinSock.SERVICE_ADDRESS * 1
+    Addresses: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.SERVICE_ADDRESS]
 class SERVICE_ASYNC_INFO(Structure):
     lpServiceCallbackProc: win32more.Windows.Win32.Networking.WinSock.LPSERVICE_CALLBACK_PROC
     lParam: win32more.Windows.Win32.Foundation.LPARAM
@@ -3272,15 +3363,15 @@ SERVICE_INFO = UnicodeAlias('SERVICE_INFOW')
 class SERVICE_TYPE_INFO(Structure):
     dwTypeNameOffset: UInt32
     dwValueCount: UInt32
-    Values: win32more.Windows.Win32.Networking.WinSock.SERVICE_TYPE_VALUE * 1
+    Values: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.SERVICE_TYPE_VALUE]
 class SERVICE_TYPE_INFO_ABSA(Structure):
     lpTypeName: win32more.Windows.Win32.Foundation.PSTR
     dwValueCount: UInt32
-    Values: win32more.Windows.Win32.Networking.WinSock.SERVICE_TYPE_VALUE_ABSA * 1
+    Values: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.SERVICE_TYPE_VALUE_ABSA]
 class SERVICE_TYPE_INFO_ABSW(Structure):
     lpTypeName: win32more.Windows.Win32.Foundation.PWSTR
     dwValueCount: UInt32
-    Values: win32more.Windows.Win32.Networking.WinSock.SERVICE_TYPE_VALUE_ABSW * 1
+    Values: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.SERVICE_TYPE_VALUE_ABSW]
 SERVICE_TYPE_INFO_ABS = UnicodeAlias('SERVICE_TYPE_INFO_ABSW')
 class SERVICE_TYPE_VALUE(Structure):
     dwNameSpace: UInt32
@@ -3336,6 +3427,7 @@ class SOCKADDR_IN6(Structure):
     sin6_flowinfo: UInt32
     sin6_addr: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         sin6_scope_id: UInt32
         sin6_scope_struct: win32more.Windows.Win32.Networking.WinSock.SCOPE_ID
@@ -3397,12 +3489,12 @@ class SOCKET_ADDRESS(Structure):
     iSockaddrLength: Int32
 class SOCKET_ADDRESS_LIST(Structure):
     iAddressCount: Int32
-    Address: win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS * 1
+    Address: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.SOCKET_ADDRESS]
 class SOCKET_PEER_TARGET_NAME(Structure):
     SecurityProtocol: win32more.Windows.Win32.Networking.WinSock.SOCKET_SECURITY_PROTOCOL
     PeerAddress: win32more.Windows.Win32.Networking.WinSock.SOCKADDR_STORAGE
     PeerTargetNameStringLen: UInt32
-    AllStrings: Char * 1
+    AllStrings: FlexibleArray[Char]
 SOCKET_PRIORITY_HINT = Int32
 SocketPriorityHintVeryLow: win32more.Windows.Win32.Networking.WinSock.SOCKET_PRIORITY_HINT = 0
 SocketPriorityHintLow: win32more.Windows.Win32.Networking.WinSock.SOCKET_PRIORITY_HINT = 1
@@ -3455,7 +3547,7 @@ class SOCKET_SECURITY_SETTINGS_IPSEC(Structure):
     UserNameStringLen: UInt32
     DomainNameStringLen: UInt32
     PasswordStringLen: UInt32
-    AllStrings: Char * 1
+    AllStrings: FlexibleArray[Char]
 SOCKET_USAGE_TYPE = Int32
 SYSTEM_CRITICAL_SOCKET: win32more.Windows.Win32.Networking.WinSock.SOCKET_USAGE_TYPE = 1
 class SOCK_NOTIFY_REGISTRATION(Structure):
@@ -3485,8 +3577,8 @@ class TCP_HDR(Structure):
     th_dport: UInt16
     th_seq: UInt32
     th_ack: UInt32
-    th_x2: Annotated[Byte, 4]
-    th_len: Annotated[Byte, 4]
+    th_x2: Annotated[Byte, NativeBitfieldAttribute(4)]
+    th_len: Annotated[Byte, NativeBitfieldAttribute(4)]
     th_flags: Byte
     th_win: UInt16
     th_sum: UInt16
@@ -3551,13 +3643,46 @@ class TCP_INFO_v1(Structure):
     SndLimTransSnd: UInt32
     SndLimTimeSnd: UInt32
     SndLimBytesSnd: UInt64
+class TCP_INFO_v2(Structure):
+    State: win32more.Windows.Win32.Networking.WinSock.TCPSTATE
+    Mss: UInt32
+    ConnectionTimeMs: UInt64
+    TimestampsEnabled: win32more.Windows.Win32.Foundation.BOOLEAN
+    RttUs: UInt32
+    MinRttUs: UInt32
+    BytesInFlight: UInt32
+    Cwnd: UInt32
+    SndWnd: UInt32
+    RcvWnd: UInt32
+    RcvBuf: UInt32
+    BytesOut: UInt64
+    BytesIn: UInt64
+    BytesReordered: UInt32
+    BytesRetrans: UInt32
+    FastRetrans: UInt32
+    DupAcksIn: UInt32
+    TimeoutEpisodes: UInt32
+    SynRetrans: Byte
+    SndLimTransRwin: UInt32
+    SndLimTimeRwin: UInt32
+    SndLimBytesRwin: UInt64
+    SndLimTransCwnd: UInt32
+    SndLimTimeCwnd: UInt32
+    SndLimBytesCwnd: UInt64
+    SndLimTransSnd: UInt32
+    SndLimTimeSnd: UInt32
+    SndLimBytesSnd: UInt64
+    OutOfOrderPktsIn: UInt32
+    EcnNegotiated: win32more.Windows.Win32.Foundation.BOOLEAN
+    EceAcksIn: UInt32
+    PtoEpisodes: UInt32
 class TCP_INITIAL_RTO_PARAMETERS(Structure):
     Rtt: UInt16
     MaxSynRetransmissions: Byte
 class TCP_OPT_FASTOPEN(Structure):
     Kind: Byte
     Length: Byte
-    Cookie: Byte * 1
+    Cookie: FlexibleArray[Byte]
     _pack_ = 1
 class TCP_OPT_MSS(Structure):
     Kind: Byte
@@ -3567,7 +3692,7 @@ class TCP_OPT_MSS(Structure):
 class TCP_OPT_SACK(Structure):
     Kind: Byte
     Length: Byte
-    Block: tcp_opt_sack_block * 1
+    Block: FlexibleArray[tcp_opt_sack_block]
     _pack_ = 1
     class tcp_opt_sack_block(Structure):
         Left: UInt32
@@ -3607,9 +3732,11 @@ class TRANSMIT_PACKETS_ELEMENT(Structure):
     dwElFlags: UInt32
     cLength: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         pBuffer: VoidPtr
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             nFileOffset: Int64
             hFile: win32more.Windows.Win32.Foundation.HANDLE
@@ -3623,23 +3750,25 @@ TUNNEL_SUB_TYPE_HA: win32more.Windows.Win32.Networking.WinSock.TUNNEL_SUB_TYPE =
 class VLAN_TAG(Structure):
     Anonymous: _Anonymous_e__Union
     Type: UInt16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Tag: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            VID: Annotated[UInt16, 12]
-            CFI: Annotated[UInt16, 1]
-            User_Priority: Annotated[UInt16, 3]
+            VID: Annotated[UInt16, NativeBitfieldAttribute(12)]
+            CFI: Annotated[UInt16, NativeBitfieldAttribute(1)]
+            User_Priority: Annotated[UInt16, NativeBitfieldAttribute(3)]
 class WCE_DEVICELIST(Structure):
     numDevice: UInt32
-    Device: win32more.Windows.Win32.Networking.WinSock.WCE_IRDA_DEVICE_INFO * 1
+    Device: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.WCE_IRDA_DEVICE_INFO]
 class WCE_IRDA_DEVICE_INFO(Structure):
     irdaDeviceID: Byte * 4
     irdaDeviceName: win32more.Windows.Win32.Foundation.CHAR * 22
     Reserved: Byte * 2
 class WINDOWS_DEVICELIST(Structure):
     numDevice: UInt32
-    Device: win32more.Windows.Win32.Networking.WinSock.WINDOWS_IRDA_DEVICE_INFO * 1
+    Device: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.WINDOWS_IRDA_DEVICE_INFO]
 class WINDOWS_IAS_QUERY(Structure):
     irdaDeviceID: Byte * 4
     irdaClassName: win32more.Windows.Win32.Foundation.CHAR * 64
@@ -3800,7 +3929,7 @@ class WSAPOLLDATA(Structure):
     result: Int32
     fds: UInt32
     timeout: Int32
-    fdArray: win32more.Windows.Win32.Networking.WinSock.WSAPOLLFD * 1
+    fdArray: FlexibleArray[win32more.Windows.Win32.Networking.WinSock.WSAPOLLFD]
 class WSAPOLLFD(Structure):
     fd: win32more.Windows.Win32.Networking.WinSock.SOCKET
     events: win32more.Windows.Win32.Networking.WinSock.WSAPOLL_EVENT_FLAGS

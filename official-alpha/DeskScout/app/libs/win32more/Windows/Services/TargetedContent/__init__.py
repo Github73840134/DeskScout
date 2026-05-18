@@ -1,25 +1,23 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.Services.TargetedContent
 import win32more.Windows.Storage.Streams
-import win32more.Windows.Win32.System.WinRT
 class ITargetedContentAction(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentAction'
     _iid_ = Guid('{d75b691e-6cd6-4ca0-9d8f-4728b0b7e6b6}')
     @winrt_commethod(6)
     def InvokeAsync(self) -> win32more.Windows.Foundation.IAsyncAction: ...
 class ITargetedContentAvailabilityChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentAvailabilityChangedEventArgs'
     _iid_ = Guid('{e0f59d26-5927-4450-965c-1ceb7becde65}')
     @winrt_commethod(6)
     def GetDeferral(self) -> win32more.Windows.Foundation.Deferral: ...
 class ITargetedContentChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentChangedEventArgs'
     _iid_ = Guid('{99d488c9-587e-4586-8ef7-b54ca9453a16}')
     @winrt_commethod(6)
@@ -28,19 +26,19 @@ class ITargetedContentChangedEventArgs(ComPtr):
     def get_HasPreviousContentExpired(self) -> Boolean: ...
     HasPreviousContentExpired = property(get_HasPreviousContentExpired, None)
 class ITargetedContentCollection(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentCollection'
     _iid_ = Guid('{2d4b66c5-f163-44ba-9f6e-e1a4c2bb559d}')
     @winrt_commethod(6)
-    def get_Id(self) -> WinRT_String: ...
+    def get_Id(self) -> hstr: ...
     @winrt_commethod(7)
     def ReportInteraction(self, interaction: win32more.Windows.Services.TargetedContent.TargetedContentInteraction) -> Void: ...
     @winrt_commethod(8)
-    def ReportCustomInteraction(self, customInteractionName: WinRT_String) -> Void: ...
+    def ReportCustomInteraction(self, customInteractionName: hstr) -> Void: ...
     @winrt_commethod(9)
-    def get_Path(self) -> WinRT_String: ...
+    def get_Path(self) -> hstr: ...
     @winrt_commethod(10)
-    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
+    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[hstr, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
     @winrt_commethod(11)
     def get_Collections(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Services.TargetedContent.TargetedContentCollection]: ...
     @winrt_commethod(12)
@@ -51,11 +49,11 @@ class ITargetedContentCollection(ComPtr):
     Path = property(get_Path, None)
     Properties = property(get_Properties, None)
 class ITargetedContentContainer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentContainer'
     _iid_ = Guid('{bc2494c9-8837-47c2-850f-d79d64595926}')
     @winrt_commethod(6)
-    def get_Id(self) -> WinRT_String: ...
+    def get_Id(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Timestamp(self) -> win32more.Windows.Foundation.DateTime: ...
     @winrt_commethod(8)
@@ -63,19 +61,19 @@ class ITargetedContentContainer(ComPtr):
     @winrt_commethod(9)
     def get_Content(self) -> win32more.Windows.Services.TargetedContent.TargetedContentCollection: ...
     @winrt_commethod(10)
-    def SelectSingleObject(self, path: WinRT_String) -> win32more.Windows.Services.TargetedContent.TargetedContentObject: ...
+    def SelectSingleObject(self, path: hstr) -> win32more.Windows.Services.TargetedContent.TargetedContentObject: ...
     Availability = property(get_Availability, None)
     Content = property(get_Content, None)
     Id = property(get_Id, None)
     Timestamp = property(get_Timestamp, None)
 class ITargetedContentContainerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentContainerStatics'
     _iid_ = Guid('{5b47e7fb-2140-4c1f-a736-c59583f227d8}')
     @winrt_commethod(6)
-    def GetAsync(self, contentId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentContainer]: ...
+    def GetAsync(self, contentId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentContainer]: ...
 class ITargetedContentImage(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentImage'
     _iid_ = Guid('{a7a585d9-779f-4b1e-bbb1-8eaf53fbeab2}')
     @winrt_commethod(6)
@@ -85,19 +83,19 @@ class ITargetedContentImage(ComPtr):
     Height = property(get_Height, None)
     Width = property(get_Width, None)
 class ITargetedContentItem(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentItem'
     _iid_ = Guid('{38168dc4-276c-4c32-96ba-565c6e406e74}')
     @winrt_commethod(6)
-    def get_Path(self) -> WinRT_String: ...
+    def get_Path(self) -> hstr: ...
     @winrt_commethod(7)
     def ReportInteraction(self, interaction: win32more.Windows.Services.TargetedContent.TargetedContentInteraction) -> Void: ...
     @winrt_commethod(8)
-    def ReportCustomInteraction(self, customInteractionName: WinRT_String) -> Void: ...
+    def ReportCustomInteraction(self, customInteractionName: hstr) -> Void: ...
     @winrt_commethod(9)
     def get_State(self) -> win32more.Windows.Services.TargetedContent.TargetedContentItemState: ...
     @winrt_commethod(10)
-    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
+    def get_Properties(self) -> win32more.Windows.Foundation.Collections.IMapView[hstr, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
     @winrt_commethod(11)
     def get_Collections(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Services.TargetedContent.TargetedContentCollection]: ...
     Collections = property(get_Collections, None)
@@ -105,7 +103,7 @@ class ITargetedContentItem(ComPtr):
     Properties = property(get_Properties, None)
     State = property(get_State, None)
 class ITargetedContentItemState(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentItemState'
     _iid_ = Guid('{73935454-4c65-4b47-a441-472de53c79b6}')
     @winrt_commethod(6)
@@ -115,7 +113,7 @@ class ITargetedContentItemState(ComPtr):
     AppInstallationState = property(get_AppInstallationState, None)
     ShouldDisplay = property(get_ShouldDisplay, None)
 class ITargetedContentObject(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentObject'
     _iid_ = Guid('{041d7969-2212-42d1-9dfa-88a8e3033aa3}')
     @winrt_commethod(6)
@@ -131,17 +129,17 @@ class ITargetedContentObject(ComPtr):
     ObjectKind = property(get_ObjectKind, None)
     Value = property(get_Value, None)
 class ITargetedContentStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentStateChangedEventArgs'
     _iid_ = Guid('{9a1cef3d-8073-4416-8df2-546835a6414f}')
     @winrt_commethod(6)
     def GetDeferral(self) -> win32more.Windows.Foundation.Deferral: ...
 class ITargetedContentSubscription(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentSubscription'
     _iid_ = Guid('{882c2c49-c652-4c7a-acad-1f7fa2986c73}')
     @winrt_commethod(6)
-    def get_Id(self) -> WinRT_String: ...
+    def get_Id(self) -> hstr: ...
     @winrt_commethod(7)
     def GetContentContainerAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentContainer]: ...
     @winrt_commethod(8)
@@ -157,23 +155,23 @@ class ITargetedContentSubscription(ComPtr):
     @winrt_commethod(13)
     def remove_StateChanged(self, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     Id = property(get_Id, None)
-    ContentChanged = event()
-    AvailabilityChanged = event()
-    StateChanged = event()
+    AvailabilityChanged = event(add_AvailabilityChanged, remove_AvailabilityChanged)
+    ContentChanged = event(add_ContentChanged, remove_ContentChanged)
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class ITargetedContentSubscriptionOptions(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions'
     _iid_ = Guid('{61ee6ad0-2c83-421b-8467-413eaf1aeb97}')
     @winrt_commethod(6)
-    def get_SubscriptionId(self) -> WinRT_String: ...
+    def get_SubscriptionId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_AllowPartialContentAvailability(self) -> Boolean: ...
     @winrt_commethod(8)
     def put_AllowPartialContentAvailability(self, value: Boolean) -> Void: ...
     @winrt_commethod(9)
-    def get_CloudQueryParameters(self) -> win32more.Windows.Foundation.Collections.IMap[WinRT_String, WinRT_String]: ...
+    def get_CloudQueryParameters(self) -> win32more.Windows.Foundation.Collections.IMap[hstr, hstr]: ...
     @winrt_commethod(10)
-    def get_LocalFilters(self) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
+    def get_LocalFilters(self) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
     @winrt_commethod(11)
     def Update(self) -> Void: ...
     AllowPartialContentAvailability = property(get_AllowPartialContentAvailability, put_AllowPartialContentAvailability)
@@ -181,23 +179,23 @@ class ITargetedContentSubscriptionOptions(ComPtr):
     LocalFilters = property(get_LocalFilters, None)
     SubscriptionId = property(get_SubscriptionId, None)
 class ITargetedContentSubscriptionStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentSubscriptionStatics'
     _iid_ = Guid('{faddfe80-360d-4916-b53c-7ea27090d02a}')
     @winrt_commethod(6)
-    def GetAsync(self, subscriptionId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentSubscription]: ...
+    def GetAsync(self, subscriptionId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentSubscription]: ...
     @winrt_commethod(7)
-    def GetOptions(self, subscriptionId: WinRT_String) -> win32more.Windows.Services.TargetedContent.TargetedContentSubscriptionOptions: ...
+    def GetOptions(self, subscriptionId: hstr) -> win32more.Windows.Services.TargetedContent.TargetedContentSubscriptionOptions: ...
 class ITargetedContentValue(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Services.TargetedContent.ITargetedContentValue'
     _iid_ = Guid('{aafde4b3-4215-4bf8-867f-43f04865f9bf}')
     @winrt_commethod(6)
     def get_ValueKind(self) -> win32more.Windows.Services.TargetedContent.TargetedContentValueKind: ...
     @winrt_commethod(7)
-    def get_Path(self) -> WinRT_String: ...
+    def get_Path(self) -> hstr: ...
     @winrt_commethod(8)
-    def get_String(self) -> WinRT_String: ...
+    def get_String(self) -> hstr: ...
     @winrt_commethod(9)
     def get_Uri(self) -> win32more.Windows.Foundation.Uri: ...
     @winrt_commethod(10)
@@ -211,7 +209,7 @@ class ITargetedContentValue(ComPtr):
     @winrt_commethod(14)
     def get_Action(self) -> win32more.Windows.Services.TargetedContent.TargetedContentAction: ...
     @winrt_commethod(15)
-    def get_Strings(self) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
+    def get_Strings(self) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
     @winrt_commethod(16)
     def get_Uris(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Uri]: ...
     @winrt_commethod(17)
@@ -241,27 +239,29 @@ class ITargetedContentValue(ComPtr):
     Uris = property(get_Uris, None)
     ValueKind = property(get_ValueKind, None)
 class TargetedContentAction(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentAction
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentAction'
     @winrt_mixinmethod
     def InvokeAsync(self: win32more.Windows.Services.TargetedContent.ITargetedContentAction) -> win32more.Windows.Foundation.IAsyncAction: ...
 class TargetedContentAppInstallationState(Enum, Int32):
+    _name_ = 'Windows.Services.TargetedContent.TargetedContentAppInstallationState'
     NotApplicable = 0
     NotInstalled = 1
     Installed = 2
 class TargetedContentAvailability(Enum, Int32):
+    _name_ = 'Windows.Services.TargetedContent.TargetedContentAvailability'
     None_ = 0
     Partial = 1
     All = 2
 class TargetedContentAvailabilityChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentAvailabilityChangedEventArgs
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentAvailabilityChangedEventArgs'
     @winrt_mixinmethod
     def GetDeferral(self: win32more.Windows.Services.TargetedContent.ITargetedContentAvailabilityChangedEventArgs) -> win32more.Windows.Foundation.Deferral: ...
 class TargetedContentChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentChangedEventArgs
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentChangedEventArgs'
     @winrt_mixinmethod
@@ -270,19 +270,19 @@ class TargetedContentChangedEventArgs(ComPtr):
     def get_HasPreviousContentExpired(self: win32more.Windows.Services.TargetedContent.ITargetedContentChangedEventArgs) -> Boolean: ...
     HasPreviousContentExpired = property(get_HasPreviousContentExpired, None)
 class TargetedContentCollection(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentCollection
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentCollection'
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> WinRT_String: ...
+    def get_Id(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> hstr: ...
     @winrt_mixinmethod
     def ReportInteraction(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection, interaction: win32more.Windows.Services.TargetedContent.TargetedContentInteraction) -> Void: ...
     @winrt_mixinmethod
-    def ReportCustomInteraction(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection, customInteractionName: WinRT_String) -> Void: ...
+    def ReportCustomInteraction(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection, customInteractionName: hstr) -> Void: ...
     @winrt_mixinmethod
-    def get_Path(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> WinRT_String: ...
+    def get_Path(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> hstr: ...
     @winrt_mixinmethod
-    def get_Properties(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
+    def get_Properties(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> win32more.Windows.Foundation.Collections.IMapView[hstr, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
     @winrt_mixinmethod
     def get_Collections(self: win32more.Windows.Services.TargetedContent.ITargetedContentCollection) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Services.TargetedContent.TargetedContentCollection]: ...
     @winrt_mixinmethod
@@ -293,11 +293,11 @@ class TargetedContentCollection(ComPtr):
     Path = property(get_Path, None)
     Properties = property(get_Properties, None)
 class TargetedContentContainer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentContainer
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentContainer'
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.Services.TargetedContent.ITargetedContentContainer) -> WinRT_String: ...
+    def get_Id(self: win32more.Windows.Services.TargetedContent.ITargetedContentContainer) -> hstr: ...
     @winrt_mixinmethod
     def get_Timestamp(self: win32more.Windows.Services.TargetedContent.ITargetedContentContainer) -> win32more.Windows.Foundation.DateTime: ...
     @winrt_mixinmethod
@@ -305,22 +305,22 @@ class TargetedContentContainer(ComPtr):
     @winrt_mixinmethod
     def get_Content(self: win32more.Windows.Services.TargetedContent.ITargetedContentContainer) -> win32more.Windows.Services.TargetedContent.TargetedContentCollection: ...
     @winrt_mixinmethod
-    def SelectSingleObject(self: win32more.Windows.Services.TargetedContent.ITargetedContentContainer, path: WinRT_String) -> win32more.Windows.Services.TargetedContent.TargetedContentObject: ...
+    def SelectSingleObject(self: win32more.Windows.Services.TargetedContent.ITargetedContentContainer, path: hstr) -> win32more.Windows.Services.TargetedContent.TargetedContentObject: ...
     @winrt_classmethod
-    def GetAsync(cls: win32more.Windows.Services.TargetedContent.ITargetedContentContainerStatics, contentId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentContainer]: ...
+    def GetAsync(cls: win32more.Windows.Services.TargetedContent.ITargetedContentContainerStatics, contentId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentContainer]: ...
     Availability = property(get_Availability, None)
     Content = property(get_Content, None)
     Id = property(get_Id, None)
     Timestamp = property(get_Timestamp, None)
 TargetedContentContract: UInt32 = 65536
 class TargetedContentFile(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Storage.Streams.IRandomAccessStreamReference
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentFile'
     @winrt_mixinmethod
     def OpenReadAsync(self: win32more.Windows.Storage.Streams.IRandomAccessStreamReference) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Storage.Streams.IRandomAccessStreamWithContentType]: ...
 class TargetedContentImage(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentImage
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentImage'
     @winrt_mixinmethod
@@ -332,6 +332,7 @@ class TargetedContentImage(ComPtr):
     Height = property(get_Height, None)
     Width = property(get_Width, None)
 class TargetedContentInteraction(Enum, Int32):
+    _name_ = 'Windows.Services.TargetedContent.TargetedContentInteraction'
     Impression = 0
     ClickThrough = 1
     Hover = 2
@@ -346,19 +347,19 @@ class TargetedContentInteraction(Enum, Int32):
     Conversion = 11
     Opportunity = 12
 class TargetedContentItem(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentItem
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentItem'
     @winrt_mixinmethod
-    def get_Path(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem) -> WinRT_String: ...
+    def get_Path(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem) -> hstr: ...
     @winrt_mixinmethod
     def ReportInteraction(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem, interaction: win32more.Windows.Services.TargetedContent.TargetedContentInteraction) -> Void: ...
     @winrt_mixinmethod
-    def ReportCustomInteraction(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem, customInteractionName: WinRT_String) -> Void: ...
+    def ReportCustomInteraction(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem, customInteractionName: hstr) -> Void: ...
     @winrt_mixinmethod
     def get_State(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem) -> win32more.Windows.Services.TargetedContent.TargetedContentItemState: ...
     @winrt_mixinmethod
-    def get_Properties(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem) -> win32more.Windows.Foundation.Collections.IMapView[WinRT_String, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
+    def get_Properties(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem) -> win32more.Windows.Foundation.Collections.IMapView[hstr, win32more.Windows.Services.TargetedContent.TargetedContentValue]: ...
     @winrt_mixinmethod
     def get_Collections(self: win32more.Windows.Services.TargetedContent.ITargetedContentItem) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Services.TargetedContent.TargetedContentCollection]: ...
     Collections = property(get_Collections, None)
@@ -366,7 +367,7 @@ class TargetedContentItem(ComPtr):
     Properties = property(get_Properties, None)
     State = property(get_State, None)
 class TargetedContentItemState(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentItemState
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentItemState'
     @winrt_mixinmethod
@@ -376,7 +377,7 @@ class TargetedContentItemState(ComPtr):
     AppInstallationState = property(get_AppInstallationState, None)
     ShouldDisplay = property(get_ShouldDisplay, None)
 class TargetedContentObject(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentObject
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentObject'
     @winrt_mixinmethod
@@ -392,21 +393,22 @@ class TargetedContentObject(ComPtr):
     ObjectKind = property(get_ObjectKind, None)
     Value = property(get_Value, None)
 class TargetedContentObjectKind(Enum, Int32):
+    _name_ = 'Windows.Services.TargetedContent.TargetedContentObjectKind'
     Collection = 0
     Item = 1
     Value = 2
 class TargetedContentStateChangedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentStateChangedEventArgs
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentStateChangedEventArgs'
     @winrt_mixinmethod
     def GetDeferral(self: win32more.Windows.Services.TargetedContent.ITargetedContentStateChangedEventArgs) -> win32more.Windows.Foundation.Deferral: ...
 class TargetedContentSubscription(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentSubscription
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentSubscription'
     @winrt_mixinmethod
-    def get_Id(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscription) -> WinRT_String: ...
+    def get_Id(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscription) -> hstr: ...
     @winrt_mixinmethod
     def GetContentContainerAsync(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscription) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentContainer]: ...
     @winrt_mixinmethod
@@ -422,27 +424,27 @@ class TargetedContentSubscription(ComPtr):
     @winrt_mixinmethod
     def remove_StateChanged(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscription, cookie: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_classmethod
-    def GetAsync(cls: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionStatics, subscriptionId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentSubscription]: ...
+    def GetAsync(cls: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionStatics, subscriptionId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Services.TargetedContent.TargetedContentSubscription]: ...
     @winrt_classmethod
-    def GetOptions(cls: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionStatics, subscriptionId: WinRT_String) -> win32more.Windows.Services.TargetedContent.TargetedContentSubscriptionOptions: ...
+    def GetOptions(cls: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionStatics, subscriptionId: hstr) -> win32more.Windows.Services.TargetedContent.TargetedContentSubscriptionOptions: ...
     Id = property(get_Id, None)
-    ContentChanged = event()
-    AvailabilityChanged = event()
-    StateChanged = event()
+    AvailabilityChanged = event(add_AvailabilityChanged, remove_AvailabilityChanged)
+    ContentChanged = event(add_ContentChanged, remove_ContentChanged)
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class TargetedContentSubscriptionOptions(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentSubscriptionOptions'
     @winrt_mixinmethod
-    def get_SubscriptionId(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> WinRT_String: ...
+    def get_SubscriptionId(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> hstr: ...
     @winrt_mixinmethod
     def get_AllowPartialContentAvailability(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> Boolean: ...
     @winrt_mixinmethod
     def put_AllowPartialContentAvailability(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions, value: Boolean) -> Void: ...
     @winrt_mixinmethod
-    def get_CloudQueryParameters(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> win32more.Windows.Foundation.Collections.IMap[WinRT_String, WinRT_String]: ...
+    def get_CloudQueryParameters(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> win32more.Windows.Foundation.Collections.IMap[hstr, hstr]: ...
     @winrt_mixinmethod
-    def get_LocalFilters(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
+    def get_LocalFilters(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
     @winrt_mixinmethod
     def Update(self: win32more.Windows.Services.TargetedContent.ITargetedContentSubscriptionOptions) -> Void: ...
     AllowPartialContentAvailability = property(get_AllowPartialContentAvailability, put_AllowPartialContentAvailability)
@@ -450,15 +452,15 @@ class TargetedContentSubscriptionOptions(ComPtr):
     LocalFilters = property(get_LocalFilters, None)
     SubscriptionId = property(get_SubscriptionId, None)
 class TargetedContentValue(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Services.TargetedContent.ITargetedContentValue
     _classid_ = 'Windows.Services.TargetedContent.TargetedContentValue'
     @winrt_mixinmethod
     def get_ValueKind(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> win32more.Windows.Services.TargetedContent.TargetedContentValueKind: ...
     @winrt_mixinmethod
-    def get_Path(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> WinRT_String: ...
+    def get_Path(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> hstr: ...
     @winrt_mixinmethod
-    def get_String(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> WinRT_String: ...
+    def get_String(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> hstr: ...
     @winrt_mixinmethod
     def get_Uri(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> win32more.Windows.Foundation.Uri: ...
     @winrt_mixinmethod
@@ -472,7 +474,7 @@ class TargetedContentValue(ComPtr):
     @winrt_mixinmethod
     def get_Action(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> win32more.Windows.Services.TargetedContent.TargetedContentAction: ...
     @winrt_mixinmethod
-    def get_Strings(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> win32more.Windows.Foundation.Collections.IVectorView[WinRT_String]: ...
+    def get_Strings(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> win32more.Windows.Foundation.Collections.IVectorView[hstr]: ...
     @winrt_mixinmethod
     def get_Uris(self: win32more.Windows.Services.TargetedContent.ITargetedContentValue) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Foundation.Uri]: ...
     @winrt_mixinmethod
@@ -502,6 +504,7 @@ class TargetedContentValue(ComPtr):
     Uris = property(get_Uris, None)
     ValueKind = property(get_ValueKind, None)
 class TargetedContentValueKind(Enum, Int32):
+    _name_ = 'Windows.Services.TargetedContent.TargetedContentValueKind'
     String = 0
     Uri = 1
     Number = 2

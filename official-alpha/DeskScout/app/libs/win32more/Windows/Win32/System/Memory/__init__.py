@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.Memory
@@ -8,6 +8,11 @@ FILE_CACHE_MAX_HARD_DISABLE: UInt32 = 2
 FILE_CACHE_MIN_HARD_ENABLE: UInt32 = 4
 FILE_CACHE_MIN_HARD_DISABLE: UInt32 = 8
 MEHC_PATROL_SCRUBBER_PRESENT: UInt32 = 1
+WIN32_MEMORY_NUMA_PERFORMANCE_ALL_TARGET_NODE: UInt32 = 4294967295
+WIN32_MEMORY_NUMA_PERFORMANCE_READ_LATENCY: UInt32 = 1
+WIN32_MEMORY_NUMA_PERFORMANCE_READ_BANDWIDTH: UInt32 = 2
+WIN32_MEMORY_NUMA_PERFORMANCE_WRITE_LATENCY: UInt32 = 4
+WIN32_MEMORY_NUMA_PERFORMANCE_WRITE_BANDWIDTH: UInt32 = 8
 @winfunctype('KERNEL32.dll')
 def HeapCreate(flOptions: win32more.Windows.Win32.System.Memory.HEAP_FLAGS, dwInitialSize: UIntPtr, dwMaximumSize: UIntPtr) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('KERNEL32.dll')
@@ -159,6 +164,10 @@ def AllocateUserPhysicalPages2(ObjectHandle: win32more.Windows.Win32.Foundation.
 def OpenDedicatedMemoryPartition(Partition: win32more.Windows.Win32.Foundation.HANDLE, DedicatedMemoryTypeId: UInt64, DesiredAccess: UInt32, InheritHandle: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.HANDLE: ...
 @winfunctype('api-ms-win-core-memory-l1-1-8.dll')
 def QueryPartitionInformation(Partition: win32more.Windows.Win32.Foundation.HANDLE, PartitionInformationClass: win32more.Windows.Win32.System.Memory.WIN32_MEMORY_PARTITION_INFORMATION_CLASS, PartitionInformation: VoidPtr, PartitionInformationLength: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('api-ms-win-core-memory-l1-1-9.dll')
+def GetMemoryNumaClosestInitiatorNode(TargetNodeNumber: UInt32, InitiatorNodeNumber: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('api-ms-win-core-memory-l1-1-9.dll')
+def GetMemoryNumaPerformanceInformation(NodeNumber: UInt32, DataType: Byte, PerfInfo: POINTER(POINTER(win32more.Windows.Win32.System.Memory.WIN32_MEMORY_NUMA_PERFORMANCE_INFORMATION_OUTPUT))) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
 def RtlCompareMemory(Source1: VoidPtr, Source2: VoidPtr, Length: UIntPtr) -> UIntPtr: ...
 @winfunctype('ntdll.dll')
@@ -343,9 +352,10 @@ MemDedicatedAttributeMax: win32more.Windows.Win32.System.Memory.MEM_DEDICATED_AT
 class MEM_EXTENDED_PARAMETER(Structure):
     Anonymous1: _Anonymous1_e__Struct
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Struct(Structure):
-        Type: Annotated[UInt64, 8]
-        Reserved: Annotated[UInt64, 56]
+        Type: Annotated[UInt64, NativeBitfieldAttribute(8)]
+        Reserved: Annotated[UInt64, NativeBitfieldAttribute(56)]
     class _Anonymous2_e__Union(Union):
         ULong64: UInt64
         Pointer: VoidPtr
@@ -425,6 +435,7 @@ class PROCESS_HEAP_ENTRY(Structure):
     iRegionIndex: Byte
     wFlags: UInt16
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Block: _Block_e__Struct
         Region: _Region_e__Struct
@@ -469,6 +480,20 @@ MEM_DECOMMIT: win32more.Windows.Win32.System.Memory.VIRTUAL_FREE_TYPE = 16384
 MEM_RELEASE: win32more.Windows.Win32.System.Memory.VIRTUAL_FREE_TYPE = 32768
 WIN32_MEMORY_INFORMATION_CLASS = Int32
 MemoryRegionInfo: win32more.Windows.Win32.System.Memory.WIN32_MEMORY_INFORMATION_CLASS = 0
+class WIN32_MEMORY_NUMA_PERFORMANCE_ENTRY(Structure):
+    InitiatorNodeNumber: UInt32
+    TargetNodeNumber: UInt32
+    DataType: Byte
+    Flags: _Flags_e__Struct
+    MinTransferSizeInBytes: UInt64
+    EntryValue: UInt64
+    class _Flags_e__Struct(Structure):
+        MinTransferSizeToAchieveValues: Annotated[Byte, NativeBitfieldAttribute(1)]
+        NonSequentialTransfers: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[Byte, NativeBitfieldAttribute(6)]
+class WIN32_MEMORY_NUMA_PERFORMANCE_INFORMATION_OUTPUT(Structure):
+    EntryCount: UInt32
+    PerformanceEntries: FlexibleArray[win32more.Windows.Win32.System.Memory.WIN32_MEMORY_NUMA_PERFORMANCE_ENTRY]
 class WIN32_MEMORY_PARTITION_INFORMATION(Structure):
     Flags: UInt32
     NumaNode: UInt32
@@ -499,17 +524,19 @@ class WIN32_MEMORY_REGION_INFORMATION(Structure):
     Anonymous: _Anonymous_e__Union
     RegionSize: UIntPtr
     CommitSize: UIntPtr
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Flags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Private: Annotated[UInt32, 1]
-            MappedDataFile: Annotated[UInt32, 1]
-            MappedImage: Annotated[UInt32, 1]
-            MappedPageFile: Annotated[UInt32, 1]
-            MappedPhysical: Annotated[UInt32, 1]
-            DirectMapped: Annotated[UInt32, 1]
-            Reserved: Annotated[UInt32, 26]
+            Private: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            MappedDataFile: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            MappedImage: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            MappedPageFile: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            MappedPhysical: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            DirectMapped: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt32, NativeBitfieldAttribute(26)]
 
 
 make_ready(__name__)

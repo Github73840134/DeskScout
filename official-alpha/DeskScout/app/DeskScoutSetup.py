@@ -55,7 +55,7 @@ sys.path.append(os.path.join(os.getcwd(), "mods"))
 boot.info("Starting imports")
 import requests
 boot.debug("Importing the hellscape that is win32more")
-from win32more.xaml import XamlApplication
+from win32more.winui3 import XamlApplication
 from win32more.Microsoft.UI.Xaml import Window, FrameworkElement
 from win32more.Microsoft.UI.Xaml.Media import MicaBackdrop,Imaging,FontFamily,CompositionTarget,VisualTreeHelper
 from win32more.Microsoft.UI.Xaml.Markup import XamlReader
@@ -685,14 +685,14 @@ class App(XamlApplication):
 						y = open("../data/glucose.gdr",'wb+')
 						y.write(x.read())
 						y.close()
-						os.system("py gdrmanage.py unpack")
+						os.system("../core/pythonw.exe gdrmanage.py unpack")
 						self.changeSetting("gdrState",'1')
 						
 				self.restoreState = 1
 			elif restoreType == "gen1":
 				zip.close()
 				import subprocess
-				subprocess.run(f'pyw dataimport.py "{path}"',shell=True,start_new_session=True)
+				subprocess.run(f'../core/pythonw.exe dataimport.py "{path}"',shell=True,start_new_session=True)
 				resp = requests.get("http://127.0.0.1:49152/reloadExts") #Get Extensions
 				resp = requests.get("http://127.0.0.1:49152/reloadExts") #Get Extensions
 
@@ -762,7 +762,7 @@ class App(XamlApplication):
 	def exitSetup(self):
 		import subprocess
 		if not self.loadFlags:
-			subprocess.Popen("pyw DeskScoutApp.py -intent Settings",start_new_session=True)
+			subprocess.Popen("../core/pythonw.exe DeskScoutApp.py -intent Settings",start_new_session=True)
 		self.win.Close()
 	def setupComplete(self):
 		# Shows the setup complete page
@@ -940,7 +940,7 @@ class App(XamlApplication):
 			except:
 				pass
 			import subprocess
-			subprocess.Popen("pyw DeskScout.pyw",start_new_session=True)
+			subprocess.Popen("../core/pythonw.exe DeskScout.pyw",start_new_session=True)
 			p = psutil.Process(os.getpid())
 			p.kill()
 	def update_Display(self,sender,args):

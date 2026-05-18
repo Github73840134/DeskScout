@@ -82,7 +82,7 @@ import sys
 
 APP_NAME = "DeskScout Service"
 
-python_exe = os.path.join(os.path.dirname(sys.executable),"pythonw.exe")
+python_exe = os.path.join(os.path.dirname(os.path.dirname(__file__)),"core","pythonw.exe")
 script_path = os.path.join(os.path.dirname(__file__),"autostart.py")
 
 command = f'"{python_exe}" "{script_path}"'
@@ -1217,7 +1217,7 @@ def shutdown(icon, item):
 	exit(0)
 def restart(icon, item):
 	log.main.info("Restart invoked via tray icon")
-	subprocess.Popen("pyw restart.py",shell=True,start_new_session=True)
+	subprocess.Popen("../core/pythonw.exe restart.py",shell=True,start_new_session=True)
 	bulb.visible = False
 
 def openbackup(icon,item):
@@ -1267,7 +1267,7 @@ def openDeskScout(icon,item):
 		# Bring to front
 		SetForegroundWindow(hwnd)
 	else:
-		subprocess.Popen("pyw DeskScoutApp.py",shell=True,start_new_session=True)
+		subprocess.Popen("../core/pythonw.exe DeskScoutApp.py",shell=True,start_new_session=True)
 
 				
 					

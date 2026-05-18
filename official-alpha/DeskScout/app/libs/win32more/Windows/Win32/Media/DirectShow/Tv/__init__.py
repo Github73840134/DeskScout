@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Media.DirectShow
@@ -261,7 +261,7 @@ class BDA_DEBUG_DATA(Structure):
     lResult: Int32
     uuidDebugDataType: Guid
     ulDataSize: UInt32
-    argbDebugData: Byte * 1
+    argbDebugData: FlexibleArray[Byte]
 BDA_DEBUG_DATA_AVAILABLE = Guid('{69c24f54-9983-497e-b415-282be4c555fb}')
 BDA_DEBUG_DATA_TYPE_STRING = Guid('{a806e767-de5c-430c-80bf-a21ebe06c748}')
 BDA_DigitalSignalStandard = Int32
@@ -278,7 +278,7 @@ class BDA_EVENT_DATA(Structure):
     ulEventID: UInt32
     uuidEventType: Guid
     ulEventDataLength: UInt32
-    argbEventData: Byte * 1
+    argbEventData: FlexibleArray[Byte]
 BDA_LockType = Int32
 Bda_LockType_None: win32more.Windows.Win32.Media.DirectShow.Tv.BDA_LockType = 0
 Bda_LockType_PLL: win32more.Windows.Win32.Media.DirectShow.Tv.BDA_LockType = 1
@@ -384,6 +384,7 @@ ChannelIDTuningSpace = Guid('{cc829a2f-3365-463f-af13-81dbb6f3a555}')
 class ChannelInfo(Structure):
     lFrequency: Int32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         DVB: _DVB_e__Struct
         DC: _DC_e__Struct
@@ -585,7 +586,7 @@ class DSMCC_SECTION(Structure):
     Reserved: Byte
     AdaptationLength: Byte
     MessageLength: UInt16
-    RemainingData: Byte * 1
+    RemainingData: FlexibleArray[Byte]
     _pack_ = 1
     class _Header_e__Union(Union):
         S: win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_HEADER_BITS_MIDL
@@ -708,7 +709,7 @@ class DualMonoInfo(Structure):
     lISOLangCode2: Int32
 class DvbParentalRatingDescriptor(Structure):
     ulNumParams: UInt32
-    pParams: win32more.Windows.Win32.Media.DirectShow.Tv.DvbParentalRatingParam * 1
+    pParams: FlexibleArray[win32more.Windows.Win32.Media.DirectShow.Tv.DvbParentalRatingParam]
 class DvbParentalRatingParam(Structure):
     szCountryCode: win32more.Windows.Win32.Foundation.CHAR * 4
     bRating: Byte
@@ -5256,11 +5257,11 @@ KSMETHOD_BDA_WMDRMTUNER_PURCHASE_ENTITLEMENT: win32more.Windows.Win32.Media.Dire
 class KSM_BDA_BUFFER(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulBufferSize: UInt32
-    argbBuffer: Byte * 1
+    argbBuffer: FlexibleArray[Byte]
 class KSM_BDA_CAS_CAPTURETOKEN(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulTokenLength: UInt32
-    argbToken: Byte * 1
+    argbToken: FlexibleArray[Byte]
 class KSM_BDA_CAS_CLOSEMMIDIALOG(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulDialogRequest: UInt32
@@ -5273,7 +5274,7 @@ class KSM_BDA_CAS_ENTITLEMENTTOKEN(Structure):
     cLanguage: win32more.Windows.Win32.Foundation.CHAR * 12
     ulRequestType: UInt32
     ulEntitlementTokenLen: UInt32
-    argbEntitlementToken: Byte * 1
+    argbEntitlementToken: FlexibleArray[Byte]
 class KSM_BDA_CAS_OPENBROADCASTMMI(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulDialogRequest: UInt32
@@ -5283,7 +5284,7 @@ class KSM_BDA_DEBUG_LEVEL(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ucDebugLevel: Byte
     ulDebugStringSize: UInt32
-    argbDebugString: Byte * 1
+    argbDebugString: FlexibleArray[Byte]
 class KSM_BDA_DRM_SETDRM(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     NewDRMuuid: Guid
@@ -5294,7 +5295,7 @@ class KSM_BDA_EVENT_COMPLETE(Structure):
 class KSM_BDA_GDDS_SERVICEFROMTUNEXML(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulTuneXmlLength: UInt32
-    argbTuneXml: Byte * 1
+    argbTuneXml: FlexibleArray[Byte]
 class KSM_BDA_GDDS_TUNEXMLFROMIDX(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulIdx: UInt64
@@ -5302,7 +5303,7 @@ class KSM_BDA_GPNV_GETVALUE(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulNameLength: UInt32
     cLanguage: win32more.Windows.Win32.Foundation.CHAR * 12
-    argbData: Byte * 1
+    argbData: FlexibleArray[Byte]
 class KSM_BDA_GPNV_NAMEINDEX(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulValueNameIndex: UInt32
@@ -5312,16 +5313,17 @@ class KSM_BDA_GPNV_SETVALUE(Structure):
     cLanguage: win32more.Windows.Win32.Foundation.CHAR * 12
     ulNameLength: UInt32
     ulValueLength: UInt32
-    argbName: Byte * 1
+    argbName: FlexibleArray[Byte]
 class KSM_BDA_ISDBCAS_REQUEST(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulRequestID: UInt32
     ulIsdbCommandSize: UInt32
-    argbIsdbCommandData: Byte * 1
+    argbIsdbCommandData: FlexibleArray[Byte]
 class KSM_BDA_PIN(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     Anonymous: _Anonymous_e__Union
     Reserved: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PinId: UInt32
         PinType: UInt32
@@ -5329,6 +5331,7 @@ class KSM_BDA_PIN_PAIR(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         InputPinId: UInt32
         InputPinType: UInt32
@@ -5342,7 +5345,7 @@ class KSM_BDA_SCAN_FILTER(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulScanModulationTypeSize: UInt32
     AnalogVideoStandards: UInt64
-    argbScanModulationTypes: Byte * 1
+    argbScanModulationTypes: FlexibleArray[Byte]
 class KSM_BDA_SCAN_START(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     LowerFrequency: UInt32
@@ -5353,7 +5356,7 @@ class KSM_BDA_TS_SELECTOR_SETTSID(Structure):
 class KSM_BDA_TUNER_TUNEREQUEST(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulTuneLength: UInt32
-    argbTuneData: Byte * 1
+    argbTuneData: FlexibleArray[Byte]
 class KSM_BDA_USERACTIVITY_USEREASON(Structure):
     Method: win32more.Windows.Win32.Media.KernelStreaming.KSIDENTIFIER
     ulUseReason: UInt32
@@ -5365,7 +5368,7 @@ class KSM_BDA_WMDRMTUNER_PURCHASEENTITLEMENT(Structure):
     ulDialogRequest: UInt32
     cLanguage: win32more.Windows.Win32.Foundation.CHAR * 12
     ulPurchaseTokenLength: UInt32
-    argbDataBuffer: Byte * 1
+    argbDataBuffer: FlexibleArray[Byte]
 class KSM_BDA_WMDRMTUNER_SETPIDPROTECTION(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulPID: UInt32
@@ -5380,7 +5383,7 @@ class KSM_BDA_WMDRM_RENEWLICENSE(Structure):
     NodeMethod: win32more.Windows.Win32.Media.KernelStreaming.KSM_NODE
     ulXMRLicenseLength: UInt32
     ulEntitlementTokenLength: UInt32
-    argbDataBuffer: Byte * 1
+    argbDataBuffer: FlexibleArray[Byte]
 KSNODE_BDA_8PSK_DEMODULATOR = Guid('{e957a0e7-dd98-4a3c-810b-3525157ab62e}')
 KSNODE_BDA_8VSB_DEMODULATOR = Guid('{71985f4f-1ca1-11d3-9cc8-00c04f7971e0}')
 KSNODE_BDA_ANALOG_DEMODULATOR = Guid('{634db199-27dd-46b8-acfb-ecc98e61a2ad}')
@@ -5562,7 +5565,7 @@ class LONG_SECTION(Structure):
     Version: _Version_e__Union
     SectionNumber: Byte
     LastSectionNumber: Byte
-    RemainingData: Byte * 1
+    RemainingData: FlexibleArray[Byte]
     _pack_ = 1
     class _Header_e__Union(Union):
         S: win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_HEADER_BITS_MIDL
@@ -5609,10 +5612,12 @@ class MPEG2_FILTER2(Structure):
     Anonymous: _Anonymous_e__Union
     fSpecifyDvbEitOptions: win32more.Windows.Win32.Foundation.BOOL
     DvbEit: win32more.Windows.Win32.Media.DirectShow.Tv.DVB_EIT_FILTER_OPTIONS
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         bVersion1Bytes: Byte * 124
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             bVersionNumber: Byte
             wFilterSize: UInt16
@@ -5658,23 +5663,23 @@ class MPEG_DATE_AND_TIME(Structure):
     T: win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_TIME
     _pack_ = 1
 class MPEG_HEADER_BITS(Structure):
-    SectionLength: Annotated[UInt16, 12]
-    Reserved: Annotated[UInt16, 2]
-    PrivateIndicator: Annotated[UInt16, 1]
-    SectionSyntaxIndicator: Annotated[UInt16, 1]
+    SectionLength: Annotated[UInt16, NativeBitfieldAttribute(12)]
+    Reserved: Annotated[UInt16, NativeBitfieldAttribute(2)]
+    PrivateIndicator: Annotated[UInt16, NativeBitfieldAttribute(1)]
+    SectionSyntaxIndicator: Annotated[UInt16, NativeBitfieldAttribute(1)]
     _pack_ = 1
 class MPEG_HEADER_BITS_MIDL(Structure):
     Bits: UInt16
     _pack_ = 1
 class MPEG_HEADER_VERSION_BITS(Structure):
-    CurrentNextIndicator: Annotated[Byte, 1]
-    VersionNumber: Annotated[Byte, 5]
-    Reserved: Annotated[Byte, 2]
+    CurrentNextIndicator: Annotated[Byte, NativeBitfieldAttribute(1)]
+    VersionNumber: Annotated[Byte, NativeBitfieldAttribute(5)]
+    Reserved: Annotated[Byte, NativeBitfieldAttribute(2)]
 class MPEG_HEADER_VERSION_BITS_MIDL(Structure):
     Bits: Byte
 class MPEG_PACKET_LIST(Structure):
     wPacketCount: UInt16
-    PacketList: POINTER(win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_RQST_PACKET) * 1
+    PacketList: FlexibleArray[POINTER(win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_RQST_PACKET)]
     _pack_ = 1
 MPEG_REQUEST_TYPE = Int32
 MPEG_RQST_UNKNOWN: win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_REQUEST_TYPE = 0
@@ -5856,7 +5861,7 @@ Mpeg2Stream = Guid('{f91d96c7-8509-4d0b-ab26-a0dd10904bb7}')
 class Mpeg2TableSampleHdr(Structure):
     SectionCount: Byte
     Reserved: Byte * 3
-    SectionOffsets: Int32 * 1
+    SectionOffsets: FlexibleArray[Int32]
     _pack_ = 1
 class PBDAParentalControl(Structure):
     rating_system_count: UInt32
@@ -5868,20 +5873,20 @@ class PBDA_TAG_ATTRIBUTE(Structure):
     TableId: Byte
     VersionNo: UInt16
     TableDataSize: UInt32
-    TableData: Byte * 1
+    TableData: FlexibleArray[Byte]
 class PIC_SEQ_SAMPLE(Structure):
-    Content: Annotated[UInt32, 3]
-    Start: Annotated[UInt32, 1]
-    FrameRate: Annotated[UInt32, 4]
-    InvalidVA: Annotated[UInt32, 1]
-    Reserved: Annotated[UInt32, 19]
-    Version: Annotated[UInt32, 4]
+    Content: Annotated[UInt32, NativeBitfieldAttribute(3)]
+    Start: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    FrameRate: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    InvalidVA: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(19)]
+    Version: Annotated[UInt32, NativeBitfieldAttribute(4)]
 class PIDListSpanningEvent(Structure):
     wPIDCount: UInt16
-    pulPIDs: UInt32 * 1
+    pulPIDs: FlexibleArray[UInt32]
 class PID_BITS(Structure):
-    Reserved: Annotated[UInt16, 3]
-    ProgramId: Annotated[UInt16, 13]
+    Reserved: Annotated[UInt16, NativeBitfieldAttribute(3)]
+    ProgramId: Annotated[UInt16, NativeBitfieldAttribute(13)]
     _pack_ = 1
 class PID_BITS_MIDL(Structure):
     Bits: UInt16
@@ -5922,8 +5927,8 @@ class RATING_INFO(Structure):
     _pack_ = 1
 class RATING_SYSTEM(Structure):
     rating_system_id: Guid
-    rating_system_is_age_type: Annotated[Byte, 1]
-    reserved: Annotated[Byte, 7]
+    rating_system_is_age_type: Annotated[Byte, NativeBitfieldAttribute(1)]
+    reserved: Annotated[Byte, NativeBitfieldAttribute(7)]
     country_code: Byte * 3
     rating_attribute_count: UInt32
     lpratingattrib: POINTER(win32more.Windows.Win32.Media.DirectShow.Tv.RATING_ATTRIBUTE)
@@ -5944,9 +5949,9 @@ class SAMPLE_LIVE_STREAM_TIME(Structure):
     qwStreamTime: UInt64
     qwLiveTime: UInt64
 class SAMPLE_SEQ_OFFSET(Structure):
-    Type: Annotated[UInt32, 4]
-    Offset: Annotated[UInt32, 20]
-    Reserved: Annotated[UInt32, 8]
+    Type: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Offset: Annotated[UInt32, NativeBitfieldAttribute(20)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class SBE2_STREAM_DESC(Structure):
     Version: UInt32
     StreamId: UInt32
@@ -5961,7 +5966,7 @@ class SBE_PIN_DATA(Structure):
 class SECTION(Structure):
     TableId: Byte
     Header: _Header_e__Union
-    SectionData: Byte * 1
+    SectionData: FlexibleArray[Byte]
     _pack_ = 1
     class _Header_e__Union(Union):
         S: win32more.Windows.Win32.Media.DirectShow.Tv.MPEG_HEADER_BITS_MIDL
@@ -6281,7 +6286,7 @@ class SpanningEventDescriptor(Structure):
     wDataLen: UInt16
     wProgNumber: UInt16
     wSID: UInt16
-    bDescriptor: Byte * 1
+    bDescriptor: FlexibleArray[Byte]
 class SpanningEventEmmMessage(Structure):
     bCAbroadcasterGroupId: Byte
     bMessageControl: Byte
@@ -6295,7 +6300,7 @@ class SpanningEventEmmMessage(Structure):
     bFormatVersion: Byte
     bDisplayPosition: Byte
     wMessageLength: UInt16
-    szMessageArea: Char * 1
+    szMessageArea: FlexibleArray[Char]
 SystemTuningSpaces = Guid('{d02aac50-027e-11d3-9d8e-00c04f72d980}')
 class TID_EXTENSION(Structure):
     wTidExt: UInt16
@@ -6310,8 +6315,8 @@ class TRANSPORT_PROPERTIES(Structure):
         Others: _Others
         Value: Int64
         class _Others(Structure):
-            TransportScramblingControl: Annotated[Int64, 8]
-            Reserved: Annotated[Int64, 56]
+            TransportScramblingControl: Annotated[Int64, NativeBitfieldAttribute(8)]
+            Reserved: Annotated[Int64, NativeBitfieldAttribute(56)]
 TuneRequest = Guid('{b46e0d38-ab35-4a06-a137-70576b01b39f}')
 TunerMarshaler = Guid('{6438570b-0c08-4a25-9504-8012bb4d50cf}')
 TuningSpace = Guid('{5ffdc5e6-b83a-4b55-b6e8-c69e765fe9db}')

@@ -1,19 +1,17 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Devices.Scanners
 import win32more.Windows.Foundation
 import win32more.Windows.Foundation.Collections
 import win32more.Windows.Graphics.Printing
 import win32more.Windows.Storage
 import win32more.Windows.Storage.Streams
-import win32more.Windows.Win32.System.WinRT
 class IImageScanner(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScanner'
     _iid_ = Guid('{53a88f78-5298-48a0-8da3-8087519665e0}')
     @winrt_commethod(6)
-    def get_DeviceId(self) -> WinRT_String: ...
+    def get_DeviceId(self) -> hstr: ...
     @winrt_commethod(7)
     def get_DefaultScanSource(self) -> win32more.Windows.Devices.Scanners.ImageScannerScanSource: ...
     @winrt_commethod(8)
@@ -36,7 +34,7 @@ class IImageScanner(ComPtr):
     FeederConfiguration = property(get_FeederConfiguration, None)
     FlatbedConfiguration = property(get_FlatbedConfiguration, None)
 class IImageScannerFeederConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScannerFeederConfiguration'
     _iid_ = Guid('{74bdacee-fa97-4c17-8280-40e39c6dcc67}')
     @winrt_commethod(6)
@@ -84,7 +82,7 @@ class IImageScannerFeederConfiguration(ComPtr):
     PageSizeDimensions = property(get_PageSizeDimensions, None)
     ScanAhead = property(get_ScanAhead, put_ScanAhead)
 class IImageScannerFormatConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScannerFormatConfiguration'
     _iid_ = Guid('{ae275d11-dadf-4010-bf10-cca5c83dcbb0}')
     @winrt_commethod(6)
@@ -98,7 +96,7 @@ class IImageScannerFormatConfiguration(ComPtr):
     DefaultFormat = property(get_DefaultFormat, None)
     Format = property(get_Format, put_Format)
 class IImageScannerPreviewResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScannerPreviewResult'
     _iid_ = Guid('{08b7fe8e-8891-441d-be9c-176fa109c8bb}')
     @winrt_commethod(6)
@@ -108,14 +106,14 @@ class IImageScannerPreviewResult(ComPtr):
     Format = property(get_Format, None)
     Succeeded = property(get_Succeeded, None)
 class IImageScannerScanResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScannerScanResult'
     _iid_ = Guid('{c91624cd-9037-4e48-84c1-ac0975076bc5}')
     @winrt_commethod(6)
     def get_ScannedFiles(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Storage.StorageFile]: ...
     ScannedFiles = property(get_ScannedFiles, None)
 class IImageScannerSourceConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScannerSourceConfiguration'
     _iid_ = Guid('{bfb50055-0b44-4c82-9e89-205f9c234e59}')
     @winrt_commethod(6)
@@ -198,19 +196,19 @@ class IImageScannerSourceConfiguration(ComPtr):
     OpticalResolution = property(get_OpticalResolution, None)
     SelectedScanRegion = property(get_SelectedScanRegion, put_SelectedScanRegion)
 class IImageScannerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.Scanners.IImageScannerStatics'
     _iid_ = Guid('{bc57e70e-d804-4477-9fb5-b911b5473897}')
     @winrt_commethod(6)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Scanners.ImageScanner]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Scanners.ImageScanner]: ...
     @winrt_commethod(7)
-    def GetDeviceSelector(self) -> WinRT_String: ...
+    def GetDeviceSelector(self) -> hstr: ...
 class ImageScanner(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.Scanners.IImageScanner
     _classid_ = 'Windows.Devices.Scanners.ImageScanner'
     @winrt_mixinmethod
-    def get_DeviceId(self: win32more.Windows.Devices.Scanners.IImageScanner) -> WinRT_String: ...
+    def get_DeviceId(self: win32more.Windows.Devices.Scanners.IImageScanner) -> hstr: ...
     @winrt_mixinmethod
     def get_DefaultScanSource(self: win32more.Windows.Devices.Scanners.IImageScanner) -> win32more.Windows.Devices.Scanners.ImageScannerScanSource: ...
     @winrt_mixinmethod
@@ -228,16 +226,16 @@ class ImageScanner(ComPtr):
     @winrt_mixinmethod
     def ScanFilesToFolderAsync(self: win32more.Windows.Devices.Scanners.IImageScanner, scanSource: win32more.Windows.Devices.Scanners.ImageScannerScanSource, storageFolder: win32more.Windows.Storage.StorageFolder) -> win32more.Windows.Foundation.IAsyncOperationWithProgress[win32more.Windows.Devices.Scanners.ImageScannerScanResult, UInt32]: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.Scanners.IImageScannerStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Scanners.ImageScanner]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.Scanners.IImageScannerStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.Scanners.ImageScanner]: ...
     @winrt_classmethod
-    def GetDeviceSelector(cls: win32more.Windows.Devices.Scanners.IImageScannerStatics) -> WinRT_String: ...
+    def GetDeviceSelector(cls: win32more.Windows.Devices.Scanners.IImageScannerStatics) -> hstr: ...
     AutoConfiguration = property(get_AutoConfiguration, None)
     DefaultScanSource = property(get_DefaultScanSource, None)
     DeviceId = property(get_DeviceId, None)
     FeederConfiguration = property(get_FeederConfiguration, None)
     FlatbedConfiguration = property(get_FlatbedConfiguration, None)
 class ImageScannerAutoConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.Scanners.IImageScannerFormatConfiguration
     _classid_ = 'Windows.Devices.Scanners.ImageScannerAutoConfiguration'
     @winrt_mixinmethod
@@ -251,16 +249,18 @@ class ImageScannerAutoConfiguration(ComPtr):
     DefaultFormat = property(get_DefaultFormat, None)
     Format = property(get_Format, put_Format)
 class ImageScannerAutoCroppingMode(Enum, Int32):
+    _name_ = 'Windows.Devices.Scanners.ImageScannerAutoCroppingMode'
     Disabled = 0
     SingleRegion = 1
     MultipleRegion = 2
 class ImageScannerColorMode(Enum, Int32):
+    _name_ = 'Windows.Devices.Scanners.ImageScannerColorMode'
     Color = 0
     Grayscale = 1
     Monochrome = 2
     AutoColor = 3
 class ImageScannerFeederConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.Scanners.IImageScannerFormatConfiguration
     _classid_ = 'Windows.Devices.Scanners.ImageScannerFeederConfiguration'
     @winrt_mixinmethod
@@ -397,7 +397,7 @@ class ImageScannerFeederConfiguration(ComPtr):
     ScanAhead = property(get_ScanAhead, put_ScanAhead)
     SelectedScanRegion = property(get_SelectedScanRegion, put_SelectedScanRegion)
 class ImageScannerFlatbedConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.Scanners.IImageScannerFormatConfiguration
     _classid_ = 'Windows.Devices.Scanners.ImageScannerFlatbedConfiguration'
     @winrt_mixinmethod
@@ -490,6 +490,7 @@ class ImageScannerFlatbedConfiguration(ComPtr):
     OpticalResolution = property(get_OpticalResolution, None)
     SelectedScanRegion = property(get_SelectedScanRegion, put_SelectedScanRegion)
 class ImageScannerFormat(Enum, Int32):
+    _name_ = 'Windows.Devices.Scanners.ImageScannerFormat'
     Jpeg = 0
     Png = 1
     DeviceIndependentBitmap = 2
@@ -498,7 +499,7 @@ class ImageScannerFormat(Enum, Int32):
     OpenXps = 5
     Pdf = 6
 class ImageScannerPreviewResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.Scanners.IImageScannerPreviewResult
     _classid_ = 'Windows.Devices.Scanners.ImageScannerPreviewResult'
     @winrt_mixinmethod
@@ -508,16 +509,18 @@ class ImageScannerPreviewResult(ComPtr):
     Format = property(get_Format, None)
     Succeeded = property(get_Succeeded, None)
 class ImageScannerResolution(Structure):
+    _name_ = 'Windows.Devices.Scanners.ImageScannerResolution'
     DpiX: Single
     DpiY: Single
 class ImageScannerScanResult(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.Scanners.IImageScannerScanResult
     _classid_ = 'Windows.Devices.Scanners.ImageScannerScanResult'
     @winrt_mixinmethod
     def get_ScannedFiles(self: win32more.Windows.Devices.Scanners.IImageScannerScanResult) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Storage.StorageFile]: ...
     ScannedFiles = property(get_ScannedFiles, None)
 class ImageScannerScanSource(Enum, Int32):
+    _name_ = 'Windows.Devices.Scanners.ImageScannerScanSource'
     Default = 0
     Flatbed = 1
     Feeder = 2

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.Com
@@ -618,6 +618,7 @@ class PROPBAG2(Structure):
 class PROPSPEC(Structure):
     ulKind: win32more.Windows.Win32.System.Com.StructuredStorage.PROPSPEC_KIND
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         propid: UInt32
         lpwstr: win32more.Windows.Win32.Foundation.PWSTR
@@ -626,15 +627,18 @@ PRSPEC_LPWSTR: win32more.Windows.Win32.System.Com.StructuredStorage.PROPSPEC_KIN
 PRSPEC_PROPID: win32more.Windows.Win32.System.Com.StructuredStorage.PROPSPEC_KIND = 1
 class PROPVARIANT(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         decVal: win32more.Windows.Win32.Foundation.DECIMAL
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             vt: win32more.Windows.Win32.System.Variant.VARENUM
             wReserved1: UInt16
             wReserved2: UInt16
             wReserved3: UInt16
             Anonymous: _Anonymous_e__Union
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Union(Union):
                 cVal: win32more.Windows.Win32.Foundation.CHAR
                 bVal: Byte
@@ -735,10 +739,10 @@ PVCU_YEAR: win32more.Windows.Win32.System.Com.StructuredStorage.PROPVAR_COMPARE_
 class RemSNB(Structure):
     ulCntStr: UInt32
     ulCntChar: UInt32
-    rgString: Char * 1
+    rgString: FlexibleArray[Char]
 class SERIALIZEDPROPERTYVALUE(Structure):
     dwType: UInt32
-    rgb: Byte * 1
+    rgb: FlexibleArray[Byte]
 class STATPROPSETSTG(Structure):
     fmtid: Guid
     clsid: Guid

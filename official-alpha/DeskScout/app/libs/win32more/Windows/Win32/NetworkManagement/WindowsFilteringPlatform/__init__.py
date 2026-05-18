@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform
 import win32more.Windows.Win32.Security
@@ -35,6 +35,7 @@ FWPM_FILTER_FLAG_SILENT_MODE: UInt32 = 1024
 FWPM_FILTER_FLAG_IPSEC_NO_ACQUIRE_INITIATE: UInt32 = 2048
 FWPM_FILTER_FLAG_RESERVED0: UInt32 = 4096
 FWPM_FILTER_FLAG_RESERVED1: UInt32 = 8192
+FWPM_FILTER_FLAG_RESERVED2: UInt32 = 16384
 FWPM_NET_EVENT_FLAG_IP_PROTOCOL_SET: UInt32 = 1
 FWPM_NET_EVENT_FLAG_LOCAL_ADDR_SET: UInt32 = 2
 FWPM_NET_EVENT_FLAG_REMOTE_ADDR_SET: UInt32 = 4
@@ -63,6 +64,7 @@ FWPS_FILTER_FLAG_SILENT_MODE: UInt32 = 16
 FWPS_FILTER_FLAG_IPSEC_NO_ACQUIRE_INITIATE: UInt32 = 32
 FWPS_FILTER_FLAG_RESERVED0: UInt32 = 64
 FWPS_FILTER_FLAG_RESERVED1: UInt32 = 128
+FWPS_FILTER_FLAG_RESERVED2: UInt32 = 256
 FWPS_INCOMING_FLAG_CACHE_SAFE: UInt32 = 1
 FWPS_INCOMING_FLAG_ENFORCE_QUERY: UInt32 = 2
 FWPS_INCOMING_FLAG_ABSORB: UInt32 = 4
@@ -168,6 +170,7 @@ IKEEXT_POLICY_FLAG_SITE_TO_SITE: UInt32 = 32
 IKEEXT_POLICY_FLAG_IMS_VPN: UInt32 = 64
 IKEEXT_POLICY_ENABLE_IKEV2_FRAGMENTATION: UInt32 = 128
 IKEEXT_POLICY_SUPPORT_LOW_POWER_MODE: UInt32 = 256
+IKEEXT_POLICY_FLAG_POINT_TO_SITE: UInt32 = 512
 IKEEXT_CERT_CREDENTIAL_FLAG_NAP_CERT: UInt32 = 1
 IPSEC_AUTH_CONFIG_HMAC_MD5_96: UInt32 = 0
 IPSEC_AUTH_CONFIG_HMAC_SHA_1_96: UInt32 = 1
@@ -188,6 +191,7 @@ IPSEC_CIPHER_CONFIG_MAX: UInt32 = 9
 IPSEC_POLICY_FLAG_KEY_MANAGER_ALLOW_NOTIFY_KEY: UInt32 = 16384
 IPSEC_POLICY_FLAG_RESERVED1: UInt32 = 32768
 IPSEC_POLICY_FLAG_SITE_TO_SITE_TUNNEL: UInt32 = 65536
+IPSEC_POLICY_FLAG_POINT_TO_SITE_TUNNEL: UInt32 = 131072
 IPSEC_POLICY_FLAG_BANDWIDTH1: UInt32 = 268435456
 IPSEC_POLICY_FLAG_BANDWIDTH2: UInt32 = 536870912
 IPSEC_POLICY_FLAG_BANDWIDTH3: UInt32 = 1073741824
@@ -328,6 +332,7 @@ FWPM_SUBLAYER_MPSSVC_QUARANTINE: Guid = Guid('{b3cdd441-af90-41ba-a745-7c6008ff2
 FWPM_SUBLAYER_MPSSVC_EDP: Guid = Guid('{09a47e38-fa97-471b-b123-18bcd7e65071}')
 FWPM_SUBLAYER_MPSSVC_TENANT_RESTRICTIONS: Guid = Guid('{1ec6c7e1-fdd9-478a-b55f-ff8ba1d2c17d}')
 FWPM_SUBLAYER_MPSSVC_APP_ISOLATION: Guid = Guid('{ffe221c3-92a8-4564-a59f-dafb70756020}')
+FWPM_CONDITION_ALE_PACKAGE_FAMILY_NAME: Guid = Guid('{81bc78fb-f28d-4886-a604-6acc261f261b}')
 FWPM_CONDITION_INTERFACE_MAC_ADDRESS: Guid = Guid('{f6e63dce-1f4b-4c6b-b6ef-1165e71f8ee7}')
 FWPM_CONDITION_MAC_LOCAL_ADDRESS: Guid = Guid('{d999e981-7948-4c83-b742-c84e3b678f8f}')
 FWPM_CONDITION_MAC_REMOTE_ADDRESS: Guid = Guid('{408f2ed4-3a70-4b4d-92a6-415ac20e2f12}')
@@ -430,6 +435,7 @@ FWPM_CONDITION_IP_LOCAL_ADDRESS_V6: Guid = Guid('{2381be84-7524-45b3-a05b-1e637d
 FWPM_CONDITION_PIPE: Guid = Guid('{1bd0741d-e3df-4e24-8634-762046eef6eb}')
 FWPM_CONDITION_IP_REMOTE_ADDRESS_V4: Guid = Guid('{1febb610-3bcc-45e1-bc36-2e067e2cb186}')
 FWPM_CONDITION_IP_REMOTE_ADDRESS_V6: Guid = Guid('{246e1d8c-8bee-4018-9b98-31d4582f3361}')
+FWPM_CONDITION_RPC_OPNUM: Guid = Guid('{d58efb76-aab7-4148-a87e-9581134129b9}')
 FWPM_CONDITION_PROCESS_WITH_RPC_IF_UUID: Guid = Guid('{e31180a8-bbbd-4d14-a65e-7157b06233bb}')
 FWPM_CONDITION_RPC_EP_VALUE: Guid = Guid('{dccea0b9-0886-4360-9c6a-ab043a24fba9}')
 FWPM_CONDITION_RPC_EP_FLAGS: Guid = Guid('{218b814a-0a39-49b8-8e71-c20c39c7dd2e}')
@@ -589,375 +595,379 @@ FWPS_L2_METADATA_FIELD_RESERVED: UInt32 = 2147483648
 @winfunctype('fwpuclnt.dll')
 def FwpmFreeMemory0(p: POINTER(VoidPtr)) -> Void: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmEngineOpen0(serverName: win32more.Windows.Win32.Foundation.PWSTR, authnService: UInt32, authIdentity: POINTER(win32more.Windows.Win32.System.Rpc.SEC_WINNT_AUTH_IDENTITY_W), session: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION0), engineHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmEngineOpen0(serverName: win32more.Windows.Win32.Foundation.PWSTR, authnService: UInt32, authIdentity: POINTER(win32more.Windows.Win32.System.Rpc.SEC_WINNT_AUTH_IDENTITY_W), session: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION0), engineHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmEngineClose0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmEngineClose0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmEngineGetOption0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, option: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_OPTION, value: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_VALUE0))) -> UInt32: ...
+def FwpmEngineGetOption0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, option: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_OPTION, value: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_VALUE0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmEngineSetOption0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, option: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_OPTION, newValue: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_VALUE0)) -> UInt32: ...
+def FwpmEngineSetOption0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, option: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_OPTION, newValue: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_VALUE0)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmEngineGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmEngineGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmEngineSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmEngineSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSessionCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmSessionCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSessionEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmSessionEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSessionDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmSessionDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SESSION_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmTransactionBegin0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, flags: UInt32) -> UInt32: ...
+def FwpmTransactionBegin0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, flags: UInt32) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmTransactionCommit0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmTransactionCommit0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmTransactionAbort0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmTransactionAbort0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderAdd0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, provider: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+def FwpmProviderAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, provider: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderDeleteByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid)) -> UInt32: ...
+def FwpmProviderDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderGetByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), provider: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER0))) -> UInt32: ...
+def FwpmProviderGetByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), provider: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmProviderCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmProviderDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmProviderGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmProviderSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderSubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmProviderSubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmProviderUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextAdd0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
+def FwpmProviderContextAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextAdd1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
+def FwpmProviderContextAdd1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextAdd2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
+def FwpmProviderContextAdd2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextAdd3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
+def FwpmProviderContextAdd3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, providerContext: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextDeleteById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64) -> UInt32: ...
+def FwpmProviderContextDeleteById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextDeleteByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid)) -> UInt32: ...
+def FwpmProviderContextDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0))) -> UInt32: ...
+def FwpmProviderContextGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetById1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1))) -> UInt32: ...
+def FwpmProviderContextGetById1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetById2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2))) -> UInt32: ...
+def FwpmProviderContextGetById2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetById3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3))) -> UInt32: ...
+def FwpmProviderContextGetById3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0))) -> UInt32: ...
+def FwpmProviderContextGetByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetByKey1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1))) -> UInt32: ...
+def FwpmProviderContextGetByKey1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetByKey2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2))) -> UInt32: ...
+def FwpmProviderContextGetByKey2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetByKey3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3))) -> UInt32: ...
+def FwpmProviderContextGetByKey3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), providerContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmProviderContextCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderContextEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextEnum1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderContextEnum1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextEnum2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderContextEnum2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextEnum3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderContextEnum3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmProviderContextDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmProviderContextGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmProviderContextSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextSubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmProviderContextSubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmProviderContextUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmProviderContextSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def FwpmProviderContextSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerAdd0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subLayer: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+def FwpmSubLayerAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subLayer: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerDeleteByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid)) -> UInt32: ...
+def FwpmSubLayerDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerGetByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), subLayer: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER0))) -> UInt32: ...
+def FwpmSubLayerGetByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), subLayer: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmSubLayerCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmSubLayerEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmSubLayerDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmSubLayerGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmSubLayerSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerSubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmSubLayerSubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmSubLayerUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSubLayerSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def FwpmSubLayerSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt16, layer: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER0))) -> UInt32: ...
+def FwpmLayerGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt16, layer: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerGetByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), layer: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER0))) -> UInt32: ...
+def FwpmLayerGetByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), layer: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmLayerCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmLayerEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmLayerDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmLayerGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmLayerSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmLayerSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutAdd0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, callout: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt32)) -> UInt32: ...
+def FwpmCalloutAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, callout: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutDeleteById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt32) -> UInt32: ...
+def FwpmCalloutDeleteById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt32) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutDeleteByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid)) -> UInt32: ...
+def FwpmCalloutDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt32, callout: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0))) -> UInt32: ...
+def FwpmCalloutGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt32, callout: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutGetByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), callout: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0))) -> UInt32: ...
+def FwpmCalloutGetByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), callout: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmCalloutCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmCalloutEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmCalloutDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmCalloutGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmCalloutSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutSubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmCalloutSubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmCalloutUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmCalloutSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def FwpmCalloutSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterAdd0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, filter: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
+def FwpmFilterAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, filter: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR, id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterDeleteById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64) -> UInt32: ...
+def FwpmFilterDeleteById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterDeleteByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid)) -> UInt32: ...
+def FwpmFilterDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, filter: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0))) -> UInt32: ...
+def FwpmFilterGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, filter: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterGetByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), filter: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0))) -> UInt32: ...
+def FwpmFilterGetByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), filter: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmFilterCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmFilterEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmFilterDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmFilterGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmFilterSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid), securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterSubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmFilterSubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CHANGE_CALLBACK0, context: VoidPtr, changeHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmFilterUnsubscribeChanges0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, changeHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmFilterSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def FwpmFilterSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
 def FwpmGetAppIdFromFileName0(fileName: win32more.Windows.Win32.Foundation.PWSTR, appId: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmIPsecTunnelAdd0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+def FwpmIPsecTunnelAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT0), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmIPsecTunnelAdd1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), keyModKey: POINTER(Guid), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+def FwpmIPsecTunnelAdd1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT1), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), keyModKey: POINTER(Guid), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmIPsecTunnelAdd2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), keyModKey: POINTER(Guid), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+def FwpmIPsecTunnelAdd2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT2), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), keyModKey: POINTER(Guid), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmIPsecTunnelAdd3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), keyModKey: POINTER(Guid), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+def FwpmIPsecTunnelAdd3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, flags: UInt32, mainModePolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), tunnelPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), keyModKey: POINTER(Guid), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmIPsecTunnelDeleteByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, key: POINTER(Guid)) -> UInt32: ...
+def FwpmIPsecTunnelDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecGetStatistics0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, ipsecStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_STATISTICS0)) -> UInt32: ...
+def IPsecGetStatistics0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, ipsecStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_STATISTICS0)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecGetStatistics1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, ipsecStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_STATISTICS1)) -> UInt32: ...
+def IPsecGetStatistics1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, ipsecStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_STATISTICS1)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextCreate0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, outboundTraffic: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRAFFIC0), inboundFilterId: POINTER(UInt64), id: POINTER(UInt64)) -> UInt32: ...
+def IPsecSaContextCreate0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, outboundTraffic: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRAFFIC0), inboundFilterId: POINTER(UInt64), id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextCreate1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, outboundTraffic: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRAFFIC1), virtualIfTunnelInfo: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_VIRTUAL_IF_TUNNEL_INFO0), inboundFilterId: POINTER(UInt64), id: POINTER(UInt64)) -> UInt32: ...
+def IPsecSaContextCreate1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, outboundTraffic: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRAFFIC1), virtualIfTunnelInfo: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_VIRTUAL_IF_TUNNEL_INFO0), inboundFilterId: POINTER(UInt64), id: POINTER(UInt64)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextDeleteById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64) -> UInt32: ...
+def IPsecSaContextDeleteById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, saContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT0))) -> UInt32: ...
+def IPsecSaContextGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, saContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextGetById1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, saContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT1))) -> UInt32: ...
+def IPsecSaContextGetById1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, saContext: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT1))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextGetSpi0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, getSpi: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_GETSPI0), inboundSpi: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaContextGetSpi0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, getSpi: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_GETSPI0), inboundSpi: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextGetSpi1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, getSpi: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_GETSPI1), inboundSpi: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaContextGetSpi1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, getSpi: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_GETSPI1), inboundSpi: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextSetSpi0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, getSpi: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_GETSPI1), inboundSpi: UInt32) -> UInt32: ...
+def IPsecSaContextSetSpi0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, getSpi: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_GETSPI1), inboundSpi: UInt32) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextAddInbound0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, inboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE0)) -> UInt32: ...
+def IPsecSaContextAddInbound0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, inboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE0)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextAddOutbound0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, outboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE0)) -> UInt32: ...
+def IPsecSaContextAddOutbound0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, outboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE0)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextAddInbound1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, inboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE1)) -> UInt32: ...
+def IPsecSaContextAddInbound1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, inboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE1)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextAddOutbound1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, outboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE1)) -> UInt32: ...
+def IPsecSaContextAddOutbound1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, outboundBundle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE1)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextExpire0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64) -> UInt32: ...
+def IPsecSaContextExpire0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextUpdate0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, flags: UInt64, newValues: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT1)) -> UInt32: ...
+def IPsecSaContextUpdate0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, flags: UInt64, newValues: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT1)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def IPsecSaContextCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaContextEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextEnum1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaContextEnum1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def IPsecSaContextDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextSubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_CALLBACK0, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def IPsecSaContextSubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_CALLBACK0, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextUnsubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, eventsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def IPsecSaContextUnsubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, eventsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaContextSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaContextSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def IPsecSaCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_DETAILS0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_DETAILS0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaEnum1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_DETAILS1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IPsecSaEnum1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_DETAILS1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def IPsecSaDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaDbGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def IPsecSaDbGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecSaDbSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def IPsecSaDbSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecDospGetStatistics0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, idpStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATISTICS0)) -> UInt32: ...
+def IPsecDospGetStatistics0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, idpStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATISTICS0)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecDospStateCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def IPsecDospStateCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecDospStateEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def IPsecDospStateEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecDospStateDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def IPsecDospStateDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_DOSP_STATE_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecDospGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def IPsecDospGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecDospSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def IPsecDospSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecKeyManagerAddAndRegister0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, keyManager: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEY_MANAGER0), keyManagerCallbacks: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEY_MANAGER_CALLBACKS0), keyMgmtHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def IPsecKeyManagerAddAndRegister0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, keyManager: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEY_MANAGER0), keyManagerCallbacks: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEY_MANAGER_CALLBACKS0), keyMgmtHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecKeyManagerUnregisterAndDelete0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, keyMgmtHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def IPsecKeyManagerUnregisterAndDelete0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, keyMgmtHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecKeyManagersGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEY_MANAGER0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def IPsecKeyManagersGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEY_MANAGER0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecKeyManagerGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, reserved: VoidPtr, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def IPsecKeyManagerGetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, reserved: VoidPtr, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IPsecKeyManagerSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, reserved: VoidPtr, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def IPsecKeyManagerSetSecurityInfoByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, reserved: VoidPtr, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextGetStatistics0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, ikeextStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_STATISTICS0)) -> UInt32: ...
+def IkeextGetStatistics0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, ikeextStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_STATISTICS0)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextGetStatistics1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, ikeextStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_STATISTICS1)) -> UInt32: ...
+def IkeextGetStatistics1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, ikeextStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_STATISTICS1)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaDeleteById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64) -> UInt32: ...
+def IkeextSaDeleteById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, sa: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS0))) -> UInt32: ...
+def IkeextSaGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, sa: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaGetById1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, saLookupContext: POINTER(Guid), sa: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS1))) -> UInt32: ...
+def IkeextSaGetById1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, saLookupContext: POINTER(Guid), sa: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS1))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaGetById2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, saLookupContext: POINTER(Guid), sa: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS2))) -> UInt32: ...
+def IkeextSaGetById2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, saLookupContext: POINTER(Guid), sa: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS2))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def IkeextSaCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IkeextSaEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaEnum1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IkeextSaEnum1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaEnum2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS2))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def IkeextSaEnum2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_DETAILS2))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def IkeextSaDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_SA_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaDbGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def IkeextSaDbGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def IkeextSaDbSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def IkeextSaDbSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmNetEventCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventEnum1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventEnum1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT1))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventEnum2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT2))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventEnum2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT2))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventEnum3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT3))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventEnum3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT3))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventEnum4(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT4))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventEnum4(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT4))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventEnum5(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT5))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventEnum5(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT5))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmNetEventDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventsGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmNetEventsGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventsSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmNetEventsSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventSubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK0, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmNetEventSubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK0, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventUnsubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, eventsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmNetEventUnsubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, eventsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventSubscriptionsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
+def FwpmNetEventSubscriptionsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0))), numEntries: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventSubscribe1(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK1, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmNetEventSubscribe1(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK1, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventSubscribe2(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK2, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmNetEventSubscribe2(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK2, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventSubscribe3(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK3, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmNetEventSubscribe3(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK3, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmNetEventSubscribe4(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK4, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmNetEventSubscribe4(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_CALLBACK4, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
 def FwpmDynamicKeywordSubscribe0(flags: UInt32, callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_DYNAMIC_KEYWORD_CALLBACK0, context: VoidPtr, subscriptionHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
 def FwpmDynamicKeywordUnsubscribe0(subscriptionHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSystemPortsGet0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, sysPorts: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SYSTEM_PORTS0))) -> UInt32: ...
+def FwpmSystemPortsGet0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, sysPorts: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SYSTEM_PORTS0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSystemPortsSubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, reserved: VoidPtr, callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SYSTEM_PORTS_CALLBACK0, context: VoidPtr, sysPortsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmSystemPortsSubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, reserved: VoidPtr, callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SYSTEM_PORTS_CALLBACK0, context: VoidPtr, sysPortsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmSystemPortsUnsubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, sysPortsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmSystemPortsUnsubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, sysPortsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionGetById0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, id: UInt64, connection: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION0))) -> UInt32: ...
+def FwpmConnectionGetById0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, id: UInt64, connection: POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION0))) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionEnum0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
+def FwpmConnectionEnum0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_ENUM_HANDLE, numEntriesRequested: UInt32, entries: POINTER(POINTER(POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION0))), numEntriesReturned: POINTER(UInt32)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionCreateEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmConnectionCreateEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumTemplate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_ENUM_TEMPLATE0), enumHandle: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_ENUM_HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, enumHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmConnectionDestroyEnumHandle0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, enumHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_ENUM_HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmConnectionGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmConnectionSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionSubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_CALLBACK0, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmConnectionSubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_CALLBACK0, context: VoidPtr, eventsHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmConnectionUnsubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, eventsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmConnectionUnsubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, eventsHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmvSwitchEventSubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_VSWITCH_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_VSWITCH_EVENT_CALLBACK0, context: VoidPtr, subscriptionHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
+def FwpmvSwitchEventSubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscription: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_VSWITCH_EVENT_SUBSCRIPTION0), callback: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_VSWITCH_EVENT_CALLBACK0, context: VoidPtr, subscriptionHandle: POINTER(win32more.Windows.Win32.Foundation.HANDLE)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmvSwitchEventUnsubscribe0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, subscriptionHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
+def FwpmvSwitchEventUnsubscribe0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, subscriptionHandle: win32more.Windows.Win32.Foundation.HANDLE) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmvSwitchEventsGetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
+def FwpmvSwitchEventsGetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.PSID), sidGroup: POINTER(win32more.Windows.Win32.Security.PSID), dacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), sacl: POINTER(POINTER(win32more.Windows.Win32.Security.ACL)), securityDescriptor: POINTER(win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR)) -> UInt32: ...
 @winfunctype('fwpuclnt.dll')
-def FwpmvSwitchEventsSetSecurityInfo0(engineHandle: win32more.Windows.Win32.Foundation.HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+def FwpmvSwitchEventsSetSecurityInfo0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, securityInfo: UInt32, sidOwner: POINTER(win32more.Windows.Win32.Security.SID), sidGroup: POINTER(win32more.Windows.Win32.Security.SID), dacl: POINTER(win32more.Windows.Win32.Security.ACL), sacl: POINTER(win32more.Windows.Win32.Security.ACL)) -> UInt32: ...
+@winfunctype('fwpuclnt.dll')
+def FwpmConnectionPolicyAdd0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, connectionPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT3), ipVersion: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_IP_VERSION, weight: UInt64, numFilterConditions: UInt32, filterConditions: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER_CONDITION0), sd: win32more.Windows.Win32.Security.PSECURITY_DESCRIPTOR) -> UInt32: ...
+@winfunctype('fwpuclnt.dll')
+def FwpmConnectionPolicyDeleteByKey0(engineHandle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_HANDLE, key: POINTER(Guid)) -> UInt32: ...
 DL_ADDRESS_TYPE = Int32
 DlUnicast: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.DL_ADDRESS_TYPE = 0
 DlMulticast: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.DL_ADDRESS_TYPE = 1
@@ -965,6 +975,7 @@ DlBroadcast: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.
 class FWPM_ACTION0(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_ACTION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         filterType: Guid
         calloutKey: Guid
@@ -986,6 +997,8 @@ class FWPM_CALLOUT_CHANGE0(Structure):
     calloutId: UInt32
 @winfunctype_pointer
 def FWPM_CALLOUT_CHANGE_CALLBACK0(context: VoidPtr, change: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CALLOUT_CHANGE0)) -> Void: ...
+class FWPM_CALLOUT_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_CALLOUT_ENUM_TEMPLATE0(Structure):
     providerKey: POINTER(Guid)
     layerKey: Guid
@@ -1018,6 +1031,7 @@ class FWPM_CONNECTION0(Structure):
     bytesTransferredOut: UInt64
     bytesTransferredTotal: UInt64
     startSysTime: win32more.Windows.Win32.Foundation.FILETIME
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16
@@ -1026,6 +1040,8 @@ class FWPM_CONNECTION0(Structure):
         remoteV6Address: Byte * 16
 @winfunctype_pointer
 def FWPM_CONNECTION_CALLBACK0(context: VoidPtr, eventType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION_EVENT_TYPE, connection: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_CONNECTION0)) -> Void: ...
+class FWPM_CONNECTION_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_CONNECTION_ENUM_TEMPLATE0(Structure):
     connectionId: UInt64
     flags: UInt32
@@ -1042,6 +1058,8 @@ class FWPM_DISPLAY_DATA0(Structure):
     description: win32more.Windows.Win32.Foundation.PWSTR
 @winfunctype_pointer
 def FWPM_DYNAMIC_KEYWORD_CALLBACK0(notification: VoidPtr, context: VoidPtr) -> Void: ...
+class FWPM_ENGINE_HANDLE(Structure):
+    Value: VoidPtr
 FWPM_ENGINE_OPTION = Int32
 FWPM_ENGINE_COLLECT_NET_EVENTS: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_OPTION = 0
 FWPM_ENGINE_NET_EVENT_MATCH_ANY_KEYWORDS: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_ENGINE_OPTION = 1
@@ -1075,6 +1093,7 @@ class FWPM_FILTER0(Structure):
     reserved: POINTER(Guid)
     filterId: UInt64
     effectiveWeight: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_VALUE0
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         rawContext: UInt64
         providerContextKey: Guid
@@ -1088,6 +1107,8 @@ class FWPM_FILTER_CONDITION0(Structure):
     fieldKey: Guid
     matchType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_MATCH_TYPE
     conditionValue: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
+class FWPM_FILTER_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_FILTER_ENUM_TEMPLATE0(Structure):
     providerKey: POINTER(Guid)
     layerKey: Guid
@@ -1119,6 +1140,8 @@ class FWPM_LAYER0(Structure):
     field: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FIELD0)
     defaultSubLayerKey: Guid
     layerId: UInt16
+class FWPM_LAYER_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_LAYER_ENUM_TEMPLATE0(Structure):
     reserved: UInt64
 class FWPM_LAYER_STATISTICS0(Structure):
@@ -1127,6 +1150,14 @@ class FWPM_LAYER_STATISTICS0(Structure):
     classifyBlockCount: UInt32
     classifyVetoCount: UInt32
     numCacheEntries: UInt32
+class FWPM_LAYER_STATISTICS1(Structure):
+    layerId: Guid
+    classifyPermitCount: UInt32
+    classifyBlockCount: UInt32
+    classifyVetoCount: UInt32
+    numCacheEntries: UInt32
+    filterCount: UInt32
+    totalFilterSize: UInt32
 class FWPM_NETWORK_CONNECTION_POLICY_SETTING0(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_NETWORK_CONNECTION_POLICY_SETTING_TYPE
     value: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_VALUE0
@@ -1137,6 +1168,7 @@ class FWPM_NET_EVENT0(Structure):
     header: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_HEADER0
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ikeMmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_MM_FAILURE0)
         ikeQmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_QM_FAILURE0)
@@ -1148,6 +1180,7 @@ class FWPM_NET_EVENT1(Structure):
     header: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_HEADER1
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ikeMmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_MM_FAILURE1)
         ikeQmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_QM_FAILURE0)
@@ -1159,6 +1192,7 @@ class FWPM_NET_EVENT2(Structure):
     header: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_HEADER2
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ikeMmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_MM_FAILURE1)
         ikeQmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_QM_FAILURE0)
@@ -1174,6 +1208,7 @@ class FWPM_NET_EVENT3(Structure):
     header: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_HEADER3
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ikeMmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_MM_FAILURE1)
         ikeQmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_QM_FAILURE0)
@@ -1189,6 +1224,7 @@ class FWPM_NET_EVENT4(Structure):
     header: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_HEADER3
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ikeMmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_MM_FAILURE2)
         ikeQmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_QM_FAILURE1)
@@ -1204,6 +1240,7 @@ class FWPM_NET_EVENT5(Structure):
     header: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_HEADER3
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ikeMmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_MM_FAILURE2)
         ikeQmFailure: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_NET_EVENT_IKEEXT_QM_FAILURE1)
@@ -1284,6 +1321,8 @@ class FWPM_NET_EVENT_CLASSIFY_DROP_MAC0(Structure):
     vSwitchId: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
     vSwitchSourcePort: UInt32
     vSwitchDestinationPort: UInt32
+class FWPM_NET_EVENT_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_NET_EVENT_ENUM_TEMPLATE0(Structure):
     startTime: win32more.Windows.Win32.Foundation.FILETIME
     endTime: win32more.Windows.Win32.Foundation.FILETIME
@@ -1301,6 +1340,7 @@ class FWPM_NET_EVENT_HEADER0(Structure):
     scopeId: UInt32
     appId: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
     userId: POINTER(win32more.Windows.Win32.Security.SID)
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localAddrV4: UInt32
         localAddrV6: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY16
@@ -1320,6 +1360,7 @@ class FWPM_NET_EVENT_HEADER1(Structure):
     appId: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
     userId: POINTER(win32more.Windows.Win32.Security.SID)
     Anonymous3: _Anonymous3_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         localAddrV4: UInt32
         localAddrV6: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY16
@@ -1328,11 +1369,14 @@ class FWPM_NET_EVENT_HEADER1(Structure):
         remoteAddrV6: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY16
     class _Anonymous3_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             reserved1: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_AF
             Anonymous: _Anonymous_e__Union
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Union(Union):
                 Anonymous: _Anonymous_e__Struct
+                _anonymous_ = ('Anonymous',)
                 class _Anonymous_e__Struct(Structure):
                     reserved2: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY6
                     reserved3: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY6
@@ -1357,6 +1401,7 @@ class FWPM_NET_EVENT_HEADER2(Structure):
     userId: POINTER(win32more.Windows.Win32.Security.SID)
     addressFamily: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_AF
     packageSid: POINTER(win32more.Windows.Win32.Security.SID)
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localAddrV4: UInt32
         localAddrV6: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY16
@@ -1380,6 +1425,7 @@ class FWPM_NET_EVENT_HEADER3(Structure):
     enterpriseId: win32more.Windows.Win32.Foundation.PWSTR
     policyFlags: UInt64
     effectiveName: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localAddrV4: UInt32
         localAddrV6: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_ARRAY16
@@ -1469,6 +1515,7 @@ class FWPM_NET_EVENT_IKEEXT_QM_FAILURE0(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
     qmFilterId: UInt64
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localSubNet: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
     class _Anonymous2_e__Union(Union):
@@ -1485,6 +1532,7 @@ class FWPM_NET_EVENT_IKEEXT_QM_FAILURE1(Structure):
     qmFilterId: UInt64
     mmSaLuid: UInt64
     mmProviderContextKey: Guid
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localSubNet: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
     class _Anonymous2_e__Union(Union):
@@ -1495,6 +1543,7 @@ class FWPM_NET_EVENT_IPSEC_DOSP_DROP0(Structure):
     Anonymous2: _Anonymous2_e__Union
     failureStatus: Int32
     direction: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_DIRECTION
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         publicHostV4Addr: UInt32
         publicHostV6Addr: Byte * 16
@@ -1546,6 +1595,7 @@ class FWPM_PROVIDER_CONTEXT0(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE
     Anonymous: _Anonymous_e__Union
     providerContextId: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         keyingPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEYING_POLICY0)
         ikeQmTransportPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRANSPORT_POLICY0)
@@ -1565,6 +1615,7 @@ class FWPM_PROVIDER_CONTEXT1(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE
     Anonymous: _Anonymous_e__Union
     providerContextId: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         keyingPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEYING_POLICY0)
         ikeQmTransportPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRANSPORT_POLICY1)
@@ -1587,6 +1638,7 @@ class FWPM_PROVIDER_CONTEXT2(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE
     Anonymous: _Anonymous_e__Union
     providerContextId: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         keyingPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEYING_POLICY1)
         ikeQmTransportPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRANSPORT_POLICY2)
@@ -1610,6 +1662,7 @@ class FWPM_PROVIDER_CONTEXT3(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE
     Anonymous: _Anonymous_e__Union
     providerContextId: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         keyingPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_KEYING_POLICY1)
         ikeQmTransportPolicy: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRANSPORT_POLICY2)
@@ -1631,6 +1684,8 @@ class FWPM_PROVIDER_CONTEXT_CHANGE0(Structure):
     providerContextId: UInt64
 @winfunctype_pointer
 def FWPM_PROVIDER_CONTEXT_CHANGE_CALLBACK0(context: VoidPtr, change: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_CHANGE0)) -> Void: ...
+class FWPM_PROVIDER_CONTEXT_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_PROVIDER_CONTEXT_ENUM_TEMPLATE0(Structure):
     providerKey: POINTER(Guid)
     providerContextType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE
@@ -1654,6 +1709,8 @@ FWPM_IPSEC_DOSP_CONTEXT: win32more.Windows.Win32.NetworkManagement.WindowsFilter
 FWPM_IPSEC_IKEV2_QM_TRANSPORT_CONTEXT: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE = 12
 FWPM_NETWORK_CONNECTION_POLICY_CONTEXT: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE = 13
 FWPM_PROVIDER_CONTEXT_TYPE_MAX: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_PROVIDER_CONTEXT_TYPE = 14
+class FWPM_PROVIDER_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_PROVIDER_ENUM_TEMPLATE0(Structure):
     reserved: UInt64
 class FWPM_PROVIDER_SUBSCRIPTION0(Structure):
@@ -1675,11 +1732,50 @@ class FWPM_SESSION0(Structure):
     sid: POINTER(win32more.Windows.Win32.Security.SID)
     username: win32more.Windows.Win32.Foundation.PWSTR
     kernelMode: win32more.Windows.Win32.Foundation.BOOL
+class FWPM_SESSION_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_SESSION_ENUM_TEMPLATE0(Structure):
     reserved: UInt64
 class FWPM_STATISTICS0(Structure):
     numLayerStatistics: UInt32
     layerStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_STATISTICS0)
+    inboundAllowedConnectionsV4: UInt32
+    inboundBlockedConnectionsV4: UInt32
+    outboundAllowedConnectionsV4: UInt32
+    outboundBlockedConnectionsV4: UInt32
+    inboundAllowedConnectionsV6: UInt32
+    inboundBlockedConnectionsV6: UInt32
+    outboundAllowedConnectionsV6: UInt32
+    outboundBlockedConnectionsV6: UInt32
+    inboundActiveConnectionsV4: UInt32
+    outboundActiveConnectionsV4: UInt32
+    inboundActiveConnectionsV6: UInt32
+    outboundActiveConnectionsV6: UInt32
+    reauthDirInbound: UInt64
+    reauthDirOutbound: UInt64
+    reauthFamilyV4: UInt64
+    reauthFamilyV6: UInt64
+    reauthProtoOther: UInt64
+    reauthProtoIPv4: UInt64
+    reauthProtoIPv6: UInt64
+    reauthProtoICMP: UInt64
+    reauthProtoICMP6: UInt64
+    reauthProtoUDP: UInt64
+    reauthProtoTCP: UInt64
+    reauthReasonPolicyChange: UInt64
+    reauthReasonNewArrivalInterface: UInt64
+    reauthReasonNewNextHopInterface: UInt64
+    reauthReasonProfileCrossing: UInt64
+    reauthReasonClassifyCompletion: UInt64
+    reauthReasonIPSecPropertiesChanged: UInt64
+    reauthReasonMidStreamInspection: UInt64
+    reauthReasonSocketPropertyChanged: UInt64
+    reauthReasonNewInboundMCastBCastPacket: UInt64
+    reauthReasonEDPPolicyChanged: UInt64
+    reauthReasonProxyHandleChanged: UInt64
+class FWPM_STATISTICS1(Structure):
+    numLayerStatistics: UInt32
+    layerStatistics: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_LAYER_STATISTICS1)
     inboundAllowedConnectionsV4: UInt32
     inboundBlockedConnectionsV4: UInt32
     outboundAllowedConnectionsV4: UInt32
@@ -1726,6 +1822,8 @@ class FWPM_SUBLAYER_CHANGE0(Structure):
     subLayerKey: Guid
 @winfunctype_pointer
 def FWPM_SUBLAYER_CHANGE_CALLBACK0(context: VoidPtr, change: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_SUBLAYER_CHANGE0)) -> Void: ...
+class FWPM_SUBLAYER_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class FWPM_SUBLAYER_ENUM_TEMPLATE0(Structure):
     providerKey: POINTER(Guid)
 class FWPM_SUBLAYER_SUBSCRIPTION0(Structure):
@@ -1754,6 +1852,7 @@ class FWPM_VSWITCH_EVENT0(Structure):
     eventType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_VSWITCH_EVENT_TYPE
     vSwitchId: win32more.Windows.Win32.Foundation.PWSTR
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         positionInfo: _positionInfo_e__Struct
         reorderInfo: _reorderInfo_e__Struct
@@ -1810,6 +1909,7 @@ FWP_CLASSIFY_OPTION_MAX: win32more.Windows.Win32.NetworkManagement.WindowsFilter
 class FWP_CONDITION_VALUE0(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_DATA_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         uint8: Byte
         uint16: UInt16
@@ -1911,6 +2011,7 @@ class FWP_V6_ADDR_AND_MASK(Structure):
 class FWP_VALUE0(Structure):
     type: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_DATA_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         uint8: Byte
         uint16: UInt16
@@ -1942,6 +2043,7 @@ IKEEXT_IMPERSONATION_MAX: win32more.Windows.Win32.NetworkManagement.WindowsFilte
 class IKEEXT_AUTHENTICATION_METHOD0(Structure):
     authenticationMethodType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_METHOD_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         presharedKeyAuthentication: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_PRESHARED_KEY_AUTHENTICATION0
         certificateAuthentication: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_AUTHENTICATION0
@@ -1952,6 +2054,7 @@ class IKEEXT_AUTHENTICATION_METHOD0(Structure):
 class IKEEXT_AUTHENTICATION_METHOD1(Structure):
     authenticationMethodType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_METHOD_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         presharedKeyAuthentication: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_PRESHARED_KEY_AUTHENTICATION1
         certificateAuthentication: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_AUTHENTICATION1
@@ -1963,6 +2066,7 @@ class IKEEXT_AUTHENTICATION_METHOD1(Structure):
 class IKEEXT_AUTHENTICATION_METHOD2(Structure):
     authenticationMethodType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_METHOD_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         presharedKeyAuthentication: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_PRESHARED_KEY_AUTHENTICATION1
         certificateAuthentication: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_AUTHENTICATION2
@@ -1993,10 +2097,12 @@ class IKEEXT_CERTIFICATE_AUTHENTICATION0(Structure):
     outboundConfigType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_CONFIG_TYPE
     Anonymous2: _Anonymous2_e__Union
     flags: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_AUTH
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         inboundEnterpriseStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
         inboundTrustedRootStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             inboundRootArraySize: UInt32
             inboundRootArray: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
@@ -2004,6 +2110,7 @@ class IKEEXT_CERTIFICATE_AUTHENTICATION0(Structure):
         Anonymous: _Anonymous_e__Struct
         outboundEnterpriseStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
         outboundTrustedRootStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             outboundRootArraySize: UInt32
             outboundRootArray: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
@@ -2014,10 +2121,12 @@ class IKEEXT_CERTIFICATE_AUTHENTICATION1(Structure):
     Anonymous2: _Anonymous2_e__Union
     flags: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_AUTH
     localCertLocationUrl: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         inboundEnterpriseStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
         inboundTrustedRootStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             inboundRootArraySize: UInt32
             inboundRootArray: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
@@ -2025,6 +2134,7 @@ class IKEEXT_CERTIFICATE_AUTHENTICATION1(Structure):
         Anonymous: _Anonymous_e__Struct
         outboundEnterpriseStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
         outboundTrustedRootStoreConfig: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             outboundRootArraySize: UInt32
             outboundRootArray: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_ROOT_CONFIG0)
@@ -2035,10 +2145,12 @@ class IKEEXT_CERTIFICATE_AUTHENTICATION2(Structure):
     Anonymous2: _Anonymous2_e__Union
     flags: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERT_AUTH
     localCertLocationUrl: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
         Anonymous3: _Anonymous3_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
         class _Anonymous1_e__Struct(Structure):
             inboundRootArraySize: UInt32
             inboundRootCriteria: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_CRITERIA0)
@@ -2052,6 +2164,7 @@ class IKEEXT_CERTIFICATE_AUTHENTICATION2(Structure):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
         Anonymous3: _Anonymous3_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
         class _Anonymous1_e__Struct(Structure):
             outboundRootArraySize: UInt32
             outboundRootCriteria: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_CRITERIA0)
@@ -2148,6 +2261,7 @@ class IKEEXT_CREDENTIAL0(Structure):
     authenticationMethodType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_METHOD_TYPE
     impersonationType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_IMPERSONATION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         presharedKey: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_PRESHARED_KEY_AUTHENTICATION0)
         certificate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_CREDENTIAL0)
@@ -2156,6 +2270,7 @@ class IKEEXT_CREDENTIAL1(Structure):
     authenticationMethodType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_METHOD_TYPE
     impersonationType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_IMPERSONATION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         presharedKey: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_PRESHARED_KEY_AUTHENTICATION1)
         certificate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_CREDENTIAL1)
@@ -2164,6 +2279,7 @@ class IKEEXT_CREDENTIAL2(Structure):
     authenticationMethodType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_METHOD_TYPE
     impersonationType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_AUTHENTICATION_IMPERSONATION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         presharedKey: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_PRESHARED_KEY_AUTHENTICATION1)
         certificate: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CERTIFICATE_CREDENTIAL1)
@@ -2387,6 +2503,7 @@ class IKEEXT_SA_DETAILS0(Structure):
     ikeCredentials: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IKEEXT_CREDENTIALS0
     ikePolicyKey: Guid
     virtualIfTunnelId: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         v4UdpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
 class IKEEXT_SA_DETAILS1(Structure):
@@ -2401,6 +2518,7 @@ class IKEEXT_SA_DETAILS1(Structure):
     ikePolicyKey: Guid
     virtualIfTunnelId: UInt64
     correlationKey: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         v4UdpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
 class IKEEXT_SA_DETAILS2(Structure):
@@ -2415,8 +2533,11 @@ class IKEEXT_SA_DETAILS2(Structure):
     ikePolicyKey: Guid
     virtualIfTunnelId: UInt64
     correlationKey: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_BYTE_BLOB
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         v4UdpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
+class IKEEXT_SA_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class IKEEXT_SA_ENUM_TEMPLATE0(Structure):
     localSubNet: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
     remoteSubNet: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
@@ -2439,6 +2560,7 @@ class IKEEXT_TRAFFIC0(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
     authIpFilterId: UInt64
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16
@@ -2550,6 +2672,8 @@ class IPSEC_DOSP_STATE0(Structure):
     totalInboundIPv6IPsecAuthPackets: UInt64
     totalOutboundIPv6IPsecAuthPackets: UInt64
     durationSecs: UInt32
+class IPSEC_DOSP_STATE_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class IPSEC_DOSP_STATE_ENUM_TEMPLATE0(Structure):
     publicV6AddrMask: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_V6_ADDR_AND_MASK
     internalV6AddrMask: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_V6_ADDR_AND_MASK
@@ -2588,6 +2712,7 @@ class IPSEC_GETSPI0(Structure):
     ipVersion: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_IP_VERSION
     Anonymous: _Anonymous_e__Union
     rngCryptoModuleID: POINTER(Guid)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         inboundUdpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
 class IPSEC_GETSPI1(Structure):
@@ -2595,6 +2720,7 @@ class IPSEC_GETSPI1(Structure):
     ipVersion: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_IP_VERSION
     Anonymous: _Anonymous_e__Union
     rngCryptoModuleID: POINTER(Guid)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         inboundUdpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
 class IPSEC_ID0(Structure):
@@ -2665,6 +2791,7 @@ class IPSEC_SA0(Structure):
     spi: UInt32
     saTransformType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRANSFORM_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ahInformation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_AUTH_INFORMATION0)
         espAuthInformation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_AUTH_INFORMATION0)
@@ -2692,6 +2819,7 @@ class IPSEC_SA_BUNDLE0(Structure):
     Anonymous: _Anonymous_e__Union
     mmSaId: UInt64
     pfsGroup: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_PFS_GROUP
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         peerV4PrivateAddress: UInt32
 class IPSEC_SA_BUNDLE1(Structure):
@@ -2711,6 +2839,7 @@ class IPSEC_SA_BUNDLE1(Structure):
     pfsGroup: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_PFS_GROUP
     saLookupContext: Guid
     qmFilterId: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         peerV4PrivateAddress: UInt32
 IPSEC_SA_BUNDLE_FLAGS = UInt32
@@ -2740,6 +2869,8 @@ def IPSEC_SA_CONTEXT_CALLBACK0(context: VoidPtr, change: POINTER(win32more.Windo
 class IPSEC_SA_CONTEXT_CHANGE0(Structure):
     changeType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_CONTEXT_EVENT_TYPE0
     saContextId: UInt64
+class IPSEC_SA_CONTEXT_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class IPSEC_SA_CONTEXT_ENUM_TEMPLATE0(Structure):
     localSubNet: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
     remoteSubNet: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_CONDITION_VALUE0
@@ -2758,6 +2889,7 @@ class IPSEC_SA_DETAILS0(Structure):
     saBundle: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_SA_BUNDLE0
     Anonymous: _Anonymous_e__Union
     transportFilter: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         udpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
 class IPSEC_SA_DETAILS1(Structure):
@@ -2768,8 +2900,11 @@ class IPSEC_SA_DETAILS1(Structure):
     Anonymous: _Anonymous_e__Union
     transportFilter: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWPM_FILTER0)
     virtualIfTunnelInfo: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_VIRTUAL_IF_TUNNEL_INFO0
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         udpEncapsulation: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_V4_UDP_ENCAPSULATION0)
+class IPSEC_SA_ENUM_HANDLE(Structure):
+    Value: VoidPtr
 class IPSEC_SA_ENUM_TEMPLATE0(Structure):
     saDirection: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_DIRECTION
 class IPSEC_SA_IDLE_TIMEOUT0(Structure):
@@ -2782,6 +2917,7 @@ class IPSEC_SA_LIFETIME0(Structure):
 class IPSEC_SA_TRANSFORM0(Structure):
     ipsecTransformType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRANSFORM_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ahTransform: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_AUTH_TRANSFORM0)
         espAuthTransform: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_AUTH_TRANSFORM0)
@@ -2826,6 +2962,7 @@ class IPSEC_TRAFFIC0(Structure):
     trafficType: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TRAFFIC_TYPE
     Anonymous3: _Anonymous3_e__Union
     remotePort: UInt16
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16
@@ -2846,6 +2983,7 @@ class IPSEC_TRAFFIC1(Structure):
     ipProtocol: Byte
     localIfLuid: UInt64
     realIfProfileId: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16
@@ -2862,6 +3000,7 @@ class IPSEC_TRAFFIC_SELECTOR0(Structure):
     ipVersion: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_IP_VERSION
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         startV4Address: UInt32
         startV6Address: Byte * 16
@@ -2924,6 +3063,7 @@ class IPSEC_TRANSPORT_POLICY2(Structure):
 class IPSEC_TUNNEL_ENDPOINT0(Structure):
     ipVersion: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_IP_VERSION
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         v4Address: UInt32
         v6Address: Byte * 16
@@ -2931,6 +3071,7 @@ class IPSEC_TUNNEL_ENDPOINTS0(Structure):
     ipVersion: win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.FWP_IP_VERSION
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16
@@ -2942,6 +3083,7 @@ class IPSEC_TUNNEL_ENDPOINTS1(Structure):
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
     localIfLuid: UInt64
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16
@@ -2956,6 +3098,7 @@ class IPSEC_TUNNEL_ENDPOINTS2(Structure):
     remoteFqdn: win32more.Windows.Win32.Foundation.PWSTR
     numAddresses: UInt32
     remoteAddresses: POINTER(win32more.Windows.Win32.NetworkManagement.WindowsFilteringPlatform.IPSEC_TUNNEL_ENDPOINT0)
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         localV4Address: UInt32
         localV6Address: Byte * 16

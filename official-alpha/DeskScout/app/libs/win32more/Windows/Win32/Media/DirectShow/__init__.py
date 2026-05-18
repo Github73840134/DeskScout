@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct3D9
 import win32more.Windows.Win32.Graphics.DirectDraw
@@ -196,14 +196,14 @@ AM_ARMODE_LETTER_BOX: win32more.Windows.Win32.Media.DirectShow.AM_ASPECT_RATIO_M
 AM_ARMODE_CROP: win32more.Windows.Win32.Media.DirectShow.AM_ASPECT_RATIO_MODE = 2
 AM_ARMODE_STRETCHED_AS_PRIMARY: win32more.Windows.Win32.Media.DirectShow.AM_ASPECT_RATIO_MODE = 3
 class AM_COLCON(Structure):
-    emph1col: Annotated[Byte, 4]
-    emph2col: Annotated[Byte, 4]
-    backcol: Annotated[Byte, 4]
-    patcol: Annotated[Byte, 4]
-    emph1con: Annotated[Byte, 4]
-    emph2con: Annotated[Byte, 4]
-    backcon: Annotated[Byte, 4]
-    patcon: Annotated[Byte, 4]
+    emph1col: Annotated[Byte, NativeBitfieldAttribute(4)]
+    emph2col: Annotated[Byte, NativeBitfieldAttribute(4)]
+    backcol: Annotated[Byte, NativeBitfieldAttribute(4)]
+    patcol: Annotated[Byte, NativeBitfieldAttribute(4)]
+    emph1con: Annotated[Byte, NativeBitfieldAttribute(4)]
+    emph2con: Annotated[Byte, NativeBitfieldAttribute(4)]
+    backcon: Annotated[Byte, NativeBitfieldAttribute(4)]
+    patcon: Annotated[Byte, NativeBitfieldAttribute(4)]
 class AM_COPY_MACROVISION(Structure):
     MACROVISIONLevel: UInt32
 AM_COPY_MACROVISION_LEVEL = Int32
@@ -223,7 +223,7 @@ AM_DVDCOPYSTATE_AUTHENTICATION_REQUIRED: win32more.Windows.Win32.Media.DirectSho
 AM_DVDCOPYSTATE_DONE: win32more.Windows.Win32.Media.DirectShow.AM_DVDCOPYSTATE = 4
 class AM_DVDCOPY_BUSKEY(Structure):
     BusKey: Byte * 5
-    Reserved: Byte * 1
+    Reserved: FlexibleArray[Byte]
 class AM_DVDCOPY_CHLGKEY(Structure):
     ChlgKey: Byte * 10
     Reserved: Byte * 2
@@ -325,11 +325,11 @@ class AM_MPEGSTREAMTYPE(Structure):
     dwStreamId: UInt32
     dwReserved: UInt32
     mt: win32more.Windows.Win32.Media.MediaFoundation.AM_MEDIA_TYPE
-    bFormat: Byte * 1
+    bFormat: FlexibleArray[Byte]
 class AM_MPEGSYSTEMTYPE(Structure):
     dwBitRate: UInt32
     cStreams: UInt32
-    Streams: win32more.Windows.Win32.Media.DirectShow.AM_MPEGSTREAMTYPE * 1
+    Streams: FlexibleArray[win32more.Windows.Win32.Media.DirectShow.AM_MPEGSTREAMTYPE]
 AM_PROPERTY_AC3 = Int32
 AM_PROPERTY_AC3_ERROR_CONCEALMENT: win32more.Windows.Win32.Media.DirectShow.AM_PROPERTY_AC3 = 1
 AM_PROPERTY_AC3_ALTERNATE_AUDIO: win32more.Windows.Win32.Media.DirectShow.AM_PROPERTY_AC3 = 2
@@ -1282,6 +1282,16 @@ DXVA_ModeMPEG4pt2_VLD_AdvSimple_NoGMC: Guid = Guid('{ed418a9f-010d-4eda-9ae3-9a6
 DXVA_ModeMPEG4pt2_VLD_AdvSimple_GMC: Guid = Guid('{ab998b5b-4258-44a9-9feb-94e597a6baae}')
 DXVA_ModeHEVC_VLD_Main: Guid = Guid('{5b11d51b-2f4c-4452-bcc3-09f2a1160cc0}')
 DXVA_ModeHEVC_VLD_Main10: Guid = Guid('{107af0e0-ef1a-4d19-aba8-67a163073d13}')
+DXVA_ModeHEVC_VLD_Monochrome: Guid = Guid('{0685b993-3d8c-43a0-8b28-d74c2d6899a4}')
+DXVA_ModeHEVC_VLD_Monochrome10: Guid = Guid('{142a1d0f-69dd-4ec9-8591-b12ffcb91a29}')
+DXVA_ModeHEVC_VLD_Main12: Guid = Guid('{1a72925f-0c2c-4f15-96fb-b17d1473603f}')
+DXVA_ModeHEVC_VLD_Main10_422: Guid = Guid('{0bac4fe5-1532-4429-a854-f84de04953db}')
+DXVA_ModeHEVC_VLD_Main12_422: Guid = Guid('{55bcac81-f311-4093-a7d0-1cbc0b849bee}')
+DXVA_ModeHEVC_VLD_Main_444: Guid = Guid('{4008018f-f537-4b36-98cf-61af8a2c1a33}')
+DXVA_ModeHEVC_VLD_Main10_Ext: Guid = Guid('{9cc55490-e37c-4932-8684-4920f9f6409c}')
+DXVA_ModeHEVC_VLD_Main10_444: Guid = Guid('{0dabeffa-4458-4602-bc03-0795659d617c}')
+DXVA_ModeHEVC_VLD_Main12_444: Guid = Guid('{9798634d-fe9d-48e5-b4da-dbec45b3df01}')
+DXVA_ModeHEVC_VLD_Main16: Guid = Guid('{a4fbdbb0-a113-482b-a232-635cc0697f6d}')
 DXVA_ModeVP9_VLD_Profile0: Guid = Guid('{463707f8-a1d0-4585-876d-83aa6d60b89e}')
 DXVA_ModeVP9_VLD_10bit_Profile2: Guid = Guid('{a4c749ef-6ecf-48aa-8448-50a7a1165ff7}')
 DXVA_ModeVP8_VLD: Guid = Guid('{90b899ea-3a62-4705-88b3-8df04b2744e7}')
@@ -1290,6 +1300,13 @@ DXVA_ModeAV1_VLD_Profile1: Guid = Guid('{6936ff0f-45b1-4163-9cc1-646ef6946108}')
 DXVA_ModeAV1_VLD_Profile2: Guid = Guid('{0c5f2aa1-e541-4089-bb7b-98110a19d7c8}')
 DXVA_ModeAV1_VLD_12bit_Profile2: Guid = Guid('{17127009-a00f-4ce1-994e-bf4081f6f3f0}')
 DXVA_ModeAV1_VLD_12bit_Profile2_420: Guid = Guid('{2d80bed6-9cac-4835-9e91-327bbc4f9ee8}')
+DXVA_ModeMJPEG_VLD_420: Guid = Guid('{725cb506-0c29-43c4-9440-8e9397903a04}')
+DXVA_ModeMJPEG_VLD_422: Guid = Guid('{5b77b9cd-1a35-4c30-9fd8-ef4b60c035dd}')
+DXVA_ModeMJPEG_VLD_444: Guid = Guid('{d95161f9-0d44-47e6-bcf5-1bfbfb268f97}')
+DXVA_ModeMJPEG_VLD_4444: Guid = Guid('{c91748d5-fd18-4aca-9db3-3a6634ab547d}')
+DXVA_ModeJPEG_VLD_420: Guid = Guid('{cf782c83-bef5-4a2c-87cb-6019e7b175ac}')
+DXVA_ModeJPEG_VLD_422: Guid = Guid('{f04df417-eee2-4067-a778-f35c15ab9721}')
+DXVA_ModeJPEG_VLD_444: Guid = Guid('{4cd00e17-89ba-48ef-b9f9-edcb82713f65}')
 DXVA_NoEncrypt: Guid = Guid('{1b81bed0-a0c7-11d3-b984-00c04f2e73c5}')
 DXVA_RESTRICTED_MODE_UNRESTRICTED: UInt32 = 65535
 DXVA_RESTRICTED_MODE_H261_A: UInt32 = 1
@@ -1573,7 +1590,7 @@ class BDANODE_DESCRIPTOR(Structure):
 class BDA_BUFFER(Structure):
     lResult: Int32
     ulBufferSize: UInt32
-    argbBuffer: Byte * 1
+    argbBuffer: FlexibleArray[Byte]
 class BDA_CAS_CHECK_ENTITLEMENTTOKEN(Structure):
     lResult: Int32
     ulDescrambleStatus: UInt32
@@ -1587,7 +1604,7 @@ class BDA_CAS_OPENMMIDATA(Structure):
     ulDialogRequest: UInt32
     uuidDialogType: Guid
     usDialogDataLength: UInt16
-    argbDialogData: Byte * 1
+    argbDialogData: FlexibleArray[Byte]
 class BDA_CAS_REQUESTTUNERDATA(Structure):
     ucRequestPriority: Byte
     ucRequestReason: Byte
@@ -1596,7 +1613,7 @@ class BDA_CAS_REQUESTTUNERDATA(Structure):
 class BDA_CA_MODULE_UI(Structure):
     ulFormat: UInt32
     ulbcDesc: UInt32
-    ulDesc: UInt32 * 1
+    ulDesc: FlexibleArray[UInt32]
 BDA_CHANGE_STATE = Int32
 BDA_CHANGES_COMPLETE: win32more.Windows.Win32.Media.DirectShow.BDA_CHANGE_STATE = 0
 BDA_CHANGES_PENDING: win32more.Windows.Win32.Media.DirectShow.BDA_CHANGE_STATE = 1
@@ -1643,7 +1660,7 @@ class BDA_DRM_DRMSTATUS(Structure):
     lResult: Int32
     DRMuuid: Guid
     ulDrmUuidListStringSize: UInt32
-    argbDrmUuidListString: Guid * 1
+    argbDrmUuidListString: FlexibleArray[Guid]
 class BDA_DVBT2_L1_SIGNALLING_DATA(Structure):
     L1Pre_TYPE: Byte
     L1Pre_BWT_S1_S2: Byte
@@ -1658,7 +1675,7 @@ class BDA_DVBT2_L1_SIGNALLING_DATA(Structure):
     L1Pre_NUM_DATA_REGENFLAG_L1POSTEXT: Byte * 2
     L1Pre_NUMRF_CURRENTRF_RESERVED: Byte * 2
     L1Pre_CRC32: Byte * 4
-    L1PostData: Byte * 1
+    L1PostData: FlexibleArray[Byte]
 BDA_DrmPairingError = Int32
 BDA_DrmPairing_Succeeded: win32more.Windows.Win32.Media.DirectShow.BDA_DrmPairingError = 0
 BDA_DrmPairing_HardwareFailure: win32more.Windows.Win32.Media.DirectShow.BDA_DrmPairingError = 1
@@ -1674,7 +1691,7 @@ class BDA_ETHERNET_ADDRESS(Structure):
     rgbAddress: Byte * 6
 class BDA_ETHERNET_ADDRESS_LIST(Structure):
     ulcAddresses: UInt32
-    rgAddressl: win32more.Windows.Win32.Media.DirectShow.BDA_ETHERNET_ADDRESS * 1
+    rgAddressl: FlexibleArray[win32more.Windows.Win32.Media.DirectShow.BDA_ETHERNET_ADDRESS]
 BDA_EVENT_ID = Int32
 BDA_EVENT_SIGNAL_LOSS: win32more.Windows.Win32.Media.DirectShow.BDA_EVENT_ID = 0
 BDA_EVENT_SIGNAL_LOCK: win32more.Windows.Win32.Media.DirectShow.BDA_EVENT_ID = 1
@@ -1706,7 +1723,7 @@ class BDA_GDDS_DATA(Structure):
     lResult: Int32
     ulDataLength: UInt32
     ulPercentageProgress: UInt32
-    argbData: Byte * 1
+    argbData: FlexibleArray[Byte]
 class BDA_GDDS_DATATYPE(Structure):
     lResult: Int32
     uuidDataType: Guid
@@ -1714,12 +1731,12 @@ class BDA_IPv4_ADDRESS(Structure):
     rgbAddress: Byte * 4
 class BDA_IPv4_ADDRESS_LIST(Structure):
     ulcAddresses: UInt32
-    rgAddressl: win32more.Windows.Win32.Media.DirectShow.BDA_IPv4_ADDRESS * 1
+    rgAddressl: FlexibleArray[win32more.Windows.Win32.Media.DirectShow.BDA_IPv4_ADDRESS]
 class BDA_IPv6_ADDRESS(Structure):
     rgbAddress: Byte * 6
 class BDA_IPv6_ADDRESS_LIST(Structure):
     ulcAddresses: UInt32
-    rgAddressl: win32more.Windows.Win32.Media.DirectShow.BDA_IPv6_ADDRESS * 1
+    rgAddressl: FlexibleArray[win32more.Windows.Win32.Media.DirectShow.BDA_IPv6_ADDRESS]
 class BDA_ISDBCAS_EMG_REQ(Structure):
     bCLA: Byte
     bINS: Byte
@@ -1730,19 +1747,19 @@ class BDA_ISDBCAS_EMG_REQ(Structure):
     bProtocol: Byte
     bCABroadcasterGroupId: Byte
     bMessageControl: Byte
-    bMessageCode: Byte * 1
+    bMessageCode: FlexibleArray[Byte]
 class BDA_ISDBCAS_REQUESTHEADER(Structure):
     bInstruction: Byte
     bReserved: Byte * 3
     ulDataLength: UInt32
-    argbIsdbCommand: Byte * 1
+    argbIsdbCommand: FlexibleArray[Byte]
     _pack_ = 1
 class BDA_ISDBCAS_RESPONSEDATA(Structure):
     lResult: Int32
     ulRequestID: UInt32
     ulIsdbStatus: UInt32
     ulIsdbDataSize: UInt32
-    argbIsdbCommandData: Byte * 1
+    argbIsdbCommandData: FlexibleArray[Byte]
     _pack_ = 1
 BDA_MULTICAST_MODE = Int32
 BDA_PROMISCUOUS_MULTICAST: win32more.Windows.Win32.Media.DirectShow.BDA_MULTICAST_MODE = 0
@@ -1756,17 +1773,17 @@ class BDA_MUX_PIDLISTITEM(Structure):
 class BDA_PID_MAP(Structure):
     MediaSampleContent: win32more.Windows.Win32.Media.DirectShow.MEDIA_SAMPLE_CONTENT
     ulcPIDs: UInt32
-    aulPIDs: UInt32 * 1
+    aulPIDs: FlexibleArray[UInt32]
 class BDA_PID_UNMAP(Structure):
     ulcPIDs: UInt32
-    aulPIDs: UInt32 * 1
+    aulPIDs: FlexibleArray[UInt32]
 class BDA_PROGRAM_PID_LIST(Structure):
     ulProgramNumber: UInt32
     ulcPIDs: UInt32
-    ulPID: UInt32 * 1
+    ulPID: FlexibleArray[UInt32]
 class BDA_RATING_PINRESET(Structure):
     bPinLength: Byte
-    argbNewPin: Byte * 1
+    argbNewPin: FlexibleArray[Byte]
 BDA_Range = Int32
 BDA_RANGE_NOT_SET: win32more.Windows.Win32.Media.DirectShow.BDA_Range = -1
 BDA_RANGE_NOT_DEFINED: win32more.Windows.Win32.Media.DirectShow.BDA_Range = 0
@@ -1793,12 +1810,12 @@ class BDA_SIGNAL_TIMEOUTS(Structure):
 class BDA_STRING(Structure):
     lResult: Int32
     ulStringSize: UInt32
-    argbString: Byte * 1
+    argbString: FlexibleArray[Byte]
 class BDA_TABLE_SECTION(Structure):
     ulPrimarySectionId: UInt32
     ulSecondarySectionId: UInt32
     ulcbSectionLength: UInt32
-    argbSectionData: UInt32 * 1
+    argbSectionData: FlexibleArray[UInt32]
 class BDA_TEMPLATE_CONNECTION(Structure):
     FromNodeType: UInt32
     FromNodePinType: UInt32
@@ -1812,7 +1829,7 @@ class BDA_TS_SELECTORINFO(Structure):
     bReserved: Byte * 2
     guidNetworkType: Guid
     bTSIDCount: Byte
-    usTSID: UInt16 * 1
+    usTSID: FlexibleArray[UInt16]
     _pack_ = 1
 class BDA_TS_SELECTORINFO_ISDBS_EXT(Structure):
     bTMCC: Byte * 48
@@ -1824,7 +1841,7 @@ class BDA_TUNER_DIAGNOSTICS(Structure):
 class BDA_TUNER_TUNERSTATE(Structure):
     lResult: Int32
     ulTuneLength: UInt32
-    argbTuneData: Byte * 1
+    argbTuneData: FlexibleArray[Byte]
 class BDA_USERACTIVITY_INTERVAL(Structure):
     lResult: Int32
     ulActivityInterval: UInt32
@@ -1835,16 +1852,16 @@ class BDA_WMDRMTUNER_PURCHASEENTITLEMENT(Structure):
     lResult: Int32
     ulDescrambleStatus: UInt32
     ulCaptureTokenLength: UInt32
-    argbCaptureTokenBuffer: Byte * 1
+    argbCaptureTokenBuffer: FlexibleArray[Byte]
 class BDA_WMDRM_KEYINFOLIST(Structure):
     lResult: Int32
     ulKeyuuidBufferLen: UInt32
-    argKeyuuidBuffer: Guid * 1
+    argKeyuuidBuffer: FlexibleArray[Guid]
 class BDA_WMDRM_RENEWLICENSE(Structure):
     lResult: Int32
     ulDescrambleStatus: UInt32
     ulXmrLicenseOutputLength: UInt32
-    argbXmrLicenceOutputBuffer: Byte * 1
+    argbXmrLicenceOutputBuffer: FlexibleArray[Byte]
 class BDA_WMDRM_STATUS(Structure):
     lResult: Int32
     ulMaxCaptureTokenSize: UInt32
@@ -2263,15 +2280,15 @@ class DVD_SubpictureAttributes(Structure):
     Language: UInt32
     LanguageExtension: win32more.Windows.Win32.Media.DirectShow.DVD_SUBPICTURE_LANG_EXT
 class DVD_TIMECODE(Structure):
-    Hours1: Annotated[UInt32, 4]
-    Hours10: Annotated[UInt32, 4]
-    Minutes1: Annotated[UInt32, 4]
-    Minutes10: Annotated[UInt32, 4]
-    Seconds1: Annotated[UInt32, 4]
-    Seconds10: Annotated[UInt32, 4]
-    Frames1: Annotated[UInt32, 4]
-    Frames10: Annotated[UInt32, 2]
-    FrameRateCode: Annotated[UInt32, 2]
+    Hours1: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Hours10: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Minutes1: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Minutes10: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Seconds1: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Seconds10: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Frames1: Annotated[UInt32, NativeBitfieldAttribute(4)]
+    Frames10: Annotated[UInt32, NativeBitfieldAttribute(2)]
+    FrameRateCode: Annotated[UInt32, NativeBitfieldAttribute(2)]
 DVD_TIMECODE_FLAGS = Int32
 DVD_TC_FLAG_25fps: win32more.Windows.Win32.Media.DirectShow.DVD_TIMECODE_FLAGS = 1
 DVD_TC_FLAG_30fps: win32more.Windows.Win32.Media.DirectShow.DVD_TIMECODE_FLAGS = 2
@@ -2328,6 +2345,7 @@ class DVD_TitleAttributes(Structure):
     MultichannelAudioAttributes: win32more.Windows.Win32.Media.DirectShow.DVD_MultichannelAudioAttributes * 8
     ulNumberOfSubpictureStreams: UInt32
     SubpictureAttributes: win32more.Windows.Win32.Media.DirectShow.DVD_SubpictureAttributes * 32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         AppMode: win32more.Windows.Win32.Media.DirectShow.DVD_TITLE_APPMODE
         TitleLength: win32more.Windows.Win32.Media.DirectShow.DVD_HMSF_TIMECODE
@@ -2557,7 +2575,7 @@ BDA_GUARD_19_256: win32more.Windows.Win32.Media.DirectShow.GuardInterval = 7
 BDA_GUARD_MAX: win32more.Windows.Win32.Media.DirectShow.GuardInterval = 8
 class HEAACWAVEFORMAT(Structure):
     wfInfo: win32more.Windows.Win32.Media.DirectShow.HEAACWAVEINFO
-    pbAudioSpecificConfig: Byte * 1
+    pbAudioSpecificConfig: FlexibleArray[Byte]
 class HEAACWAVEINFO(Structure):
     wfx: win32more.Windows.Win32.Media.Audio.WAVEFORMATEX
     wPayloadType: UInt16
@@ -6761,6 +6779,8 @@ ISO_IEC_13818_1_RESERVED: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamTy
 USER_PRIVATE: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 16
 HEVC_VIDEO_OR_TEMPORAL_VIDEO: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 36
 HEVC_TEMPORAL_VIDEO_SUBSET: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 37
+MPEG_H_AUDIO: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 45
+MPEG_H_AUDIO_MS: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 46
 ISO_IEC_USER_PRIVATE: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 128
 DOLBY_AC3_AUDIO: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 129
 DOLBY_DIGITAL_PLUS_AUDIO_ATSC: win32more.Windows.Win32.Media.DirectShow.MPEG2StreamType = 135
@@ -6965,9 +6985,11 @@ class REGFILTER2(Structure):
     dwVersion: UInt32
     dwMerit: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             cPins: UInt32
             rgPins: POINTER(win32more.Windows.Win32.Media.DirectShow.REGFILTERPINS)
@@ -7177,7 +7199,7 @@ UOP_FLAG_Select_Karaoke_Audio_Presentation_Mode: win32more.Windows.Win32.Media.D
 UOP_FLAG_Select_Video_Mode_Preference: win32more.Windows.Win32.Media.DirectShow.VALID_UOP_FLAG = 16777216
 class VFW_FILTERLIST(Structure):
     cFilters: UInt32
-    aClsId: Guid * 1
+    aClsId: FlexibleArray[Guid]
 VIDEOENCODER_BITRATE_MODE = Int32
 ConstantBitRate: win32more.Windows.Win32.Media.DirectShow.VIDEOENCODER_BITRATE_MODE = 0
 VariableBitRateAverage: win32more.Windows.Win32.Media.DirectShow.VIDEOENCODER_BITRATE_MODE = 1
@@ -7190,6 +7212,7 @@ class VIDEOINFO(Structure):
     AvgTimePerFrame: Int64
     bmiHeader: win32more.Windows.Win32.Graphics.Gdi.BITMAPINFOHEADER
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         bmiColors: win32more.Windows.Win32.Graphics.Gdi.RGBQUAD * 256
         dwBitMasks: UInt32 * 3

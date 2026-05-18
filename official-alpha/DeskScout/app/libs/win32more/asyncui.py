@@ -46,11 +46,12 @@ def create_task(coro):
 
 def maybe_eager_loop_factory():
     loop = asyncio.new_event_loop()
+    if sys.version_info < (3, 12):
+        return loop
     # Use eager task.
     # Some method can not be called after returned.
     # (e.g. CoreWebView2NewWindowRequestedEventArgs.GetDeferral())
-    if sys.version_info >= (3, 12):
-        loop.set_task_factory(asyncio.eager_task_factory)
+    loop.set_task_factory(asyncio.eager_task_factory)
     return loop
 
 
@@ -101,8 +102,14 @@ class ThreadPoolTaskExecutor:
         loop.run_forever()
         if task.done():
             loop.run_until_complete(task)  # ensure calling done callback
+            loop.close()
             future = Future()
             future.set_result(task.result())
             return future
         # continue in background thread
-        return self._thread_pool.submit(loop.run_until_complete, task)
+        return self._thread_pool.submit(self._background, loop, task)
+
+    def _background(self, loop, task):
+        loop.run_until_complete(task)
+        loop.close()
+        return task.result()

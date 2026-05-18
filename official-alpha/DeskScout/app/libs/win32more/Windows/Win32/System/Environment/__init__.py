@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Environment
 ENCLAVE_RUNTIME_POLICY_ALLOW_FULL_DEBUG: UInt32 = 1
@@ -101,7 +101,17 @@ def EnclaveSealData(DataToEncrypt: VoidPtr, DataToEncryptSize: UInt32, IdentityP
 @winfunctype('vertdll.dll')
 def EnclaveUnsealData(ProtectedBlob: VoidPtr, ProtectedBlobSize: UInt32, DecryptedData: VoidPtr, BufferSize: UInt32, DecryptedDataSize: POINTER(UInt32), SealingIdentity: POINTER(win32more.Windows.Win32.System.Environment.ENCLAVE_IDENTITY), UnsealingFlags: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('vertdll.dll')
+def EnclaveEncryptDataForTrustlet(DataToEncrypt: VoidPtr, DataToEncryptSize: UInt32, TrustletBindingData: POINTER(win32more.Windows.Win32.System.Environment.TRUSTLET_BINDING_DATA), EncryptedData: VoidPtr, BufferSize: UInt32, EncryptedDataSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('vertdll.dll')
 def EnclaveGetEnclaveInformation(InformationSize: UInt32, EnclaveInformation: POINTER(win32more.Windows.Win32.System.Environment.ENCLAVE_INFORMATION)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('vertdll.dll')
+def EnclaveUsesAttestedKeys() -> win32more.Windows.Win32.Foundation.BOOLEAN: ...
+@winfunctype('vertdll.dll')
+def EnclaveRestrictContainingProcessAccess(RestrictAccess: win32more.Windows.Win32.Foundation.BOOL, PreviouslyRestricted: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('vertdll.dll')
+def EnclaveCopyIntoEnclave(EnclaveAddress: VoidPtr, UnsecureAddress: VoidPtr, NumberOfBytes: UIntPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('vertdll.dll')
+def EnclaveCopyOutOfEnclave(UnsecureAddress: VoidPtr, EnclaveAddress: VoidPtr, NumberOfBytes: UIntPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class ENCLAVE_IDENTITY(Structure):
     OwnerId: Byte * 32
     UniqueId: Byte * 32
@@ -134,6 +144,15 @@ class ENCLAVE_VBS_BASIC_KEY_REQUEST(Structure):
     EnclaveSVN: UInt32
     SystemKeyID: UInt32
     CurrentSystemKeyID: UInt32
+class PS_TRUSTLET_TKSESSION_ID(Structure):
+    SessionId: UInt64 * 4
+class TRUSTLET_BINDING_DATA(Structure):
+    TrustletIdentity: UInt64
+    TrustletSessionId: win32more.Windows.Win32.System.Environment.PS_TRUSTLET_TKSESSION_ID
+    TrustletSvn: UInt32
+    Reserved1: UInt32
+    Reserved2: UInt64
+    _pack_ = 1
 @winfunctype_pointer
 def VBS_BASIC_ENCLAVE_BASIC_CALL_COMMIT_PAGES(EnclaveAddress: VoidPtr, NumberOfBytes: UIntPtr, SourceAddress: VoidPtr, PageProtection: UInt32) -> Int32: ...
 if ARCH in 'X64,ARM64':
@@ -226,7 +245,7 @@ class VBS_ENCLAVE_REPORT_MODULE(Structure):
     FamilyId: Byte * 16
     ImageId: Byte * 16
     Svn: UInt32
-    ModuleName: Char * 1
+    ModuleName: FlexibleArray[Char]
     _pack_ = 1
 class VBS_ENCLAVE_REPORT_PKG_HEADER(Structure):
     PackageSize: UInt32

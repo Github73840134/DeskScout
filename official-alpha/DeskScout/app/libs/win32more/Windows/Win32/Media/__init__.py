@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Media
 import win32more.Windows.Win32.Media.Multimedia
@@ -119,7 +119,6 @@ def timeEndPeriod(uPeriod: UInt32) -> UInt32: ...
 def timeSetEvent(uDelay: UInt32, uResolution: UInt32, fptc: win32more.Windows.Win32.Media.LPTIMECALLBACK, dwUser: UIntPtr, fuEvent: UInt32) -> UInt32: ...
 @winfunctype('WINMM.dll')
 def timeKillEvent(uTimerID: UInt32) -> UInt32: ...
-HTASK = VoidPtr
 class IReferenceClock(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{56a86897-0ad4-11ce-b03a-0020af0ba770}')
@@ -174,6 +173,7 @@ class TIMECAPS(Structure):
 class TIMECODE(Union):
     Anonymous: _Anonymous_e__Struct
     qw: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         wFrameRate: UInt16
         wFrameFract: UInt16

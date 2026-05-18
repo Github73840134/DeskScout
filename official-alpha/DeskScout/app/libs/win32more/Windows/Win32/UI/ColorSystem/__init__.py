@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -348,6 +348,8 @@ def ColorProfileGetDisplayList(scope: win32more.Windows.Win32.UI.ColorSystem.WCS
 def ColorProfileGetDisplayDefault(scope: win32more.Windows.Win32.UI.ColorSystem.WCS_PROFILE_MANAGEMENT_SCOPE, targetAdapterID: win32more.Windows.Win32.Foundation.LUID, sourceID: UInt32, profileType: win32more.Windows.Win32.UI.ColorSystem.COLORPROFILETYPE, profileSubType: win32more.Windows.Win32.UI.ColorSystem.COLORPROFILESUBTYPE, profileName: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('mscms.dll')
 def ColorProfileGetDisplayUserScope(targetAdapterID: win32more.Windows.Win32.Foundation.LUID, sourceID: UInt32, scope: POINTER(win32more.Windows.Win32.UI.ColorSystem.WCS_PROFILE_MANAGEMENT_SCOPE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('mscms.dll')
+def ColorProfileGetDeviceCapabilities(scope: win32more.Windows.Win32.UI.ColorSystem.WCS_PROFILE_MANAGEMENT_SCOPE, targetAdapterID: win32more.Windows.Win32.Foundation.LUID, sourceID: UInt32, capsType: win32more.Windows.Win32.UI.ColorSystem.WCS_DEVICE_CAPABILITIES_TYPE, outputCapabilities: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 BMFORMAT = Int32
 BM_x555RGB: win32more.Windows.Win32.UI.ColorSystem.BMFORMAT = 0
 BM_x555XYZ: win32more.Windows.Win32.UI.ColorSystem.BMFORMAT = 257
@@ -409,6 +411,7 @@ class COLOR(Union):
     named: win32more.Windows.Win32.UI.ColorSystem.NAMEDCOLOR
     hifi: win32more.Windows.Win32.UI.ColorSystem.HiFiCOLOR
     Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         reserved1: UInt32
         reserved2: VoidPtr
@@ -499,7 +502,7 @@ class EMRCREATECOLORSPACEW(Structure):
     lcs: win32more.Windows.Win32.UI.ColorSystem.LOGCOLORSPACEW
     dwFlags: UInt32
     cbData: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 EMRCREATECOLORSPACE = UnicodeAlias('EMRCREATECOLORSPACEW')
 class ENUMTYPEA(Structure):
     dwSize: UInt32

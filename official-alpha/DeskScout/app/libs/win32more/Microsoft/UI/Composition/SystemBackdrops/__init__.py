@@ -1,6 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Microsoft.UI
 import win32more.Microsoft.UI.Composition
 import win32more.Microsoft.UI.Composition.SystemBackdrops
@@ -8,9 +7,8 @@ import win32more.Windows.Foundation
 import win32more.Windows.UI
 import win32more.Windows.UI.Composition
 import win32more.Windows.UI.Core
-import win32more.Windows.Win32.System.WinRT
 class DesktopAcrylicController(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController'
@@ -24,7 +22,25 @@ class DesktopAcrylicController(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicController: ...
     @winrt_mixinmethod
-    def RemoveAllSystemBackdropTargets(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets) -> Void: ...
+    def remove_FrameworkClosed(self: win32more.Microsoft.UI.IClosableNotifier, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
+    @winrt_mixinmethod
+    def get_IsClosed(self: win32more.Microsoft.UI.IClosableNotifier) -> Boolean: ...
+    @winrt_mixinmethod
+    def put_FallbackColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: win32more.Windows.UI.Color) -> Void: ...
+    @winrt_mixinmethod
+    def get_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController) -> Single: ...
+    @winrt_mixinmethod
+    def put_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: Single) -> Void: ...
+    @winrt_mixinmethod
+    def get_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController) -> win32more.Windows.UI.Color: ...
+    @winrt_mixinmethod
+    def put_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: win32more.Windows.UI.Color) -> Void: ...
+    @winrt_mixinmethod
+    def get_TintOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController) -> Single: ...
+    @winrt_mixinmethod
+    def put_TintOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: Single) -> Void: ...
+    @winrt_mixinmethod
+    def ResetProperties(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController2) -> Void: ...
     @winrt_mixinmethod
     def get_Kind(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController3) -> win32more.Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicKind: ...
     @winrt_mixinmethod
@@ -40,15 +56,13 @@ class DesktopAcrylicController(ComPtr):
     @winrt_mixinmethod
     def AddSystemBackdropTarget(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, systemBackdropTarget: win32more.Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop) -> Boolean: ...
     @winrt_mixinmethod
-    def get_IsClosed(self: win32more.Microsoft.UI.IClosableNotifier) -> Boolean: ...
+    def RemoveAllSystemBackdropTargets(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets) -> Void: ...
     @winrt_mixinmethod
     def RemoveSystemBackdropTarget(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, systemBackdropTarget: win32more.Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop) -> Boolean: ...
     @winrt_mixinmethod
     def SetSystemBackdropConfiguration(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, configuration: win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration) -> Void: ...
     @winrt_mixinmethod
-    def add_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_mixinmethod
-    def put_FallbackColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: win32more.Windows.UI.Color) -> Void: ...
+    def add_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -59,22 +73,6 @@ class DesktopAcrylicController(ComPtr):
     def remove_Closed(self: win32more.Microsoft.UI.IClosableNotifier, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
     def add_FrameworkClosed(self: win32more.Microsoft.UI.IClosableNotifier, handler: win32more.Microsoft.UI.ClosableNotifierHandler) -> win32more.Windows.Foundation.EventRegistrationToken: ...
-    @winrt_mixinmethod
-    def remove_FrameworkClosed(self: win32more.Microsoft.UI.IClosableNotifier, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_mixinmethod
-    def get_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController) -> Single: ...
-    @winrt_mixinmethod
-    def put_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: Single) -> Void: ...
-    @winrt_mixinmethod
-    def get_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController) -> win32more.Windows.UI.Color: ...
-    @winrt_mixinmethod
-    def put_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: win32more.Windows.UI.Color) -> Void: ...
-    @winrt_mixinmethod
-    def get_TintOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController) -> Single: ...
-    @winrt_mixinmethod
-    def put_TintOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController, value: Single) -> Void: ...
-    @winrt_mixinmethod
-    def ResetProperties(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController2) -> Void: ...
     @winrt_classmethod
     def IsSupported(cls: win32more.Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicControllerStatics) -> Boolean: ...
     FallbackColor = property(get_FallbackColor, put_FallbackColor)
@@ -84,15 +82,16 @@ class DesktopAcrylicController(ComPtr):
     State = property(get_State, None)
     TintColor = property(get_TintColor, put_TintColor)
     TintOpacity = property(get_TintOpacity, put_TintOpacity)
-    StateChanged = event()
-    Closed = event()
-    FrameworkClosed = event()
+    Closed = event(add_Closed, remove_Closed)
+    FrameworkClosed = event(add_FrameworkClosed, remove_FrameworkClosed)
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class DesktopAcrylicKind(Enum, Int32):
+    _name_ = 'Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicKind'
     Default = 0
     Base = 1
     Thin = 2
 class IDesktopAcrylicController(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController'
     _iid_ = Guid('{7c20a6af-8eb3-5f08-bdfc-6d35e35dfe45}')
     @winrt_commethod(6)
@@ -116,13 +115,13 @@ class IDesktopAcrylicController(ComPtr):
     TintColor = property(get_TintColor, put_TintColor)
     TintOpacity = property(get_TintOpacity, put_TintOpacity)
 class IDesktopAcrylicController2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController2'
     _iid_ = Guid('{88e0a368-dfc7-5971-a50b-40df5aa5f5c2}')
     @winrt_commethod(6)
     def ResetProperties(self) -> Void: ...
 class IDesktopAcrylicController3(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicController3'
     _iid_ = Guid('{30d917e6-02d3-59ca-b440-bf9d2e7cc140}')
     @winrt_commethod(6)
@@ -131,13 +130,13 @@ class IDesktopAcrylicController3(ComPtr):
     def put_Kind(self, value: win32more.Microsoft.UI.Composition.SystemBackdrops.DesktopAcrylicKind) -> Void: ...
     Kind = property(get_Kind, put_Kind)
 class IDesktopAcrylicControllerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IDesktopAcrylicControllerStatics'
     _iid_ = Guid('{a9e8f790-79ef-5416-9b67-6bcfe867c8b7}')
     @winrt_commethod(6)
     def IsSupported(self) -> Boolean: ...
 class IMicaController(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IMicaController'
     _iid_ = Guid('{2de996a9-0a2a-5889-a89c-1f84060a8cab}')
     @winrt_commethod(6)
@@ -161,7 +160,7 @@ class IMicaController(ComPtr):
     TintColor = property(get_TintColor, put_TintColor)
     TintOpacity = property(get_TintOpacity, put_TintOpacity)
 class IMicaController2(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IMicaController2'
     _iid_ = Guid('{f1ed4a52-d9ca-506e-9586-caaefd3aa971}')
     @winrt_commethod(6)
@@ -172,13 +171,13 @@ class IMicaController2(ComPtr):
     def ResetProperties(self) -> Void: ...
     Kind = property(get_Kind, put_Kind)
 class IMicaControllerStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.IMicaControllerStatics'
     _iid_ = Guid('{7d85d834-d514-5250-b7c4-0b7850d1efdc}')
     @winrt_commethod(6)
     def IsSupported(self) -> Boolean: ...
 class ISystemBackdropConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration'
     _iid_ = Guid('{ebcce1b9-0e0c-5431-ab0e-00f3f0669962}')
     @winrt_commethod(6)
@@ -202,7 +201,7 @@ class ISystemBackdropConfiguration(ComPtr):
     IsInputActive = property(get_IsInputActive, put_IsInputActive)
     Theme = property(get_Theme, put_Theme)
 class ISystemBackdropController(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropController'
     _iid_ = Guid('{5632d76c-0b74-5b52-aa33-80262068aeb2}')
@@ -211,7 +210,7 @@ class ISystemBackdropController(ComPtr):
     @winrt_commethod(7)
     def SetTargetWithCoreWindow(self, coreWindow: win32more.Windows.UI.Core.CoreWindow, compositionTarget: win32more.Windows.UI.Composition.CompositionTarget) -> Boolean: ...
 class ISystemBackdropControllerWithTargets(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets'
     _iid_ = Guid('{9c56fe7c-98eb-5f89-ad97-dad57fc30c8c}')
@@ -226,13 +225,13 @@ class ISystemBackdropControllerWithTargets(ComPtr):
     @winrt_commethod(10)
     def SetSystemBackdropConfiguration(self, configuration: win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration) -> Void: ...
     @winrt_commethod(11)
-    def add_StateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_StateChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(12)
     def remove_StateChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     State = property(get_State, None)
-    StateChanged = event()
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class MicaController(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.MicaController'
@@ -246,9 +245,7 @@ class MicaController(ComPtr):
     @winrt_activatemethod
     def CreateInstance(cls) -> win32more.Microsoft.UI.Composition.SystemBackdrops.MicaController: ...
     @winrt_mixinmethod
-    def remove_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
-    @winrt_mixinmethod
-    def add_Closed(self: win32more.Microsoft.UI.IClosableNotifier, handler: win32more.Microsoft.UI.ClosableNotifierHandler) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def get_IsClosed(self: win32more.Microsoft.UI.IClosableNotifier) -> Boolean: ...
     @winrt_mixinmethod
     def remove_Closed(self: win32more.Microsoft.UI.IClosableNotifier, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -256,19 +253,11 @@ class MicaController(ComPtr):
     @winrt_mixinmethod
     def remove_FrameworkClosed(self: win32more.Microsoft.UI.IClosableNotifier, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def ResetProperties(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController2) -> Void: ...
+    def RemoveAllSystemBackdropTargets(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets) -> Void: ...
     @winrt_mixinmethod
-    def get_IsClosed(self: win32more.Microsoft.UI.IClosableNotifier) -> Boolean: ...
-    @winrt_mixinmethod
-    def get_FallbackColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController) -> win32more.Windows.UI.Color: ...
-    @winrt_mixinmethod
-    def put_FallbackColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController, value: win32more.Windows.UI.Color) -> Void: ...
-    @winrt_mixinmethod
-    def get_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController) -> Single: ...
+    def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     @winrt_mixinmethod
     def put_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController, value: Single) -> Void: ...
-    @winrt_mixinmethod
-    def get_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController) -> win32more.Windows.UI.Color: ...
     @winrt_mixinmethod
     def put_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController, value: win32more.Windows.UI.Color) -> Void: ...
     @winrt_mixinmethod
@@ -280,23 +269,33 @@ class MicaController(ComPtr):
     @winrt_mixinmethod
     def put_Kind(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController2, value: win32more.Microsoft.UI.Composition.SystemBackdrops.MicaKind) -> Void: ...
     @winrt_mixinmethod
+    def ResetProperties(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController2) -> Void: ...
+    @winrt_mixinmethod
     def SetTargetWithWindowId(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropController, windowId: win32more.Microsoft.UI.WindowId, desktopWindowTarget: win32more.Windows.UI.Composition.CompositionTarget) -> Boolean: ...
     @winrt_mixinmethod
     def SetTargetWithCoreWindow(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropController, coreWindow: win32more.Windows.UI.Core.CoreWindow, compositionTarget: win32more.Windows.UI.Composition.CompositionTarget) -> Boolean: ...
     @winrt_mixinmethod
-    def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
+    def remove_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
     def get_State(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets) -> win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropState: ...
     @winrt_mixinmethod
     def AddSystemBackdropTarget(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, systemBackdropTarget: win32more.Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop) -> Boolean: ...
     @winrt_mixinmethod
-    def RemoveAllSystemBackdropTargets(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets) -> Void: ...
-    @winrt_mixinmethod
     def RemoveSystemBackdropTarget(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, systemBackdropTarget: win32more.Microsoft.UI.Composition.ICompositionSupportsSystemBackdrop) -> Boolean: ...
     @winrt_mixinmethod
     def SetSystemBackdropConfiguration(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, configuration: win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration) -> Void: ...
     @winrt_mixinmethod
-    def add_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def get_TintColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController) -> win32more.Windows.UI.Color: ...
+    @winrt_mixinmethod
+    def add_StateChanged(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropControllerWithTargets, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    @winrt_mixinmethod
+    def add_Closed(self: win32more.Microsoft.UI.IClosableNotifier, handler: win32more.Microsoft.UI.ClosableNotifierHandler) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    @winrt_mixinmethod
+    def get_FallbackColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController) -> win32more.Windows.UI.Color: ...
+    @winrt_mixinmethod
+    def put_FallbackColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController, value: win32more.Windows.UI.Color) -> Void: ...
+    @winrt_mixinmethod
+    def get_LuminosityOpacity(self: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaController) -> Single: ...
     @winrt_classmethod
     def IsSupported(cls: win32more.Microsoft.UI.Composition.SystemBackdrops.IMicaControllerStatics) -> Boolean: ...
     FallbackColor = property(get_FallbackColor, put_FallbackColor)
@@ -306,14 +305,15 @@ class MicaController(ComPtr):
     State = property(get_State, None)
     TintColor = property(get_TintColor, put_TintColor)
     TintOpacity = property(get_TintOpacity, put_TintOpacity)
-    Closed = event()
-    FrameworkClosed = event()
-    StateChanged = event()
+    Closed = event(add_Closed, remove_Closed)
+    FrameworkClosed = event(add_FrameworkClosed, remove_FrameworkClosed)
+    StateChanged = event(add_StateChanged, remove_StateChanged)
 class MicaKind(Enum, Int32):
+    _name_ = 'Microsoft.UI.Composition.SystemBackdrops.MicaKind'
     Base = 0
     BaseAlt = 1
 class SystemBackdropConfiguration(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration
     _classid_ = 'Microsoft.UI.Composition.SystemBackdrops.SystemBackdropConfiguration'
     def __init__(self, *args, **kwargs):
@@ -328,28 +328,30 @@ class SystemBackdropConfiguration(ComPtr):
     @winrt_mixinmethod
     def get_HighContrastBackgroundColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration) -> win32more.Windows.Foundation.IReference[win32more.Windows.UI.Color]: ...
     @winrt_mixinmethod
-    def get_IsInputActive(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration) -> Boolean: ...
-    @winrt_mixinmethod
-    def get_Theme(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration) -> win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme: ...
-    @winrt_mixinmethod
-    def put_IsInputActive(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: Boolean) -> Void: ...
-    @winrt_mixinmethod
-    def put_Theme(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme) -> Void: ...
+    def put_HighContrastBackgroundColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: win32more.Windows.Foundation.IReference[win32more.Windows.UI.Color]) -> Void: ...
     @winrt_mixinmethod
     def get_IsHighContrast(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration) -> Boolean: ...
     @winrt_mixinmethod
-    def put_HighContrastBackgroundColor(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: win32more.Windows.Foundation.IReference[win32more.Windows.UI.Color]) -> Void: ...
-    @winrt_mixinmethod
     def put_IsHighContrast(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: Boolean) -> Void: ...
+    @winrt_mixinmethod
+    def get_IsInputActive(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration) -> Boolean: ...
+    @winrt_mixinmethod
+    def put_IsInputActive(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: Boolean) -> Void: ...
+    @winrt_mixinmethod
+    def get_Theme(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration) -> win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme: ...
+    @winrt_mixinmethod
+    def put_Theme(self: win32more.Microsoft.UI.Composition.SystemBackdrops.ISystemBackdropConfiguration, value: win32more.Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme) -> Void: ...
     HighContrastBackgroundColor = property(get_HighContrastBackgroundColor, put_HighContrastBackgroundColor)
     IsHighContrast = property(get_IsHighContrast, put_IsHighContrast)
     IsInputActive = property(get_IsInputActive, put_IsInputActive)
     Theme = property(get_Theme, put_Theme)
 class SystemBackdropState(Enum, Int32):
+    _name_ = 'Microsoft.UI.Composition.SystemBackdrops.SystemBackdropState'
     Active = 0
     Fallback = 1
     HighContrast = 2
 class SystemBackdropTheme(Enum, Int32):
+    _name_ = 'Microsoft.UI.Composition.SystemBackdrops.SystemBackdropTheme'
     Default = 0
     Light = 1
     Dark = 2

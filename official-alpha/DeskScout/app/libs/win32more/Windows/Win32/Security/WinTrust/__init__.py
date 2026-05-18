@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security.Cryptography
 import win32more.Windows.Win32.Security.Cryptography.Sip
@@ -9,7 +9,9 @@ WINTRUST_MAX_HEADER_BYTES_TO_MAP_VALUE_NAME: String = 'MaxHeaderBytesToMap'
 WINTRUST_MAX_HEADER_BYTES_TO_MAP_DEFAULT: UInt32 = 10485760
 WINTRUST_MAX_HASH_BYTES_TO_MAP_VALUE_NAME: String = 'MaxHashBytesToMap'
 WINTRUST_MAX_HASH_BYTES_TO_MAP_DEFAULT: UInt32 = 1048576
+WTD_CHOICE_DETACHED_SIG: UInt32 = 6
 WTD_PROV_FLAGS_MASK: UInt32 = 65535
+WTD_USE_LOCAL_MACHINE_CERTS: UInt32 = 8
 WTD_CODE_INTEGRITY_DRIVER_MODE: UInt32 = 32768
 WSS_VERIFY_SEALING: UInt32 = 4
 WSS_INPUT_FLAG_MASK: UInt32 = 7
@@ -17,6 +19,8 @@ WSS_OUT_SEALING_STATUS_VERIFIED: UInt32 = 2147483648
 WSS_OUT_HAS_SEALING_INTENT: UInt32 = 1073741824
 WSS_OUT_FILE_SUPPORTS_SEAL: UInt32 = 536870912
 WSS_OUTPUT_FLAG_MASK: UInt32 = 3758096384
+WINTRUST_DETACHED_SIG_CHOICE_HANDLE: UInt32 = 1
+WINTRUST_DETACHED_SIG_CHOICE_BLOB: UInt32 = 2
 WTCI_DONT_OPEN_STORES: UInt32 = 1
 WTCI_OPEN_ONLY_ROOT: UInt32 = 2
 WTCI_USE_LOCAL_MACHINE: UInt32 = 4
@@ -104,6 +108,16 @@ szOID_SEALING_TIMESTAMP: String = '1.3.6.1.4.1.311.2.4.4'
 szOID_ENHANCED_HASH: String = '1.3.6.1.4.1.311.2.5.1'
 SPC_RELAXED_PE_MARKER_CHECK_OBJID: String = '1.3.6.1.4.1.311.2.6.1'
 SPC_ENCRYPTED_DIGEST_RETRY_COUNT_OBJID: String = '1.3.6.1.4.1.311.2.6.2'
+szOID_SIGNED_ATTRIBUTE_INTERNAL_NAME: String = '1.3.6.1.4.1.311.2.7.1'
+szOID_SIGNED_ATTRIBUTE_FILE_VERSION: String = '1.3.6.1.4.1.311.2.7.2'
+szOID_SIGNED_ATTRIBUTE_FILE_DESCRIPTION: String = '1.3.6.1.4.1.311.2.7.3'
+szOID_SIGNED_ATTRIBUTE_PRODUCT: String = '1.3.6.1.4.1.311.2.7.4'
+szOID_SIGNED_ATTRIBUTE_PRODUCT_VERSION: String = '1.3.6.1.4.1.311.2.7.5'
+szOID_SIGNED_ATTRIBUTE_ORIGINAL_FILENAME: String = '1.3.6.1.4.1.311.2.7.6'
+szOID_SIGNED_ATTRIBUTE_LANGUAGE: String = '1.3.6.1.4.1.311.2.7.7'
+szOID_SIGNED_ATTRIBUTE_AUTHOR: String = '1.3.6.1.4.1.311.2.7.8'
+szOID_SIGNED_ATTRIBUTE_PUBLISH_TIME: String = '1.3.6.1.4.1.311.2.7.9'
+szOID_SIGNED_ATTRIBUTE_SOURCE_URL: String = '1.3.6.1.4.1.311.2.7.10'
 szOID_PKCS_9_SEQUENCE_NUMBER: String = '1.2.840.113549.1.9.25.4'
 CAT_NAMEVALUE_OBJID: String = '1.3.6.1.4.1.311.12.2.1'
 CAT_MEMBERINFO_OBJID: String = '1.3.6.1.4.1.311.12.2.2'
@@ -300,6 +314,7 @@ class CRYPT_PROVIDER_DATA(Structure):
     dwUIStateFlags: UInt32
     pSigState: POINTER(win32more.Windows.Win32.Security.WinTrust.CRYPT_PROVIDER_SIGSTATE)
     pSigSettings: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_SIGNATURE_SETTINGS)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pPDSip: POINTER(win32more.Windows.Win32.Security.WinTrust.PROVDATA_SIP)
 class CRYPT_PROVIDER_DEFUSAGE(Structure):
@@ -478,6 +493,7 @@ class SPC_INDIRECT_DATA_CONTENT(Structure):
 class SPC_LINK(Structure):
     dwLinkChoice: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pwszUrl: win32more.Windows.Win32.Foundation.PWSTR
         Moniker: win32more.Windows.Win32.Security.WinTrust.SPC_SERIALIZED_OBJECT
@@ -549,12 +565,14 @@ class WINTRUST_DATA(Structure):
     dwProvFlags: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_PROVIDER_FLAGS
     dwUIContext: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_UICONTEXT
     pSignatureSettings: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_SIGNATURE_SETTINGS)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pFile: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_FILE_INFO)
         pCatalog: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_CATALOG_INFO)
         pBlob: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_BLOB_INFO)
         pSgnr: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_SGNR_INFO)
         pCert: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_CERT_INFO)
+        pDetachedSig: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_DETACHED_SIG_INFO)
 WINTRUST_DATA_PROVIDER_FLAGS = UInt32
 WTD_USE_IE4_TRUST_FLAG: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_PROVIDER_FLAGS = 1
 WTD_NO_IE4_CHAIN_FLAG: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_PROVIDER_FLAGS = 2
@@ -593,6 +611,22 @@ WTD_CHOICE_CATALOG: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_UNIO
 WTD_CHOICE_BLOB: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_UNION_CHOICE = 3
 WTD_CHOICE_SIGNER: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_UNION_CHOICE = 4
 WTD_CHOICE_CERT: win32more.Windows.Win32.Security.WinTrust.WINTRUST_DATA_UNION_CHOICE = 5
+class WINTRUST_DETACHED_SIG_BLOBS(Structure):
+    cbContentObject: Int64
+    pbContentObject: POINTER(Byte)
+    cbSignatureObject: UInt32
+    pbSignatureObject: POINTER(Byte)
+class WINTRUST_DETACHED_SIG_FILE_HANDLES(Structure):
+    hContentFile: win32more.Windows.Win32.Foundation.HANDLE
+    hSignatureFile: win32more.Windows.Win32.Foundation.HANDLE
+class WINTRUST_DETACHED_SIG_INFO(Structure):
+    cbStruct: UInt32
+    dwUnionChoice: UInt32
+    Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Union(Union):
+        pDetachedSigHandles: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_DETACHED_SIG_FILE_HANDLES)
+        pDetachedSigBlobs: POINTER(win32more.Windows.Win32.Security.WinTrust.WINTRUST_DETACHED_SIG_BLOBS)
 class WINTRUST_FILE_INFO(Structure):
     cbStruct: UInt32
     pcwszFilePath: win32more.Windows.Win32.Foundation.PWSTR
@@ -633,7 +667,7 @@ class WIN_CERTIFICATE(Structure):
     dwLength: UInt32
     wRevision: UInt16
     wCertificateType: UInt16
-    bCertificate: Byte * 1
+    bCertificate: FlexibleArray[Byte]
 class WIN_SPUB_TRUSTED_PUBLISHER_DATA(Structure):
     hClientToken: win32more.Windows.Win32.Foundation.HANDLE
     lpCertificate: POINTER(win32more.Windows.Win32.Security.WinTrust.WIN_CERTIFICATE)
@@ -657,6 +691,7 @@ class WTD_GENERIC_CHAIN_POLICY_CREATE_INFO(Structure):
     pChainPara: POINTER(win32more.Windows.Win32.Security.Cryptography.CERT_CHAIN_PARA)
     dwFlags: UInt32
     pvReserved: VoidPtr
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cbStruct: UInt32
         cbSize: UInt32
@@ -666,6 +701,7 @@ class WTD_GENERIC_CHAIN_POLICY_DATA(Structure):
     pCounterSignerChainInfo: POINTER(win32more.Windows.Win32.Security.WinTrust.WTD_GENERIC_CHAIN_POLICY_CREATE_INFO)
     pfnPolicyCallback: win32more.Windows.Win32.Security.WinTrust.PFN_WTD_GENERIC_CHAIN_POLICY_CALLBACK
     pvPolicyArg: VoidPtr
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cbStruct: UInt32
         cbSize: UInt32
@@ -677,6 +713,7 @@ class WTD_GENERIC_CHAIN_POLICY_SIGNER_INFO(Structure):
     dwError: UInt32
     cCounterSigner: UInt32
     rgpCounterSigner: POINTER(POINTER(win32more.Windows.Win32.Security.WinTrust.WTD_GENERIC_CHAIN_POLICY_SIGNER_INFO))
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cbStruct: UInt32
         cbSize: UInt32
