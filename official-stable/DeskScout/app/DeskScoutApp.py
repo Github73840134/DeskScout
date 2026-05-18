@@ -2179,7 +2179,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			# So maybe we could, start all over, start all over again
 			import keyring,subprocess
 			self.NavView.put_IsPaneVisible(False)
-			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: subprocess.Popen("../core/pythonw.exe resetApp.py -quiet -autostart",shell=True,start_new_session=True))
+			self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda: subprocess.Popen("../core/pythonw.exe resetApp.py -quiet -autostart",start_new_session=True))
 			
 
 			
