@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.Storage.FileSystem
@@ -31,6 +31,7 @@ GUID_DEVINTERFACE_STORAGEPORT: Guid = Guid('{2accfe60-c130-11d2-b082-00a0c91efb8
 GUID_DEVINTERFACE_VMLUN: Guid = Guid('{6f416619-9f29-42a5-b20b-37e219ca02b0}')
 GUID_DEVINTERFACE_SES: Guid = Guid('{1790c9ec-47d5-4df3-b5af-9adf3cf23e48}')
 GUID_DEVINTERFACE_ZNSDISK: Guid = Guid('{b87941c5-ffdb-43c7-b6b1-20b632f0b109}')
+GUID_DEVINTERFACE_HIDDEN_DISK: Guid = Guid('{7fccc86c-228a-40ad-8a58-f590af7bfdce}')
 GUID_DEVINTERFACE_SERVICE_VOLUME: Guid = Guid('{6ead3d82-25ec-46bc-b7fd-c1f0df8f5037}')
 GUID_DEVINTERFACE_HIDDEN_VOLUME: Guid = Guid('{7f108a28-9833-4b3b-b780-2c6b5fa5c062}')
 GUID_DEVINTERFACE_UNIFIED_ACCESS_RPMB: Guid = Guid('{27447c21-bcc3-4d07-a05b-a3395bb4eee7}')
@@ -61,11 +62,13 @@ IOCTL_STORAGE_GET_MEDIA_TYPES_EX: UInt32 = 2952196
 IOCTL_STORAGE_GET_MEDIA_SERIAL_NUMBER: UInt32 = 2952208
 IOCTL_STORAGE_GET_HOTPLUG_INFO: UInt32 = 2952212
 IOCTL_STORAGE_SET_HOTPLUG_INFO: UInt32 = 3001368
+IOCTL_STORAGE_GET_SYSTEM_FEATURE_SUPPORT: UInt32 = 2968604
 IOCTL_STORAGE_RESET_BUS: UInt32 = 2969600
 IOCTL_STORAGE_RESET_DEVICE: UInt32 = 2969604
 IOCTL_STORAGE_BREAK_RESERVATION: UInt32 = 2969620
 IOCTL_STORAGE_PERSISTENT_RESERVE_IN: UInt32 = 2969624
 IOCTL_STORAGE_PERSISTENT_RESERVE_OUT: UInt32 = 3002396
+IOCTL_STORAGE_MINIPORT_PASSTHROUGH_REQUEST: UInt32 = 3002448
 IOCTL_STORAGE_GET_DEVICE_NUMBER: UInt32 = 2953344
 IOCTL_STORAGE_GET_DEVICE_NUMBER_EX: UInt32 = 2953348
 IOCTL_STORAGE_PREDICT_FAILURE: UInt32 = 2953472
@@ -106,6 +109,7 @@ IOCTL_STORAGE_DIAGNOSTIC: UInt32 = 2956448
 IOCTL_STORAGE_GET_PHYSICAL_ELEMENT_STATUS: UInt32 = 2956452
 IOCTL_STORAGE_REMOVE_ELEMENT_AND_TRUNCATE: UInt32 = 2956480
 IOCTL_STORAGE_GET_DEVICE_INTERNAL_LOG: UInt32 = 2956484
+STORAGE_FEATURE_SUPPORT_V1: UInt32 = 1
 STORAGE_DEVICE_FLAGS_RANDOM_DEVICEGUID_REASON_CONFLICT: UInt32 = 1
 STORAGE_DEVICE_FLAGS_RANDOM_DEVICEGUID_REASON_NOHWID: UInt32 = 2
 STORAGE_DEVICE_FLAGS_PAGE_83_DEVICEGUID: UInt32 = 4
@@ -131,7 +135,11 @@ STORAGE_ADDRESS_TYPE_BTL8: UInt32 = 0
 STORAGE_RPMB_DESCRIPTOR_VERSION_1: UInt32 = 1
 STORAGE_RPMB_MINIMUM_RELIABLE_WRITE_SIZE: UInt32 = 512
 STORAGE_CRYPTO_CAPABILITY_VERSION_1: UInt32 = 1
+STORAGE_CRYPTO_CAPABILITY_VERSION_2: UInt32 = 2
 STORAGE_CRYPTO_DESCRIPTOR_VERSION_1: UInt32 = 1
+STORAGE_CRYPTO_DESCRIPTOR_VERSION_2: UInt32 = 2
+STORAGE_HW_CRYPTO_CAPABILITY_VERSION_1: UInt32 = 1
+STORAGE_HW_CRYPTO_DESCRIPTOR_VERSION_1: UInt32 = 1
 STORAGE_TIER_NAME_LENGTH: UInt32 = 256
 STORAGE_TIER_DESCRIPTION_LENGTH: UInt32 = 512
 STORAGE_TIER_FLAG_NO_SEEK_PENALTY: UInt32 = 131072
@@ -139,6 +147,7 @@ STORAGE_TIER_FLAG_WRITE_BACK_CACHE: UInt32 = 2097152
 STORAGE_TIER_FLAG_READ_CACHE: UInt32 = 4194304
 STORAGE_TIER_FLAG_PARITY: UInt32 = 8388608
 STORAGE_TIER_FLAG_SMR: UInt32 = 16777216
+STORAGE_PROTOCOL_DATA_DESCRIPTOR_EXT_VERSION: UInt32 = 1
 STORAGE_TEMPERATURE_VALUE_NOT_REPORTED: UInt32 = 32768
 STORAGE_TEMPERATURE_THRESHOLD_FLAG_ADAPTER_REQUEST: UInt32 = 1
 STORAGE_COMPONENT_ROLE_CACHE: UInt32 = 1
@@ -210,6 +219,8 @@ READ_COPY_NUMBER_BYPASS_CACHE_FLAG: UInt32 = 256
 STORAGE_HW_FIRMWARE_REQUEST_FLAG_CONTROLLER: UInt32 = 1
 STORAGE_HW_FIRMWARE_REQUEST_FLAG_LAST_SEGMENT: UInt32 = 2
 STORAGE_HW_FIRMWARE_REQUEST_FLAG_FIRST_SEGMENT: UInt32 = 4
+STORAGE_HW_FIRMWARE_REQUEST_FLAG_SWITCH_TO_FIRMWARE_WITHOUT_RESET: UInt32 = 268435456
+STORAGE_HW_FIRMWARE_REQUEST_FLAG_REPLACE_AND_SWITCH_UPON_RESET: UInt32 = 536870912
 STORAGE_HW_FIRMWARE_REQUEST_FLAG_REPLACE_EXISTING_IMAGE: UInt32 = 1073741824
 STORAGE_HW_FIRMWARE_REQUEST_FLAG_SWITCH_TO_EXISTING_FIRMWARE: UInt32 = 2147483648
 STORAGE_HW_FIRMWARE_INVALID_SLOT: UInt32 = 255
@@ -321,6 +332,10 @@ FILE_DEVICE_PRM: UInt32 = 94
 FILE_DEVICE_EVENT_COLLECTOR: UInt32 = 95
 FILE_DEVICE_USB4: UInt32 = 96
 FILE_DEVICE_SOUNDWIRE: UInt32 = 97
+FILE_DEVICE_FABRIC_NVME: UInt32 = 98
+FILE_DEVICE_SVM: UInt32 = 99
+FILE_DEVICE_HARDWARE_ACCELERATOR: UInt32 = 100
+FILE_DEVICE_I3C: UInt32 = 101
 METHOD_BUFFERED: UInt32 = 0
 METHOD_IN_DIRECT: UInt32 = 1
 METHOD_OUT_DIRECT: UInt32 = 2
@@ -781,6 +796,10 @@ FSCTL_REFS_QUERY_VOLUME_TOTAL_SHARED_LCNS: UInt32 = 590976
 FSCTL_UPGRADE_VOLUME: UInt32 = 590980
 FSCTL_REFS_SET_VOLUME_IO_METRICS_INFO: UInt32 = 590984
 FSCTL_REFS_QUERY_VOLUME_IO_METRICS_INFO: UInt32 = 590988
+FSCTL_REFS_SET_ROLLBACK_PROTECTION_INFO: UInt32 = 590992
+FSCTL_REFS_QUERY_ROLLBACK_PROTECTION_INFO: UInt32 = 590996
+FSCTL_FILE_SOV_CHECK_RANGE: UInt32 = 591000
+FSCTL_CASCADES_REFS_SET_FILE_REMOTE: UInt32 = 591004
 GET_VOLUME_BITMAP_FLAG_MASK_METADATA: UInt32 = 1
 FLAG_USN_TRACK_MODIFIED_RANGES_ENABLE: UInt32 = 1
 USN_PAGE_SIZE: UInt32 = 4096
@@ -841,6 +860,8 @@ STREAM_CLEAR_ENCRYPTION: UInt32 = 4
 MAXIMUM_ENCRYPTION_VALUE: UInt32 = 4
 ENCRYPTION_FORMAT_DEFAULT: UInt32 = 1
 ENCRYPTED_DATA_INFO_SPARSE_FILE: UInt32 = 1
+ENCRYPTED_DATA_INFO_SPARSE_DATA: UInt32 = 2
+ENCRYPTED_DATA_INFO_4K_SPARSE_UNIT: UInt32 = 4
 COPYFILE_SIS_LINK: UInt32 = 1
 COPYFILE_SIS_REPLACE: UInt32 = 2
 COPYFILE_SIS_FLAGS: UInt32 = 3
@@ -1004,7 +1025,8 @@ CHECKSUM_TYPE_CRC32: UInt32 = 1
 CHECKSUM_TYPE_CRC64: UInt32 = 2
 CHECKSUM_TYPE_ECC: UInt32 = 3
 CHECKSUM_TYPE_SHA256: UInt32 = 4
-CHECKSUM_TYPE_FIRST_UNUSED_TYPE: UInt32 = 5
+CHECKSUM_TYPE_XXH64: UInt32 = 5
+CHECKSUM_TYPE_FIRST_UNUSED_TYPE: UInt32 = 6
 FSCTL_INTEGRITY_FLAG_CHECKSUM_ENFORCEMENT_OFF: UInt32 = 1
 OFFLOAD_READ_FLAG_ALL_ZERO_BEYOND_CURRENT_RANGE: UInt32 = 1
 SET_PURGE_FAILURE_MODE_ENABLED: UInt32 = 1
@@ -1069,7 +1091,7 @@ class BIN_RANGE(Structure):
     Length: Int64
 class BIN_RESULTS(Structure):
     NumberOfBins: UInt32
-    BinCounts: win32more.Windows.Win32.System.Ioctl.BIN_COUNT * 1
+    BinCounts: FlexibleArray[win32more.Windows.Win32.System.Ioctl.BIN_COUNT]
 BIN_TYPES = Int32
 RequestSize: win32more.Windows.Win32.System.Ioctl.BIN_TYPES = 0
 RequestLocation: win32more.Windows.Win32.System.Ioctl.BIN_TYPES = 1
@@ -1080,7 +1102,7 @@ class BOOT_AREA_INFO(Structure):
         Offset: Int64
 class BULK_SECURITY_TEST_DATA(Structure):
     DesiredAccess: UInt32
-    SecurityIds: UInt32 * 1
+    SecurityIds: FlexibleArray[UInt32]
 CHANGER_DEVICE_PROBLEM_TYPE = Int32
 DeviceProblemNone: win32more.Windows.Win32.System.Ioctl.CHANGER_DEVICE_PROBLEM_TYPE = 0
 DeviceProblemHardware: win32more.Windows.Win32.System.Ioctl.CHANGER_DEVICE_PROBLEM_TYPE = 1
@@ -1215,12 +1237,13 @@ class CONTAINER_ROOT_INFO_INPUT(Structure):
     Flags: UInt32
 class CONTAINER_ROOT_INFO_OUTPUT(Structure):
     ContainerRootIdLength: UInt16
-    ContainerRootId: Byte * 1
+    ContainerRootId: FlexibleArray[Byte]
 class CONTAINER_VOLUME_STATE(Structure):
     Flags: UInt32
 class CREATE_DISK(Structure):
     PartitionStyle: win32more.Windows.Win32.System.Ioctl.PARTITION_STYLE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Mbr: win32more.Windows.Win32.System.Ioctl.CREATE_DISK_MBR
         Gpt: win32more.Windows.Win32.System.Ioctl.CREATE_DISK_GPT
@@ -1278,7 +1301,7 @@ class CSV_QUERY_MDS_PATH(Structure):
     MdsNodeId: UInt32
     DsNodeId: UInt32
     PathLength: UInt32
-    Path: Char * 1
+    Path: FlexibleArray[Char]
 class CSV_QUERY_MDS_PATH_V2(Structure):
     Version: Int64
     RequiredSize: UInt32
@@ -1325,16 +1348,16 @@ TCCollectionDeviceRequested: win32more.Windows.Win32.System.Ioctl.DEVICEDUMP_COL
 class DEVICEDUMP_PRIVATE_SUBSECTION(Structure):
     dwFlags: UInt32
     GPLogId: win32more.Windows.Win32.System.Ioctl.GP_LOG_PAGE_DESCRIPTOR
-    bData: Byte * 1
+    bData: FlexibleArray[Byte]
     _pack_ = 1
 class DEVICEDUMP_PUBLIC_SUBSECTION(Structure):
     dwFlags: UInt32
     GPLogTable: win32more.Windows.Win32.System.Ioctl.GP_LOG_PAGE_DESCRIPTOR * 16
     szDescription: win32more.Windows.Win32.Foundation.CHAR * 16
-    bData: Byte * 1
+    bData: FlexibleArray[Byte]
     _pack_ = 1
 class DEVICEDUMP_RESTRICTED_SUBSECTION(Structure):
-    bData: Byte * 1
+    bData: FlexibleArray[Byte]
 class DEVICEDUMP_SECTION_HEADER(Structure):
     guidDeviceDataId: Guid
     sOrganizationID: Byte * 16
@@ -1360,7 +1383,7 @@ class DEVICEDUMP_STORAGESTACK_PUBLIC_DUMP(Structure):
     dwReasonForCollection: UInt32
     cDriverName: Byte * 16
     uiNumRecords: UInt32
-    RecordArray: win32more.Windows.Win32.System.Ioctl.DEVICEDUMP_STORAGESTACK_PUBLIC_STATE_RECORD * 1
+    RecordArray: FlexibleArray[win32more.Windows.Win32.System.Ioctl.DEVICEDUMP_STORAGESTACK_PUBLIC_STATE_RECORD]
     _pack_ = 1
 class DEVICEDUMP_STORAGESTACK_PUBLIC_STATE_RECORD(Structure):
     Cdb: Byte * 16
@@ -1418,7 +1441,7 @@ class DEVICE_DATA_SET_LB_PROVISIONING_STATE(Structure):
     SlabOffsetDeltaInBytes: UInt32
     SlabAllocationBitMapBitCount: UInt32
     SlabAllocationBitMapLength: UInt32
-    SlabAllocationBitMap: UInt32 * 1
+    SlabAllocationBitMap: FlexibleArray[UInt32]
 class DEVICE_DATA_SET_LB_PROVISIONING_STATE_V2(Structure):
     Size: UInt32
     Version: UInt32
@@ -1426,7 +1449,7 @@ class DEVICE_DATA_SET_LB_PROVISIONING_STATE_V2(Structure):
     SlabOffsetDeltaInBytes: UInt64
     SlabAllocationBitMapBitCount: UInt32
     SlabAllocationBitMapLength: UInt32
-    SlabAllocationBitMap: UInt32 * 1
+    SlabAllocationBitMap: FlexibleArray[UInt32]
 class DEVICE_DATA_SET_RANGE(Structure):
     StartingOffset: Int64
     LengthInBytes: UInt64
@@ -1435,7 +1458,7 @@ class DEVICE_DATA_SET_REPAIR_OUTPUT(Structure):
 class DEVICE_DATA_SET_REPAIR_PARAMETERS(Structure):
     NumberOfRepairCopies: UInt32
     SourceCopy: UInt32
-    RepairCopies: UInt32 * 1
+    RepairCopies: FlexibleArray[UInt32]
 class DEVICE_DATA_SET_SCRUB_EX_OUTPUT(Structure):
     BytesProcessed: UInt64
     BytesRepaired: UInt64
@@ -1468,7 +1491,7 @@ class DEVICE_DSM_LOST_QUERY_OUTPUT(Structure):
     Size: UInt32
     Alignment: UInt64
     NumberOfBits: UInt32
-    BitMap: UInt32 * 1
+    BitMap: FlexibleArray[UInt32]
 class DEVICE_DSM_LOST_QUERY_PARAMETERS(Structure):
     Version: UInt32
     Granularity: UInt64
@@ -1476,7 +1499,7 @@ class DEVICE_DSM_NOTIFICATION_PARAMETERS(Structure):
     Size: UInt32
     Flags: UInt32
     NumFileTypeIDs: UInt32
-    FileTypeID: Guid * 1
+    FileTypeID: FlexibleArray[Guid]
 class DEVICE_DSM_NVCACHE_CHANGE_PRIORITY_PARAMETERS(Structure):
     Size: UInt32
     TargetPriority: Byte
@@ -1495,19 +1518,22 @@ class DEVICE_DSM_PHYSICAL_ADDRESSES_OUTPUT(Structure):
     Flags: UInt32
     TotalNumberOfRanges: UInt32
     NumberOfRangesReturned: UInt32
-    Ranges: win32more.Windows.Win32.System.Ioctl.DEVICE_STORAGE_ADDRESS_RANGE * 1
+    Ranges: FlexibleArray[win32more.Windows.Win32.System.Ioctl.DEVICE_STORAGE_ADDRESS_RANGE]
+class DEVICE_DSM_QUERY_PREFER_LOCAL_REPAIR_OUTPUT(Structure):
+    Version: UInt32
+    PreferLocalRepair: win32more.Windows.Win32.Foundation.BOOLEAN
 class DEVICE_DSM_RANGE_ERROR_INFO(Structure):
     Version: UInt32
     Flags: UInt32
     TotalNumberOfRanges: UInt32
     NumberOfRangesReturned: UInt32
-    Ranges: win32more.Windows.Win32.System.Ioctl.DEVICE_STORAGE_RANGE_ATTRIBUTES * 1
+    Ranges: FlexibleArray[win32more.Windows.Win32.System.Ioctl.DEVICE_STORAGE_RANGE_ATTRIBUTES]
 class DEVICE_DSM_REPORT_ZONES_DATA(Structure):
     Size: UInt32
     ZoneCount: UInt32
     Attributes: win32more.Windows.Win32.System.Ioctl.STORAGE_ZONES_ATTRIBUTES
     Reserved0: UInt32
-    ZoneDescriptors: win32more.Windows.Win32.System.Ioctl.STORAGE_ZONE_DESCRIPTOR * 1
+    ZoneDescriptors: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_ZONE_DESCRIPTOR]
 class DEVICE_DSM_REPORT_ZONES_PARAMETERS(Structure):
     Size: UInt32
     ReportOption: Byte
@@ -1518,7 +1544,7 @@ class DEVICE_DSM_TIERING_QUERY_INPUT(Structure):
     Size: UInt32
     Flags: UInt32
     NumberOfTierIds: UInt32
-    TierIds: Guid * 1
+    TierIds: FlexibleArray[Guid]
 class DEVICE_DSM_TIERING_QUERY_OUTPUT(Structure):
     Version: UInt32
     Size: UInt32
@@ -1527,7 +1553,7 @@ class DEVICE_DSM_TIERING_QUERY_OUTPUT(Structure):
     Alignment: UInt64
     TotalNumberOfRegions: UInt32
     NumberOfRegionsReturned: UInt32
-    Regions: win32more.Windows.Win32.System.Ioctl.STORAGE_TIER_REGION * 1
+    Regions: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_TIER_REGION]
 class DEVICE_INTERNAL_STATUS_DATA(Structure):
     Version: UInt32
     Size: UInt32
@@ -1540,7 +1566,7 @@ class DEVICE_INTERNAL_STATUS_DATA(Structure):
     Reserved: Byte * 3
     ReasonIdentifier: Byte * 128
     StatusDataLength: UInt32
-    StatusData: Byte * 1
+    StatusData: FlexibleArray[Byte]
 DEVICE_INTERNAL_STATUS_DATA_REQUEST_TYPE = Int32
 DeviceInternalStatusDataRequestTypeUndefined: win32more.Windows.Win32.System.Ioctl.DEVICE_INTERNAL_STATUS_DATA_REQUEST_TYPE = 0
 DeviceCurrentInternalStatusDataHeader: win32more.Windows.Win32.System.Ioctl.DEVICE_INTERNAL_STATUS_DATA_REQUEST_TYPE = 1
@@ -1557,12 +1583,12 @@ DeviceStatusDataSetMax: win32more.Windows.Win32.System.Ioctl.DEVICE_INTERNAL_STA
 class DEVICE_LB_PROVISIONING_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
-    ThinProvisioningEnabled: Annotated[Byte, 1]
-    ThinProvisioningReadZeros: Annotated[Byte, 1]
-    AnchorSupported: Annotated[Byte, 3]
-    UnmapGranularityAlignmentValid: Annotated[Byte, 1]
-    GetFreeSpaceSupported: Annotated[Byte, 1]
-    MapSupported: Annotated[Byte, 1]
+    ThinProvisioningEnabled: Annotated[Byte, NativeBitfieldAttribute(1)]
+    ThinProvisioningReadZeros: Annotated[Byte, NativeBitfieldAttribute(1)]
+    AnchorSupported: Annotated[Byte, NativeBitfieldAttribute(3)]
+    UnmapGranularityAlignmentValid: Annotated[Byte, NativeBitfieldAttribute(1)]
+    GetFreeSpaceSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
+    MapSupported: Annotated[Byte, NativeBitfieldAttribute(1)]
     Reserved1: Byte * 7
     OptimalUnmapGranularity: UInt64
     UnmapGranularityAlignment: UInt64
@@ -1574,9 +1600,11 @@ class DEVICE_LOCATION(Structure):
     Adapter: UInt32
     Port: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             Channel: UInt32
             Device: UInt32
@@ -1656,11 +1684,13 @@ class DEVICE_STORAGE_RANGE_ATTRIBUTES(Structure):
     LengthInBytes: UInt64
     Anonymous: _Anonymous_e__Union
     Reserved: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         AllFlags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            IsRangeBad: Annotated[UInt32, 1]
+            IsRangeBad: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class DEVICE_TRIM_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -1678,6 +1708,7 @@ class DISK_CACHE_INFORMATION(Structure):
     DisablePrefetchTransferLength: UInt16
     PrefetchScalar: win32more.Windows.Win32.Foundation.BOOLEAN
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ScalarPrefetch: _ScalarPrefetch_e__Struct
         BlockPrefetch: _BlockPrefetch_e__Struct
@@ -1699,8 +1730,10 @@ class DISK_DETECTION_INFO(Structure):
     SizeOfDetectInfo: UInt32
     DetectionType: win32more.Windows.Win32.System.Ioctl.DETECTION_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Int13: win32more.Windows.Win32.System.Ioctl.DISK_INT13_INFO
             ExInt13: win32more.Windows.Win32.System.Ioctl.DISK_EX_INT13_INFO
@@ -1726,7 +1759,7 @@ class DISK_GEOMETRY(Structure):
 class DISK_GEOMETRY_EX(Structure):
     Geometry: win32more.Windows.Win32.System.Ioctl.DISK_GEOMETRY
     DiskSize: Int64
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 class DISK_GROW_PARTITION(Structure):
     PartitionNumber: UInt32
     BytesToGrow: Int64
@@ -1756,6 +1789,7 @@ class DISK_PARTITION_INFO(Structure):
     SizeOfPartitionInfo: UInt32
     PartitionStyle: win32more.Windows.Win32.System.Ioctl.PARTITION_STYLE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Mbr: _Mbr_e__Struct
         Gpt: _Gpt_e__Struct
@@ -1794,12 +1828,13 @@ class DRIVERSTATUS(Structure):
 class DRIVE_LAYOUT_INFORMATION(Structure):
     PartitionCount: UInt32
     Signature: UInt32
-    PartitionEntry: win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION * 1
+    PartitionEntry: FlexibleArray[win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION]
 class DRIVE_LAYOUT_INFORMATION_EX(Structure):
     PartitionStyle: UInt32
     PartitionCount: UInt32
     Anonymous: _Anonymous_e__Union
-    PartitionEntry: win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION_EX * 1
+    PartitionEntry: FlexibleArray[win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION_EX]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Mbr: win32more.Windows.Win32.System.Ioctl.DRIVE_LAYOUT_INFORMATION_MBR
         Gpt: win32more.Windows.Win32.System.Ioctl.DRIVE_LAYOUT_INFORMATION_GPT
@@ -1861,10 +1896,10 @@ class ENCRYPTED_DATA_INFO(Structure):
     ClusterShift: Byte
     EncryptionFormat: Byte
     NumberOfDataBlocks: UInt16
-    DataBlockSize: UInt32 * 1
+    DataBlockSize: FlexibleArray[UInt32]
 class ENCRYPTION_BUFFER(Structure):
     EncryptionOperation: UInt32
-    Private: Byte * 1
+    Private: FlexibleArray[Byte]
 class ENCRYPTION_KEY_CTRL_INPUT(Structure):
     HeaderSize: UInt32
     StructureSize: UInt32
@@ -1978,11 +2013,11 @@ class FILE_LAYOUT_NAME_ENTRY(Structure):
     ParentFileReferenceNumber: UInt64
     FileNameLength: UInt32
     Reserved: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class FILE_LEVEL_TRIM(Structure):
     Key: UInt32
     NumRanges: UInt32
-    Ranges: win32more.Windows.Win32.System.Ioctl.FILE_LEVEL_TRIM_RANGE * 1
+    Ranges: FlexibleArray[win32more.Windows.Win32.System.Ioctl.FILE_LEVEL_TRIM_RANGE]
 class FILE_LEVEL_TRIM_OUTPUT(Structure):
     NumRangesProcessed: UInt32
 class FILE_LEVEL_TRIM_RANGE(Structure):
@@ -1993,9 +2028,11 @@ class FILE_MAKE_COMPATIBLE_BUFFER(Structure):
 class FILE_OBJECTID_BUFFER(Structure):
     ObjectId: Byte * 16
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         ExtendedInfo: Byte * 48
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             BirthVolumeId: Byte * 16
             BirthObjectId: Byte * 16
@@ -2003,12 +2040,12 @@ class FILE_OBJECTID_BUFFER(Structure):
 class FILE_PREFETCH(Structure):
     Type: UInt32
     Count: UInt32
-    Prefetch: UInt64 * 1
+    Prefetch: FlexibleArray[UInt64]
 class FILE_PREFETCH_EX(Structure):
     Type: UInt32
     Count: UInt32
     Context: VoidPtr
-    Prefetch: UInt64 * 1
+    Prefetch: FlexibleArray[UInt64]
 class FILE_PROVIDER_EXTERNAL_INFO_V0(Structure):
     Version: UInt32
     Algorithm: UInt32
@@ -2050,7 +2087,7 @@ class FILE_REGION_OUTPUT(Structure):
     TotalRegionEntryCount: UInt32
     RegionEntryCount: UInt32
     Reserved: UInt32
-    Region: win32more.Windows.Win32.System.Ioctl.FILE_REGION_INFO * 1
+    Region: FlexibleArray[win32more.Windows.Win32.System.Ioctl.FILE_REGION_INFO]
 class FILE_SET_DEFECT_MGMT_BUFFER(Structure):
     Disable: win32more.Windows.Win32.Foundation.BOOLEAN
 class FILE_SET_SPARSE_BUFFER(Structure):
@@ -2085,7 +2122,7 @@ class FILE_SYSTEM_RECOGNITION_INFORMATION(Structure):
 class FILE_TYPE_NOTIFICATION_INPUT(Structure):
     Flags: UInt32
     NumFileTypeIDs: UInt32
-    FileTypeID: Guid * 1
+    FileTypeID: FlexibleArray[Guid]
 class FILE_ZERO_DATA_INFORMATION(Structure):
     FileOffset: Int64
     BeyondFinalZero: Int64
@@ -2100,7 +2137,7 @@ class FIND_BY_SID_OUTPUT(Structure):
     NextEntryOffset: UInt32
     FileIndex: UInt32
     FileNameLength: UInt32
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class FORMAT_EX_PARAMETERS(Structure):
     MediaType: win32more.Windows.Win32.System.Ioctl.MEDIA_TYPE
     StartCylinderNumber: UInt32
@@ -2109,7 +2146,7 @@ class FORMAT_EX_PARAMETERS(Structure):
     EndHeadNumber: UInt32
     FormatGapLength: UInt16
     SectorsPerTrack: UInt16
-    SectorNumber: UInt16 * 1
+    SectorNumber: FlexibleArray[UInt16]
 class FORMAT_PARAMETERS(Structure):
     MediaType: win32more.Windows.Win32.System.Ioctl.MEDIA_TYPE
     StartCylinderNumber: UInt32
@@ -2152,7 +2189,7 @@ class FSCTL_QUERY_REGION_INFO_INPUT(Structure):
     Size: UInt32
     Flags: UInt32
     NumberOfTierIds: UInt32
-    TierIds: Guid * 1
+    TierIds: FlexibleArray[Guid]
 class FSCTL_QUERY_REGION_INFO_OUTPUT(Structure):
     Version: UInt32
     Size: UInt32
@@ -2161,14 +2198,14 @@ class FSCTL_QUERY_REGION_INFO_OUTPUT(Structure):
     Alignment: UInt64
     TotalNumberOfRegions: UInt32
     NumberOfRegionsReturned: UInt32
-    Regions: win32more.Windows.Win32.System.Ioctl.FILE_STORAGE_TIER_REGION * 1
+    Regions: FlexibleArray[win32more.Windows.Win32.System.Ioctl.FILE_STORAGE_TIER_REGION]
 class FSCTL_QUERY_STORAGE_CLASSES_OUTPUT(Structure):
     Version: UInt32
     Size: UInt32
     Flags: win32more.Windows.Win32.System.Ioctl.FILE_STORAGE_TIER_FLAGS
     TotalNumberOfTiers: UInt32
     NumberOfTiersReturned: UInt32
-    Tiers: win32more.Windows.Win32.System.Ioctl.FILE_STORAGE_TIER * 1
+    Tiers: FlexibleArray[win32more.Windows.Win32.System.Ioctl.FILE_STORAGE_TIER]
 class FSCTL_SET_INTEGRITY_INFORMATION_BUFFER(Structure):
     ChecksumAlgorithm: UInt16
     Reserved: UInt16
@@ -2214,6 +2251,7 @@ class FS_BPIO_OUTPUT(Structure):
     Reserved1: UInt64
     Reserved2: UInt64
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Enable: win32more.Windows.Win32.System.Ioctl.FS_BPIO_RESULTS
         Query: win32more.Windows.Win32.System.Ioctl.FS_BPIO_RESULTS
@@ -2286,16 +2324,16 @@ class GET_DISK_ATTRIBUTES(Structure):
     Attributes: UInt64
 class GET_FILTER_FILE_IDENTIFIER_INPUT(Structure):
     AltitudeLength: UInt16
-    Altitude: Char * 1
+    Altitude: FlexibleArray[Char]
 class GET_FILTER_FILE_IDENTIFIER_OUTPUT(Structure):
     FilterFileIdentifierLength: UInt16
-    FilterFileIdentifier: Byte * 1
+    FilterFileIdentifier: FlexibleArray[Byte]
 class GET_LENGTH_INFORMATION(Structure):
     Length: Int64
 class GET_MEDIA_TYPES(Structure):
     DeviceType: UInt32
     MediaInfoCount: UInt32
-    MediaInfo: win32more.Windows.Win32.System.Ioctl.DEVICE_MEDIA_INFO * 1
+    MediaInfo: FlexibleArray[win32more.Windows.Win32.System.Ioctl.DEVICE_MEDIA_INFO]
 GPT_ATTRIBUTES = UInt64
 GPT_ATTRIBUTE_PLATFORM_REQUIRED: win32more.Windows.Win32.System.Ioctl.GPT_ATTRIBUTES = 1
 GPT_BASIC_DATA_ATTRIBUTE_NO_DRIVE_LETTER: win32more.Windows.Win32.System.Ioctl.GPT_ATTRIBUTES = 9223372036854775808
@@ -2333,11 +2371,11 @@ class LOOKUP_STREAM_FROM_CLUSTER_ENTRY(Structure):
     Flags: UInt32
     Reserved: Int64
     Cluster: Int64
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class LOOKUP_STREAM_FROM_CLUSTER_INPUT(Structure):
     Flags: UInt32
     NumberOfClusters: UInt32
-    Cluster: Int64 * 1
+    Cluster: FlexibleArray[Int64]
 class LOOKUP_STREAM_FROM_CLUSTER_OUTPUT(Structure):
     Offset: UInt32
     NumberOfMatches: UInt32
@@ -2346,6 +2384,7 @@ class MARK_HANDLE_INFO(Structure):
     Anonymous: _Anonymous_e__Union
     VolumeHandle: win32more.Windows.Win32.Foundation.HANDLE
     HandleInfo: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         UsnSourceInfo: UInt32
         CopyNumber: UInt32
@@ -2354,6 +2393,7 @@ if ARCH in 'X64,ARM64':
         Anonymous: _Anonymous_e__Union
         VolumeHandle: UInt32
         HandleInfo: UInt32
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             UsnSourceInfo: UInt32
             CopyNumber: UInt32
@@ -2425,7 +2465,7 @@ class NTFS_FILE_RECORD_INPUT_BUFFER(Structure):
 class NTFS_FILE_RECORD_OUTPUT_BUFFER(Structure):
     FileReferenceNumber: Int64
     FileRecordLength: UInt32
-    FileRecordBuffer: Byte * 1
+    FileRecordBuffer: FlexibleArray[Byte]
 class NTFS_STATISTICS(Structure):
     LogFileFullExceptions: UInt32
     OtherExceptions: UInt32
@@ -2624,6 +2664,7 @@ class PARTITION_INFORMATION_EX(Structure):
     RewritePartition: win32more.Windows.Win32.Foundation.BOOLEAN
     IsServicePartition: win32more.Windows.Win32.Foundation.BOOLEAN
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Mbr: win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION_MBR
         Gpt: win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION_GPT
@@ -2644,28 +2685,29 @@ PARTITION_STYLE_GPT: win32more.Windows.Win32.System.Ioctl.PARTITION_STYLE = 1
 PARTITION_STYLE_RAW: win32more.Windows.Win32.System.Ioctl.PARTITION_STYLE = 2
 class PATHNAME_BUFFER(Structure):
     PathNameLength: UInt32
-    Name: Char * 1
+    Name: FlexibleArray[Char]
 class PERF_BIN(Structure):
     NumberOfBins: UInt32
     TypeOfBin: UInt32
-    BinsRanges: win32more.Windows.Win32.System.Ioctl.BIN_RANGE * 1
+    BinsRanges: FlexibleArray[win32more.Windows.Win32.System.Ioctl.BIN_RANGE]
 class PERSISTENT_RESERVE_COMMAND(Structure):
     Version: UInt32
     Size: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PR_IN: _PR_IN_e__Struct
         PR_OUT: _PR_OUT_e__Struct
         class _PR_IN_e__Struct(Structure):
-            ServiceAction: Annotated[Byte, 5]
-            Reserved1: Annotated[Byte, 3]
+            ServiceAction: Annotated[Byte, NativeBitfieldAttribute(5)]
+            Reserved1: Annotated[Byte, NativeBitfieldAttribute(3)]
             AllocationLength: UInt16
         class _PR_OUT_e__Struct(Structure):
-            ServiceAction: Annotated[Byte, 5]
-            Reserved1: Annotated[Byte, 3]
-            Type: Annotated[Byte, 4]
-            Scope: Annotated[Byte, 4]
-            ParameterList: Byte * 1
+            ServiceAction: Annotated[Byte, NativeBitfieldAttribute(5)]
+            Reserved1: Annotated[Byte, NativeBitfieldAttribute(3)]
+            Type: Annotated[Byte, NativeBitfieldAttribute(4)]
+            Scope: Annotated[Byte, NativeBitfieldAttribute(4)]
+            ParameterList: FlexibleArray[Byte]
 class PHYSICAL_ELEMENT_STATUS(Structure):
     Version: UInt32
     Size: UInt32
@@ -2673,7 +2715,7 @@ class PHYSICAL_ELEMENT_STATUS(Structure):
     ReturnedDescriptorCount: UInt32
     ElementIdentifierBeingDepoped: UInt32
     Reserved: UInt32
-    Descriptors: win32more.Windows.Win32.System.Ioctl.PHYSICAL_ELEMENT_STATUS_DESCRIPTOR * 1
+    Descriptors: FlexibleArray[win32more.Windows.Win32.System.Ioctl.PHYSICAL_ELEMENT_STATUS_DESCRIPTOR]
 class PHYSICAL_ELEMENT_STATUS_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -2701,7 +2743,7 @@ class PREVENT_MEDIA_REMOVAL(Structure):
 class QUERY_BAD_RANGES_INPUT(Structure):
     Flags: UInt32
     NumRanges: UInt32
-    Ranges: win32more.Windows.Win32.System.Ioctl.QUERY_BAD_RANGES_INPUT_RANGE * 1
+    Ranges: FlexibleArray[win32more.Windows.Win32.System.Ioctl.QUERY_BAD_RANGES_INPUT_RANGE]
 class QUERY_BAD_RANGES_INPUT_RANGE(Structure):
     StartOffset: UInt64
     LengthInBytes: UInt64
@@ -2709,7 +2751,7 @@ class QUERY_BAD_RANGES_OUTPUT(Structure):
     Flags: UInt32
     NumBadRanges: UInt32
     NextOffsetToLookUp: UInt64
-    BadRanges: win32more.Windows.Win32.System.Ioctl.QUERY_BAD_RANGES_OUTPUT_RANGE * 1
+    BadRanges: FlexibleArray[win32more.Windows.Win32.System.Ioctl.QUERY_BAD_RANGES_OUTPUT_RANGE]
 class QUERY_BAD_RANGES_OUTPUT_RANGE(Structure):
     Flags: UInt32
     Reserved: UInt32
@@ -2727,13 +2769,14 @@ class QUERY_FILE_LAYOUT_INPUT(Structure):
     FilterType: win32more.Windows.Win32.System.Ioctl.QUERY_FILE_LAYOUT_FILTER_TYPE
     Reserved: UInt32
     Filter: _Filter_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FilterEntryCount: UInt32
         NumberOfPairs: UInt32
     class _Filter_e__Union(Union):
         ClusterRanges: win32more.Windows.Win32.System.Ioctl.CLUSTER_RANGE * 1
         FileReferenceRanges: win32more.Windows.Win32.System.Ioctl.FILE_REFERENCE_RANGE * 1
-        StorageReserveIds: win32more.Windows.Win32.System.Ioctl.STORAGE_RESERVE_ID * 1
+        StorageReserveIds: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_RESERVE_ID]
 class QUERY_FILE_LAYOUT_OUTPUT(Structure):
     FileEntryCount: UInt32
     FirstFileOffset: UInt32
@@ -2741,7 +2784,7 @@ class QUERY_FILE_LAYOUT_OUTPUT(Structure):
     Reserved: UInt32
 class READ_ELEMENT_ADDRESS_INFO(Structure):
     NumberOfElements: UInt32
-    ElementStatus: win32more.Windows.Win32.System.Ioctl.CHANGER_ELEMENT_STATUS * 1
+    ElementStatus: FlexibleArray[win32more.Windows.Win32.System.Ioctl.CHANGER_ELEMENT_STATUS]
 class READ_FILE_USN_DATA(Structure):
     MinMajorVersion: UInt16
     MaxMajorVersion: UInt16
@@ -2764,11 +2807,11 @@ class READ_USN_JOURNAL_DATA_V1(Structure):
 class REASSIGN_BLOCKS(Structure):
     Reserved: UInt16
     Count: UInt16
-    BlockNumber: UInt32 * 1
+    BlockNumber: FlexibleArray[UInt32]
 class REASSIGN_BLOCKS_EX(Structure):
     Reserved: UInt16
     Count: UInt16
-    BlockNumber: Int64 * 1
+    BlockNumber: FlexibleArray[Int64]
     _pack_ = 1
 REFS_SMR_VOLUME_GC_ACTION = Int32
 SmrGcActionStart: win32more.Windows.Win32.System.Ioctl.REFS_SMR_VOLUME_GC_ACTION = 1
@@ -2822,7 +2865,9 @@ class REFS_VOLUME_DATA_BUFFER(Structure):
     DestagesFastTierToSlowTierRate: UInt32
     MetadataChecksumType: UInt16
     Reserved0: Byte * 6
-    Reserved: Int64 * 8
+    DriverMajorVersion: UInt32
+    DriverMinorVersion: UInt32
+    Reserved: Int64 * 7
 class REMOVE_ELEMENT_AND_TRUNCATE_REQUEST(Structure):
     Version: UInt32
     Size: UInt32
@@ -2836,7 +2881,7 @@ class REPAIR_COPIES_INPUT(Structure):
     Length: UInt32
     SourceCopy: UInt32
     NumberOfRepairCopies: UInt32
-    RepairCopies: UInt32 * 1
+    RepairCopies: FlexibleArray[UInt32]
 class REPAIR_COPIES_OUTPUT(Structure):
     Size: UInt32
     Status: UInt32
@@ -2860,7 +2905,7 @@ class REQUEST_RAW_ENCRYPTED_DATA(Structure):
 class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER(Structure):
     ExtentCount: UInt32
     StartingVcn: Int64
-    Extents: _Anonymous_e__Struct * 1
+    Extents: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         NextVcn: Int64
         Lcn: Int64
@@ -2868,7 +2913,7 @@ class RETRIEVAL_POINTERS_AND_REFCOUNT_BUFFER(Structure):
 class RETRIEVAL_POINTERS_BUFFER(Structure):
     ExtentCount: UInt32
     StartingVcn: Int64
-    Extents: _Anonymous_e__Struct * 1
+    Extents: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         NextVcn: Int64
         Lcn: Int64
@@ -2880,16 +2925,16 @@ class SCM_BUS_DEDICATED_MEMORY_DEVICES_INFO(Structure):
     Version: UInt32
     Size: UInt32
     DeviceCount: UInt32
-    Devices: win32more.Windows.Win32.System.Ioctl.SCM_BUS_DEDICATED_MEMORY_DEVICE_INFO * 1
+    Devices: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_BUS_DEDICATED_MEMORY_DEVICE_INFO]
 class SCM_BUS_DEDICATED_MEMORY_DEVICE_INFO(Structure):
     DeviceGuid: Guid
     DeviceNumber: UInt32
     Flags: _Flags_e__Struct
     DeviceSize: UInt64
     class _Flags_e__Struct(Structure):
-        ForcedByRegistry: Annotated[UInt32, 1]
-        Initialized: Annotated[UInt32, 1]
-        Reserved: Annotated[UInt32, 30]
+        ForcedByRegistry: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Initialized: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(30)]
 class SCM_BUS_DEDICATED_MEMORY_STATE(Structure):
     ActivateState: win32more.Windows.Win32.Foundation.BOOLEAN
 SCM_BUS_FIRMWARE_ACTIVATION_STATE = Int32
@@ -2906,13 +2951,13 @@ class SCM_BUS_PROPERTY_QUERY(Structure):
     Size: UInt32
     PropertyId: win32more.Windows.Win32.System.Ioctl.SCM_BUS_PROPERTY_ID
     QueryType: win32more.Windows.Win32.System.Ioctl.SCM_BUS_QUERY_TYPE
-    AdditionalParameters: Byte * 1
+    AdditionalParameters: FlexibleArray[Byte]
 class SCM_BUS_PROPERTY_SET(Structure):
     Version: UInt32
     Size: UInt32
     PropertyId: win32more.Windows.Win32.System.Ioctl.SCM_BUS_PROPERTY_ID
     SetType: win32more.Windows.Win32.System.Ioctl.SCM_BUS_SET_TYPE
-    AdditionalParameters: Byte * 1
+    AdditionalParameters: FlexibleArray[Byte]
 SCM_BUS_QUERY_TYPE = Int32
 ScmBusQuery_Descriptor: win32more.Windows.Win32.System.Ioctl.SCM_BUS_QUERY_TYPE = 0
 ScmBusQuery_IsSupported: win32more.Windows.Win32.System.Ioctl.SCM_BUS_QUERY_TYPE = 1
@@ -2928,10 +2973,10 @@ class SCM_BUS_RUNTIME_FW_ACTIVATION_INFO(Structure):
     EstimatedIOAccessQuiesceTimeInUSecs: UInt64
     PlatformSupportedMaxIOAccessQuiesceTimeInUSecs: UInt64
     class _FirmwareActivationCapability_e__Struct(Structure):
-        FwManagedIoQuiesceFwActivationSupported: Annotated[UInt32, 1]
-        OsManagedIoQuiesceFwActivationSupported: Annotated[UInt32, 1]
-        WarmResetBasedFwActivationSupported: Annotated[UInt32, 1]
-        Reserved: Annotated[UInt32, 29]
+        FwManagedIoQuiesceFwActivationSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        OsManagedIoQuiesceFwActivationSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        WarmResetBasedFwActivationSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(29)]
 SCM_BUS_SET_TYPE = Int32
 ScmBusSet_Descriptor: win32more.Windows.Win32.System.Ioctl.SCM_BUS_SET_TYPE = 0
 ScmBusSet_IsSupported: win32more.Windows.Win32.System.Ioctl.SCM_BUS_SET_TYPE = 1
@@ -2943,12 +2988,12 @@ class SCM_LD_INTERLEAVE_SET_INFO(Structure):
     Version: UInt32
     Size: UInt32
     InterleaveSetSize: UInt32
-    InterleaveSet: win32more.Windows.Win32.System.Ioctl.SCM_INTERLEAVED_PD_INFO * 1
+    InterleaveSet: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_INTERLEAVED_PD_INFO]
 class SCM_LOGICAL_DEVICES(Structure):
     Version: UInt32
     Size: UInt32
     DeviceCount: UInt32
-    Devices: win32more.Windows.Win32.System.Ioctl.SCM_LOGICAL_DEVICE_INSTANCE * 1
+    Devices: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_LOGICAL_DEVICE_INSTANCE]
 class SCM_LOGICAL_DEVICE_INSTANCE(Structure):
     Version: UInt32
     Size: UInt32
@@ -2984,12 +3029,12 @@ class SCM_PD_DEVICE_INFO(Structure):
     ManufacturingYear: Byte
     SerialNumber4Byte: UInt32
     SerialNumberLengthInChars: UInt32
-    SerialNumber: win32more.Windows.Win32.Foundation.CHAR * 1
+    SerialNumber: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 class SCM_PD_DEVICE_SPECIFIC_INFO(Structure):
     Version: UInt32
     Size: UInt32
     NumberOfProperties: UInt32
-    DeviceSpecificProperties: win32more.Windows.Win32.System.Ioctl.SCM_PD_DEVICE_SPECIFIC_PROPERTY * 1
+    DeviceSpecificProperties: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_PD_DEVICE_SPECIFIC_PROPERTY]
 class SCM_PD_DEVICE_SPECIFIC_PROPERTY(Structure):
     Name: Char * 128
     Value: Int64
@@ -3010,27 +3055,27 @@ class SCM_PD_FIRMWARE_DOWNLOAD(Structure):
     Reserved: Byte * 3
     Offset: UInt64
     FirmwareImageSizeInBytes: UInt32
-    FirmwareImage: Byte * 1
+    FirmwareImage: FlexibleArray[Byte]
 class SCM_PD_FIRMWARE_INFO(Structure):
     Version: UInt32
     Size: UInt32
     ActiveSlot: Byte
     NextActiveSlot: Byte
     SlotCount: Byte
-    Slots: win32more.Windows.Win32.System.Ioctl.SCM_PD_FIRMWARE_SLOT_INFO * 1
+    Slots: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_PD_FIRMWARE_SLOT_INFO]
 class SCM_PD_FIRMWARE_SLOT_INFO(Structure):
     Version: UInt32
     Size: UInt32
     SlotNumber: Byte
-    ReadOnly: Annotated[Byte, 1]
-    Reserved0: Annotated[Byte, 7]
+    ReadOnly: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved0: Annotated[Byte, NativeBitfieldAttribute(7)]
     Reserved1: Byte * 6
     Revision: Byte * 32
 class SCM_PD_FRU_ID_STRING(Structure):
     Version: UInt32
     Size: UInt32
     IdentifierSize: UInt32
-    Identifier: Byte * 1
+    Identifier: FlexibleArray[Byte]
 class SCM_PD_HEALTH_NOTIFICATION_DATA(Structure):
     DeviceGuid: Guid
 SCM_PD_HEALTH_STATUS = Int32
@@ -3051,7 +3096,7 @@ ScmPdLastFwActivaitonStatus_UnknownError: win32more.Windows.Win32.System.Ioctl.S
 class SCM_PD_LOCATION_STRING(Structure):
     Version: UInt32
     Size: UInt32
-    Location: Char * 1
+    Location: FlexibleArray[Char]
 class SCM_PD_MANAGEMENT_STATUS(Structure):
     Version: UInt32
     Size: UInt32
@@ -3059,7 +3104,7 @@ class SCM_PD_MANAGEMENT_STATUS(Structure):
     NumberOfOperationalStatus: UInt32
     NumberOfAdditionalReasons: UInt32
     OperationalStatus: win32more.Windows.Win32.System.Ioctl.SCM_PD_OPERATIONAL_STATUS * 16
-    AdditionalReasons: win32more.Windows.Win32.System.Ioctl.SCM_PD_OPERATIONAL_STATUS_REASON * 1
+    AdditionalReasons: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_PD_OPERATIONAL_STATUS_REASON]
 SCM_PD_MEDIA_REINITIALIZATION_STATUS = Int32
 ScmPhysicalDeviceReinit_Success: win32more.Windows.Win32.System.Ioctl.SCM_PD_MEDIA_REINITIALIZATION_STATUS = 0
 ScmPhysicalDeviceReinit_RebootNeeded: win32more.Windows.Win32.System.Ioctl.SCM_PD_MEDIA_REINITIALIZATION_STATUS = 1
@@ -3105,22 +3150,22 @@ class SCM_PD_PASSTHROUGH_INPUT(Structure):
     Size: UInt32
     ProtocolGuid: Guid
     DataSize: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 class SCM_PD_PASSTHROUGH_INVDIMM_INPUT(Structure):
     Opcode: UInt32
     OpcodeParametersLength: UInt32
-    OpcodeParameters: Byte * 1
+    OpcodeParameters: FlexibleArray[Byte]
 class SCM_PD_PASSTHROUGH_INVDIMM_OUTPUT(Structure):
     GeneralStatus: UInt16
     ExtendedStatus: UInt16
     OutputDataLength: UInt32
-    OutputData: Byte * 1
+    OutputData: FlexibleArray[Byte]
 class SCM_PD_PASSTHROUGH_OUTPUT(Structure):
     Version: UInt32
     Size: UInt32
     ProtocolGuid: Guid
     DataSize: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 SCM_PD_PROPERTY_ID = Int32
 ScmPhysicalDeviceProperty_DeviceInfo: win32more.Windows.Win32.System.Ioctl.SCM_PD_PROPERTY_ID = 0
 ScmPhysicalDeviceProperty_ManagementStatus: win32more.Windows.Win32.System.Ioctl.SCM_PD_PROPERTY_ID = 1
@@ -3137,13 +3182,13 @@ class SCM_PD_PROPERTY_QUERY(Structure):
     Size: UInt32
     PropertyId: win32more.Windows.Win32.System.Ioctl.SCM_PD_PROPERTY_ID
     QueryType: win32more.Windows.Win32.System.Ioctl.SCM_PD_QUERY_TYPE
-    AdditionalParameters: Byte * 1
+    AdditionalParameters: FlexibleArray[Byte]
 class SCM_PD_PROPERTY_SET(Structure):
     Version: UInt32
     Size: UInt32
     PropertyId: win32more.Windows.Win32.System.Ioctl.SCM_PD_PROPERTY_ID
     SetType: win32more.Windows.Win32.System.Ioctl.SCM_PD_SET_TYPE
-    AdditionalParameters: Byte * 1
+    AdditionalParameters: FlexibleArray[Byte]
 SCM_PD_QUERY_TYPE = Int32
 ScmPhysicalDeviceQuery_Descriptor: win32more.Windows.Win32.System.Ioctl.SCM_PD_QUERY_TYPE = 0
 ScmPhysicalDeviceQuery_IsSupported: win32more.Windows.Win32.System.Ioctl.SCM_PD_QUERY_TYPE = 1
@@ -3153,7 +3198,7 @@ class SCM_PD_REINITIALIZE_MEDIA_INPUT(Structure):
     Size: UInt32
     Options: _Options_e__Struct
     class _Options_e__Struct(Structure):
-        Overwrite: Annotated[UInt32, 1]
+        Overwrite: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class SCM_PD_REINITIALIZE_MEDIA_OUTPUT(Structure):
     Version: UInt32
     Size: UInt32
@@ -3173,7 +3218,7 @@ class SCM_PHYSICAL_DEVICES(Structure):
     Version: UInt32
     Size: UInt32
     DeviceCount: UInt32
-    Devices: win32more.Windows.Win32.System.Ioctl.SCM_PHYSICAL_DEVICE_INSTANCE * 1
+    Devices: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_PHYSICAL_DEVICE_INSTANCE]
 class SCM_PHYSICAL_DEVICE_INSTANCE(Structure):
     Version: UInt32
     Size: UInt32
@@ -3196,7 +3241,7 @@ class SCM_REGIONS(Structure):
     Version: UInt32
     Size: UInt32
     RegionCount: UInt32
-    Regions: win32more.Windows.Win32.System.Ioctl.SCM_REGION * 1
+    Regions: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SCM_REGION]
 SCM_REGION_FLAG = Int32
 ScmRegionFlagNone: win32more.Windows.Win32.System.Ioctl.SCM_REGION_FLAG = 0
 ScmRegionFlagLabel: win32more.Windows.Win32.System.Ioctl.SCM_REGION_FLAG = 1
@@ -3218,7 +3263,7 @@ class SD_ENUM_SDS_ENTRY(Structure):
     SecurityId: UInt32
     Offset: UInt64
     Length: UInt32
-    Descriptor: Byte * 1
+    Descriptor: FlexibleArray[Byte]
 class SD_ENUM_SDS_INPUT(Structure):
     StartingOffset: UInt64
     MaxSDEntriesToReturn: UInt64
@@ -3226,11 +3271,12 @@ class SD_ENUM_SDS_OUTPUT(Structure):
     NextOffset: UInt64
     NumSDEntriesReturned: UInt64
     NumSDBytesReturned: UInt64
-    SDEntry: win32more.Windows.Win32.System.Ioctl.SD_ENUM_SDS_ENTRY * 1
+    SDEntry: FlexibleArray[win32more.Windows.Win32.System.Ioctl.SD_ENUM_SDS_ENTRY]
 class SD_GLOBAL_CHANGE_INPUT(Structure):
     Flags: UInt32
     ChangeType: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         SdChange: win32more.Windows.Win32.System.Ioctl.SD_CHANGE_MACHINE_SID_INPUT
         SdQueryStats: win32more.Windows.Win32.System.Ioctl.SD_QUERY_STATS_INPUT
@@ -3239,6 +3285,7 @@ class SD_GLOBAL_CHANGE_OUTPUT(Structure):
     Flags: UInt32
     ChangeType: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         SdChange: win32more.Windows.Win32.System.Ioctl.SD_CHANGE_MACHINE_SID_OUTPUT
         SdQueryStats: win32more.Windows.Win32.System.Ioctl.SD_QUERY_STATS_OUTPUT
@@ -3260,12 +3307,12 @@ class SENDCMDINPARAMS(Structure):
     bDriveNumber: Byte
     bReserved: Byte * 3
     dwReserved: UInt32 * 4
-    bBuffer: Byte * 1
+    bBuffer: FlexibleArray[Byte]
     _pack_ = 1
 class SENDCMDOUTPARAMS(Structure):
     cBufferSize: UInt32
     DriverStatus: win32more.Windows.Win32.System.Ioctl.DRIVERSTATUS
-    bBuffer: Byte * 1
+    bBuffer: FlexibleArray[Byte]
     _pack_ = 1
 class SET_DAX_ALLOC_ALIGNMENT_HINT_INPUT(Structure):
     Flags: UInt32
@@ -3284,6 +3331,7 @@ class SET_PARTITION_INFORMATION(Structure):
 class SET_PARTITION_INFORMATION_EX(Structure):
     PartitionStyle: win32more.Windows.Win32.System.Ioctl.PARTITION_STYLE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Mbr: win32more.Windows.Win32.System.Ioctl.SET_PARTITION_INFORMATION
         Gpt: win32more.Windows.Win32.System.Ioctl.PARTITION_INFORMATION_GPT
@@ -3301,7 +3349,7 @@ class SI_COPYFILE(Structure):
     SourceFileNameLength: UInt32
     DestinationFileNameLength: UInt32
     Flags: UInt32
-    FileNameBuffer: Char * 1
+    FileNameBuffer: FlexibleArray[Char]
 class SMB_SHARE_FLUSH_AND_PURGE_INPUT(Structure):
     Version: UInt16
 class SMB_SHARE_FLUSH_AND_PURGE_OUTPUT(Structure):
@@ -3393,7 +3441,7 @@ class STORAGE_COUNTERS(Structure):
     Version: UInt32
     Size: UInt32
     NumberOfCounters: UInt32
-    Counters: win32more.Windows.Win32.System.Ioctl.STORAGE_COUNTER * 1
+    Counters: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_COUNTER]
 STORAGE_COUNTER_TYPE = Int32
 StorageCounterTypeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_COUNTER_TYPE = 0
 StorageCounterTypeTemperatureCelsius: win32more.Windows.Win32.System.Ioctl.STORAGE_COUNTER_TYPE = 1
@@ -3424,6 +3472,11 @@ StorageCryptoAlgorithmBitlockerAESCBC: win32more.Windows.Win32.System.Ioctl.STOR
 StorageCryptoAlgorithmAESECB: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 3
 StorageCryptoAlgorithmESSIVAESCBC: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 4
 StorageCryptoAlgorithmMax: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 5
+StorCryptoAlgorithmUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 0
+StorCryptoAlgorithmXTSAES: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 1
+StorCryptoAlgorithmBitlockerAESCBC: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 2
+StorCryptoAlgorithmAESECB: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 3
+StorCryptoAlgorithmESSIVAESCBC: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID = 4
 class STORAGE_CRYPTO_CAPABILITY(Structure):
     Version: UInt32
     Size: UInt32
@@ -3431,18 +3484,52 @@ class STORAGE_CRYPTO_CAPABILITY(Structure):
     AlgorithmId: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID
     KeySize: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE
     DataUnitSizeBitmask: UInt32
+class STORAGE_CRYPTO_CAPABILITY_V2(Structure):
+    Version: UInt32
+    Size: UInt32
+    CryptoCapabilityIndex: UInt32
+    AlgorithmId: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID
+    KeySize: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE
+    DataUnitSizeBitmask: UInt32
+    MaxIVBitSize: UInt16
+    Reserved: UInt16
+    SecurityComplianceBitmask: win32more.Windows.Win32.System.Ioctl.STORAGE_SECURITY_COMPLIANCE_BITMASK
 class STORAGE_CRYPTO_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
     NumKeysSupported: UInt32
     NumCryptoCapabilities: UInt32
-    CryptoCapabilities: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_CAPABILITY * 1
+    CryptoCapabilities: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_CAPABILITY]
+class STORAGE_CRYPTO_DESCRIPTOR_V2(Structure):
+    Version: UInt32
+    Size: UInt32
+    NumKeysSupported: UInt32
+    NumCryptoCapabilities: UInt32
+    IceType: win32more.Windows.Win32.System.Ioctl.STORAGE_ICE_TYPE
+    SecurityComplianceBitmask: win32more.Windows.Win32.System.Ioctl.STORAGE_SECURITY_COMPLIANCE_BITMASK
+    KeyTypeBitmask: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_TYPE
+    CryptoCapabilities: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_CAPABILITY_V2]
 STORAGE_CRYPTO_KEY_SIZE = Int32
 StorageCryptoKeySizeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 0
 StorageCryptoKeySize128Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 1
 StorageCryptoKeySize192Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 2
 StorageCryptoKeySize256Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 3
 StorageCryptoKeySize512Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 4
+StorageCryptoKeySizeMax: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 5
+StorCryptoKeySizeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 0
+StorCryptoKeySize128Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 1
+StorCryptoKeySize192Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 2
+StorCryptoKeySize256Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 3
+StorCryptoKeySize512Bits: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE = 4
+class STORAGE_CRYPTO_KEY_TYPE(Union):
+    Anonymous: _Anonymous_e__Struct
+    AsUchar: Byte
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        DirectKey: Annotated[Byte, NativeBitfieldAttribute(1)]
+        PlatformWrappedKey: Annotated[Byte, NativeBitfieldAttribute(1)]
+        PlutonWrappedKey: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[Byte, NativeBitfieldAttribute(5)]
 class STORAGE_DESCRIPTOR_HEADER(Structure):
     Version: UInt32
     Size: UInt32
@@ -3463,12 +3550,12 @@ class STORAGE_DEVICE_DESCRIPTOR(Structure):
     SerialNumberOffset: UInt32
     BusType: win32more.Windows.Win32.Storage.FileSystem.STORAGE_BUS_TYPE
     RawPropertiesLength: UInt32
-    RawDeviceProperties: Byte * 1
+    RawDeviceProperties: FlexibleArray[Byte]
 class STORAGE_DEVICE_FAULT_DOMAIN_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
     NumberOfFaultDomains: UInt32
-    FaultDomainIds: Guid * 1
+    FaultDomainIds: FlexibleArray[Guid]
 STORAGE_DEVICE_FORM_FACTOR = Int32
 FormFactorUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_DEVICE_FORM_FACTOR = 0
 FormFactor3_5: win32more.Windows.Win32.System.Ioctl.STORAGE_DEVICE_FORM_FACTOR = 1
@@ -3485,7 +3572,7 @@ class STORAGE_DEVICE_ID_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
     NumberOfIdentifiers: UInt32
-    Identifiers: Byte * 1
+    Identifiers: FlexibleArray[Byte]
 class STORAGE_DEVICE_IO_CAPABILITY_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -3507,7 +3594,7 @@ class STORAGE_DEVICE_MANAGEMENT_STATUS(Structure):
     NumberOfOperationalStatus: UInt32
     NumberOfAdditionalReasons: UInt32
     OperationalStatus: win32more.Windows.Win32.System.Ioctl.STORAGE_DISK_OPERATIONAL_STATUS * 16
-    AdditionalReasons: win32more.Windows.Win32.System.Ioctl.STORAGE_OPERATIONAL_REASON * 1
+    AdditionalReasons: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_OPERATIONAL_REASON]
 class STORAGE_DEVICE_NUMA_PROPERTY(Structure):
     Version: UInt32
     Size: UInt32
@@ -3520,7 +3607,7 @@ class STORAGE_DEVICE_NUMBERS(Structure):
     Version: UInt32
     Size: UInt32
     NumberOfDevices: UInt32
-    Devices: win32more.Windows.Win32.System.Ioctl.STORAGE_DEVICE_NUMBER * 1
+    Devices: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_DEVICE_NUMBER]
 class STORAGE_DEVICE_NUMBER_EX(Structure):
     Version: UInt32
     Size: UInt32
@@ -3561,7 +3648,7 @@ class STORAGE_DEVICE_TIERING_DESCRIPTOR(Structure):
     Flags: UInt32
     TotalNumberOfTiers: UInt32
     NumberOfTiersReturned: UInt32
-    Tiers: win32more.Windows.Win32.System.Ioctl.STORAGE_TIER * 1
+    Tiers: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_TIER]
 class STORAGE_DEVICE_UNSAFE_SHUTDOWN_COUNT(Structure):
     Version: UInt32
     Size: UInt32
@@ -3572,7 +3659,7 @@ class STORAGE_DIAGNOSTIC_DATA(Structure):
     ProviderId: Guid
     BufferSize: UInt32
     Reserved: UInt32
-    DiagnosticDataBuffer: Byte * 1
+    DiagnosticDataBuffer: FlexibleArray[Byte]
 STORAGE_DIAGNOSTIC_LEVEL = Int32
 StorageDiagnosticLevelDefault: win32more.Windows.Win32.System.Ioctl.STORAGE_DIAGNOSTIC_LEVEL = 0
 StorageDiagnosticLevelMax: win32more.Windows.Win32.System.Ioctl.STORAGE_DIAGNOSTIC_LEVEL = 1
@@ -3618,11 +3705,23 @@ class STORAGE_FAILURE_PREDICTION_CONFIG(Structure):
     Set: win32more.Windows.Win32.Foundation.BOOLEAN
     Enabled: win32more.Windows.Win32.Foundation.BOOLEAN
     Reserved: UInt16
+class STORAGE_FEATURE_SUPPORT(Structure):
+    Size: UInt32
+    Version: UInt32
+    Flags: _Flags_e__Union
+    Reserved: UInt64 * 6
+    class _Flags_e__Union(Union):
+        Anonymous: _Anonymous_e__Struct
+        AsUlonglong: UInt64
+        _anonymous_ = ('Anonymous',)
+        class _Anonymous_e__Struct(Structure):
+            StorMQMiniportsSupported: Annotated[UInt64, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[UInt64, NativeBitfieldAttribute(63)]
 class STORAGE_FRU_ID_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
     IdentifierSize: UInt32
-    Identifier: Byte * 1
+    Identifier: FlexibleArray[Byte]
 class STORAGE_GET_BC_PROPERTIES_OUTPUT(Structure):
     MaximumRequestsPerPeriod: UInt32
     MinimumPeriod: UInt32
@@ -3636,6 +3735,25 @@ class STORAGE_HOTPLUG_INFO(Structure):
     MediaHotplug: win32more.Windows.Win32.Foundation.BOOLEAN
     DeviceHotplug: win32more.Windows.Win32.Foundation.BOOLEAN
     WriteCacheEnableOverride: win32more.Windows.Win32.Foundation.BOOLEAN
+class STORAGE_HW_CRYPTO_CAPABILITY(Structure):
+    Version: UInt32
+    Size: UInt32
+    CryptoCapabilityIndex: UInt32
+    AlgorithmId: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_ALGORITHM_ID
+    KeySize: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_SIZE
+    DataUnitSizeBitmask: UInt32
+    MaxIVBitSize: UInt16
+    Reserved: UInt16
+    SecurityComplianceBitmask: win32more.Windows.Win32.System.Ioctl.STORAGE_SECURITY_COMPLIANCE_BITMASK
+class STORAGE_HW_CRYPTO_DESCRIPTOR(Structure):
+    Header: win32more.Windows.Win32.System.Ioctl.STORAGE_DESCRIPTOR_HEADER
+    NumKeysSupported: UInt32
+    NumCryptoCapabilities: UInt32
+    OffsetToCryptoCapabilities: UInt32
+    SizeOfCryptoCapability: UInt32
+    IceType: win32more.Windows.Win32.System.Ioctl.STORAGE_ICE_TYPE
+    SecurityComplianceBitmask: win32more.Windows.Win32.System.Ioctl.STORAGE_SECURITY_COMPLIANCE_BITMASK
+    KeyTypeBitmask: win32more.Windows.Win32.System.Ioctl.STORAGE_CRYPTO_KEY_TYPE
 class STORAGE_HW_ENDURANCE_DATA_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -3648,8 +3766,8 @@ class STORAGE_HW_ENDURANCE_INFO(Structure):
     BytesReadCount: Byte * 16
     ByteWriteCount: Byte * 16
     class _Flags_e__Struct(Structure):
-        Shared: Annotated[UInt32, 1]
-        Reserved: Annotated[UInt32, 31]
+        Shared: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(31)]
 class STORAGE_HW_FIRMWARE_ACTIVATE(Structure):
     Version: UInt32
     Size: UInt32
@@ -3664,7 +3782,7 @@ class STORAGE_HW_FIRMWARE_DOWNLOAD(Structure):
     Reserved: Byte * 3
     Offset: UInt64
     BufferSize: UInt64
-    ImageBuffer: Byte * 1
+    ImageBuffer: FlexibleArray[Byte]
 class STORAGE_HW_FIRMWARE_DOWNLOAD_V2(Structure):
     Version: UInt32
     Size: UInt32
@@ -3675,12 +3793,12 @@ class STORAGE_HW_FIRMWARE_DOWNLOAD_V2(Structure):
     BufferSize: UInt64
     ImageSize: UInt32
     Reserved2: UInt32
-    ImageBuffer: Byte * 1
+    ImageBuffer: FlexibleArray[Byte]
 class STORAGE_HW_FIRMWARE_INFO(Structure):
     Version: UInt32
     Size: UInt32
-    SupportUpgrade: Annotated[Byte, 1]
-    Reserved0: Annotated[Byte, 7]
+    SupportUpgrade: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved0: Annotated[Byte, NativeBitfieldAttribute(7)]
     SlotCount: Byte
     ActiveSlot: Byte
     PendingActivateSlot: Byte
@@ -3688,7 +3806,7 @@ class STORAGE_HW_FIRMWARE_INFO(Structure):
     Reserved: Byte * 3
     ImagePayloadAlignment: UInt32
     ImagePayloadMaxSize: UInt32
-    Slot: win32more.Windows.Win32.System.Ioctl.STORAGE_HW_FIRMWARE_SLOT_INFO * 1
+    Slot: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_HW_FIRMWARE_SLOT_INFO]
 class STORAGE_HW_FIRMWARE_INFO_QUERY(Structure):
     Version: UInt32
     Size: UInt32
@@ -3698,17 +3816,21 @@ class STORAGE_HW_FIRMWARE_SLOT_INFO(Structure):
     Version: UInt32
     Size: UInt32
     SlotNumber: Byte
-    ReadOnly: Annotated[Byte, 1]
-    Reserved0: Annotated[Byte, 7]
+    ReadOnly: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved0: Annotated[Byte, NativeBitfieldAttribute(7)]
     Reserved1: Byte * 6
     Revision: Byte * 16
+STORAGE_ICE_TYPE = Int32
+StorageIceTypeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_ICE_TYPE = 0
+StorageIceTypeUfs: win32more.Windows.Win32.System.Ioctl.STORAGE_ICE_TYPE = 1
+StorageIceTypeNvme: win32more.Windows.Win32.System.Ioctl.STORAGE_ICE_TYPE = 2
 class STORAGE_IDENTIFIER(Structure):
     CodeSet: win32more.Windows.Win32.System.Ioctl.STORAGE_IDENTIFIER_CODE_SET
     Type: win32more.Windows.Win32.System.Ioctl.STORAGE_IDENTIFIER_TYPE
     IdentifierSize: UInt16
     NextOffset: UInt16
     Association: win32more.Windows.Win32.System.Ioctl.STORAGE_ASSOCIATION_TYPE
-    Identifier: Byte * 1
+    Identifier: FlexibleArray[Byte]
 STORAGE_IDENTIFIER_CODE_SET = Int32
 StorageIdCodeSetReserved: win32more.Windows.Win32.System.Ioctl.STORAGE_IDENTIFIER_CODE_SET = 0
 StorageIdCodeSetBinary: win32more.Windows.Win32.System.Ioctl.STORAGE_IDENTIFIER_CODE_SET = 1
@@ -3727,9 +3849,9 @@ StorageIdTypeScsiNameString: win32more.Windows.Win32.System.Ioctl.STORAGE_IDENTI
 class STORAGE_IDLE_POWER(Structure):
     Version: UInt32
     Size: UInt32
-    WakeCapableHint: Annotated[UInt32, 1]
-    D3ColdSupported: Annotated[UInt32, 1]
-    Reserved: Annotated[UInt32, 30]
+    WakeCapableHint: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    D3ColdSupported: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(30)]
     D3IdleTimeout: UInt32
 class STORAGE_IDLE_POWERUP_REASON(Structure):
     Version: UInt32
@@ -3742,20 +3864,20 @@ StorageIdNAAFormatIEEEERegisteredExtended: win32more.Windows.Win32.System.Ioctl.
 class STORAGE_LB_PROVISIONING_MAP_RESOURCES(Structure):
     Size: UInt32
     Version: UInt32
-    AvailableMappingResourcesValid: Annotated[Byte, 1]
-    UsedMappingResourcesValid: Annotated[Byte, 1]
-    Reserved0: Annotated[Byte, 6]
+    AvailableMappingResourcesValid: Annotated[Byte, NativeBitfieldAttribute(1)]
+    UsedMappingResourcesValid: Annotated[Byte, NativeBitfieldAttribute(1)]
+    Reserved0: Annotated[Byte, NativeBitfieldAttribute(6)]
     Reserved1: Byte * 3
-    AvailableMappingResourcesScope: Annotated[Byte, 2]
-    UsedMappingResourcesScope: Annotated[Byte, 2]
-    Reserved2: Annotated[Byte, 4]
+    AvailableMappingResourcesScope: Annotated[Byte, NativeBitfieldAttribute(2)]
+    UsedMappingResourcesScope: Annotated[Byte, NativeBitfieldAttribute(2)]
+    Reserved2: Annotated[Byte, NativeBitfieldAttribute(4)]
     Reserved3: Byte * 3
     AvailableMappingResources: UInt64
     UsedMappingResources: UInt64
 class STORAGE_MEDIA_SERIAL_NUMBER_DATA(Structure):
     Reserved: UInt16
     SerialNumberLength: UInt16
-    SerialNumber: Byte * 1
+    SerialNumber: FlexibleArray[Byte]
 STORAGE_MEDIA_TYPE = Int32
 DDS_4mm: win32more.Windows.Win32.System.Ioctl.STORAGE_MEDIA_TYPE = 32
 MiniQic: win32more.Windows.Win32.System.Ioctl.STORAGE_MEDIA_TYPE = 33
@@ -3838,9 +3960,11 @@ class STORAGE_MINIPORT_DESCRIPTOR(Structure):
     class _Flags_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         AsBYTE: Byte
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            LogicalPoFxForDisk: Annotated[Byte, 1]
-            Reserved: Annotated[Byte, 7]
+            LogicalPoFxForDisk: Annotated[Byte, NativeBitfieldAttribute(1)]
+            ForwardIo: Annotated[Byte, NativeBitfieldAttribute(1)]
+            Reserved: Annotated[Byte, NativeBitfieldAttribute(6)]
 class STORAGE_OFFLOAD_READ_OUTPUT(Structure):
     OffloadReadFlags: UInt32
     Reserved: UInt32
@@ -3852,6 +3976,7 @@ class STORAGE_OFFLOAD_TOKEN(Structure):
     Reserved: Byte * 2
     TokenIdLength: Byte * 2
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         StorageOffloadZeroDataToken: _StorageOffloadZeroDataToken_e__Struct
         Token: Byte * 504
@@ -3940,7 +4065,7 @@ class STORAGE_PHYSICAL_TOPOLOGY_DESCRIPTOR(Structure):
     Size: UInt32
     NodeCount: UInt32
     Reserved: UInt32
-    Node: win32more.Windows.Win32.System.Ioctl.STORAGE_PHYSICAL_NODE_DATA * 1
+    Node: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_PHYSICAL_NODE_DATA]
 STORAGE_PORT_CODE_SET = Int32
 StoragePortCodeSetReserved: win32more.Windows.Win32.System.Ioctl.STORAGE_PORT_CODE_SET = 0
 StoragePortCodeSetStorport: win32more.Windows.Win32.System.Ioctl.STORAGE_PORT_CODE_SET = 1
@@ -3996,14 +4121,18 @@ StorageDeviceEnduranceProperty: win32more.Windows.Win32.System.Ioctl.STORAGE_PRO
 StorageDeviceLedStateProperty: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 63
 StorageDeviceSelfEncryptionProperty: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 64
 StorageFruIdProperty: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 65
+StorageStackProperty: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 66
+StorageAdapterProtocolSpecificPropertyEx: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 67
+StorageDeviceProtocolSpecificPropertyEx: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 68
+StorageHwCryptoProperty: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID = 69
 class STORAGE_PROPERTY_QUERY(Structure):
     PropertyId: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID
     QueryType: win32more.Windows.Win32.System.Ioctl.STORAGE_QUERY_TYPE
-    AdditionalParameters: Byte * 1
+    AdditionalParameters: FlexibleArray[Byte]
 class STORAGE_PROPERTY_SET(Structure):
     PropertyId: win32more.Windows.Win32.System.Ioctl.STORAGE_PROPERTY_ID
     SetType: win32more.Windows.Win32.System.Ioctl.STORAGE_SET_TYPE
-    AdditionalParameters: Byte * 1
+    AdditionalParameters: FlexibleArray[Byte]
 STORAGE_PROTOCOL_ATA_DATA_TYPE = Int32
 AtaDataTypeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_ATA_DATA_TYPE = 0
 AtaDataTypeIdentify: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_ATA_DATA_TYPE = 1
@@ -4026,8 +4155,9 @@ class STORAGE_PROTOCOL_COMMAND(Structure):
     CommandSpecific: UInt32
     Reserved0: UInt32
     FixedProtocolReturnData: UInt32
-    Reserved1: UInt32 * 3
-    Command: Byte * 1
+    FixedProtocolReturnData2: UInt32
+    Reserved1: UInt32 * 2
+    Command: FlexibleArray[Byte]
 class STORAGE_PROTOCOL_DATA_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -4039,15 +4169,20 @@ class STORAGE_PROTOCOL_DATA_DESCRIPTOR_EXT(Structure):
 class STORAGE_PROTOCOL_DATA_SUBVALUE_GET_LOG_PAGE(Union):
     Anonymous: _Anonymous_e__Struct
     AsUlong: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        RetainAsynEvent: Annotated[UInt32, 1]
-        LogSpecificField: Annotated[UInt32, 4]
-        Reserved: Annotated[UInt32, 27]
+        RetainAsynEvent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        LogSpecificField: Annotated[UInt32, NativeBitfieldAttribute(4)]
+        Reserved0: Annotated[UInt32, NativeBitfieldAttribute(3)]
+        UUIDIndex: Annotated[UInt32, NativeBitfieldAttribute(7)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(17)]
 STORAGE_PROTOCOL_NVME_DATA_TYPE = Int32
 NVMeDataTypeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE = 0
 NVMeDataTypeIdentify: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE = 1
 NVMeDataTypeLogPage: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE = 2
 NVMeDataTypeFeature: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE = 3
+NVMeDataTypeLogPageEx: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE = 4
+NVMeDataTypeFeatureEx: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_NVME_DATA_TYPE = 5
 class STORAGE_PROTOCOL_SPECIFIC_DATA(Structure):
     ProtocolType: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE
     DataType: UInt32
@@ -4071,7 +4206,8 @@ class STORAGE_PROTOCOL_SPECIFIC_DATA_EXT(Structure):
     ProtocolDataSubValue3: UInt32
     ProtocolDataSubValue4: UInt32
     ProtocolDataSubValue5: UInt32
-    Reserved: UInt32 * 5
+    ProtocolDataSubValue6: UInt32
+    Reserved: UInt32 * 4
 STORAGE_PROTOCOL_TYPE = Int32
 ProtocolTypeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE = 0
 ProtocolTypeScsi: win32more.Windows.Win32.System.Ioctl.STORAGE_PROTOCOL_TYPE = 1
@@ -4115,6 +4251,7 @@ class STORAGE_QUERY_DEPENDENT_VOLUME_RESPONSE(Structure):
     ResponseLevel: UInt32
     NumberEntries: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Lev1Depends: win32more.Windows.Win32.System.Ioctl.STORAGE_QUERY_DEPENDENT_VOLUME_LEV1_ENTRY * 1
         Lev2Depends: win32more.Windows.Win32.System.Ioctl.STORAGE_QUERY_DEPENDENT_VOLUME_LEV2_ENTRY * 1
@@ -4135,9 +4272,9 @@ class STORAGE_REINITIALIZE_MEDIA(Structure):
     TimeoutInSeconds: UInt32
     SanitizeOption: _SanitizeOption_e__Struct
     class _SanitizeOption_e__Struct(Structure):
-        SanitizeMethod: Annotated[UInt32, 4]
-        DisallowUnrestrictedSanitizeExit: Annotated[UInt32, 1]
-        Reserved: Annotated[UInt32, 27]
+        SanitizeMethod: Annotated[UInt32, NativeBitfieldAttribute(4)]
+        DisallowUnrestrictedSanitizeExit: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(27)]
 STORAGE_RESERVE_ID = Int32
 StorageReserveIdNone: win32more.Windows.Win32.System.Ioctl.STORAGE_RESERVE_ID = 0
 StorageReserveIdHard: win32more.Windows.Win32.System.Ioctl.STORAGE_RESERVE_ID = 1
@@ -4176,6 +4313,13 @@ STORAGE_SANITIZE_METHOD = Int32
 StorageSanitizeMethodDefault: win32more.Windows.Win32.System.Ioctl.STORAGE_SANITIZE_METHOD = 0
 StorageSanitizeMethodBlockErase: win32more.Windows.Win32.System.Ioctl.STORAGE_SANITIZE_METHOD = 1
 StorageSanitizeMethodCryptoErase: win32more.Windows.Win32.System.Ioctl.STORAGE_SANITIZE_METHOD = 2
+class STORAGE_SECURITY_COMPLIANCE_BITMASK(Union):
+    Anonymous: _Anonymous_e__Struct
+    AsUchar: Byte
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        FIPS: Annotated[Byte, NativeBitfieldAttribute(1)]
+        Reserved: Annotated[Byte, NativeBitfieldAttribute(7)]
 STORAGE_SET_TYPE = Int32
 PropertyStandardSet: win32more.Windows.Win32.System.Ioctl.STORAGE_SET_TYPE = 0
 PropertyExistsSet: win32more.Windows.Win32.System.Ioctl.STORAGE_SET_TYPE = 1
@@ -4183,15 +4327,25 @@ PropertySetMaxDefined: win32more.Windows.Win32.System.Ioctl.STORAGE_SET_TYPE = 2
 class STORAGE_SPEC_VERSION(Union):
     Anonymous: _Anonymous_e__Struct
     AsUlong: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
         MinorVersion: _MinorVersion_e__Union
         MajorVersion: UInt16
         class _MinorVersion_e__Union(Union):
             Anonymous: _Anonymous_e__Struct
             AsUshort: UInt16
+            _anonymous_ = ('Anonymous',)
             class _Anonymous_e__Struct(Structure):
                 SubMinor: Byte
                 Minor: Byte
+class STORAGE_STACK_DESCRIPTOR(Structure):
+    Version: UInt32
+    Size: UInt32
+    StorageStackType: win32more.Windows.Win32.System.Ioctl.STORAGE_STACK_TYPE
+STORAGE_STACK_TYPE = Int32
+StorageStackTypeUnknown: win32more.Windows.Win32.System.Ioctl.STORAGE_STACK_TYPE = 0
+StorageStackTypeScsi: win32more.Windows.Win32.System.Ioctl.STORAGE_STACK_TYPE = 1
+StorageStackTypeNVMe: win32more.Windows.Win32.System.Ioctl.STORAGE_STACK_TYPE = 2
 class STORAGE_TEMPERATURE_DATA_DESCRIPTOR(Structure):
     Version: UInt32
     Size: UInt32
@@ -4200,7 +4354,7 @@ class STORAGE_TEMPERATURE_DATA_DESCRIPTOR(Structure):
     InfoCount: UInt16
     Reserved0: Byte * 2
     Reserved1: UInt32 * 2
-    TemperatureInfo: win32more.Windows.Win32.System.Ioctl.STORAGE_TEMPERATURE_INFO * 1
+    TemperatureInfo: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_TEMPERATURE_INFO]
 class STORAGE_TEMPERATURE_INFO(Structure):
     Index: UInt16
     Temperature: Int16
@@ -4259,7 +4413,7 @@ class STORAGE_ZONED_DEVICE_DESCRIPTOR(Structure):
     ZoneCount: UInt32
     ZoneAttributes: _ZoneAttributes_e__Union
     ZoneGroupCount: UInt32
-    ZoneGroup: win32more.Windows.Win32.System.Ioctl.STORAGE_ZONE_GROUP * 1
+    ZoneGroup: FlexibleArray[win32more.Windows.Win32.System.Ioctl.STORAGE_ZONE_GROUP]
     class _ZoneAttributes_e__Union(Union):
         SequentialRequiredZone: _SequentialRequiredZone_e__Struct
         SequentialPreferredZone: _SequentialPreferredZone_e__Struct
@@ -4360,7 +4514,7 @@ class STREAM_LAYOUT_ENTRY(Structure):
     AttributeTypeCode: UInt32
     AttributeFlags: UInt32
     StreamIdentifierLength: UInt32
-    StreamIdentifier: Char * 1
+    StreamIdentifier: FlexibleArray[Char]
 class TAPE_GET_STATISTICS(Structure):
     Operation: UInt32
 class TAPE_STATISTICS(Structure):
@@ -4412,7 +4566,7 @@ class TXFS_LIST_TRANSACTION_LOCKED_FILES_ENTRY(Structure):
     Reserved1: UInt32
     Reserved2: UInt32
     Reserved3: Int64
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class TXFS_MODIFY_RM(Structure):
     Flags: win32more.Windows.Win32.System.Ioctl.TXFS_RMF_LAGS
     LogContainerCountMax: UInt32
@@ -4451,9 +4605,10 @@ class TXFS_QUERY_RM_INFORMATION(Structure):
     TmLogPathOffset: UInt32
 class TXFS_READ_BACKUP_INFORMATION_OUT(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         BufferLength: UInt32
-        Buffer: Byte * 1
+        Buffer: FlexibleArray[Byte]
 TXFS_RMF_LAGS = UInt32
 TXFS_RM_FLAG_LOGGING_MODE: win32more.Windows.Win32.System.Ioctl.TXFS_RMF_LAGS = 1
 TXFS_RM_FLAG_RENAME_RM: win32more.Windows.Win32.System.Ioctl.TXFS_RMF_LAGS = 2
@@ -4493,11 +4648,11 @@ class TXFS_START_RM_INFORMATION(Structure):
     LoggingMode: UInt16
     LogPathLength: UInt16
     Reserved: UInt16
-    LogPath: Char * 1
+    LogPath: FlexibleArray[Char]
 class TXFS_TRANSACTION_ACTIVE_INFO(Structure):
     TransactionsActiveAtSnapshot: win32more.Windows.Win32.Foundation.BOOLEAN
 class TXFS_WRITE_BACKUP_INFORMATION(Structure):
-    Buffer: Byte * 1
+    Buffer: FlexibleArray[Byte]
 USN_DELETE_FLAGS = UInt32
 USN_DELETE_FLAG_DELETE: win32more.Windows.Win32.System.Ioctl.USN_DELETE_FLAGS = 1
 USN_DELETE_FLAG_NOTIFY: win32more.Windows.Win32.System.Ioctl.USN_DELETE_FLAGS = 2
@@ -4560,7 +4715,7 @@ class USN_RECORD_V2(Structure):
     FileAttributes: UInt32
     FileNameLength: UInt16
     FileNameOffset: UInt16
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class USN_RECORD_V3(Structure):
     RecordLength: UInt32
     MajorVersion: UInt16
@@ -4575,7 +4730,7 @@ class USN_RECORD_V3(Structure):
     FileAttributes: UInt32
     FileNameLength: UInt16
     FileNameOffset: UInt16
-    FileName: Char * 1
+    FileName: FlexibleArray[Char]
 class USN_RECORD_V4(Structure):
     Header: win32more.Windows.Win32.System.Ioctl.USN_RECORD_COMMON_HEADER
     FileReferenceNumber: win32more.Windows.Win32.Storage.FileSystem.FILE_ID_128
@@ -4586,7 +4741,7 @@ class USN_RECORD_V4(Structure):
     RemainingExtents: UInt32
     NumberOfExtents: UInt16
     ExtentSize: UInt16
-    Extents: win32more.Windows.Win32.System.Ioctl.USN_RECORD_EXTENT * 1
+    Extents: FlexibleArray[win32more.Windows.Win32.System.Ioctl.USN_RECORD_EXTENT]
 USN_SOURCE_INFO_ID = UInt32
 USN_SOURCE_AUXILIARY_DATA: win32more.Windows.Win32.System.Ioctl.USN_SOURCE_INFO_ID = 2
 USN_SOURCE_DATA_MANAGEMENT: win32more.Windows.Win32.System.Ioctl.USN_SOURCE_INFO_ID = 1
@@ -4623,10 +4778,10 @@ class VIRTUAL_STORAGE_SET_BEHAVIOR_INPUT(Structure):
 class VOLUME_BITMAP_BUFFER(Structure):
     StartingLcn: Int64
     BitmapSize: Int64
-    Buffer: Byte * 1
+    Buffer: FlexibleArray[Byte]
 class VOLUME_DISK_EXTENTS(Structure):
     NumberOfDiskExtents: UInt32
-    Extents: win32more.Windows.Win32.System.Ioctl.DISK_EXTENT * 1
+    Extents: FlexibleArray[win32more.Windows.Win32.System.Ioctl.DISK_EXTENT]
 class VOLUME_GET_GPT_ATTRIBUTES_INFORMATION(Structure):
     GptAttributes: UInt64
 class WIM_PROVIDER_ADD_OVERLAY_INPUT(Structure):

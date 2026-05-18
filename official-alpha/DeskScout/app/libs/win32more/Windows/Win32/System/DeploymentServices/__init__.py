@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Com
 import win32more.Windows.Win32.System.DeploymentServices
@@ -748,6 +748,7 @@ class PXE_ADDRESS(Structure):
     Anonymous: _Anonymous_e__Union
     uAddrLen: UInt32
     uPort: UInt16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         bAddress: Byte * 16
         uIpAddress: UInt32
@@ -756,11 +757,11 @@ class PXE_DHCPV6_MESSAGE(Structure):
     TransactionIDByte1: Byte
     TransactionIDByte2: Byte
     TransactionIDByte3: Byte
-    Options: win32more.Windows.Win32.System.DeploymentServices.PXE_DHCPV6_OPTION * 1
+    Options: FlexibleArray[win32more.Windows.Win32.System.DeploymentServices.PXE_DHCPV6_OPTION]
     _pack_ = 1
 class PXE_DHCPV6_MESSAGE_HEADER(Structure):
     MessageType: Byte
-    Message: Byte * 1
+    Message: FlexibleArray[Byte]
     _pack_ = 1
 class PXE_DHCPV6_NESTED_RELAY_MESSAGE(Structure):
     pRelayMessage: POINTER(win32more.Windows.Win32.System.DeploymentServices.PXE_DHCPV6_RELAY_MESSAGE)
@@ -770,14 +771,14 @@ class PXE_DHCPV6_NESTED_RELAY_MESSAGE(Structure):
 class PXE_DHCPV6_OPTION(Structure):
     OptionCode: UInt16
     DataLength: UInt16
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
     _pack_ = 1
 class PXE_DHCPV6_RELAY_MESSAGE(Structure):
     MessageType: Byte
     HopCount: Byte
     LinkAddress: Byte * 16
     PeerAddress: Byte * 16
-    Options: win32more.Windows.Win32.System.DeploymentServices.PXE_DHCPV6_OPTION * 1
+    Options: FlexibleArray[win32more.Windows.Win32.System.DeploymentServices.PXE_DHCPV6_OPTION]
     _pack_ = 1
 class PXE_DHCP_MESSAGE(Structure):
     Operation: Byte
@@ -796,6 +797,7 @@ class PXE_DHCP_MESSAGE(Structure):
     BootFileName: Byte * 128
     Anonymous: _Anonymous_e__Union
     Option: win32more.Windows.Win32.System.DeploymentServices.PXE_DHCP_OPTION
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         bMagicCookie: Byte * 4
@@ -804,7 +806,7 @@ class PXE_DHCP_MESSAGE(Structure):
 class PXE_DHCP_OPTION(Structure):
     OptionType: Byte
     OptionLength: Byte
-    OptionValue: Byte * 1
+    OptionValue: FlexibleArray[Byte]
     _pack_ = 1
 class PXE_PROVIDER(Structure):
     uSizeOfStruct: UInt32

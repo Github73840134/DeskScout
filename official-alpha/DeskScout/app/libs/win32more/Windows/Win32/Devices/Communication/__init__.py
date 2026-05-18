@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Devices.Communication
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.IO
@@ -42,12 +42,14 @@ MDM_HDLCPPP_SPEED_DEFAULT: UInt32 = 0
 MDM_HDLCPPP_SPEED_64K: UInt32 = 1
 MDM_HDLCPPP_SPEED_56K: UInt32 = 2
 MDM_SHIFT_HDLCPPP_AUTH: UInt32 = 3
+MDM_MASK_HDLCPPP_AUTH: UInt32 = 56
 MDM_HDLCPPP_AUTH_DEFAULT: UInt32 = 0
 MDM_HDLCPPP_AUTH_NONE: UInt32 = 1
 MDM_HDLCPPP_AUTH_PAP: UInt32 = 2
 MDM_HDLCPPP_AUTH_CHAP: UInt32 = 3
 MDM_HDLCPPP_AUTH_MSCHAP: UInt32 = 4
 MDM_SHIFT_HDLCPPP_ML: UInt32 = 6
+MDM_MASK_HDLCPPP_ML: UInt32 = 192
 MDM_HDLCPPP_ML_DEFAULT: UInt32 = 0
 MDM_HDLCPPP_ML_NONE: UInt32 = 1
 MDM_HDLCPPP_ML_2: UInt32 = 2
@@ -57,6 +59,7 @@ MDM_V120_SPEED_DEFAULT: UInt32 = 0
 MDM_V120_SPEED_64K: UInt32 = 1
 MDM_V120_SPEED_56K: UInt32 = 2
 MDM_SHIFT_V120_ML: UInt32 = 6
+MDM_MASK_V120_ML: UInt32 = 192
 MDM_V120_ML_DEFAULT: UInt32 = 0
 MDM_V120_ML_NONE: UInt32 = 1
 MDM_V120_ML_2: UInt32 = 2
@@ -84,6 +87,7 @@ MDM_SHIFT_AUTO_SPEED: UInt32 = 0
 MDM_MASK_AUTO_SPEED: UInt32 = 7
 MDM_AUTO_SPEED_DEFAULT: UInt32 = 0
 MDM_SHIFT_AUTO_ML: UInt32 = 6
+MDM_MASK_AUTO_ML: UInt32 = 192
 MDM_AUTO_ML_DEFAULT: UInt32 = 0
 MDM_AUTO_ML_NONE: UInt32 = 1
 MDM_AUTO_ML_2: UInt32 = 2
@@ -174,7 +178,7 @@ class COMMCONFIG(Structure):
     dwProviderSubType: UInt32
     dwProviderOffset: UInt32
     dwProviderSize: UInt32
-    wcProviderData: Char * 1
+    wcProviderData: FlexibleArray[Char]
 class COMMPROP(Structure):
     wPacketLength: UInt16
     wPacketVersion: UInt16
@@ -193,7 +197,7 @@ class COMMPROP(Structure):
     dwCurrentRxQueue: UInt32
     dwProvSpec1: UInt32
     dwProvSpec2: UInt32
-    wcProvChar: Char * 1
+    wcProvChar: FlexibleArray[Char]
 COMMPROP_STOP_PARITY = UInt16
 STOPBITS_10: win32more.Windows.Win32.Devices.Communication.COMMPROP_STOP_PARITY = 1
 STOPBITS_15: win32more.Windows.Win32.Devices.Communication.COMMPROP_STOP_PARITY = 2
@@ -224,33 +228,33 @@ EV_RXCHAR: win32more.Windows.Win32.Devices.Communication.COMM_EVENT_MASK = 1
 EV_RXFLAG: win32more.Windows.Win32.Devices.Communication.COMM_EVENT_MASK = 2
 EV_TXEMPTY: win32more.Windows.Win32.Devices.Communication.COMM_EVENT_MASK = 4
 class COMSTAT(Structure):
-    fCtsHold: Annotated[UInt32, 1]
-    fDsrHold: Annotated[UInt32, 1]
-    fRlsdHold: Annotated[UInt32, 1]
-    fXoffHold: Annotated[UInt32, 1]
-    fXoffSent: Annotated[UInt32, 1]
-    fEof: Annotated[UInt32, 1]
-    fTxim: Annotated[UInt32, 1]
-    fReserved: Annotated[UInt32, 25]
+    fCtsHold: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fDsrHold: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fRlsdHold: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fXoffHold: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fXoffSent: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fEof: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fTxim: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fReserved: Annotated[UInt32, NativeBitfieldAttribute(25)]
     cbInQue: UInt32
     cbOutQue: UInt32
 class DCB(Structure):
     DCBlength: UInt32
     BaudRate: UInt32
-    fBinary: Annotated[UInt32, 1]
-    fParity: Annotated[UInt32, 1]
-    fOutxCtsFlow: Annotated[UInt32, 1]
-    fOutxDsrFlow: Annotated[UInt32, 1]
-    fDtrControl: Annotated[UInt32, 2]
-    fDsrSensitivity: Annotated[UInt32, 1]
-    fTXContinueOnXoff: Annotated[UInt32, 1]
-    fOutX: Annotated[UInt32, 1]
-    fInX: Annotated[UInt32, 1]
-    fErrorChar: Annotated[UInt32, 1]
-    fNull: Annotated[UInt32, 1]
-    fRtsControl: Annotated[UInt32, 2]
-    fAbortOnError: Annotated[UInt32, 1]
-    fDummy2: Annotated[UInt32, 17]
+    fBinary: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fParity: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fOutxCtsFlow: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fOutxDsrFlow: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fDtrControl: Annotated[UInt32, NativeBitfieldAttribute(2)]
+    fDsrSensitivity: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fTXContinueOnXoff: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fOutX: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fInX: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fErrorChar: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fNull: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fRtsControl: Annotated[UInt32, NativeBitfieldAttribute(2)]
+    fAbortOnError: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    fDummy2: Annotated[UInt32, NativeBitfieldAttribute(17)]
     wReserved: UInt16
     XonLim: UInt16
     XoffLim: UInt16
@@ -302,7 +306,7 @@ class MODEMDEVCAPS(Structure):
     dwModemOptions: UInt32
     dwMaxDTERate: UInt32
     dwMaxDCERate: UInt32
-    abVariablePortion: Byte * 1
+    abVariablePortion: FlexibleArray[Byte]
 MODEMDEVCAPS_DIAL_OPTIONS = UInt32
 DIALOPTION_BILLING: win32more.Windows.Win32.Devices.Communication.MODEMDEVCAPS_DIAL_OPTIONS = 64
 DIALOPTION_DIALTONE: win32more.Windows.Win32.Devices.Communication.MODEMDEVCAPS_DIAL_OPTIONS = 256
@@ -328,7 +332,7 @@ class MODEMSETTINGS(Structure):
     dwPreferredModemOptions: UInt32
     dwNegotiatedModemOptions: UInt32
     dwNegotiatedDCERate: UInt32
-    abVariablePortion: Byte * 1
+    abVariablePortion: FlexibleArray[Byte]
 MODEMSETTINGS_SPEAKER_MODE = UInt32
 MDMSPKR_CALLSETUP: win32more.Windows.Win32.Devices.Communication.MODEMSETTINGS_SPEAKER_MODE = 8
 MDMSPKR_DIAL: win32more.Windows.Win32.Devices.Communication.MODEMSETTINGS_SPEAKER_MODE = 2

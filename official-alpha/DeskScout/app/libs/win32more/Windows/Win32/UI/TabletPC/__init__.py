@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -357,17 +357,29 @@ def DestroyContext(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT) -> win
 @winfunctype('inkobjcore.dll')
 def GetResultPropertyList(hrec: win32more.Windows.Win32.UI.TabletPC.HRECOGNIZER, pPropertyCount: POINTER(UInt32), pPropertyGuid: POINTER(Guid)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
+def GetPreferredPacketDescription(hrec: win32more.Windows.Win32.UI.TabletPC.HRECOGNIZER, pPacketDescription: POINTER(win32more.Windows.Win32.UI.TabletPC.PACKET_DESCRIPTION)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
 def GetUnicodeRanges(hrec: win32more.Windows.Win32.UI.TabletPC.HRECOGNIZER, pcRanges: POINTER(UInt32), pcr: POINTER(win32more.Windows.Win32.UI.TabletPC.CHARACTER_RANGE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def AddStroke(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pPacketDesc: POINTER(win32more.Windows.Win32.UI.TabletPC.PACKET_DESCRIPTION), cbPacket: UInt32, pPacket: POINTER(Byte), pXForm: POINTER(win32more.Windows.Win32.Graphics.Gdi.XFORM)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def GetBestResultString(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pcSize: POINTER(UInt32), pwcBestResult: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
+def DestroyAlternate(hrcalt: win32more.Windows.Win32.UI.TabletPC.HRECOALT) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
 def SetGuide(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pGuide: POINTER(win32more.Windows.Win32.UI.TabletPC.RECO_GUIDE), iIndex: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def GetGuide(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pGuide: POINTER(win32more.Windows.Win32.UI.TabletPC.RECO_GUIDE), piIndex: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def AdviseInkChange(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, bNewStroke: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
+def SetCACMode(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, iMode: Int32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
 def EndInkInput(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def CloneContext(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pCloneHrc: POINTER(win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def ResetContext(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def Process(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pbPartialProcessing: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
@@ -379,11 +391,21 @@ def GetLatticePtr(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, ppLatti
 @winfunctype('inkobjcore.dll')
 def SetTextContext(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, cwcBefore: UInt32, pwcBefore: win32more.Windows.Win32.Foundation.PWSTR, cwcAfter: UInt32, pwcAfter: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
+def GetEnabledUnicodeRanges(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pcRanges: POINTER(UInt32), pcr: POINTER(win32more.Windows.Win32.UI.TabletPC.CHARACTER_RANGE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
 def SetEnabledUnicodeRanges(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, cRanges: UInt32, pcr: POINTER(win32more.Windows.Win32.UI.TabletPC.CHARACTER_RANGE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def GetContextPropertyList(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pcProperties: POINTER(UInt32), pPropertyGUIDS: POINTER(Guid)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def GetContextPropertyValue(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pGuid: POINTER(Guid), pcbSize: POINTER(UInt32), pProperty: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def SetContextPropertyValue(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pGuid: POINTER(Guid), cbSize: UInt32, pProperty: POINTER(Byte)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def IsStringSupported(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, wcString: UInt32, pwcString: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def SetWordList(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, hwl: win32more.Windows.Win32.UI.TabletPC.HRECOWORDLIST) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('inkobjcore.dll')
+def GetContextPreferenceFlags(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pdwContextPreferenceFlags: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
 def GetRightSeparator(hrc: win32more.Windows.Win32.UI.TabletPC.HRECOCONTEXT, pcSize: POINTER(UInt32), pwcRightSeparator: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('inkobjcore.dll')
@@ -923,19 +945,19 @@ FLICKMODE_LEARNING: win32more.Windows.Win32.UI.TabletPC.FLICKMODE = 2
 FLICKMODE_MAX: win32more.Windows.Win32.UI.TabletPC.FLICKMODE = 2
 FLICKMODE_DEFAULT: win32more.Windows.Win32.UI.TabletPC.FLICKMODE = 1
 class FLICK_DATA(Structure):
-    iFlickActionCommandCode: Annotated[Int32, 5]
-    iFlickDirection: Annotated[Int32, 3]
-    fControlModifier: Annotated[Int32, 1]
-    fMenuModifier: Annotated[Int32, 1]
-    fAltGRModifier: Annotated[Int32, 1]
-    fWinModifier: Annotated[Int32, 1]
-    fShiftModifier: Annotated[Int32, 1]
-    iReserved: Annotated[Int32, 2]
-    fOnInkingSurface: Annotated[Int32, 1]
-    iActionArgument: Annotated[Int32, 16]
+    iFlickActionCommandCode: Annotated[Int32, NativeBitfieldAttribute(5)]
+    iFlickDirection: Annotated[Int32, NativeBitfieldAttribute(3)]
+    fControlModifier: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fMenuModifier: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fAltGRModifier: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fWinModifier: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShiftModifier: Annotated[Int32, NativeBitfieldAttribute(1)]
+    iReserved: Annotated[Int32, NativeBitfieldAttribute(2)]
+    fOnInkingSurface: Annotated[Int32, NativeBitfieldAttribute(1)]
+    iActionArgument: Annotated[Int32, NativeBitfieldAttribute(16)]
 class FLICK_POINT(Structure):
-    x: Annotated[Int32, 16]
-    y: Annotated[Int32, 16]
+    x: Annotated[Int32, NativeBitfieldAttribute(16)]
+    y: Annotated[Int32, NativeBitfieldAttribute(16)]
 class GESTURE_DATA(Structure):
     gestureId: Int32
     recoConfidence: Int32

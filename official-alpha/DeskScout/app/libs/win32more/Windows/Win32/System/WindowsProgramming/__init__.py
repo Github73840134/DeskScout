@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.System.Com
@@ -49,6 +49,8 @@ WLDP_ISPRODUCTIONCONFIGURATION_FN: String = 'WldpIsProductionConfiguration'
 WLDP_RESETPRODUCTIONCONFIGURATION_FN: String = 'WldpResetProductionConfiguration'
 WLDP_CANEXECUTEBUFFER_FN: String = 'WldpCanExecuteBuffer'
 WLDP_CANEXECUTEFILE_FN: String = 'WldpCanExecuteFile'
+WLDP_CANEXECUTEFILEFROMDETACHEDSIGNATURE_FN: String = 'WldpCanExecuteFileFromDetachedSignature'
+WLDP_QUERYSECURITYPOLICY_FN: String = 'WldpQuerySecurityPolicy'
 WLDP_LOCKDOWN_UNDEFINED: UInt32 = 0
 WLDP_LOCKDOWN_DEFINED_FLAG: UInt32 = 2147483648
 WLDP_LOCKDOWN_CONFIG_CI_FLAG: UInt32 = 1
@@ -136,6 +138,7 @@ DCI_CAN_STRETCHYN: UInt32 = 32768
 DCI_CANOVERLAY: UInt32 = 65536
 FILE_FLAG_OPEN_REQUIRING_OPLOCK: UInt32 = 262144
 FILE_FLAG_IGNORE_IMPERSONATED_DEVICEMAP: UInt32 = 131072
+FILE_FLAG_DISALLOW_PATH_REDIRECTS: UInt32 = 65536
 FAIL_FAST_GENERATE_EXCEPTION_ADDRESS: UInt32 = 1
 FAIL_FAST_NO_HARD_ERROR_DLG: UInt32 = 2
 SP_SERIALCOMM: UInt32 = 1
@@ -331,20 +334,6 @@ STREAM_CONTAINS_GHOSTED_FILE_EXTENTS: UInt32 = 16
 STARTF_HOLOGRAPHIC: UInt32 = 262144
 SHUTDOWN_NORETRY: UInt32 = 1
 PROTECTION_LEVEL_SAME: UInt32 = 4294967295
-PROC_THREAD_ATTRIBUTE_NUMBER: UInt32 = 65535
-PROC_THREAD_ATTRIBUTE_THREAD: UInt32 = 65536
-PROC_THREAD_ATTRIBUTE_INPUT: UInt32 = 131072
-PROC_THREAD_ATTRIBUTE_ADDITIVE: UInt32 = 262144
-PROCESS_CREATION_MITIGATION_POLICY_DEP_ENABLE: UInt32 = 1
-PROCESS_CREATION_MITIGATION_POLICY_DEP_ATL_THUNK_ENABLE: UInt32 = 2
-PROCESS_CREATION_MITIGATION_POLICY_SEHOP_ENABLE: UInt32 = 4
-PROCESS_CREATION_CHILD_PROCESS_RESTRICTED: UInt32 = 1
-PROCESS_CREATION_CHILD_PROCESS_OVERRIDE: UInt32 = 2
-PROCESS_CREATION_CHILD_PROCESS_RESTRICTED_UNLESS_SECURE: UInt32 = 4
-PROCESS_CREATION_ALL_APPLICATION_PACKAGES_OPT_OUT: UInt32 = 1
-PROCESS_CREATION_DESKTOP_APP_BREAKAWAY_ENABLE_PROCESS_TREE: UInt32 = 1
-PROCESS_CREATION_DESKTOP_APP_BREAKAWAY_DISABLE_PROCESS_TREE: UInt32 = 2
-PROCESS_CREATION_DESKTOP_APP_BREAKAWAY_OVERRIDE: UInt32 = 4
 ATOM_FLAG_GLOBAL: UInt32 = 2
 GET_SYSTEM_WOW64_DIRECTORY_NAME_A_A: String = 'GetSystemWow64DirectoryA'
 GET_SYSTEM_WOW64_DIRECTORY_NAME_A_W: String = 'GetSystemWow64DirectoryA'
@@ -645,6 +634,8 @@ def RtlGetReturnAddressHijackTarget() -> UIntPtr: ...
 def RtlRaiseCustomSystemEventTrigger(TriggerConfig: POINTER(win32more.Windows.Win32.System.WindowsProgramming.CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG)) -> UInt32: ...
 @winfunctype('api-ms-win-core-apiquery-l2-1-0.dll')
 def IsApiSetImplemented(Contract: win32more.Windows.Win32.Foundation.PSTR) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('api-ms-win-core-apiquery-l2-1-1.dll')
+def GetApiSetModuleBaseName(contractName: win32more.Windows.Win32.Foundation.PSTR, bufferLength: UInt32, moduleBaseName: win32more.Windows.Win32.Foundation.PWSTR, actualNameLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNEL32.dll')
 def QueryThreadCycleTime(ThreadHandle: win32more.Windows.Win32.Foundation.HANDLE, CycleTime: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('KERNEL32.dll')
@@ -834,12 +825,10 @@ def GetCurrentHwProfileW(lpHwProfileInfo: POINTER(win32more.Windows.Win32.System
 GetCurrentHwProfile = UnicodeAlias('GetCurrentHwProfileW')
 @winfunctype('KERNEL32.dll')
 def ReplacePartitionUnit(TargetPartition: win32more.Windows.Win32.Foundation.PWSTR, SparePartition: win32more.Windows.Win32.Foundation.PWSTR, Flags: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
-if ARCH in 'X86,X64':
-    @winfunctype('KERNEL32.dll')
-    def GetThreadEnabledXStateFeatures() -> UInt64: ...
-if ARCH in 'X86,X64':
-    @winfunctype('KERNEL32.dll')
-    def EnableProcessOptionalXStateFeatures(Features: UInt64) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('KERNEL32.dll')
+def GetThreadEnabledXStateFeatures() -> UInt64: ...
+@winfunctype('KERNEL32.dll')
+def EnableProcessOptionalXStateFeatures(Features: UInt64) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('api-ms-win-core-backgroundtask-l1-1-0.dll')
 def RaiseCustomSystemEventTrigger(CustomSystemEventTriggerConfig: POINTER(win32more.Windows.Win32.System.WindowsProgramming.CUSTOM_SYSTEM_EVENT_TRIGGER_CONFIG)) -> UInt32: ...
 @winfunctype('ntdll.dll')
@@ -1088,19 +1077,49 @@ def WldpGetLockdownPolicy(hostInformation: POINTER(win32more.Windows.Win32.Syste
 @winfunctype('Wldp.dll')
 def WldpIsClassInApprovedList(classID: POINTER(Guid), hostInformation: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_HOST_INFORMATION), isApproved: POINTER(win32more.Windows.Win32.Foundation.BOOL), optionalFlags: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
+def WldpQuerySecurityPolicy(providerName: POINTER(win32more.Windows.Win32.Foundation.UNICODE_STRING), keyName: POINTER(win32more.Windows.Win32.Foundation.UNICODE_STRING), valueName: POINTER(win32more.Windows.Win32.Foundation.UNICODE_STRING), valueType: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_SECURE_SETTING_VALUE_TYPE), valueAddress: VoidPtr, valueSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
 def WldpSetDynamicCodeTrust(fileHandle: win32more.Windows.Win32.Foundation.HANDLE) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
 def WldpIsDynamicCodePolicyEnabled(isEnabled: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
 def WldpQueryDynamicCodeTrust(fileHandle: win32more.Windows.Win32.Foundation.HANDLE, baseImage: VoidPtr, imageSize: UInt32) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
+def WldpQueryWindowsLockdownMode(lockdownMode: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_WINDOWS_LOCKDOWN_MODE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
 def WldpQueryDeviceSecurityInformation(information: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_DEVICE_SECURITY_INFORMATION), informationLength: UInt32, returnLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpQueryWindowsLockdownRestriction(LockdownRestriction: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_WINDOWS_LOCKDOWN_RESTRICTION)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpSetWindowsLockdownRestriction(LockdownRestriction: win32more.Windows.Win32.System.WindowsProgramming.WLDP_WINDOWS_LOCKDOWN_RESTRICTION) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpIsAppApprovedByPolicy(PackageFamilyName: win32more.Windows.Win32.Foundation.PWSTR, PackageVersion: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpQueryPolicySettingEnabled(Setting: win32more.Windows.Win32.System.WindowsProgramming.WLDP_POLICY_SETTING, Enabled: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpQueryPolicySettingEnabled2(SettingString: win32more.Windows.Win32.Foundation.PWSTR, Enabled: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpIsWcosProductionConfiguration(IsProductionConfiguration: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpResetWcosProductionConfiguration() -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpIsProductionConfiguration(IsProductionConfiguration: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpResetProductionConfiguration() -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
 def WldpCanExecuteFile(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, fileHandle: win32more.Windows.Win32.Foundation.HANDLE, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
 def WldpCanExecuteBuffer(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, buffer: POINTER(Byte), bufferSize: UInt32, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('Wldp.dll')
 def WldpCanExecuteStream(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, stream: win32more.Windows.Win32.System.Com.IStream, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpCanExecuteFileFromDetachedSignature(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, contentFileHandle: win32more.Windows.Win32.Foundation.HANDLE, signatureFileHandle: win32more.Windows.Win32.Foundation.HANDLE, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpGetApplicationSettingBoolean(id: win32more.Windows.Win32.Foundation.PWSTR, setting: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpGetApplicationSettingStringList(id: win32more.Windows.Win32.Foundation.PWSTR, setting: win32more.Windows.Win32.Foundation.PWSTR, dataCount: UIntPtr, requiredCount: POINTER(UIntPtr), result: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('Wldp.dll')
+def WldpGetApplicationSettingStringSet(id: win32more.Windows.Win32.Foundation.PWSTR, setting: win32more.Windows.Win32.Foundation.PWSTR, dataCount: UIntPtr, requiredCount: POINTER(UIntPtr), result: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class CABINFOA(Structure):
     pszCab: win32more.Windows.Win32.Foundation.PSTR
     pszInf: win32more.Windows.Win32.Foundation.PSTR
@@ -1366,9 +1385,10 @@ class IMAGE_DELAYLOAD_DESCRIPTOR(Structure):
     class _Attributes_e__Union(Union):
         AllAttributes: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            RvaBased: Annotated[UInt32, 1]
-            ReservedAttributes: Annotated[UInt32, 31]
+            RvaBased: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ReservedAttributes: Annotated[UInt32, NativeBitfieldAttribute(31)]
 class IMAGE_THUNK_DATA32(Structure):
     u1: _u1_e__Union
     class _u1_e__Union(Union):
@@ -1444,6 +1464,7 @@ class LDR_DATA_TABLE_ENTRY(Structure):
     Reserved5: VoidPtr * 3
     Anonymous: _Anonymous_e__Union
     TimeDateStamp: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         CheckSum: UInt32
         Reserved6: VoidPtr
@@ -1474,6 +1495,13 @@ def PFEATURE_STATE_CHANGE_CALLBACK(context: VoidPtr) -> Void: ...
 def PFIBER_CALLOUT_ROUTINE(lpParameter: VoidPtr) -> VoidPtr: ...
 @winfunctype_pointer
 def PQUERYACTCTXW_FUNC(dwFlags: UInt32, hActCtx: win32more.Windows.Win32.Foundation.HANDLE, pvSubInstance: VoidPtr, ulInfoClass: UInt32, pvBuffer: VoidPtr, cbBuffer: UIntPtr, pcbWrittenOrRequired: POINTER(UIntPtr)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+class PROCESS_CREATION_SVE_VECTOR_LENGTH(Union):
+    Data: UInt32
+    Anonymous: _Anonymous_e__Struct
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Struct(Structure):
+        VectorLength: Annotated[UInt32, NativeBitfieldAttribute(24)]
+        FlagsReserved: Annotated[UInt32, NativeBitfieldAttribute(8)]
 class PUBLIC_OBJECT_BASIC_INFORMATION(Structure):
     Attributes: UInt32
     GrantedAccess: UInt32
@@ -1488,9 +1516,17 @@ def PWINSTATIONQUERYINFORMATIONW(param0: win32more.Windows.Win32.Foundation.HAND
 @winfunctype_pointer
 def PWLDP_CANEXECUTEBUFFER_API(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, buffer: POINTER(Byte), bufferSize: UInt32, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
+def PWLDP_CANEXECUTEFILEFROMDETACHEDSIGNATURE_API(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, contentFileHandle: win32more.Windows.Win32.Foundation.HANDLE, signatureFileHandle: win32more.Windows.Win32.Foundation.HANDLE, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype_pointer
 def PWLDP_CANEXECUTEFILE_API(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, fileHandle: win32more.Windows.Win32.Foundation.HANDLE, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
 def PWLDP_CANEXECUTESTREAM_API(host: POINTER(Guid), options: win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_EVALUATION_OPTIONS, stream: win32more.Windows.Win32.System.Com.IStream, auditInfo: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_EXECUTION_POLICY)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype_pointer
+def PWLDP_GETAPPLICATIONSETTINGBOOLEAN_API(id: win32more.Windows.Win32.Foundation.PWSTR, setting: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype_pointer
+def PWLDP_GETAPPLICATIONSETTINGSTRINGLIST_API(id: win32more.Windows.Win32.Foundation.PWSTR, setting: win32more.Windows.Win32.Foundation.PWSTR, dataCount: UIntPtr, requiredCount: POINTER(UIntPtr), result: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype_pointer
+def PWLDP_GETAPPLICATIONSETTINGSTRINGSET_API(id: win32more.Windows.Win32.Foundation.PWSTR, setting: win32more.Windows.Win32.Foundation.PWSTR, dataCount: UIntPtr, requiredCount: POINTER(UIntPtr), result: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
 def PWLDP_ISAPPAPPROVEDBYPOLICY_API(PackageFamilyName: win32more.Windows.Win32.Foundation.PWSTR, PackageVersion: UInt64) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
@@ -1507,6 +1543,8 @@ def PWLDP_QUERYDYNAMICODETRUST_API(fileHandle: win32more.Windows.Win32.Foundatio
 def PWLDP_QUERYPOLICYSETTINGENABLED2_API(Setting: win32more.Windows.Win32.Foundation.PWSTR, Enabled: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
 def PWLDP_QUERYPOLICYSETTINGENABLED_API(Setting: win32more.Windows.Win32.System.WindowsProgramming.WLDP_POLICY_SETTING, Enabled: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype_pointer
+def PWLDP_QUERYSECURITYPOLICY_API(providerName: POINTER(win32more.Windows.Win32.Foundation.UNICODE_STRING), keyName: POINTER(win32more.Windows.Win32.Foundation.UNICODE_STRING), valueName: POINTER(win32more.Windows.Win32.Foundation.UNICODE_STRING), valueType: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_SECURE_SETTING_VALUE_TYPE), valueAddress: VoidPtr, valueSize: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
 def PWLDP_QUERYWINDOWSLOCKDOWNMODE_API(lockdownMode: POINTER(win32more.Windows.Win32.System.WindowsProgramming.WLDP_WINDOWS_LOCKDOWN_MODE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
@@ -1541,6 +1579,12 @@ class STRTABLEW(Structure):
     cEntries: UInt32
     pse: POINTER(win32more.Windows.Win32.System.WindowsProgramming.STRENTRYW)
 STRTABLE = UnicodeAlias('STRTABLEW')
+class SYSTEM_BASICPROCESS_INFORMATION(Structure):
+    NextEntryOffset: UInt32
+    UniqueProcessId: win32more.Windows.Win32.Foundation.HANDLE
+    InheritedFromUniqueProcessId: win32more.Windows.Win32.Foundation.HANDLE
+    SequenceNumber: UInt64
+    ImageName: win32more.Windows.Win32.Foundation.UNICODE_STRING
 class SYSTEM_BASIC_INFORMATION(Structure):
     Reserved1: Byte * 24
     Reserved2: VoidPtr * 4
@@ -1550,6 +1594,10 @@ class SYSTEM_CODEINTEGRITY_INFORMATION(Structure):
     CodeIntegrityOptions: UInt32
 class SYSTEM_EXCEPTION_INFORMATION(Structure):
     Reserved1: Byte * 16
+class SYSTEM_HANDLECOUNT_INFORMATION(Structure):
+    ProcessCount: UInt32
+    ThreadCount: UInt32
+    HandleCount: UInt32
 class SYSTEM_INTERRUPT_INFORMATION(Structure):
     Reserved1: Byte * 24
 class SYSTEM_LOOKASIDE_INFORMATION(Structure):
@@ -1618,7 +1666,7 @@ class TCP_REQUEST_QUERY_INFORMATION_EX_XP(Structure):
 class TCP_REQUEST_SET_INFORMATION_EX(Structure):
     ID: win32more.Windows.Win32.System.WindowsProgramming.TDIObjectID
     BufferSize: UInt32
-    Buffer: Byte * 1
+    Buffer: FlexibleArray[Byte]
 TDIENTITY_ENTITY_TYPE = UInt32
 GENERIC_ENTITY: win32more.Windows.Win32.System.WindowsProgramming.TDIENTITY_ENTITY_TYPE = 0
 AT_ENTITY: win32more.Windows.Win32.System.WindowsProgramming.TDIENTITY_ENTITY_TYPE = 640
@@ -1644,6 +1692,7 @@ class TDI_TL_IO_CONTROL_ENDPOINT(Structure):
     InputBufferLength: UInt32
     OutputBuffer: VoidPtr
     OutputBufferLength: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         IoControlCode: UInt32
         OptionName: UInt32
@@ -1718,6 +1767,11 @@ KEY_OVERRIDE: win32more.Windows.Win32.System.WindowsProgramming.WLDP_KEY = 1
 KEY_ALL_KEYS: win32more.Windows.Win32.System.WindowsProgramming.WLDP_KEY = 2
 WLDP_POLICY_SETTING = Int32
 WLDP_POLICY_SETTING_AV_PERF_MODE: win32more.Windows.Win32.System.WindowsProgramming.WLDP_POLICY_SETTING = 1000
+WLDP_SECURE_SETTING_VALUE_TYPE = Int32
+WLDP_SECURE_SETTING_VALUE_TYPE_BOOLEAN: win32more.Windows.Win32.System.WindowsProgramming.WLDP_SECURE_SETTING_VALUE_TYPE = 0
+WLDP_SECURE_SETTING_VALUE_TYPE_ULONG: win32more.Windows.Win32.System.WindowsProgramming.WLDP_SECURE_SETTING_VALUE_TYPE = 1
+WLDP_SECURE_SETTING_VALUE_TYPE_BINARY: win32more.Windows.Win32.System.WindowsProgramming.WLDP_SECURE_SETTING_VALUE_TYPE = 2
+WLDP_SECURE_SETTING_VALUE_TYPE_STRING: win32more.Windows.Win32.System.WindowsProgramming.WLDP_SECURE_SETTING_VALUE_TYPE = 3
 WLDP_WINDOWS_LOCKDOWN_MODE = Int32
 WLDP_WINDOWS_LOCKDOWN_MODE_UNLOCKED: win32more.Windows.Win32.System.WindowsProgramming.WLDP_WINDOWS_LOCKDOWN_MODE = 0
 WLDP_WINDOWS_LOCKDOWN_MODE_TRIAL: win32more.Windows.Win32.System.WindowsProgramming.WLDP_WINDOWS_LOCKDOWN_MODE = 1

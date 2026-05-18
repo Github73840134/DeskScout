@@ -1,6 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Microsoft.Graphics.Canvas
 import win32more.Microsoft.Graphics.Canvas.Brushes
 import win32more.Microsoft.Graphics.Canvas.Effects
@@ -17,23 +16,24 @@ import win32more.Windows.Graphics.Imaging
 import win32more.Windows.Storage.Streams
 import win32more.Windows.UI
 import win32more.Windows.UI.Core
-import win32more.Windows.Win32.System.WinRT
 class CanvasActiveLayer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasActiveLayer
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasActiveLayer'
     @winrt_mixinmethod
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
 class CanvasAlphaMode(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasAlphaMode'
     Premultiplied = 0
     Straight = 1
     Ignore = 2
 class CanvasAntialiasing(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasAntialiasing'
     Antialiased = 0
     Aliased = 1
 class CanvasBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasBitmap'
@@ -48,11 +48,11 @@ class CanvasBitmap(ComPtr):
     @winrt_mixinmethod
     def get_AlphaMode(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap) -> win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode: ...
     @winrt_mixinmethod
-    def SaveToFileAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, fileName: WinRT_String) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SaveToFileAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, fileName: hstr) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def SaveToFileWithBitmapFileFormatAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, fileName: WinRT_String, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SaveToFileWithBitmapFileFormatAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, fileName: hstr, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
-    def SaveToFileWithBitmapFileFormatAndQualityAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, fileName: WinRT_String, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat, quality: Single) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SaveToFileWithBitmapFileFormatAndQualityAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, fileName: hstr, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat, quality: Single) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
     def SaveToStreamAsync(self: win32more.Microsoft.Graphics.Canvas.ICanvasBitmap, stream: win32more.Windows.Storage.Streams.IRandomAccessStream, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_mixinmethod
@@ -130,11 +130,11 @@ class CanvasBitmap(ComPtr):
     @winrt_classmethod
     def CreateFromSoftwareBitmap(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, sourceBitmap: win32more.Windows.Graphics.Imaging.SoftwareBitmap) -> win32more.Microsoft.Graphics.Canvas.CanvasBitmap: ...
     @winrt_classmethod
-    def LoadAsyncFromHstring(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
+    def LoadAsyncFromHstring(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_classmethod
-    def LoadAsyncFromHstringWithDpi(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, dpi: Single) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
+    def LoadAsyncFromHstringWithDpi(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, dpi: Single) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_classmethod
-    def LoadAsyncFromHstringWithDpiAndAlpha(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
+    def LoadAsyncFromHstringWithDpiAndAlpha(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_classmethod
     def LoadAsyncFromUri(cls: win32more.Microsoft.Graphics.Canvas.ICanvasBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, uri: win32more.Windows.Foundation.Uri) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_classmethod
@@ -156,6 +156,7 @@ class CanvasBitmap(ComPtr):
     Size = property(get_Size, None)
     SizeInPixels = property(get_SizeInPixels, None)
 class CanvasBitmapFileFormat(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasBitmapFileFormat'
     Auto = 0
     Bmp = 1
     Png = 2
@@ -164,22 +165,25 @@ class CanvasBitmapFileFormat(Enum, Int32):
     Gif = 5
     JpegXR = 6
 class CanvasBlend(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasBlend'
     SourceOver = 0
     Copy = 1
     Min = 2
     Add = 3
 class CanvasBufferPrecision(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasBufferPrecision'
     Precision8UIntNormalized = 0
     Precision8UIntNormalizedSrgb = 1
     Precision16UIntNormalized = 2
     Precision16Float = 3
     Precision32Float = 4
 class CanvasColorSpace(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasColorSpace'
     Custom = 0
     Srgb = 1
     ScRgb = 2
 class CanvasCommandList(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasCommandList
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasCommandList'
@@ -204,6 +208,7 @@ class CanvasCommandList(ComPtr):
     def Close(self: win32more.Windows.Foundation.IClosable) -> Void: ...
     Device = property(get_Device, None)
 class CanvasComposite(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasComposite'
     SourceOver = 0
     DestinationOver = 1
     SourceIn = 2
@@ -218,6 +223,7 @@ class CanvasComposite(Enum, Int32):
     BoundedCopy = 11
     MaskInvert = 12
 class CanvasDebugLevel(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasDebugLevel'
     None_ = 0
     Error = 1
     Warning = 2
@@ -225,7 +231,7 @@ class CanvasDebugLevel(Enum, Int32):
 class _CanvasDevice_Meta_(ComPtr.__class__):
     pass
 class CanvasDevice(ComPtr, metaclass=_CanvasDevice_Meta_):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasDevice
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasDevice'
@@ -259,7 +265,7 @@ class CanvasDevice(ComPtr, metaclass=_CanvasDevice_Meta_):
     @winrt_mixinmethod
     def put_LowPriority(self: win32more.Microsoft.Graphics.Canvas.ICanvasDevice, value: Boolean) -> Void: ...
     @winrt_mixinmethod
-    def add_DeviceLost(self: win32more.Microsoft.Graphics.Canvas.ICanvasDevice, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.Graphics.Canvas.CanvasDevice, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_DeviceLost(self: win32more.Microsoft.Graphics.Canvas.ICanvasDevice, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.Graphics.Canvas.CanvasDevice, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_DeviceLost(self: win32more.Microsoft.Graphics.Canvas.ICanvasDevice, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -294,13 +300,14 @@ class CanvasDevice(ComPtr, metaclass=_CanvasDevice_Meta_):
     MaximumBitmapSizeInPixels = property(get_MaximumBitmapSizeInPixels, None)
     MaximumCacheSize = property(get_MaximumCacheSize, put_MaximumCacheSize)
     _CanvasDevice_Meta_.DebugLevel = property(get_DebugLevel, put_DebugLevel)
-    DeviceLost = event()
+    DeviceLost = event(add_DeviceLost, remove_DeviceLost)
 class CanvasDpiRounding(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasDpiRounding'
     Floor = 0
     Round = 1
     Ceiling = 2
 class CanvasDrawingSession(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasDrawingSession'
@@ -505,25 +512,25 @@ class CanvasDrawingSession(ComPtr):
     @winrt_mixinmethod
     def FillCircleAtCoordsWithColor(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, x: Single, y: Single, radius: Single, color: win32more.Windows.UI.Color) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtPointWithColor(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color) -> Void: ...
+    def DrawTextAtPointWithColor(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtPointCoordsWithColor(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, x: Single, y: Single, color: win32more.Windows.UI.Color) -> Void: ...
+    def DrawTextAtPointCoordsWithColor(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, x: Single, y: Single, color: win32more.Windows.UI.Color) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtPointWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, point: win32more.Windows.Foundation.Numerics.Vector2, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, point: win32more.Windows.Foundation.Numerics.Vector2, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtRectWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, rectangle: win32more.Windows.Foundation.Rect, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, rectangle: win32more.Windows.Foundation.Rect, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtPointCoordsWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, x: Single, y: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointCoordsWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, x: Single, y: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtRectCoordsWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, x: Single, y: Single, w: Single, h: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectCoordsWithBrushAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, x: Single, y: Single, w: Single, h: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtPointWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtRectWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, rectangle: win32more.Windows.Foundation.Rect, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, rectangle: win32more.Windows.Foundation.Rect, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtPointCoordsWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, x: Single, y: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointCoordsWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, x: Single, y: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
-    def DrawTextAtRectCoordsWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: WinRT_String, x: Single, y: Single, w: Single, h: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectCoordsWithColorAndFormat(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, text: hstr, x: Single, y: Single, w: Single, h: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_mixinmethod
     def DrawGeometryWithBrush(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, geometry: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGeometry, offset: win32more.Windows.Foundation.Numerics.Vector2, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush) -> Void: ...
     @winrt_mixinmethod
@@ -665,7 +672,7 @@ class CanvasDrawingSession(ComPtr):
     @winrt_mixinmethod
     def DrawGlyphRunWithMeasuringMode(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode) -> Void: ...
     @winrt_mixinmethod
-    def DrawGlyphRunWithMeasuringModeAndDescription(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: WinRT_String, textString: WinRT_String, clusterMapIndices: PassArray[Int32], textPosition: UInt32) -> Void: ...
+    def DrawGlyphRunWithMeasuringModeAndDescription(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: hstr, textString: hstr, clusterMapIndices: PassArray[Int32], textPosition: UInt32) -> Void: ...
     @winrt_mixinmethod
     def CreateSpriteBatch(self: win32more.Microsoft.Graphics.Canvas.ICanvasDrawingSession) -> win32more.Microsoft.Graphics.Canvas.CanvasSpriteBatch: ...
     @winrt_mixinmethod
@@ -695,11 +702,12 @@ class CanvasDrawingSession(ComPtr):
     Transform = property(get_Transform, put_Transform)
     Units = property(get_Units, put_Units)
 class CanvasEdgeBehavior(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasEdgeBehavior'
     Clamp = 0
     Wrap = 1
     Mirror = 2
 class CanvasImage(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasImage'
     @winrt_classmethod
     def SaveAsync(cls: win32more.Microsoft.Graphics.Canvas.ICanvasImageStatics, image: win32more.Microsoft.Graphics.Canvas.ICanvasImage, sourceRectangle: win32more.Windows.Foundation.Rect, dpi: Single, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, stream: win32more.Windows.Storage.Streams.IRandomAccessStream, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
@@ -712,6 +720,7 @@ class CanvasImage(ComPtr):
     @winrt_classmethod
     def IsHistogramSupported(cls: win32more.Microsoft.Graphics.Canvas.ICanvasImageStatics, device: win32more.Microsoft.Graphics.Canvas.CanvasDevice) -> Boolean: ...
 class CanvasImageInterpolation(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasImageInterpolation'
     NearestNeighbor = 0
     Linear = 1
     Cubic = 2
@@ -719,11 +728,12 @@ class CanvasImageInterpolation(Enum, Int32):
     Anisotropic = 4
     HighQualityCubic = 5
 class CanvasLayerOptions(Enum, UInt32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasLayerOptions'
     None_ = 0
     InitializeFromBackground = 1
     IgnoreAlpha = 2
 class CanvasLock(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasLock
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasLock'
@@ -763,7 +773,7 @@ class CanvasRenderTarget(ComPtr):
     @winrt_classmethod
     def CreateFromDirect3D11SurfaceWithDpiAndAlpha(cls: win32more.Microsoft.Graphics.Canvas.ICanvasRenderTargetStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, surface: win32more.Windows.Graphics.DirectX.Direct3D11.IDirect3DSurface, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Microsoft.Graphics.Canvas.CanvasRenderTarget: ...
 class CanvasSpriteBatch(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasSpriteBatch
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasSpriteBatch'
@@ -818,18 +828,21 @@ class CanvasSpriteBatch(ComPtr):
     Device = property(get_Device, None)
     Dpi = property(get_Dpi, None)
 class CanvasSpriteFlip(Enum, UInt32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasSpriteFlip'
     None_ = 0
     Horizontal = 1
     Vertical = 2
     Both = 3
 class CanvasSpriteOptions(Enum, UInt32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasSpriteOptions'
     None_ = 0
     ClampToSourceRect = 1
 class CanvasSpriteSortMode(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasSpriteSortMode'
     None_ = 0
     Bitmap = 1
 class CanvasSwapChain(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasSwapChain
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasSwapChain'
@@ -921,15 +934,17 @@ class CanvasSwapChain(ComPtr):
     SourceSize = property(get_SourceSize, put_SourceSize)
     TransformMatrix = property(get_TransformMatrix, put_TransformMatrix)
 class CanvasSwapChainRotation(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasSwapChainRotation'
     None_ = 0
     Rotate90 = 1
     Rotate180 = 2
     Rotate270 = 3
 class CanvasUnits(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasUnits'
     Dips = 0
     Pixels = 1
 class CanvasVirtualBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmap
     _classid_ = 'Microsoft.Graphics.Canvas.CanvasVirtualBitmap'
@@ -950,11 +965,11 @@ class CanvasVirtualBitmap(ComPtr):
     @winrt_mixinmethod
     def GetBoundsWithTransform(self: win32more.Microsoft.Graphics.Canvas.ICanvasImage, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, transform: win32more.Windows.Foundation.Numerics.Matrix3x2) -> win32more.Windows.Foundation.Rect: ...
     @winrt_classmethod
-    def LoadAsyncFromFileName(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
+    def LoadAsyncFromFileName(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_classmethod
-    def LoadAsyncFromFileNameWithOptions(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
+    def LoadAsyncFromFileNameWithOptions(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_classmethod
-    def LoadAsyncFromFileNameWithOptionsAndAlpha(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
+    def LoadAsyncFromFileNameWithOptionsAndAlpha(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_classmethod
     def LoadAsyncFromUri(cls: win32more.Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, uri: win32more.Windows.Foundation.Uri) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_classmethod
@@ -973,16 +988,17 @@ class CanvasVirtualBitmap(ComPtr):
     Size = property(get_Size, None)
     SizeInPixels = property(get_SizeInPixels, None)
 class CanvasVirtualBitmapOptions(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions'
     None_ = 0
     ReleaseSource = 1
     CacheOnDemand = 2
 class ICanvasActiveLayer(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasActiveLayer'
     _iid_ = Guid('{49ecfc58-5e1c-4ee3-8088-542f94e93c60}')
 class ICanvasBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasBitmap'
     _iid_ = Guid('{c57532ed-709e-4ac2-86be-a1ec3a7fa8fe}')
@@ -997,11 +1013,11 @@ class ICanvasBitmap(ComPtr):
     @winrt_commethod(10)
     def get_AlphaMode(self) -> win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode: ...
     @winrt_commethod(11)
-    def SaveToFileAsync(self, fileName: WinRT_String) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SaveToFileAsync(self, fileName: hstr) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(12)
-    def SaveToFileWithBitmapFileFormatAsync(self, fileName: WinRT_String, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SaveToFileWithBitmapFileFormatAsync(self, fileName: hstr, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(13)
-    def SaveToFileWithBitmapFileFormatAndQualityAsync(self, fileName: WinRT_String, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat, quality: Single) -> win32more.Windows.Foundation.IAsyncAction: ...
+    def SaveToFileWithBitmapFileFormatAndQualityAsync(self, fileName: hstr, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat, quality: Single) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(14)
     def SaveToStreamAsync(self, stream: win32more.Windows.Storage.Streams.IRandomAccessStream, fileFormat: win32more.Microsoft.Graphics.Canvas.CanvasBitmapFileFormat) -> win32more.Windows.Foundation.IAsyncAction: ...
     @winrt_commethod(15)
@@ -1042,11 +1058,11 @@ class ICanvasBitmap(ComPtr):
     Size = property(get_Size, None)
     SizeInPixels = property(get_SizeInPixels, None)
 class ICanvasBitmapFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasBitmapFactory'
     _iid_ = Guid('{f2d0eb0e-16f3-4bcf-b1d1-04834ab97de4}')
 class ICanvasBitmapStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasBitmapStatics'
     _iid_ = Guid('{c8948dea-a41d-4cc2-af9a-fdde01b606dc}')
     @winrt_commethod(6)
@@ -1076,11 +1092,11 @@ class ICanvasBitmapStatics(ComPtr):
     @winrt_commethod(18)
     def CreateFromSoftwareBitmap(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, sourceBitmap: win32more.Windows.Graphics.Imaging.SoftwareBitmap) -> win32more.Microsoft.Graphics.Canvas.CanvasBitmap: ...
     @winrt_commethod(19)
-    def LoadAsyncFromHstring(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
+    def LoadAsyncFromHstring(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_commethod(20)
-    def LoadAsyncFromHstringWithDpi(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, dpi: Single) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
+    def LoadAsyncFromHstringWithDpi(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, dpi: Single) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_commethod(21)
-    def LoadAsyncFromHstringWithDpiAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
+    def LoadAsyncFromHstringWithDpiAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_commethod(22)
     def LoadAsyncFromUri(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, uri: win32more.Windows.Foundation.Uri) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
     @winrt_commethod(23)
@@ -1094,7 +1110,7 @@ class ICanvasBitmapStatics(ComPtr):
     @winrt_commethod(27)
     def LoadAsyncFromStreamWithDpiAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, stream: win32more.Windows.Storage.Streams.IRandomAccessStream, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasBitmap]: ...
 class ICanvasCommandList(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasCommandList'
     _iid_ = Guid('{b71e73cf-2fe7-4d3a-bbb8-19f016f5be1b}')
@@ -1104,13 +1120,13 @@ class ICanvasCommandList(ComPtr):
     def get_Device(self) -> win32more.Microsoft.Graphics.Canvas.CanvasDevice: ...
     Device = property(get_Device, None)
 class ICanvasCommandListFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasCommandListFactory'
     _iid_ = Guid('{b3d44e68-d931-4b5b-b957-0888980a7d50}')
     @winrt_commethod(6)
     def Create(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator) -> win32more.Microsoft.Graphics.Canvas.CanvasCommandList: ...
 class ICanvasDevice(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasDevice'
     _iid_ = Guid('{a27f0b5d-ec2c-4d4f-948f-0aa1e95e33e6}')
@@ -1131,7 +1147,7 @@ class ICanvasDevice(ComPtr):
     @winrt_commethod(13)
     def put_LowPriority(self, value: Boolean) -> Void: ...
     @winrt_commethod(14)
-    def add_DeviceLost(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.Graphics.Canvas.CanvasDevice, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_DeviceLost(self, value: win32more.Windows.Foundation.TypedEventHandler[win32more.Microsoft.Graphics.Canvas.CanvasDevice, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_DeviceLost(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
@@ -1148,15 +1164,15 @@ class ICanvasDevice(ComPtr):
     LowPriority = property(get_LowPriority, put_LowPriority)
     MaximumBitmapSizeInPixels = property(get_MaximumBitmapSizeInPixels, None)
     MaximumCacheSize = property(get_MaximumCacheSize, put_MaximumCacheSize)
-    DeviceLost = event()
+    DeviceLost = event(add_DeviceLost, remove_DeviceLost)
 class ICanvasDeviceFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasDeviceFactory'
     _iid_ = Guid('{e2c2bf21-5418-43b9-a2da-539e287c790f}')
     @winrt_commethod(6)
     def CreateWithForceSoftwareRendererOption(self, forceSoftwareRenderer: Boolean) -> win32more.Microsoft.Graphics.Canvas.CanvasDevice: ...
 class ICanvasDeviceStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasDeviceStatics'
     _iid_ = Guid('{9b6e2b27-cd07-421a-8f69-0ae8a787fe8c}')
     @winrt_commethod(6)
@@ -1171,7 +1187,7 @@ class ICanvasDeviceStatics(ComPtr):
     def get_DebugLevel(self) -> win32more.Microsoft.Graphics.Canvas.CanvasDebugLevel: ...
     DebugLevel = property(get_DebugLevel, put_DebugLevel)
 class ICanvasDrawingSession(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasDrawingSession'
     _iid_ = Guid('{f60afd09-e623-4be0-b750-578aa920b1db}')
@@ -1376,25 +1392,25 @@ class ICanvasDrawingSession(ComPtr):
     @winrt_commethod(105)
     def FillCircleAtCoordsWithColor(self, x: Single, y: Single, radius: Single, color: win32more.Windows.UI.Color) -> Void: ...
     @winrt_commethod(106)
-    def DrawTextAtPointWithColor(self, text: WinRT_String, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color) -> Void: ...
+    def DrawTextAtPointWithColor(self, text: hstr, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color) -> Void: ...
     @winrt_commethod(107)
-    def DrawTextAtPointCoordsWithColor(self, text: WinRT_String, x: Single, y: Single, color: win32more.Windows.UI.Color) -> Void: ...
+    def DrawTextAtPointCoordsWithColor(self, text: hstr, x: Single, y: Single, color: win32more.Windows.UI.Color) -> Void: ...
     @winrt_commethod(108)
-    def DrawTextAtPointWithBrushAndFormat(self, text: WinRT_String, point: win32more.Windows.Foundation.Numerics.Vector2, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointWithBrushAndFormat(self, text: hstr, point: win32more.Windows.Foundation.Numerics.Vector2, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(109)
-    def DrawTextAtRectWithBrushAndFormat(self, text: WinRT_String, rectangle: win32more.Windows.Foundation.Rect, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectWithBrushAndFormat(self, text: hstr, rectangle: win32more.Windows.Foundation.Rect, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(110)
-    def DrawTextAtPointCoordsWithBrushAndFormat(self, text: WinRT_String, x: Single, y: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointCoordsWithBrushAndFormat(self, text: hstr, x: Single, y: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(111)
-    def DrawTextAtRectCoordsWithBrushAndFormat(self, text: WinRT_String, x: Single, y: Single, w: Single, h: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectCoordsWithBrushAndFormat(self, text: hstr, x: Single, y: Single, w: Single, h: Single, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(112)
-    def DrawTextAtPointWithColorAndFormat(self, text: WinRT_String, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointWithColorAndFormat(self, text: hstr, point: win32more.Windows.Foundation.Numerics.Vector2, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(113)
-    def DrawTextAtRectWithColorAndFormat(self, text: WinRT_String, rectangle: win32more.Windows.Foundation.Rect, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectWithColorAndFormat(self, text: hstr, rectangle: win32more.Windows.Foundation.Rect, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(114)
-    def DrawTextAtPointCoordsWithColorAndFormat(self, text: WinRT_String, x: Single, y: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtPointCoordsWithColorAndFormat(self, text: hstr, x: Single, y: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(115)
-    def DrawTextAtRectCoordsWithColorAndFormat(self, text: WinRT_String, x: Single, y: Single, w: Single, h: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
+    def DrawTextAtRectCoordsWithColorAndFormat(self, text: hstr, x: Single, y: Single, w: Single, h: Single, color: win32more.Windows.UI.Color, format: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextFormat) -> Void: ...
     @winrt_commethod(116)
     def DrawGeometryWithBrush(self, geometry: win32more.Microsoft.Graphics.Canvas.Geometry.CanvasGeometry, offset: win32more.Windows.Foundation.Numerics.Vector2, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush) -> Void: ...
     @winrt_commethod(117)
@@ -1536,7 +1552,7 @@ class ICanvasDrawingSession(ComPtr):
     @winrt_commethod(185)
     def DrawGlyphRunWithMeasuringMode(self, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode) -> Void: ...
     @winrt_commethod(186)
-    def DrawGlyphRunWithMeasuringModeAndDescription(self, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: WinRT_String, textString: WinRT_String, clusterMapIndices: PassArray[Int32], textPosition: UInt32) -> Void: ...
+    def DrawGlyphRunWithMeasuringModeAndDescription(self, point: win32more.Windows.Foundation.Numerics.Vector2, fontFace: win32more.Microsoft.Graphics.Canvas.Text.CanvasFontFace, fontSize: Single, glyphs: PassArray[win32more.Microsoft.Graphics.Canvas.Text.CanvasGlyph], isSideways: Boolean, bidiLevel: UInt32, brush: win32more.Microsoft.Graphics.Canvas.Brushes.ICanvasBrush, measuringMode: win32more.Microsoft.Graphics.Canvas.Text.CanvasTextMeasuringMode, localeName: hstr, textString: hstr, clusterMapIndices: PassArray[Int32], textPosition: UInt32) -> Void: ...
     @winrt_commethod(187)
     def CreateSpriteBatch(self) -> win32more.Microsoft.Graphics.Canvas.CanvasSpriteBatch: ...
     @winrt_commethod(188)
@@ -1554,7 +1570,7 @@ class ICanvasDrawingSession(ComPtr):
     Transform = property(get_Transform, put_Transform)
     Units = property(get_Units, put_Units)
 class ICanvasImage(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasImage'
     _iid_ = Guid('{794966d3-6a64-47e9-8da8-b46aaa24d53b}')
@@ -1563,7 +1579,7 @@ class ICanvasImage(ComPtr):
     @winrt_commethod(7)
     def GetBoundsWithTransform(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, transform: win32more.Windows.Foundation.Numerics.Matrix3x2) -> win32more.Windows.Foundation.Rect: ...
 class ICanvasImageStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasImageStatics'
     _iid_ = Guid('{c54eea15-5a14-489a-8fa0-6e84541f922d}')
     @winrt_commethod(6)
@@ -1577,17 +1593,17 @@ class ICanvasImageStatics(ComPtr):
     @winrt_commethod(10)
     def IsHistogramSupported(self, device: win32more.Microsoft.Graphics.Canvas.CanvasDevice) -> Boolean: ...
 class ICanvasLock(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasLock'
     _iid_ = Guid('{7a0e8498-fba9-4fb0-aa8c-6a48b5ee3e4f}')
 class ICanvasRenderTarget(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasRenderTarget'
     _iid_ = Guid('{2d4c7349-9a32-41b9-b3cc-caf1b7e1099b}')
     @winrt_commethod(6)
     def CreateDrawingSession(self) -> win32more.Microsoft.Graphics.Canvas.CanvasDrawingSession: ...
 class ICanvasRenderTargetFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasRenderTargetFactory'
     _iid_ = Guid('{620dfdbb-9d08-406c-bfe6-d9b81e6df8e7}')
     @winrt_commethod(6)
@@ -1599,7 +1615,7 @@ class ICanvasRenderTargetFactory(ComPtr):
     @winrt_commethod(9)
     def CreateWithWidthAndHeightAndDpiAndFormatAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, width: Single, height: Single, dpi: Single, format: win32more.Windows.Graphics.DirectX.DirectXPixelFormat, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Microsoft.Graphics.Canvas.CanvasRenderTarget: ...
 class ICanvasRenderTargetStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasRenderTargetStatics'
     _iid_ = Guid('{c7d1fe37-dd57-45d7-bcc1-15625a21e8d5}')
     @winrt_commethod(6)
@@ -1609,14 +1625,14 @@ class ICanvasRenderTargetStatics(ComPtr):
     @winrt_commethod(8)
     def CreateFromDirect3D11SurfaceWithDpiAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, surface: win32more.Windows.Graphics.DirectX.Direct3D11.IDirect3DSurface, dpi: Single, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Microsoft.Graphics.Canvas.CanvasRenderTarget: ...
 class ICanvasResourceCreator(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasResourceCreator'
     _iid_ = Guid('{8f6d8aa8-492f-4bc6-b3d0-e7f5eae84b11}')
     @winrt_commethod(6)
     def get_Device(self) -> win32more.Microsoft.Graphics.Canvas.CanvasDevice: ...
     Device = property(get_Device, None)
 class ICanvasResourceCreatorWithDpi(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasResourceCreatorWithDpi'
     _iid_ = Guid('{1a75b512-e9fa-49e6-a876-38cae194013e}')
     @winrt_commethod(6)
@@ -1627,7 +1643,7 @@ class ICanvasResourceCreatorWithDpi(ComPtr):
     def ConvertDipsToPixels(self, dips: Single, dpiRounding: win32more.Microsoft.Graphics.Canvas.CanvasDpiRounding) -> Int32: ...
     Dpi = property(get_Dpi, None)
 class ICanvasSpriteBatch(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasSpriteBatch'
     _iid_ = Guid('{a065dce4-a7f2-4df4-8405-ea9e3a215bf8}')
@@ -1668,13 +1684,13 @@ class ICanvasSpriteBatch(ComPtr):
     @winrt_commethod(23)
     def DrawFromSpriteSheetAtOffsetWithTintAndTransform(self, bitmap: win32more.Microsoft.Graphics.Canvas.CanvasBitmap, offset: win32more.Windows.Foundation.Numerics.Vector2, sourceRect: win32more.Windows.Foundation.Rect, tint: win32more.Windows.Foundation.Numerics.Vector4, origin: win32more.Windows.Foundation.Numerics.Vector2, rotation: Single, scale: win32more.Windows.Foundation.Numerics.Vector2, flip: win32more.Microsoft.Graphics.Canvas.CanvasSpriteFlip) -> Void: ...
 class ICanvasSpriteBatchStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasSpriteBatchStatics'
     _iid_ = Guid('{851eb08d-9d01-4b57-9e94-24113151b74b}')
     @winrt_commethod(6)
     def IsSupported(self, device: win32more.Microsoft.Graphics.Canvas.CanvasDevice) -> Boolean: ...
 class ICanvasSwapChain(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasSwapChain'
     _iid_ = Guid('{882e3c3a-5725-409c-9e76-f80b3bacf1b4}')
@@ -1725,7 +1741,7 @@ class ICanvasSwapChain(ComPtr):
     SourceSize = property(get_SourceSize, put_SourceSize)
     TransformMatrix = property(get_TransformMatrix, put_TransformMatrix)
 class ICanvasSwapChainFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasSwapChainFactory'
     _iid_ = Guid('{133c25cb-ed3c-492b-bffe-7509b521842b}')
     @winrt_commethod(6)
@@ -1737,7 +1753,7 @@ class ICanvasSwapChainFactory(ComPtr):
     @winrt_commethod(9)
     def CreateWithAllOptions(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, width: Single, height: Single, dpi: Single, format: win32more.Windows.Graphics.DirectX.DirectXPixelFormat, bufferCount: Int32, alphaMode: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Microsoft.Graphics.Canvas.CanvasSwapChain: ...
 class ICanvasSwapChainStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasSwapChainStatics'
     _iid_ = Guid('{05376d8f-3e8d-4a82-9838-691680d32a52}')
     @winrt_commethod(6)
@@ -1749,7 +1765,7 @@ class ICanvasSwapChainStatics(ComPtr):
     @winrt_commethod(9)
     def CreateForWindowIdWithAllOptions(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, windowId: win32more.Microsoft.UI.WindowId, width: Single, height: Single, dpi: Single, format: win32more.Windows.Graphics.DirectX.DirectXPixelFormat, bufferCount: Int32) -> win32more.Microsoft.Graphics.Canvas.CanvasSwapChain: ...
 class ICanvasVirtualBitmap(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasVirtualBitmap'
     _iid_ = Guid('{707d8bb0-05f9-484c-9ee2-179e0681c8a7}')
@@ -1769,15 +1785,15 @@ class ICanvasVirtualBitmap(ComPtr):
     Size = property(get_Size, None)
     SizeInPixels = property(get_SizeInPixels, None)
 class ICanvasVirtualBitmapStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.ICanvasVirtualBitmapStatics'
     _iid_ = Guid('{b2f1f8e9-0770-4dd4-956d-78d911390957}')
     @winrt_commethod(6)
-    def LoadAsyncFromFileName(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
+    def LoadAsyncFromFileName(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_commethod(7)
-    def LoadAsyncFromFileNameWithOptions(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
+    def LoadAsyncFromFileNameWithOptions(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_commethod(8)
-    def LoadAsyncFromFileNameWithOptionsAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: WinRT_String, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
+    def LoadAsyncFromFileNameWithOptionsAndAlpha(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, fileName: hstr, options: win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmapOptions, alpha: win32more.Microsoft.Graphics.Canvas.CanvasAlphaMode) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_commethod(9)
     def LoadAsyncFromUri(self, resourceCreator: win32more.Microsoft.Graphics.Canvas.ICanvasResourceCreator, uri: win32more.Windows.Foundation.Uri) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Microsoft.Graphics.Canvas.CanvasVirtualBitmap]: ...
     @winrt_commethod(10)

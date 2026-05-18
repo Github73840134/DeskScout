@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.Dhcp
 OPTION_PAD: UInt32 = 0
@@ -66,6 +66,8 @@ OPTION_CLIENT_CLASS_INFO: UInt32 = 60
 OPTION_CLIENT_ID: UInt32 = 61
 OPTION_TFTP_SERVER_NAME: UInt32 = 66
 OPTION_BOOTFILE_NAME: UInt32 = 67
+OPTION_IPV6_ONLY_PREFERRED: UInt32 = 108
+OPTION_DNR: UInt32 = 162
 OPTION_MSFT_IE_PROXY: UInt32 = 252
 OPTION_END: UInt32 = 255
 DHCPCAPI_REQUEST_PERSISTENT: UInt32 = 1
@@ -325,6 +327,7 @@ DHCPV6_OPTION_NIS_SERVERS: UInt32 = 27
 DHCPV6_OPTION_NISP_SERVERS: UInt32 = 28
 DHCPV6_OPTION_NIS_DOMAIN_NAME: UInt32 = 29
 DHCPV6_OPTION_NISP_DOMAIN_NAME: UInt32 = 30
+DHCPV6_OPTION_DNR: UInt32 = 144
 @winfunctype('dhcpcsvc6.dll')
 def Dhcpv6CApiInitialize(Version: POINTER(UInt32)) -> Void: ...
 @winfunctype('dhcpcsvc6.dll')
@@ -916,6 +919,7 @@ class DHCP_ATTRIB(Structure):
     DhcpAttribId: UInt32
     DhcpAttribType: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         DhcpAttribBool: win32more.Windows.Win32.Foundation.BOOL
         DhcpAttribUlong: UInt32

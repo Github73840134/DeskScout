@@ -1,8 +1,9 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Direct3D
 import win32more.Windows.Win32.System.Com
+import win32more.Windows.Win32.System.Services
 D3D_FL9_1_REQ_TEXTURE1D_U_DIMENSION: UInt32 = 2048
 D3D_FL9_3_REQ_TEXTURE1D_U_DIMENSION: UInt32 = 4096
 D3D_FL9_1_REQ_TEXTURE2D_U_OR_V_DIMENSION: UInt32 = 2048
@@ -60,11 +61,14 @@ D3D_COMPONENT_MASK_Z: UInt32 = 4
 D3D_COMPONENT_MASK_W: UInt32 = 8
 D3D_TEXTURE_LAYOUT_ROW_MAJOR: Guid = Guid('{b5dc234f-72bb-4bec-9705-8cf258df6b6c}')
 D3D_TEXTURE_LAYOUT_64KB_STANDARD_SWIZZLE: Guid = Guid('{4c0f29e3-3f5f-4d35-84c9-bc0983b62c28}')
+CLSID_D3DShaderCacheInstallerFactory: Guid = Guid('{16195a0b-607c-41f1-bf03-c7694d60a8d4}')
 class D3DMATRIX(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         m: Single * 16
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             _11: Single
             _12: Single
@@ -446,6 +450,26 @@ D3D11_RETURN_TYPE_FLOAT: win32more.Windows.Win32.Graphics.Direct3D.D3D_RESOURCE_
 D3D11_RETURN_TYPE_MIXED: win32more.Windows.Win32.Graphics.Direct3D.D3D_RESOURCE_RETURN_TYPE = 6
 D3D11_RETURN_TYPE_DOUBLE: win32more.Windows.Win32.Graphics.Direct3D.D3D_RESOURCE_RETURN_TYPE = 7
 D3D11_RETURN_TYPE_CONTINUED: win32more.Windows.Win32.Graphics.Direct3D.D3D_RESOURCE_RETURN_TYPE = 8
+class D3D_SHADER_CACHE_APPLICATION_DESC(Structure):
+    pExeFilename: win32more.Windows.Win32.Foundation.PWSTR
+    pName: win32more.Windows.Win32.Foundation.PWSTR
+    Version: win32more.Windows.Win32.Graphics.Direct3D.D3D_VERSION_NUMBER
+    pEngineName: win32more.Windows.Win32.Foundation.PWSTR
+    EngineVersion: win32more.Windows.Win32.Graphics.Direct3D.D3D_VERSION_NUMBER
+D3D_SHADER_CACHE_APP_REGISTRATION_SCOPE = Int32
+D3D_SHADER_CACHE_APP_REGISTRATION_SCOPE_USER: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_APP_REGISTRATION_SCOPE = 0
+D3D_SHADER_CACHE_APP_REGISTRATION_SCOPE_SYSTEM: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_APP_REGISTRATION_SCOPE = 1
+class D3D_SHADER_CACHE_COMPILER_PROPERTIES(Structure):
+    szAdapterFamily: Char * 128
+    MinimumABISupportVersion: UInt64
+    MaximumABISupportVersion: UInt64
+    CompilerVersion: win32more.Windows.Win32.Graphics.Direct3D.D3D_VERSION_NUMBER
+    ApplicationProfileVersion: win32more.Windows.Win32.Graphics.Direct3D.D3D_VERSION_NUMBER
+class D3D_SHADER_CACHE_PSDB_PROPERTIES(Structure):
+    pAdapterFamily: win32more.Windows.Win32.Foundation.PWSTR
+    pPsdbPath: win32more.Windows.Win32.Foundation.PWSTR
+D3D_SHADER_CACHE_TARGET_FLAGS = Int32
+D3D_SHADER_CACHE_TARGET_FLAG_NONE: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_TARGET_FLAGS = 0
 D3D_SHADER_CBUFFER_FLAGS = Int32
 D3D_CBF_USERPACKED: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CBUFFER_FLAGS = 1
 D3D10_CBF_USERPACKED: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CBUFFER_FLAGS = 1
@@ -710,6 +734,9 @@ D3D11_TESSELLATOR_PARTITIONING_INTEGER: win32more.Windows.Win32.Graphics.Direct3
 D3D11_TESSELLATOR_PARTITIONING_POW2: win32more.Windows.Win32.Graphics.Direct3D.D3D_TESSELLATOR_PARTITIONING = 2
 D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_ODD: win32more.Windows.Win32.Graphics.Direct3D.D3D_TESSELLATOR_PARTITIONING = 3
 D3D11_TESSELLATOR_PARTITIONING_FRACTIONAL_EVEN: win32more.Windows.Win32.Graphics.Direct3D.D3D_TESSELLATOR_PARTITIONING = 4
+class D3D_VERSION_NUMBER(Union):
+    Version: UInt64
+    VersionParts: UInt16 * 4
 class ID3DBlob(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{8ba5fb08-5195-40e2-ac58-0d989c3a0102}')
@@ -730,6 +757,86 @@ class ID3DInclude(ComPtr):
     def Open(self, IncludeType: win32more.Windows.Win32.Graphics.Direct3D.D3D_INCLUDE_TYPE, pFileName: win32more.Windows.Win32.Foundation.PSTR, pParentData: VoidPtr, ppData: POINTER(VoidPtr), pBytes: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(1)
     def Close(self, pData: VoidPtr) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ID3DShaderCacheApplication(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{fc688ee2-1b35-4913-93be-1ca3fa7df39e}')
+    @commethod(3)
+    def GetExePath(self, pExePath: POINTER(POINTER(UInt16))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def GetDesc(self, pApplicationDesc: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_APPLICATION_DESC)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(5)
+    def RegisterComponent(self, pName: win32more.Windows.Win32.Foundation.PWSTR, pStateObjectDBPath: win32more.Windows.Win32.Foundation.PWSTR, NumPSDB: UInt32, pPSDBs: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_PSDB_PROPERTIES), riid: POINTER(Guid), ppvComponent: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(6)
+    def RemoveComponent(self, pComponent: win32more.Windows.Win32.Graphics.Direct3D.ID3DShaderCacheComponent) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(7)
+    def GetComponentCount(self) -> UInt32: ...
+    @commethod(8)
+    def GetComponent(self, index: UInt32, riid: POINTER(Guid), ppvComponent: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(9)
+    def GetPrecompileTargetCount(self, flags: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_TARGET_FLAGS) -> UInt32: ...
+    @commethod(10)
+    def GetPrecompileTargets(self, ArraySize: UInt32, pArray: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_COMPILER_PROPERTIES), flags: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_TARGET_FLAGS) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(11)
+    def GetInstallerName(self, pInstallerName: POINTER(POINTER(UInt16))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ID3DShaderCacheComponent(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{eed1bf00-f5c7-4cf7-885c-d0f9c0cb4828}')
+    @commethod(3)
+    def GetComponentName(self, pName: POINTER(POINTER(UInt16))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def GetStateObjectDatabasePath(self, pPath: POINTER(POINTER(UInt16))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(5)
+    def GetPrecompiledCachePath(self, pAdapterFamily: win32more.Windows.Win32.Foundation.PWSTR, pPath: POINTER(POINTER(UInt16))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(6)
+    def GetPrecompiledShaderDatabaseCount(self) -> UInt32: ...
+    @commethod(7)
+    def GetPrecompiledShaderDatabases(self, ArraySize: UInt32, pPSDBs: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_PSDB_PROPERTIES)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ID3DShaderCacheExplorer(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{90432322-32f5-487f-9264-e9390fa58b2a}')
+    @commethod(3)
+    def GetApplicationFromExePath(self, pFullExePath: win32more.Windows.Win32.Foundation.PWSTR, riid: POINTER(Guid), ppvApp: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ID3DShaderCacheInstaller(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{bbe30de1-6318-4526-ae17-776693191bb4}')
+    @commethod(3)
+    def RegisterDriverUpdateListener(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def UnregisterDriverUpdateListener(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(5)
+    def RegisterServiceDriverUpdateTrigger(self, hServiceHandle: win32more.Windows.Win32.System.Services.SC_HANDLE) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(6)
+    def UnregisterServiceDriverUpdateTrigger(self, hServiceHandle: win32more.Windows.Win32.System.Services.SC_HANDLE) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(7)
+    def RegisterApplication(self, pExePath: win32more.Windows.Win32.Foundation.PWSTR, pApplicationDesc: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_APPLICATION_DESC), riid: POINTER(Guid), ppvApp: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(8)
+    def RemoveApplication(self, pApplication: win32more.Windows.Win32.Graphics.Direct3D.ID3DShaderCacheApplication) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(9)
+    def GetApplicationCount(self) -> UInt32: ...
+    @commethod(10)
+    def GetApplication(self, index: UInt32, riid: POINTER(Guid), ppvApp: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(11)
+    def ClearAllState(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(12)
+    def GetMaxPrecompileTargetCount(self) -> UInt32: ...
+    @commethod(13)
+    def GetPrecompileTargets(self, pApplicationDesc: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_APPLICATION_DESC), pArraySize: POINTER(UInt32), pArray: POINTER(win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_COMPILER_PROPERTIES), flags: win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_TARGET_FLAGS) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ID3DShaderCacheInstallerClient(ComPtr):
+    extends: None
+    _iid_ = Guid('{a16ee930-d9f6-4222-a514-244473e5d266}')
+    @commethod(0)
+    def GetInstallerName(self, pNameLength: POINTER(UIntPtr), pName: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(1)
+    def GetInstallerScope(self) -> win32more.Windows.Win32.Graphics.Direct3D.D3D_SHADER_CACHE_APP_REGISTRATION_SCOPE: ...
+    @commethod(2)
+    def HandleDriverUpdate(self, pInstaller: win32more.Windows.Win32.Graphics.Direct3D.ID3DShaderCacheInstaller) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class ID3DShaderCacheInstallerFactory(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{09b2dfe4-840f-401a-804c-0dd8aadc9e9f}')
+    @commethod(3)
+    def CreateInstaller(self, pClient: win32more.Windows.Win32.Graphics.Direct3D.ID3DShaderCacheInstallerClient, riid: POINTER(Guid), ppvInstaller: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(4)
+    def CreateExplorer(self, pUnknown: win32more.Windows.Win32.System.Com.IUnknown, riid: POINTER(Guid), ppvExplorer: POINTER(VoidPtr)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype_pointer
 def PFN_DESTRUCTION_CALLBACK(pData: VoidPtr) -> Void: ...
 

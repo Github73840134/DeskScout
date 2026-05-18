@@ -1,11 +1,9 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Microsoft.Graphics.Canvas.UI
 import win32more.Windows.Foundation
-import win32more.Windows.Win32.System.WinRT
 class CanvasCreateResourcesEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Microsoft.Graphics.Canvas.UI.ICanvasCreateResourcesEventArgs
     _classid_ = 'Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs'
     def __init__(self, *args, **kwargs):
@@ -25,16 +23,18 @@ class CanvasCreateResourcesEventArgs(ComPtr):
     def GetTrackedAction(self: win32more.Microsoft.Graphics.Canvas.UI.ICanvasCreateResourcesEventArgs) -> win32more.Windows.Foundation.IAsyncAction: ...
     Reason = property(get_Reason, None)
 class CanvasCreateResourcesReason(Enum, Int32):
+    _name_ = 'Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesReason'
     FirstTime = 0
     NewDevice = 1
     DpiChanged = 2
 class CanvasTimingInformation(Structure):
+    _name_ = 'Microsoft.Graphics.Canvas.UI.CanvasTimingInformation'
     UpdateCount: Int64
     TotalTime: win32more.Windows.Foundation.TimeSpan
     ElapsedTime: win32more.Windows.Foundation.TimeSpan
     IsRunningSlowly: Boolean
 class ICanvasCreateResourcesEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.UI.ICanvasCreateResourcesEventArgs'
     _iid_ = Guid('{edc52108-f6ba-4a09-9fa3-10c97a24e49a}')
     @winrt_commethod(6)
@@ -45,7 +45,7 @@ class ICanvasCreateResourcesEventArgs(ComPtr):
     def GetTrackedAction(self) -> win32more.Windows.Foundation.IAsyncAction: ...
     Reason = property(get_Reason, None)
 class ICanvasCreateResourcesEventArgsFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Microsoft.Graphics.Canvas.UI.ICanvasCreateResourcesEventArgsFactory'
     _iid_ = Guid('{3a21c766-0781-4389-bbc3-86b1f5022af1}')
     @winrt_commethod(6)

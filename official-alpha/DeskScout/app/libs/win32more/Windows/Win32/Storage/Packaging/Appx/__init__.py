@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Data.Xml.MsXml
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
@@ -104,6 +104,10 @@ APPX_PACKAGING_CONTEXT_CHANGE_TYPE_END: win32more.Windows.Win32.Storage.Packagin
 AddPackageDependencyOptions = Int32
 AddPackageDependencyOptions_None: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions = 0
 AddPackageDependencyOptions_PrependIfRankCollision: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions = 1
+AddPackageDependencyOptions2 = Int32
+AddPackageDependencyOptions2_None: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions2 = 0
+AddPackageDependencyOptions2_PrependIfRankCollision: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions2 = 1
+AddPackageDependencyOptions2_SpecifiedPackageFamilyOnly: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions2 = 2
 PACKAGE_FULL_NAME_MIN_LENGTH: UInt32 = 30
 PACKAGE_FULL_NAME_MAX_LENGTH: UInt32 = 127
 PACKAGE_FAMILY_NAME_MIN_LENGTH: UInt32 = 17
@@ -240,18 +244,30 @@ def GetPackageInfo2(packageInfoReference: POINTER(win32more.Windows.Win32.Storag
 def CheckIsMSIXPackage(packageFullName: win32more.Windows.Win32.Foundation.PWSTR, isMSIXPackage: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNELBASE.dll')
 def TryCreatePackageDependency(user: win32more.Windows.Win32.Security.PSID, packageFamilyName: win32more.Windows.Win32.Foundation.PWSTR, minVersion: win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGE_VERSION, packageDependencyProcessorArchitectures: win32more.Windows.Win32.Storage.Packaging.Appx.PackageDependencyProcessorArchitectures, lifetimeKind: win32more.Windows.Win32.Storage.Packaging.Appx.PackageDependencyLifetimeKind, lifetimeArtifact: win32more.Windows.Win32.Foundation.PWSTR, options: win32more.Windows.Win32.Storage.Packaging.Appx.CreatePackageDependencyOptions, packageDependencyId: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('api-ms-win-appmodel-runtime-l1-1-7.dll')
+def TryCreatePackageDependency2(user: win32more.Windows.Win32.Security.PSID, packageFamilyName: win32more.Windows.Win32.Foundation.PWSTR, minVersion: win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGE_VERSION, packageDependencyProcessorArchitectures: win32more.Windows.Win32.Storage.Packaging.Appx.PackageDependencyProcessorArchitectures, lifetimeKind: win32more.Windows.Win32.Storage.Packaging.Appx.PackageDependencyLifetimeKind, lifetimeArtifact: win32more.Windows.Win32.Foundation.PWSTR, options: win32more.Windows.Win32.Storage.Packaging.Appx.CreatePackageDependencyOptions, lifetimeExpiration: POINTER(win32more.Windows.Win32.Foundation.FILETIME), packageDependencyId: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNELBASE.dll')
 def DeletePackageDependency(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNELBASE.dll')
 def AddPackageDependency(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR, rank: Int32, options: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions, packageDependencyContext: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGEDEPENDENCY_CONTEXT), packageFullName: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('api-ms-win-appmodel-runtime-l1-1-7.dll')
+def AddPackageDependency2(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR, rank: Int32, options: win32more.Windows.Win32.Storage.Packaging.Appx.AddPackageDependencyOptions2, packageDependencyContext: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGEDEPENDENCY_CONTEXT), packageFullName: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNELBASE.dll')
 def RemovePackageDependency(packageDependencyContext: win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGEDEPENDENCY_CONTEXT) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNELBASE.dll')
 def GetResolvedPackageFullNameForPackageDependency(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR, packageFullName: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('api-ms-win-appmodel-runtime-l1-1-7.dll')
+def GetResolvedPackageFullNameForPackageDependency2(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR, packageFullName: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNELBASE.dll')
 def GetIdForPackageDependencyContext(packageDependencyContext: win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGEDEPENDENCY_CONTEXT, packageDependencyId: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('api-ms-win-appmodel-runtime-l1-1-6.dll')
 def GetPackageGraphRevisionId() -> UInt32: ...
+@winfunctype('api-ms-win-appmodel-runtime-l1-1-7.dll')
+def FindPackageDependency(findPackageDependencyCriteria: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.FindPackageDependencyCriteria), packageDependencyIdsCount: POINTER(UInt32), packageDependencyIds: POINTER(POINTER(win32more.Windows.Win32.Foundation.PWSTR))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('api-ms-win-appmodel-runtime-l1-1-7.dll')
+def GetPackageDependencyInformation(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR, user: POINTER(win32more.Windows.Win32.Security.PSID), packageFamilyName: POINTER(win32more.Windows.Win32.Foundation.PWSTR), minVersion: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGE_VERSION), packageDependencyProcessorArchitectures: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.PackageDependencyProcessorArchitectures), lifetimeKind: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.PackageDependencyLifetimeKind), lifetimeArtifact: POINTER(win32more.Windows.Win32.Foundation.PWSTR), options: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.CreatePackageDependencyOptions), lifetimeExpiration: POINTER(win32more.Windows.Win32.Foundation.FILETIME)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+@winfunctype('api-ms-win-appmodel-runtime-l1-1-7.dll')
+def GetProcessesUsingPackageDependency(packageDependencyId: win32more.Windows.Win32.Foundation.PWSTR, user: win32more.Windows.Win32.Security.PSID, scopeIsSystem: win32more.Windows.Win32.Foundation.BOOL, processIdsCount: POINTER(UInt32), processIds: POINTER(POINTER(UInt32))) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 @winfunctype('KERNEL32.dll')
 def AppPolicyGetLifecycleManagement(processToken: win32more.Windows.Win32.Foundation.HANDLE, policy: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.AppPolicyLifecycleManagement)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('KERNEL32.dll')
@@ -317,6 +333,7 @@ AppxEncryptionFactory = Guid('{dc664fdd-d868-46ee-8780-8d196cb739f7}')
 AppxFactory = Guid('{5842a140-ff9f-4166-8f5c-62f5b7b0c781}')
 AppxPackageEditor = Guid('{f004f2ca-aebc-4b0d-bf58-e516d5bcc0ab}')
 AppxPackagingDiagnosticEventSinkManager = Guid('{50ca0a46-1588-4161-8ed2-ef9e469ced5d}')
+AppxPackagingServiceProvider = Guid('{fb1b3839-09da-404f-b002-9cbb8da5ca4f}')
 CreatePackageDependencyOptions = Int32
 CreatePackageDependencyOptions_None: win32more.Windows.Win32.Storage.Packaging.Appx.CreatePackageDependencyOptions = 0
 CreatePackageDependencyOptions_DoNotVerifyDependencyResolution: win32more.Windows.Win32.Storage.Packaging.Appx.CreatePackageDependencyOptions = 1
@@ -326,6 +343,10 @@ DX_FEATURE_LEVEL_UNSPECIFIED: win32more.Windows.Win32.Storage.Packaging.Appx.DX_
 DX_FEATURE_LEVEL_9: win32more.Windows.Win32.Storage.Packaging.Appx.DX_FEATURE_LEVEL = 1
 DX_FEATURE_LEVEL_10: win32more.Windows.Win32.Storage.Packaging.Appx.DX_FEATURE_LEVEL = 2
 DX_FEATURE_LEVEL_11: win32more.Windows.Win32.Storage.Packaging.Appx.DX_FEATURE_LEVEL = 3
+class FindPackageDependencyCriteria(Structure):
+    User: win32more.Windows.Win32.Security.PSID
+    ScopeIsSystem: win32more.Windows.Win32.Foundation.BOOL
+    PackageFamilyName: win32more.Windows.Win32.Foundation.PWSTR
 class IAppxAppInstallerReader(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f35bc38c-1d2f-43db-a1f4-586430d1fed2}')
@@ -360,6 +381,11 @@ class IAppxBlockMapFile(ComPtr):
     def GetUncompressedSize(self, size: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(7)
     def ValidateFileHash(self, fileStream: win32more.Windows.Win32.System.Com.IStream, isValid: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IAppxBlockMapFile2(ComPtr):
+    extends: win32more.Windows.Win32.Storage.Packaging.Appx.IAppxBlockMapFile
+    _iid_ = Guid('{54785f78-40e9-11ee-be56-0242ac120002}')
+    @commethod(8)
+    def GetBlockSize(self, blockSize: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAppxBlockMapFilesEnumerator(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{02b856a2-4262-4070-bacb-1a8cbbc42305}')
@@ -394,6 +420,11 @@ class IAppxBundleFactory2(ComPtr):
     _iid_ = Guid('{7325b83d-0185-42c4-82ac-be34ab1a2a8a}')
     @commethod(3)
     def CreateBundleReader2(self, inputStream: win32more.Windows.Win32.System.Com.IStream, expectedDigest: win32more.Windows.Win32.Foundation.PWSTR, bundleReader: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxBundleReader)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IAppxBundleFactory3(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{d11ea6b6-3909-4376-b7c4-10d50f5cf3ae}')
+    @commethod(3)
+    def CreateBundleReaderFromSourceUri(self, uri: win32more.Windows.Win32.Foundation.PWSTR, expectedDigest: win32more.Windows.Win32.Foundation.PWSTR, bundleReader: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxBundleReader)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAppxBundleManifestOptionalBundleInfo(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{515bf2e8-bcb0-4d69-8c48-e383147b6e12}')
@@ -482,6 +513,11 @@ class IAppxBundleReader(ComPtr):
     def GetPayloadPackages(self, payloadPackages: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxFilesEnumerator)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(7)
     def GetPayloadPackage(self, fileName: win32more.Windows.Win32.Foundation.PWSTR, payloadPackage: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxFile)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IAppxBundleReader2(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{98262195-d63a-4c10-b4cf-dd72e061ba87}')
+    @commethod(3)
+    def GetPayloadPackageReader(self, fileName: win32more.Windows.Win32.Foundation.PWSTR, payloadPackageReader: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxPackageReader)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAppxBundleWriter(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{ec446fe8-bfec-4c64-ab4f-49f038f0c6d2}')
@@ -665,6 +701,11 @@ class IAppxFactory3(ComPtr):
     def CreateManifestReader2(self, inputStream: win32more.Windows.Win32.System.Com.IStream, expectedDigest: win32more.Windows.Win32.Foundation.PWSTR, manifestReader: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxManifestReader)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(5)
     def CreateAppInstallerReader(self, inputStream: win32more.Windows.Win32.System.Com.IStream, expectedDigest: win32more.Windows.Win32.Foundation.PWSTR, appInstallerReader: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxAppInstallerReader)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IAppxFactory4(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{92e50000-6934-4c8d-b472-229d431daddf}')
+    @commethod(3)
+    def CreatePackageReaderFromSourceUri(self, uri: win32more.Windows.Win32.Foundation.PWSTR, expectedDigest: win32more.Windows.Win32.Foundation.PWSTR, packageReader: POINTER(win32more.Windows.Win32.Storage.Packaging.Appx.IAppxPackageReader)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAppxFile(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{91df827b-94fd-468f-827b-57f41b2f6f2e}')
@@ -678,6 +719,11 @@ class IAppxFile(ComPtr):
     def GetSize(self, size: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(7)
     def GetStream(self, stream: POINTER(win32more.Windows.Win32.System.Com.IStream)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IAppxFile2(ComPtr):
+    extends: win32more.Windows.Win32.Storage.Packaging.Appx.IAppxFile
+    _iid_ = Guid('{0c830b3c-40e9-11ee-be56-0242ac120002}')
+    @commethod(8)
+    def GetBlockSize(self, blockSize: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAppxFilesEnumerator(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f007eeaf-9831-411c-9847-917cdc62d1fe}')
@@ -1081,9 +1127,11 @@ elif ARCH in 'X86':
         packageId: win32more.Windows.Win32.Storage.Packaging.Appx.PACKAGE_ID
 class PACKAGE_VERSION(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Version: UInt64
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         _pack_ = 4
         class _Anonymous_e__Struct(Structure):
             Revision: UInt16

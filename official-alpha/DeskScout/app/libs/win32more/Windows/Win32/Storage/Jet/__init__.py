@@ -1,6 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-import win32more.Windows.Win32.Foundation
+from win32more._prelude import *
 import win32more.Windows.Win32.Storage.Jet
 import win32more.Windows.Win32.Storage.StructuredStorage
 JET_VERSION: UInt32 = 1280
@@ -10,6 +9,15 @@ JET_bitConfigStoreReadControlDisableAll: UInt32 = 2
 JET_bitConfigStoreReadControlDefault: UInt32 = 0
 JET_wszConfigStoreRelPathSysParamDefault: String = 'SysParamDefault'
 JET_wszConfigStoreRelPathSysParamOverride: String = 'SysParamOverride'
+JET_efvUseEngineDefault: UInt32 = 1073741825
+JET_efvUsePersistedFormat: UInt32 = 1073741826
+JET_efvAllowHigherPersistedFormat: UInt32 = 1090519040
+JET_efvWindows19H1Rtm: UInt32 = 8920
+JET_efvWindows10v2004: UInt32 = 9180
+JET_efvWindowsServer2022: UInt32 = 9360
+JET_efvWindows11v21H2: UInt32 = 9400
+JET_efvWindows11v22H2: UInt32 = 9480
+JET_efvWindows11v23H2: UInt32 = 9600
 JET_bitDefragmentBatchStart: UInt32 = 1
 JET_bitDefragmentBatchStop: UInt32 = 2
 JET_bitDefragmentAvailSpaceTreesOnly: UInt32 = 64
@@ -204,11 +212,14 @@ JET_paramProcessFriendlyName: UInt32 = 186
 JET_paramDurableCommitCallback: UInt32 = 187
 JET_paramEnableSqm: UInt32 = 188
 JET_paramConfigStoreSpec: UInt32 = 189
+JET_paramEngineFormatVersion: UInt32 = 194
 JET_paramUseFlushForWriteDurability: UInt32 = 214
 JET_paramEnableRBS: UInt32 = 215
 JET_paramRBSFilePath: UInt32 = 216
 JET_paramPerfmonRefreshInterval: UInt32 = 217
-JET_paramMaxValueInvalid: UInt32 = 218
+JET_paramEnableBlockCache: UInt32 = 218
+JET_paramTraceFlags: UInt32 = 223
+JET_paramMaxValueInvalid: UInt32 = 232
 JET_sesparamCommitDefault: UInt32 = 4097
 JET_sesparamTransactionLevel: UInt32 = 4099
 JET_sesparamOperationContext: UInt32 = 4100
@@ -370,6 +381,7 @@ JET_bitTTErrorOnDuplicateInsertion: UInt32 = 32
 JET_bitTTForwardOnly: UInt32 = 64
 JET_bitTTIntrinsicLVsOnly: UInt32 = 128
 JET_bitTTDotNetGuid: UInt32 = 256
+JET_bitTTMaterializeBBT: UInt32 = 512
 JET_bitSetAppendLV: UInt32 = 1
 JET_bitSetOverwriteLV: UInt32 = 4
 JET_bitSetSizeLV: UInt32 = 8
@@ -551,6 +563,8 @@ wrnBTNotVisibleAccumulated: UInt32 = 353
 JET_errBadLineCount: Int32 = -354
 JET_errPageTagCorrupted: Int32 = -357
 JET_errNodeCorrupted: Int32 = -358
+JET_errBBTNodeCorrupted: Int32 = -364
+JET_errBBTBuffCorrupted: Int32 = -365
 JET_wrnSeparateLongValue: UInt32 = 406
 JET_errKeyTooBig: Int32 = -408
 JET_errCannotSeparateIntrinsicLV: Int32 = -416
@@ -658,6 +672,8 @@ JET_errEngineFormatVersionParamTooLowForRequestedFeature: Int32 = -621
 JET_errEngineFormatVersionSpecifiedTooLowForLogVersion: Int32 = -622
 JET_errEngineFormatVersionSpecifiedTooLowForDatabaseVersion: Int32 = -623
 JET_errDbTimeBeyondMaxRequired: Int32 = -625
+JET_errLogOperationInconsistentWithDatabase: Int32 = -626
+JET_errInsertKeyOutOfOrder: Int32 = -627
 JET_errBackupAbortByServer: Int32 = -801
 JET_errInvalidGrbit: Int32 = -900
 JET_errTermInProgress: Int32 = -1000
@@ -894,6 +910,8 @@ JET_errDecompressionFailed: Int32 = -1620
 JET_errUpdateMustVersion: Int32 = -1621
 JET_errDecryptionFailed: Int32 = -1622
 JET_errEncryptionBadItag: Int32 = -1623
+JET_errSetAutoIncrementTooHigh: Int32 = -1624
+JET_errAutoIncrementNotSet: Int32 = -1625
 JET_errTooManySorts: Int32 = -1701
 JET_errInvalidOnSort: Int32 = -1702
 JET_errTempFileOpenError: Int32 = -1803
@@ -941,6 +959,8 @@ JET_errFileIOAbort: Int32 = -4002
 JET_errFileIORetry: Int32 = -4003
 JET_errFileIOFail: Int32 = -4004
 JET_errFileCompressed: Int32 = -4005
+JET_errClientSpaceBegin: Int32 = -10000
+JET_errClientSpaceEnd: Int32 = -11999
 JET_BASE_NAME_LENGTH: UInt32 = 3
 JET_bitDumpMinimum: UInt32 = 1
 JET_bitDumpMaximum: UInt32 = 2
@@ -1136,9 +1156,9 @@ def JetGetIndexInfoA(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, dbid:
 def JetGetIndexInfoW(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, dbid: UInt32, szTableName: POINTER(UInt16), szIndexName: POINTER(UInt16), pvResult: VoidPtr, cbResult: UInt32, InfoLevel: UInt32) -> Int32: ...
 JetGetIndexInfo = UnicodeAlias('JetGetIndexInfoW')
 @winfunctype('ESENT.dll')
-def JetCreateIndexA(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, szIndexName: POINTER(SByte), grbit: UInt32, szKey: win32more.Windows.Win32.Foundation.PSTR, cbKey: UInt32, lDensity: UInt32) -> Int32: ...
+def JetCreateIndexA(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, szIndexName: POINTER(SByte), grbit: UInt32, szKey: POINTER(SByte), cbKey: UInt32, lDensity: UInt32) -> Int32: ...
 @winfunctype('ESENT.dll')
-def JetCreateIndexW(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, szIndexName: POINTER(UInt16), grbit: UInt32, szKey: win32more.Windows.Win32.Foundation.PWSTR, cbKey: UInt32, lDensity: UInt32) -> Int32: ...
+def JetCreateIndexW(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, szIndexName: POINTER(UInt16), grbit: UInt32, szKey: POINTER(UInt16), cbKey: UInt32, lDensity: UInt32) -> Int32: ...
 JetCreateIndex = UnicodeAlias('JetCreateIndexW')
 @winfunctype('ESENT.dll')
 def JetCreateIndex2A(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, pindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE_A), cIndexCreate: UInt32) -> Int32: ...
@@ -1439,7 +1459,7 @@ def JetGetInstanceInfoA(pcInstanceInfo: POINTER(UInt32), paInstanceInfo: POINTER
 def JetGetInstanceInfoW(pcInstanceInfo: POINTER(UInt32), paInstanceInfo: POINTER(POINTER(win32more.Windows.Win32.Storage.Jet.JET_INSTANCE_INFO_W))) -> Int32: ...
 JetGetInstanceInfo = UnicodeAlias('JetGetInstanceInfoW')
 @winfunctype('ESENT.dll')
-def JetFreeBuffer(pbBuf: win32more.Windows.Win32.Foundation.PSTR) -> Int32: ...
+def JetFreeBuffer(pbBuf: POINTER(SByte)) -> Int32: ...
 @winfunctype('ESENT.dll')
 def JetSetLS(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, ls: win32more.Windows.Win32.Storage.Jet.JET_LS, grbit: UInt32) -> Int32: ...
 @winfunctype('ESENT.dll')
@@ -1481,32 +1501,36 @@ class JET_BKINFO(Structure):
     Anonymous: _Anonymous_e__Union
     genLow: UInt32
     genHigh: UInt32
+    _anonymous_ = ('Anonymous',)
     _pack_ = 1
     class _Anonymous_e__Union(Union):
         logtimeMark: win32more.Windows.Win32.Storage.Jet.JET_LOGTIME
         bklogtimeMark: win32more.Windows.Win32.Storage.Jet.JET_BKLOGTIME
 class JET_BKLOGTIME(Structure):
-    bSeconds: win32more.Windows.Win32.Foundation.CHAR
-    bMinutes: win32more.Windows.Win32.Foundation.CHAR
-    bHours: win32more.Windows.Win32.Foundation.CHAR
-    bDay: win32more.Windows.Win32.Foundation.CHAR
-    bMonth: win32more.Windows.Win32.Foundation.CHAR
-    bYear: win32more.Windows.Win32.Foundation.CHAR
+    bSeconds: SByte
+    bMinutes: SByte
+    bHours: SByte
+    bDay: SByte
+    bMonth: SByte
+    bYear: SByte
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
-        bFiller1: win32more.Windows.Win32.Foundation.CHAR
+        bFiller1: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fTimeIsUTC: Annotated[Byte, 1]
-            bMillisecondsLow: Annotated[Byte, 7]
+            fTimeIsUTC: Annotated[Byte, NativeBitfieldAttribute(1)]
+            bMillisecondsLow: Annotated[Byte, NativeBitfieldAttribute(7)]
     class _Anonymous2_e__Union(Union):
-        bFiller2: win32more.Windows.Win32.Foundation.CHAR
+        bFiller2: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fOSSnapshot: Annotated[Byte, 1]
-            bMillisecondsHigh: Annotated[Byte, 3]
-            fReserved: Annotated[Byte, 4]
+            fOSSnapshot: Annotated[Byte, NativeBitfieldAttribute(1)]
+            bMillisecondsHigh: Annotated[Byte, NativeBitfieldAttribute(3)]
+            fReserved: Annotated[Byte, NativeBitfieldAttribute(4)]
 @winfunctype_pointer
 def JET_CALLBACK(sesid: win32more.Windows.Win32.Storage.Jet.JET_SESID, dbid: UInt32, tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID, cbtyp: UInt32, pvArg1: VoidPtr, pvArg2: VoidPtr, pvContext: VoidPtr, ulUnused: win32more.Windows.Win32.Storage.StructuredStorage.JET_API_PTR) -> Int32: ...
 class JET_COLUMNBASE_A(Structure):
@@ -1519,8 +1543,8 @@ class JET_COLUMNBASE_A(Structure):
     wFiller: UInt16
     cbMax: UInt32
     grbit: UInt32
-    szBaseTableName: win32more.Windows.Win32.Foundation.CHAR * 256
-    szBaseColumnName: win32more.Windows.Win32.Foundation.CHAR * 256
+    szBaseTableName: SByte * 256
+    szBaseColumnName: SByte * 256
 class JET_COLUMNBASE_W(Structure):
     cbStruct: UInt32
     columnid: UInt32
@@ -1531,12 +1555,12 @@ class JET_COLUMNBASE_W(Structure):
     wFiller: UInt16
     cbMax: UInt32
     grbit: UInt32
-    szBaseTableName: Char * 256
-    szBaseColumnName: Char * 256
+    szBaseTableName: UInt16 * 256
+    szBaseColumnName: UInt16 * 256
 JET_COLUMNBASE = UnicodeAlias('JET_COLUMNBASE_W')
 class JET_COLUMNCREATE_A(Structure):
     cbStruct: UInt32
-    szColumnName: win32more.Windows.Win32.Foundation.PSTR
+    szColumnName: POINTER(SByte)
     coltyp: UInt32
     cbMax: UInt32
     grbit: UInt32
@@ -1547,7 +1571,7 @@ class JET_COLUMNCREATE_A(Structure):
     err: Int32
 class JET_COLUMNCREATE_W(Structure):
     cbStruct: UInt32
-    szColumnName: win32more.Windows.Win32.Foundation.PWSTR
+    szColumnName: POINTER(UInt16)
     coltyp: UInt32
     cbMax: UInt32
     grbit: UInt32
@@ -1598,29 +1622,33 @@ elif ARCH in 'X86':
         _pack_ = 4
 class JET_CONDITIONALCOLUMN_A(Structure):
     cbStruct: UInt32
-    szColumnName: win32more.Windows.Win32.Foundation.PSTR
+    szColumnName: POINTER(SByte)
     grbit: UInt32
 class JET_CONDITIONALCOLUMN_W(Structure):
     cbStruct: UInt32
-    szColumnName: win32more.Windows.Win32.Foundation.PWSTR
+    szColumnName: POINTER(UInt16)
     grbit: UInt32
 JET_CONDITIONALCOLUMN = UnicodeAlias('JET_CONDITIONALCOLUMN_W')
 class JET_CONVERT_A(Structure):
-    szOldDll: win32more.Windows.Win32.Foundation.PSTR
+    szOldDll: POINTER(SByte)
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         fFlags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fSchemaChangesOnly: Annotated[UInt32, 1]
+            fSchemaChangesOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class JET_CONVERT_W(Structure):
-    szOldDll: win32more.Windows.Win32.Foundation.PWSTR
+    szOldDll: POINTER(UInt16)
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         fFlags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fSchemaChangesOnly: Annotated[UInt32, 1]
+            fSchemaChangesOnly: Annotated[UInt32, NativeBitfieldAttribute(1)]
 JET_CONVERT = UnicodeAlias('JET_CONVERT_W')
 class JET_DBINFOMISC(Structure):
     ulVersion: UInt32
@@ -1767,19 +1795,23 @@ class JET_DBINFOUPGRADE(Structure):
     cbFreeSpaceRequiredHigh: UInt32
     csecToUpgrade: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ulFlags: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fUpgradable: Annotated[UInt32, 1]
-            fAlreadyUpgraded: Annotated[UInt32, 1]
+            fUpgradable: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            fAlreadyUpgraded: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class JET_ENUMCOLUMN(Structure):
     columnid: UInt32
     err: Int32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous1: _Anonymous1_e__Struct
         Anonymous2: _Anonymous2_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             cEnumColumnValue: UInt32
             rgEnumColumnValue: POINTER(win32more.Windows.Win32.Storage.Jet.JET_ENUMCOLUMNVALUE)
@@ -1820,7 +1852,7 @@ class JET_ERRINFOBASIC_W(Structure):
     errcatMostSpecific: win32more.Windows.Win32.Storage.Jet.JET_ERRCAT
     rgCategoricalHierarchy: Byte * 8
     lSourceLine: UInt32
-    rgszSourceFile: Char * 64
+    rgszSourceFile: UInt16 * 64
 JET_INDEXCHECKING = Int32
 JET_IndexCheckingOff: win32more.Windows.Win32.Storage.Jet.JET_INDEXCHECKING = 0
 JET_IndexCheckingOn: win32more.Windows.Win32.Storage.Jet.JET_INDEXCHECKING = 1
@@ -1828,8 +1860,8 @@ JET_IndexCheckingDeferToOpenTable: win32more.Windows.Win32.Storage.Jet.JET_INDEX
 JET_IndexCheckingMax: win32more.Windows.Win32.Storage.Jet.JET_INDEXCHECKING = 3
 class JET_INDEXCREATE2_A(Structure):
     cbStruct: UInt32
-    szIndexName: win32more.Windows.Win32.Foundation.PSTR
-    szKey: win32more.Windows.Win32.Foundation.PSTR
+    szIndexName: POINTER(SByte)
+    szKey: POINTER(SByte)
     cbKey: UInt32
     grbit: UInt32
     ulDensity: UInt32
@@ -1840,6 +1872,7 @@ class JET_INDEXCREATE2_A(Structure):
     err: Int32
     cbKeyMost: UInt32
     pSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         lcid: UInt32
         pidxunicode: POINTER(win32more.Windows.Win32.Storage.Jet.JET_UNICODEINDEX)
@@ -1848,8 +1881,8 @@ class JET_INDEXCREATE2_A(Structure):
         ptuplelimits: POINTER(win32more.Windows.Win32.Storage.Jet.JET_TUPLELIMITS)
 class JET_INDEXCREATE2_W(Structure):
     cbStruct: UInt32
-    szIndexName: win32more.Windows.Win32.Foundation.PWSTR
-    szKey: win32more.Windows.Win32.Foundation.PWSTR
+    szIndexName: POINTER(UInt16)
+    szKey: POINTER(UInt16)
     cbKey: UInt32
     grbit: UInt32
     ulDensity: UInt32
@@ -1860,6 +1893,7 @@ class JET_INDEXCREATE2_W(Structure):
     err: Int32
     cbKeyMost: UInt32
     pSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         lcid: UInt32
         pidxunicode: POINTER(win32more.Windows.Win32.Storage.Jet.JET_UNICODEINDEX)
@@ -1869,8 +1903,8 @@ class JET_INDEXCREATE2_W(Structure):
 JET_INDEXCREATE2 = UnicodeAlias('JET_INDEXCREATE2_W')
 class JET_INDEXCREATE3_A(Structure):
     cbStruct: UInt32
-    szIndexName: win32more.Windows.Win32.Foundation.PSTR
-    szKey: win32more.Windows.Win32.Foundation.PSTR
+    szIndexName: POINTER(SByte)
+    szKey: POINTER(SByte)
     cbKey: UInt32
     grbit: UInt32
     ulDensity: UInt32
@@ -1881,13 +1915,14 @@ class JET_INDEXCREATE3_A(Structure):
     err: Int32
     cbKeyMost: UInt32
     pSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cbVarSegMac: UInt32
         ptuplelimits: POINTER(win32more.Windows.Win32.Storage.Jet.JET_TUPLELIMITS)
 class JET_INDEXCREATE3_W(Structure):
     cbStruct: UInt32
-    szIndexName: win32more.Windows.Win32.Foundation.PWSTR
-    szKey: win32more.Windows.Win32.Foundation.PWSTR
+    szIndexName: POINTER(UInt16)
+    szKey: POINTER(UInt16)
     cbKey: UInt32
     grbit: UInt32
     ulDensity: UInt32
@@ -1898,14 +1933,15 @@ class JET_INDEXCREATE3_W(Structure):
     err: Int32
     cbKeyMost: UInt32
     pSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         cbVarSegMac: UInt32
         ptuplelimits: POINTER(win32more.Windows.Win32.Storage.Jet.JET_TUPLELIMITS)
 JET_INDEXCREATE3 = UnicodeAlias('JET_INDEXCREATE3_W')
 class JET_INDEXCREATE_A(Structure):
     cbStruct: UInt32
-    szIndexName: win32more.Windows.Win32.Foundation.PSTR
-    szKey: win32more.Windows.Win32.Foundation.PSTR
+    szIndexName: POINTER(SByte)
+    szKey: POINTER(SByte)
     cbKey: UInt32
     grbit: UInt32
     ulDensity: UInt32
@@ -1915,6 +1951,7 @@ class JET_INDEXCREATE_A(Structure):
     cConditionalColumn: UInt32
     err: Int32
     cbKeyMost: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         lcid: UInt32
         pidxunicode: POINTER(win32more.Windows.Win32.Storage.Jet.JET_UNICODEINDEX)
@@ -1923,8 +1960,8 @@ class JET_INDEXCREATE_A(Structure):
         ptuplelimits: POINTER(win32more.Windows.Win32.Storage.Jet.JET_TUPLELIMITS)
 class JET_INDEXCREATE_W(Structure):
     cbStruct: UInt32
-    szIndexName: win32more.Windows.Win32.Foundation.PWSTR
-    szKey: win32more.Windows.Win32.Foundation.PWSTR
+    szIndexName: POINTER(UInt16)
+    szKey: POINTER(UInt16)
     cbKey: UInt32
     grbit: UInt32
     ulDensity: UInt32
@@ -1934,6 +1971,7 @@ class JET_INDEXCREATE_W(Structure):
     cConditionalColumn: UInt32
     err: Int32
     cbKeyMost: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         lcid: UInt32
         pidxunicode: POINTER(win32more.Windows.Win32.Storage.Jet.JET_UNICODEINDEX)
@@ -1987,14 +2025,14 @@ class JET_INDEX_RANGE(Structure):
 JET_INSTANCE = UIntPtr
 class JET_INSTANCE_INFO_A(Structure):
     hInstanceId: win32more.Windows.Win32.Storage.Jet.JET_INSTANCE
-    szInstanceName: win32more.Windows.Win32.Foundation.PSTR
+    szInstanceName: POINTER(SByte)
     cDatabases: win32more.Windows.Win32.Storage.StructuredStorage.JET_API_PTR
     szDatabaseFileName: POINTER(POINTER(SByte))
     szDatabaseDisplayName: POINTER(POINTER(SByte))
     szDatabaseSLVFileName_Obsolete: POINTER(POINTER(SByte))
 class JET_INSTANCE_INFO_W(Structure):
     hInstanceId: win32more.Windows.Win32.Storage.Jet.JET_INSTANCE
-    szInstanceName: win32more.Windows.Win32.Foundation.PWSTR
+    szInstanceName: POINTER(UInt16)
     cDatabases: win32more.Windows.Win32.Storage.StructuredStorage.JET_API_PTR
     szDatabaseFileName: POINTER(POINTER(UInt16))
     szDatabaseDisplayName: POINTER(POINTER(UInt16))
@@ -2009,35 +2047,38 @@ class JET_LOGINFO_A(Structure):
     cbSize: UInt32
     ulGenLow: UInt32
     ulGenHigh: UInt32
-    szBaseName: win32more.Windows.Win32.Foundation.CHAR * 4
+    szBaseName: SByte * 4
 class JET_LOGINFO_W(Structure):
     cbSize: UInt32
     ulGenLow: UInt32
     ulGenHigh: UInt32
-    szBaseName: Char * 4
+    szBaseName: UInt16 * 4
 JET_LOGINFO = UnicodeAlias('JET_LOGINFO_W')
 class JET_LOGTIME(Structure):
-    bSeconds: win32more.Windows.Win32.Foundation.CHAR
-    bMinutes: win32more.Windows.Win32.Foundation.CHAR
-    bHours: win32more.Windows.Win32.Foundation.CHAR
-    bDay: win32more.Windows.Win32.Foundation.CHAR
-    bMonth: win32more.Windows.Win32.Foundation.CHAR
-    bYear: win32more.Windows.Win32.Foundation.CHAR
+    bSeconds: SByte
+    bMinutes: SByte
+    bHours: SByte
+    bDay: SByte
+    bMonth: SByte
+    bYear: SByte
     Anonymous1: _Anonymous1_e__Union
     Anonymous2: _Anonymous2_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
-        bFiller1: win32more.Windows.Win32.Foundation.CHAR
+        bFiller1: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fTimeIsUTC: Annotated[Byte, 1]
-            bMillisecondsLow: Annotated[Byte, 7]
+            fTimeIsUTC: Annotated[Byte, NativeBitfieldAttribute(1)]
+            bMillisecondsLow: Annotated[Byte, NativeBitfieldAttribute(7)]
     class _Anonymous2_e__Union(Union):
-        bFiller2: win32more.Windows.Win32.Foundation.CHAR
+        bFiller2: Byte
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            fReserved: Annotated[Byte, 1]
-            bMillisecondsHigh: Annotated[Byte, 3]
-            fUnused: Annotated[Byte, 4]
+            fReserved: Annotated[Byte, NativeBitfieldAttribute(1)]
+            bMillisecondsHigh: Annotated[Byte, NativeBitfieldAttribute(3)]
+            fUnused: Annotated[Byte, NativeBitfieldAttribute(4)]
 JET_LS = UIntPtr
 if ARCH in 'X64,ARM64':
     class JET_OBJECTINFO(Structure):
@@ -2222,11 +2263,11 @@ class JET_RSTINFO_W(Structure):
     pfnStatus: win32more.Windows.Win32.Storage.Jet.JET_PFNSTATUS
 JET_RSTINFO = UnicodeAlias('JET_RSTINFO_W')
 class JET_RSTMAP_A(Structure):
-    szDatabaseName: win32more.Windows.Win32.Foundation.PSTR
-    szNewDatabaseName: win32more.Windows.Win32.Foundation.PSTR
+    szDatabaseName: POINTER(SByte)
+    szNewDatabaseName: POINTER(SByte)
 class JET_RSTMAP_W(Structure):
-    szDatabaseName: win32more.Windows.Win32.Foundation.PWSTR
-    szNewDatabaseName: win32more.Windows.Win32.Foundation.PWSTR
+    szDatabaseName: POINTER(UInt16)
+    szNewDatabaseName: POINTER(UInt16)
 JET_RSTMAP = UnicodeAlias('JET_RSTMAP_W')
 JET_SESID = UIntPtr
 class JET_SETCOLUMN(Structure):
@@ -2244,18 +2285,18 @@ class JET_SETINFO(Structure):
 class JET_SETSYSPARAM_A(Structure):
     paramid: UInt32
     lParam: win32more.Windows.Win32.Storage.StructuredStorage.JET_API_PTR
-    sz: win32more.Windows.Win32.Foundation.PSTR
+    sz: POINTER(SByte)
     err: Int32
 class JET_SETSYSPARAM_W(Structure):
     paramid: UInt32
     lParam: win32more.Windows.Win32.Storage.StructuredStorage.JET_API_PTR
-    sz: win32more.Windows.Win32.Foundation.PWSTR
+    sz: POINTER(UInt16)
     err: Int32
 JET_SETSYSPARAM = UnicodeAlias('JET_SETSYSPARAM_W')
 class JET_SIGNATURE(Structure):
     ulRandom: UInt32
     logtimeCreate: win32more.Windows.Win32.Storage.Jet.JET_LOGTIME
-    szComputerName: win32more.Windows.Win32.Foundation.CHAR * 16
+    szComputerName: SByte * 16
     _pack_ = 1
 class JET_SNPROG(Structure):
     cbStruct: UInt32
@@ -2272,30 +2313,30 @@ class JET_SPACEHINTS(Structure):
     cbMaxExtent: UInt32
 class JET_TABLECREATE2_A(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PSTR
+    szTableName: POINTER(SByte)
+    szTemplateTableName: POINTER(SByte)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_A)
     cColumns: UInt32
     rgindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE_A)
     cIndexes: UInt32
-    szCallback: win32more.Windows.Win32.Foundation.PSTR
+    szCallback: POINTER(SByte)
     cbtyp: UInt32
     grbit: UInt32
     tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID
     cCreated: UInt32
 class JET_TABLECREATE2_W(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PWSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PWSTR
+    szTableName: POINTER(UInt16)
+    szTemplateTableName: POINTER(UInt16)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_W)
     cColumns: UInt32
     rgindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE_W)
     cIndexes: UInt32
-    szCallback: win32more.Windows.Win32.Foundation.PWSTR
+    szCallback: POINTER(UInt16)
     cbtyp: UInt32
     grbit: UInt32
     tableid: win32more.Windows.Win32.Storage.StructuredStorage.JET_TABLEID
@@ -2303,15 +2344,15 @@ class JET_TABLECREATE2_W(Structure):
 JET_TABLECREATE2 = UnicodeAlias('JET_TABLECREATE2_W')
 class JET_TABLECREATE3_A(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PSTR
+    szTableName: POINTER(SByte)
+    szTemplateTableName: POINTER(SByte)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_A)
     cColumns: UInt32
     rgindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE2_A)
     cIndexes: UInt32
-    szCallback: win32more.Windows.Win32.Foundation.PSTR
+    szCallback: POINTER(SByte)
     cbtyp: UInt32
     grbit: UInt32
     pSeqSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
@@ -2321,15 +2362,15 @@ class JET_TABLECREATE3_A(Structure):
     cCreated: UInt32
 class JET_TABLECREATE3_W(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PWSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PWSTR
+    szTableName: POINTER(UInt16)
+    szTemplateTableName: POINTER(UInt16)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_W)
     cColumns: UInt32
     rgindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE2_W)
     cIndexes: UInt32
-    szCallback: win32more.Windows.Win32.Foundation.PWSTR
+    szCallback: POINTER(UInt16)
     cbtyp: UInt32
     grbit: UInt32
     pSeqSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
@@ -2340,15 +2381,15 @@ class JET_TABLECREATE3_W(Structure):
 JET_TABLECREATE3 = UnicodeAlias('JET_TABLECREATE3_W')
 class JET_TABLECREATE4_A(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PSTR
+    szTableName: POINTER(SByte)
+    szTemplateTableName: POINTER(SByte)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_A)
     cColumns: UInt32
     rgindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE3_A)
     cIndexes: UInt32
-    szCallback: win32more.Windows.Win32.Foundation.PSTR
+    szCallback: POINTER(SByte)
     cbtyp: UInt32
     grbit: UInt32
     pSeqSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
@@ -2358,15 +2399,15 @@ class JET_TABLECREATE4_A(Structure):
     cCreated: UInt32
 class JET_TABLECREATE4_W(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PWSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PWSTR
+    szTableName: POINTER(UInt16)
+    szTemplateTableName: POINTER(UInt16)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_W)
     cColumns: UInt32
     rgindexcreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_INDEXCREATE3_W)
     cIndexes: UInt32
-    szCallback: win32more.Windows.Win32.Foundation.PWSTR
+    szCallback: POINTER(UInt16)
     cbtyp: UInt32
     grbit: UInt32
     pSeqSpacehints: POINTER(win32more.Windows.Win32.Storage.Jet.JET_SPACEHINTS)
@@ -2377,8 +2418,8 @@ class JET_TABLECREATE4_W(Structure):
 JET_TABLECREATE4 = UnicodeAlias('JET_TABLECREATE4_W')
 class JET_TABLECREATE_A(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PSTR
+    szTableName: POINTER(SByte)
+    szTemplateTableName: POINTER(SByte)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_A)
@@ -2390,8 +2431,8 @@ class JET_TABLECREATE_A(Structure):
     cCreated: UInt32
 class JET_TABLECREATE_W(Structure):
     cbStruct: UInt32
-    szTableName: win32more.Windows.Win32.Foundation.PWSTR
-    szTemplateTableName: win32more.Windows.Win32.Foundation.PWSTR
+    szTableName: POINTER(UInt16)
+    szTemplateTableName: POINTER(UInt16)
     ulPages: UInt32
     ulDensity: UInt32
     rgcolumncreate: POINTER(win32more.Windows.Win32.Storage.Jet.JET_COLUMNCREATE_W)
@@ -2446,18 +2487,18 @@ class JET_UNICODEINDEX(Structure):
     lcid: UInt32
     dwMapFlags: UInt32
 class JET_UNICODEINDEX2(Structure):
-    szLocaleName: win32more.Windows.Win32.Foundation.PWSTR
+    szLocaleName: POINTER(UInt16)
     dwMapFlags: UInt32
 class JET_USERDEFINEDDEFAULT_A(Structure):
-    szCallback: win32more.Windows.Win32.Foundation.PSTR
+    szCallback: POINTER(SByte)
     pbUserData: POINTER(Byte)
     cbUserData: UInt32
-    szDependantColumns: win32more.Windows.Win32.Foundation.PSTR
+    szDependantColumns: POINTER(SByte)
 class JET_USERDEFINEDDEFAULT_W(Structure):
-    szCallback: win32more.Windows.Win32.Foundation.PWSTR
+    szCallback: POINTER(UInt16)
     pbUserData: POINTER(Byte)
     cbUserData: UInt32
-    szDependantColumns: win32more.Windows.Win32.Foundation.PWSTR
+    szDependantColumns: POINTER(UInt16)
 JET_USERDEFINEDDEFAULT = UnicodeAlias('JET_USERDEFINEDDEFAULT_W')
 
 

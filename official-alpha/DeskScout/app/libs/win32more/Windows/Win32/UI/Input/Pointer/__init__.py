@@ -1,7 +1,7 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
-import win32more.Windows.Win32.UI.Controls
+import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.UI.Input.Pointer
 import win32more.Windows.Win32.UI.WindowsAndMessaging
 @winfunctype('USER32.dll')
@@ -41,7 +41,9 @@ def GetPointerFramePenInfoHistory(pointerId: UInt32, entriesCount: POINTER(UInt3
 @winfunctype('USER32.dll')
 def SkipPointerFrameMessages(pointerId: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def InjectSyntheticPointerInput(device: win32more.Windows.Win32.UI.Controls.HSYNTHETICPOINTERDEVICE, pointerInfo: POINTER(win32more.Windows.Win32.UI.Controls.POINTER_TYPE_INFO), count: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def InjectSyntheticPointerInput(device: win32more.Windows.Win32.UI.Input.Pointer.HSYNTHETICPOINTERDEVICE, pointerInfo: POINTER(win32more.Windows.Win32.UI.Input.Pointer.POINTER_TYPE_INFO), count: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
+@winfunctype('USER32.dll')
+def DestroySyntheticPointerDevice(device: win32more.Windows.Win32.UI.Input.Pointer.HSYNTHETICPOINTERDEVICE) -> Void: ...
 @winfunctype('USER32.dll')
 def EnableMouseInPointer(fEnable: win32more.Windows.Win32.Foundation.BOOL) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
@@ -49,17 +51,18 @@ def IsMouseInPointerEnabled() -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
 def GetPointerInputTransform(pointerId: UInt32, historyCount: UInt32, inputTransform: POINTER(win32more.Windows.Win32.UI.Input.Pointer.INPUT_TRANSFORM)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def GetPointerDevices(deviceCount: POINTER(UInt32), pointerDevices: POINTER(win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def GetPointerDevices(deviceCount: POINTER(UInt32), pointerDevices: POINTER(win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def GetPointerDevice(device: win32more.Windows.Win32.Foundation.HANDLE, pointerDevice: POINTER(win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def GetPointerDevice(device: win32more.Windows.Win32.Foundation.HANDLE, pointerDevice: POINTER(win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def GetPointerDeviceProperties(device: win32more.Windows.Win32.Foundation.HANDLE, propertyCount: POINTER(UInt32), pointerProperties: POINTER(win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_PROPERTY)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def GetPointerDeviceProperties(device: win32more.Windows.Win32.Foundation.HANDLE, propertyCount: POINTER(UInt32), pointerProperties: POINTER(win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_PROPERTY)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
 def GetPointerDeviceRects(device: win32more.Windows.Win32.Foundation.HANDLE, pointerDeviceRect: POINTER(win32more.Windows.Win32.Foundation.RECT), displayRect: POINTER(win32more.Windows.Win32.Foundation.RECT)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def GetPointerDeviceCursors(device: win32more.Windows.Win32.Foundation.HANDLE, cursorCount: POINTER(UInt32), deviceCursors: POINTER(win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_CURSOR_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def GetPointerDeviceCursors(device: win32more.Windows.Win32.Foundation.HANDLE, cursorCount: POINTER(UInt32), deviceCursors: POINTER(win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_CURSOR_INFO)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('USER32.dll')
-def GetRawPointerDeviceData(pointerId: UInt32, historyCount: UInt32, propertiesCount: UInt32, pProperties: POINTER(win32more.Windows.Win32.UI.Controls.POINTER_DEVICE_PROPERTY), pValues: POINTER(Int32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+def GetRawPointerDeviceData(pointerId: UInt32, historyCount: UInt32, propertiesCount: UInt32, pProperties: POINTER(win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_PROPERTY), pValues: POINTER(Int32)) -> win32more.Windows.Win32.Foundation.BOOL: ...
+HSYNTHETICPOINTERDEVICE = VoidPtr
 class INPUT_INJECTION_VALUE(Structure):
     page: UInt16
     usage: UInt16
@@ -67,9 +70,11 @@ class INPUT_INJECTION_VALUE(Structure):
     index: UInt16
 class INPUT_TRANSFORM(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         m: Single * 16
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             _11: Single
             _12: Single
@@ -99,6 +104,41 @@ POINTER_CHANGE_FOURTHBUTTON_DOWN: win32more.Windows.Win32.UI.Input.Pointer.POINT
 POINTER_CHANGE_FOURTHBUTTON_UP: win32more.Windows.Win32.UI.Input.Pointer.POINTER_BUTTON_CHANGE_TYPE = 8
 POINTER_CHANGE_FIFTHBUTTON_DOWN: win32more.Windows.Win32.UI.Input.Pointer.POINTER_BUTTON_CHANGE_TYPE = 9
 POINTER_CHANGE_FIFTHBUTTON_UP: win32more.Windows.Win32.UI.Input.Pointer.POINTER_BUTTON_CHANGE_TYPE = 10
+class POINTER_DEVICE_CURSOR_INFO(Structure):
+    cursorId: UInt32
+    cursor: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_CURSOR_TYPE
+POINTER_DEVICE_CURSOR_TYPE = Int32
+POINTER_DEVICE_CURSOR_TYPE_UNKNOWN: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_CURSOR_TYPE = 0
+POINTER_DEVICE_CURSOR_TYPE_TIP: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_CURSOR_TYPE = 1
+POINTER_DEVICE_CURSOR_TYPE_ERASER: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_CURSOR_TYPE = 2
+POINTER_DEVICE_CURSOR_TYPE_MAX: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_CURSOR_TYPE = -1
+class POINTER_DEVICE_INFO(Structure):
+    displayOrientation: UInt32
+    device: win32more.Windows.Win32.Foundation.HANDLE
+    pointerDeviceType: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_TYPE
+    monitor: win32more.Windows.Win32.Graphics.Gdi.HMONITOR
+    startingCursorId: UInt32
+    maxActiveContacts: UInt16
+    productString: Char * 520
+class POINTER_DEVICE_PROPERTY(Structure):
+    logicalMin: Int32
+    logicalMax: Int32
+    physicalMin: Int32
+    physicalMax: Int32
+    unit: UInt32
+    unitExponent: UInt32
+    usagePageId: UInt16
+    usageId: UInt16
+POINTER_DEVICE_TYPE = Int32
+POINTER_DEVICE_TYPE_INTEGRATED_PEN: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_TYPE = 1
+POINTER_DEVICE_TYPE_EXTERNAL_PEN: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_TYPE = 2
+POINTER_DEVICE_TYPE_TOUCH: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_TYPE = 3
+POINTER_DEVICE_TYPE_TOUCH_PAD: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_TYPE = 4
+POINTER_DEVICE_TYPE_MAX: win32more.Windows.Win32.UI.Input.Pointer.POINTER_DEVICE_TYPE = -1
+POINTER_FEEDBACK_MODE = Int32
+POINTER_FEEDBACK_DEFAULT: win32more.Windows.Win32.UI.Input.Pointer.POINTER_FEEDBACK_MODE = 1
+POINTER_FEEDBACK_INDIRECT: win32more.Windows.Win32.UI.Input.Pointer.POINTER_FEEDBACK_MODE = 2
+POINTER_FEEDBACK_NONE: win32more.Windows.Win32.UI.Input.Pointer.POINTER_FEEDBACK_MODE = 3
 POINTER_FLAGS = UInt32
 POINTER_FLAG_NONE: win32more.Windows.Win32.UI.Input.Pointer.POINTER_FLAGS = 0
 POINTER_FLAG_NEW: win32more.Windows.Win32.UI.Input.Pointer.POINTER_FLAGS = 1
@@ -152,6 +192,14 @@ class POINTER_TOUCH_INFO(Structure):
     rcContactRaw: win32more.Windows.Win32.Foundation.RECT
     orientation: UInt32
     pressure: UInt32
+class POINTER_TYPE_INFO(Structure):
+    type: win32more.Windows.Win32.UI.WindowsAndMessaging.POINTER_INPUT_TYPE
+    Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
+    class _Anonymous_e__Union(Union):
+        pointerInfo: win32more.Windows.Win32.UI.Input.Pointer.POINTER_INFO
+        touchInfo: win32more.Windows.Win32.UI.Input.Pointer.POINTER_TOUCH_INFO
+        penInfo: win32more.Windows.Win32.UI.Input.Pointer.POINTER_PEN_INFO
 TOUCH_FEEDBACK_MODE = UInt32
 TOUCH_FEEDBACK_DEFAULT: win32more.Windows.Win32.UI.Input.Pointer.TOUCH_FEEDBACK_MODE = 1
 TOUCH_FEEDBACK_INDIRECT: win32more.Windows.Win32.UI.Input.Pointer.TOUCH_FEEDBACK_MODE = 2

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Devices.Geolocation
 import win32more.Windows.Win32.Devices.Sensors
 import win32more.Windows.Win32.Foundation
@@ -86,6 +86,7 @@ class GNSS_AGNSS_INJECT(Structure):
     InjectionDataSize: UInt32
     Unused: Byte * 512
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Time: win32more.Windows.Win32.Devices.Geolocation.GNSS_AGNSS_INJECTTIME
         Position: win32more.Windows.Win32.Devices.Geolocation.GNSS_AGNSS_INJECTPOSITION
@@ -97,7 +98,7 @@ class GNSS_AGNSS_INJECTBLOB(Structure):
     BlobVersion: UInt32
     AgnssFormat: UInt32
     BlobSize: UInt32
-    BlobData: Byte * 1
+    BlobData: FlexibleArray[Byte]
 class GNSS_AGNSS_INJECTPOSITION(Structure):
     Size: UInt32
     Version: UInt32
@@ -134,6 +135,7 @@ class GNSS_BREADCRUMB_LIST(Structure):
     Version: UInt32
     NumCrumbs: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         v1: win32more.Windows.Win32.Devices.Geolocation.GNSS_BREADCRUMB_V1 * 50
 class GNSS_BREADCRUMB_V1(Structure):
@@ -210,7 +212,7 @@ class GNSS_DRIVERCOMMAND_PARAM(Structure):
     Reserved: UInt32
     CommandDataSize: UInt32
     Unused: Byte * 512
-    CommandData: Byte * 1
+    CommandData: FlexibleArray[Byte]
 GNSS_DRIVERCOMMAND_TYPE = Int32
 GNSS_SetLocationServiceEnabled: win32more.Windows.Win32.Devices.Geolocation.GNSS_DRIVERCOMMAND_TYPE = 1
 GNSS_SetLocationNIRequestAllowed: win32more.Windows.Win32.Devices.Geolocation.GNSS_DRIVERCOMMAND_TYPE = 2
@@ -246,6 +248,7 @@ class GNSS_EVENT(Structure):
     EventDataSize: UInt32
     Unused: Byte * 512
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FixData: win32more.Windows.Win32.Devices.Geolocation.GNSS_FIXDATA
         AgnssRequest: win32more.Windows.Win32.Devices.Geolocation.GNSS_AGNSS_REQUEST_PARAM
@@ -256,7 +259,7 @@ class GNSS_EVENT(Structure):
         BreadcrumbAlertData: win32more.Windows.Win32.Devices.Geolocation.GNSS_BREADCRUMBING_ALERT_DATA
         GeofencesTrackingStatus: win32more.Windows.Win32.Devices.Geolocation.GNSS_GEOFENCES_TRACKINGSTATUS_DATA
         DriverRequestData: win32more.Windows.Win32.Devices.Geolocation.GNSS_DRIVER_REQUEST_DATA
-        CustomData: Byte * 1
+        CustomData: FlexibleArray[Byte]
 class GNSS_EVENT_2(Structure):
     Size: UInt32
     Version: UInt32
@@ -264,6 +267,7 @@ class GNSS_EVENT_2(Structure):
     EventDataSize: UInt32
     Unused: Byte * 512
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FixData: win32more.Windows.Win32.Devices.Geolocation.GNSS_FIXDATA
         FixData2: win32more.Windows.Win32.Devices.Geolocation.GNSS_FIXDATA_2
@@ -275,7 +279,7 @@ class GNSS_EVENT_2(Structure):
         BreadcrumbAlertData: win32more.Windows.Win32.Devices.Geolocation.GNSS_BREADCRUMBING_ALERT_DATA
         GeofencesTrackingStatus: win32more.Windows.Win32.Devices.Geolocation.GNSS_GEOFENCES_TRACKINGSTATUS_DATA
         DriverRequestData: win32more.Windows.Win32.Devices.Geolocation.GNSS_DRIVER_REQUEST_DATA
-        CustomData: Byte * 1
+        CustomData: FlexibleArray[Byte]
 GNSS_EVENT_TYPE = Int32
 GNSS_Event_FixAvailable: win32more.Windows.Win32.Devices.Geolocation.GNSS_EVENT_TYPE = 1
 GNSS_Event_RequireAgnss: win32more.Windows.Win32.Devices.Geolocation.GNSS_EVENT_TYPE = 2
@@ -384,6 +388,7 @@ class GNSS_FIXSESSION_PARAM(Structure):
     FixLevelOfDetails: UInt32
     Anonymous: _Anonymous_e__Union
     Unused: Byte * 256
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         SingleShotParam: win32more.Windows.Win32.Devices.Geolocation.GNSS_SINGLESHOT_PARAM
         DistanceParam: win32more.Windows.Win32.Devices.Geolocation.GNSS_DISTANCETRACKING_PARAM
@@ -431,6 +436,7 @@ class GNSS_GEOREGION(Structure):
     Version: UInt32
     GeoRegionType: win32more.Windows.Win32.Devices.Geolocation.GNSS_GEOREGIONTYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Circle: win32more.Windows.Win32.Devices.Geolocation.GNSS_GEOREGION_CIRCLE
         Unused: Byte * 512
@@ -463,6 +469,7 @@ class GNSS_NI_REQUEST_PARAM(Structure):
     Anonymous: _Anonymous_e__Union
     ResponseTimeInSec: UInt32
     EmergencyLocation: win32more.Windows.Win32.Foundation.BOOL
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         SuplNiInfo: win32more.Windows.Win32.Devices.Geolocation.GNSS_SUPL_NI_INFO
         CpNiInfo: win32more.Windows.Win32.Devices.Geolocation.GNSS_CP_NI_INFO
@@ -501,7 +508,7 @@ class GNSS_SELFTESTCONFIG(Structure):
     TestType: UInt32
     Unused: Byte * 512
     InBufLen: UInt32
-    InBuffer: Byte * 1
+    InBuffer: FlexibleArray[Byte]
 class GNSS_SELFTESTRESULT(Structure):
     Size: UInt32
     Version: UInt32
@@ -510,7 +517,7 @@ class GNSS_SELFTESTRESULT(Structure):
     PinFailedBitMask: UInt32
     Unused: Byte * 512
     OutBufLen: UInt32
-    OutBuffer: Byte * 1
+    OutBuffer: FlexibleArray[Byte]
 class GNSS_SINGLESHOT_PARAM(Structure):
     Size: UInt32
     Version: UInt32
@@ -531,7 +538,7 @@ class GNSS_SUPL_CERT_CONFIG(Structure):
     SuplCertName: win32more.Windows.Win32.Foundation.CHAR * 260
     CertSize: UInt32
     Unused: Byte * 512
-    CertData: Byte * 1
+    CertData: FlexibleArray[Byte]
 class GNSS_SUPL_HSLP_CONFIG(Structure):
     Size: UInt32
     Version: UInt32

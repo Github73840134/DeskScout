@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Dwm
 import win32more.Windows.Win32.Graphics.Gdi
@@ -124,7 +124,9 @@ DWMWA_CAPTION_COLOR: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 3
 DWMWA_TEXT_COLOR: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 36
 DWMWA_VISIBLE_FRAME_BORDER_THICKNESS: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 37
 DWMWA_SYSTEMBACKDROP_TYPE: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 38
-DWMWA_LAST: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 39
+DWMWA_REDIRECTIONBITMAP_ALPHA: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 39
+DWMWA_BORDER_MARGINS: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 40
+DWMWA_LAST: win32more.Windows.Win32.Graphics.Dwm.DWMWINDOWATTRIBUTE = 41
 class DWM_BLURBEHIND(Structure):
     dwFlags: UInt32
     fEnable: win32more.Windows.Win32.Foundation.BOOL

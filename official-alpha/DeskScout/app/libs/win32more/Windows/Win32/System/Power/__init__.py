@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.System.Power
 import win32more.Windows.Win32.System.Registry
@@ -90,9 +90,13 @@ GUID_DEVICE_PROCESSOR: Guid = Guid('{97fadb10-4e33-40ae-359c-8bef029dbdd0}')
 GUID_DEVICE_MEMORY: Guid = Guid('{3fd0f03d-92e0-45fb-b75c-5ed8ffb01021}')
 GUID_DEVICE_ACPI_TIME: Guid = Guid('{97f99bf6-4497-4f18-bb22-4b9fb2fbef9c}')
 GUID_DEVICE_MESSAGE_INDICATOR: Guid = Guid('{cd48a365-fa94-4ce2-a232-a1b764e5d8b4}')
+GUID_DEVICE_POWER_ADAPTER: Guid = Guid('{f76c6c62-7dea-43cd-8689-d9a4af3d8557}')
 GUID_CLASS_INPUT: Guid = Guid('{4d1e55b2-f16f-11cf-88cb-001111000030}')
 GUID_DEVINTERFACE_THERMAL_COOLING: Guid = Guid('{dbe4373d-3c81-40cb-ace4-e0e5d05f0c9f}')
 GUID_DEVINTERFACE_THERMAL_MANAGER: Guid = Guid('{927ec093-69a4-4bc0-bd02-711664714463}')
+GUID_DEVINTERFACE_POWER_LIMIT: Guid = Guid('{8f366301-091e-4056-b92f-958b27625fce}')
+GUID_DEVINTERFACE_TEMPERATURE_SENSOR: Guid = Guid('{2a6c8538-7895-4d56-8567-795d3844858a}')
+GUID_DEVINTERFACE_CUSTOMIZED_IO: Guid = Guid('{2ed8544a-8eef-4033-b2a0-04aaa507cecb}')
 BATTERY_UNKNOWN_CAPACITY: UInt32 = 4294967295
 UNKNOWN_CAPACITY: UInt32 = 4294967295
 BATTERY_SYSTEM_BATTERY: UInt32 = 2147483648
@@ -123,9 +127,14 @@ IOCTL_BATTERY_SET_INFORMATION: UInt32 = 2719816
 IOCTL_BATTERY_QUERY_STATUS: UInt32 = 2703436
 IOCTL_BATTERY_CHARGING_SOURCE_CHANGE: UInt32 = 2703440
 BATTERY_TAG_INVALID: UInt32 = 0
+IOCTL_QUERY_CUSTOMIZED_IO_CAPABILITIES: UInt32 = 2704000
+IOCTL_QUERY_CUSTOMIZED_INPUT_FROM_PLATFORM: UInt32 = 2704004
+IOCTL_SEND_CUSTOMIZED_OUTPUT_TO_PLATFORM: UInt32 = 2720392
 MAX_ACTIVE_COOLING_LEVELS: UInt32 = 10
 ACTIVE_COOLING: UInt32 = 0
 PASSIVE_COOLING: UInt32 = 1
+THERMAL_WAIT_READ_TIMEOUT_IMMEDIATE: UInt32 = 0
+THERMAL_WAIT_READ_TIMEOUT_NONE: UInt32 = 4294967295
 TZ_ACTIVATION_REASON_THERMAL: UInt32 = 1
 TZ_ACTIVATION_REASON_CURRENT: UInt32 = 2
 THERMAL_POLICY_VERSION_1: UInt32 = 1
@@ -152,6 +161,7 @@ SYS_BUTTON_LID_CHANGED: UInt32 = 524288
 IOCTL_GET_PROCESSOR_OBJ_INFO: UInt32 = 2703744
 THERMAL_COOLING_INTERFACE_VERSION: UInt32 = 1
 THERMAL_DEVICE_INTERFACE_VERSION: UInt32 = 1
+POWER_LIMIT_INTERFACE_VERSION: UInt32 = 1
 IOCTL_SET_SYS_MESSAGE_INDICATOR: UInt32 = 2720192
 IOCTL_SET_WAKE_ALARM_VALUE: UInt32 = 2720256
 IOCTL_SET_WAKE_ALARM_POLICY: UInt32 = 2720260
@@ -172,11 +182,17 @@ BATTERY_CYCLE_COUNT_WMI_GUID: Guid = Guid('{ef98db24-0014-4c25-a50b-c724ae5cd371
 BATTERY_STATIC_DATA_WMI_GUID: Guid = Guid('{05e1e463-e4e2-4ea9-80cb-9bd4b3ca0655}')
 BATTERY_STATUS_CHANGE_WMI_GUID: Guid = Guid('{cddfa0c3-7c5b-4e43-a034-059fa5b84364}')
 BATTERY_TAG_CHANGE_WMI_GUID: Guid = Guid('{5e1f6e19-8786-4d23-94fc-9e746bd5d888}')
+BATTERY_NOTIFY_VERSION_1: UInt32 = 1
+BATTERY_NOTIFY_VERSION_2: UInt32 = 2
+CHARGE_REQUIREMENT_MAX_POWER_SOURCE_TYPES: UInt32 = 2
 BATTERY_MINIPORT_UPDATE_DATA_VER_1: UInt32 = 1
 BATTERY_MINIPORT_UPDATE_DATA_VER_2: UInt32 = 2
 BATTERY_CLASS_MAJOR_VERSION: UInt32 = 1
 BATTERY_CLASS_MINOR_VERSION: UInt32 = 0
 BATTERY_CLASS_MINOR_VERSION_1: UInt32 = 1
+BATTERY_CLASS_MINOR_VERSION_2: UInt32 = 2
+ADAPTER_CLASS_MAJOR_VERSION: UInt32 = 1
+ADAPTER_CLASS_MINOR_VERSION: UInt32 = 0
 GUID_DEVICE_ENERGY_METER: Guid = Guid('{45bd8344-7ed6-49cf-a440-c276c933b053}')
 IOCTL_EMI_GET_VERSION: UInt32 = 2244608
 IOCTL_EMI_GET_METADATA_SIZE: UInt32 = 2244612
@@ -278,6 +294,14 @@ def PowerIsSettingRangeDefined(SubKeyGuid: POINTER(Guid), SettingGuid: POINTER(G
 def PowerSettingAccessCheckEx(AccessFlags: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR, PowerGuid: POINTER(Guid), AccessType: win32more.Windows.Win32.System.Registry.REG_SAM_FLAGS) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('POWRPROF.dll')
 def PowerSettingAccessCheck(AccessFlags: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR, PowerGuid: POINTER(Guid)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+@winfunctype('POWRPROF.dll')
+def PowerGetUserConfiguredACPowerMode(PowerModeGuid: POINTER(Guid)) -> UInt32: ...
+@winfunctype('POWRPROF.dll')
+def PowerGetUserConfiguredDCPowerMode(PowerModeGuid: POINTER(Guid)) -> UInt32: ...
+@winfunctype('POWRPROF.dll')
+def PowerSetUserConfiguredACPowerMode(PowerModeGuid: POINTER(Guid)) -> UInt32: ...
+@winfunctype('POWRPROF.dll')
+def PowerSetUserConfiguredDCPowerMode(PowerModeGuid: POINTER(Guid)) -> UInt32: ...
 @winfunctype('POWRPROF.dll')
 def PowerReadACValueIndex(RootPowerKey: win32more.Windows.Win32.System.Registry.HKEY, SchemeGuid: POINTER(Guid), SubGroupOfPowerSettingsGuid: POINTER(Guid), PowerSettingGuid: POINTER(Guid), AcValueIndex: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('POWRPROF.dll')
@@ -400,7 +424,7 @@ def SetSystemPowerState(fSuspend: win32more.Windows.Win32.Foundation.BOOL, fForc
 def GetSystemPowerStatus(lpSystemPowerStatus: POINTER(win32more.Windows.Win32.System.Power.SYSTEM_POWER_STATUS)) -> win32more.Windows.Win32.Foundation.BOOL: ...
 class BATTERY_CHARGER_STATUS(Structure):
     Type: win32more.Windows.Win32.System.Power.BATTERY_CHARGING_SOURCE_TYPE
-    VaData: UInt32 * 1
+    VaData: FlexibleArray[UInt32]
 class BATTERY_CHARGING_SOURCE(Structure):
     Type: win32more.Windows.Win32.System.Power.BATTERY_CHARGING_SOURCE_TYPE
     MaxCurrent: UInt32
@@ -447,7 +471,7 @@ class BATTERY_REPORTING_SCALE(Structure):
 class BATTERY_SET_INFORMATION(Structure):
     BatteryTag: UInt32
     InformationLevel: win32more.Windows.Win32.System.Power.BATTERY_SET_INFORMATION_LEVEL
-    Buffer: Byte * 1
+    Buffer: FlexibleArray[Byte]
 BATTERY_SET_INFORMATION_LEVEL = Int32
 BatteryCriticalBias: win32more.Windows.Win32.System.Power.BATTERY_SET_INFORMATION_LEVEL = 0
 BatteryCharge: win32more.Windows.Win32.System.Power.BATTERY_SET_INFORMATION_LEVEL = 1
@@ -485,6 +509,16 @@ class CM_POWER_DATA(Structure):
     PD_D3Latency: UInt32
     PD_PowerStateMapping: win32more.Windows.Win32.System.Power.DEVICE_POWER_STATE * 7
     PD_DeepestSystemWake: win32more.Windows.Win32.System.Power.SYSTEM_POWER_STATE
+class CUSTOMIZED_IO_CAPABILITIES(Structure):
+    SupportedInputs: UInt32
+    SupportedOutputs: UInt32
+class CUSTOMIZED_IO_QUERY_INPUT_RETURN(Structure):
+    FunctionId: UInt32
+    ErrorCode: UInt32
+    Value: UInt32
+class CUSTOMIZED_IO_SEND_OUTPUT_BUFFER(Structure):
+    FunctionId: UInt32
+    Value: UInt32
 class DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS(Structure):
     Callback: win32more.Windows.Win32.System.Power.PDEVICE_NOTIFY_CALLBACK_ROUTINE
     Context: VoidPtr
@@ -517,7 +551,9 @@ PowerDeviceD3: win32more.Windows.Win32.System.Power.DEVICE_POWER_STATE = 4
 PowerDeviceMaximum: win32more.Windows.Win32.System.Power.DEVICE_POWER_STATE = 5
 EFFECTIVE_POWER_MODE = Int32
 EffectivePowerModeBatterySaver: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 0
+EffectivePowerModeEnergySaverHighSavings: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 0
 EffectivePowerModeBetterBattery: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 1
+EffectivePowerModeEnergySaverStandard: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 1
 EffectivePowerModeBalanced: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 2
 EffectivePowerModeHighPerformance: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 3
 EffectivePowerModeMaxPerformance: win32more.Windows.Win32.System.Power.EFFECTIVE_POWER_MODE = 4
@@ -531,9 +567,9 @@ class EMI_CHANNEL_MEASUREMENT_DATA(Structure):
 class EMI_CHANNEL_V2(Structure):
     MeasurementUnit: win32more.Windows.Win32.System.Power.EMI_MEASUREMENT_UNIT
     ChannelNameSize: UInt16
-    ChannelName: Char * 1
+    ChannelName: FlexibleArray[Char]
 class EMI_MEASUREMENT_DATA_V2(Structure):
-    ChannelData: win32more.Windows.Win32.System.Power.EMI_CHANNEL_MEASUREMENT_DATA * 1
+    ChannelData: FlexibleArray[win32more.Windows.Win32.System.Power.EMI_CHANNEL_MEASUREMENT_DATA]
 EMI_MEASUREMENT_UNIT = Int32
 EmiMeasurementUnitPicowattHours: win32more.Windows.Win32.System.Power.EMI_MEASUREMENT_UNIT = 0
 class EMI_METADATA_SIZE(Structure):
@@ -544,13 +580,13 @@ class EMI_METADATA_V1(Structure):
     HardwareModel: Char * 16
     HardwareRevision: UInt16
     MeteredHardwareNameSize: UInt16
-    MeteredHardwareName: Char * 1
+    MeteredHardwareName: FlexibleArray[Char]
 class EMI_METADATA_V2(Structure):
     HardwareOEM: Char * 16
     HardwareModel: Char * 16
     HardwareRevision: UInt16
     ChannelCount: UInt16
-    Channels: win32more.Windows.Win32.System.Power.EMI_CHANNEL_V2 * 1
+    Channels: FlexibleArray[win32more.Windows.Win32.System.Power.EMI_CHANNEL_V2]
 class EMI_VERSION(Structure):
     EmiVersion: UInt16
 EXECUTION_STATE = UInt32
@@ -605,7 +641,7 @@ def PDEVICE_NOTIFY_CALLBACK_ROUTINE(Context: VoidPtr, Type: UInt32, Setting: Voi
 class POWERBROADCAST_SETTING(Structure):
     PowerSetting: Guid
     DataLength: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 POWER_ACTION = Int32
 PowerActionNone: win32more.Windows.Win32.System.Power.POWER_ACTION = 0
 PowerActionReserved: win32more.Windows.Win32.System.Power.POWER_ACTION = 1
@@ -627,6 +663,31 @@ POWER_LEVEL_USER_NOTIFY_SOUND: win32more.Windows.Win32.System.Power.POWER_ACTION
 POWER_LEVEL_USER_NOTIFY_TEXT: win32more.Windows.Win32.System.Power.POWER_ACTION_POLICY_EVENT_CODE = 1
 POWER_USER_NOTIFY_BUTTON: win32more.Windows.Win32.System.Power.POWER_ACTION_POLICY_EVENT_CODE = 8
 POWER_USER_NOTIFY_SHUTDOWN: win32more.Windows.Win32.System.Power.POWER_ACTION_POLICY_EVENT_CODE = 16
+class POWER_ADAPTER_CHARGE_REQUIREMENT(Structure):
+    AcAdapterType: UInt32
+    MinimumPower: UInt32
+    NominalPower: UInt32
+    MaximumPower: UInt32
+class POWER_ADAPTER_POWER_STATES(Union):
+    States: _States_e__Struct
+    AsUlong: UInt32
+    class _States_e__Struct(Structure):
+        Online: Annotated[UInt32, NativeBitfieldAttribute(1)]
+        RecState: Annotated[UInt32, NativeBitfieldAttribute(2)]
+        Reserved: Annotated[UInt32, NativeBitfieldAttribute(29)]
+class POWER_ADAPTER_SET_STATUS_BUFFER(Structure):
+    Version: Byte
+    RecOverride: win32more.Windows.Win32.Foundation.BOOLEAN
+    Reserved: Byte * 2
+class POWER_ADAPTER_STATUS(Structure):
+    Version: Byte
+    Reserved: Byte * 3
+    PowerState: win32more.Windows.Win32.System.Power.POWER_ADAPTER_POWER_STATES
+    PeakPower: UInt32
+    MaxOutputPower: UInt32
+    MaxInputPower: UInt32
+    RecStartTime: UInt64
+    RecEndTime: UInt64
 POWER_COOLING_MODE = UInt16
 PO_TZ_ACTIVE: win32more.Windows.Win32.System.Power.POWER_COOLING_MODE = 0
 PO_TZ_PASSIVE: win32more.Windows.Win32.System.Power.POWER_COOLING_MODE = 1
@@ -659,6 +720,7 @@ ACCESS_AC_POWER_SETTING_MIN: win32more.Windows.Win32.System.Power.POWER_DATA_ACC
 ACCESS_DC_POWER_SETTING_MIN: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR = 24
 ACCESS_PROFILE: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR = 25
 ACCESS_OVERLAY_SCHEME: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR = 26
+ACCESS_POWER_MODE: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR = 26
 ACCESS_ACTIVE_OVERLAY_SCHEME: win32more.Windows.Win32.System.Power.POWER_DATA_ACCESSOR = 27
 class POWER_IDLE_RESILIENCY(Structure):
     CoalescingTimeout: UInt32
@@ -762,7 +824,8 @@ UpdateBlackBoxRecorder: win32more.Windows.Win32.System.Power.POWER_INFORMATION_L
 SessionAllowExternalDmaDevices: win32more.Windows.Win32.System.Power.POWER_INFORMATION_LEVEL = 95
 SendSuspendResumeNotification: win32more.Windows.Win32.System.Power.POWER_INFORMATION_LEVEL = 96
 BlackBoxRecorderDirectAccessBuffer: win32more.Windows.Win32.System.Power.POWER_INFORMATION_LEVEL = 97
-PowerInformationLevelMaximum: win32more.Windows.Win32.System.Power.POWER_INFORMATION_LEVEL = 98
+SystemPowerSourceState: win32more.Windows.Win32.System.Power.POWER_INFORMATION_LEVEL = 98
+PowerInformationLevelMaximum: win32more.Windows.Win32.System.Power.POWER_INFORMATION_LEVEL = 99
 class POWER_MONITOR_INVOCATION(Structure):
     Console: win32more.Windows.Win32.Foundation.BOOLEAN
     RequestReason: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON
@@ -822,7 +885,10 @@ MonitorRequestReasonTerminalInit: win32more.Windows.Win32.System.Power.POWER_MON
 MonitorRequestReasonPdcSignalSensorsHumanPresence: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 52
 MonitorRequestReasonBatteryPreCritical: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 53
 MonitorRequestReasonUserInputTouch: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 54
-MonitorRequestReasonMax: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 55
+MonitorRequestReasonAusterityBatteryDrain: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 55
+MonitorRequestReasonDozeRestrictedStandby: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 56
+MonitorRequestReasonSmartRestrictedStandby: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 57
+MonitorRequestReasonMax: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_REASON = 58
 POWER_MONITOR_REQUEST_TYPE = Int32
 MonitorRequestTypeOff: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_TYPE = 0
 MonitorRequestTypeOnAndPresent: win32more.Windows.Win32.System.Power.POWER_MONITOR_REQUEST_TYPE = 1
@@ -889,14 +955,14 @@ class PPM_IDLE_ACCOUNTING(Structure):
     TotalTransitions: UInt32
     ResetCount: UInt32
     StartTime: UInt64
-    State: win32more.Windows.Win32.System.Power.PPM_IDLE_STATE_ACCOUNTING * 1
+    State: FlexibleArray[win32more.Windows.Win32.System.Power.PPM_IDLE_STATE_ACCOUNTING]
 class PPM_IDLE_ACCOUNTING_EX(Structure):
     StateCount: UInt32
     TotalTransitions: UInt32
     ResetCount: UInt32
     AbortCount: UInt32
     StartTime: UInt64
-    State: win32more.Windows.Win32.System.Power.PPM_IDLE_STATE_ACCOUNTING_EX * 1
+    State: FlexibleArray[win32more.Windows.Win32.System.Power.PPM_IDLE_STATE_ACCOUNTING_EX]
 class PPM_IDLE_STATE_ACCOUNTING(Structure):
     IdleTransitions: UInt32
     FailedTransitions: UInt32
@@ -952,14 +1018,14 @@ class PPM_WMI_IDLE_STATES(Structure):
     TargetState: UInt32
     OldState: UInt32
     TargetProcessors: UInt64
-    State: win32more.Windows.Win32.System.Power.PPM_WMI_IDLE_STATE * 1
+    State: FlexibleArray[win32more.Windows.Win32.System.Power.PPM_WMI_IDLE_STATE]
 class PPM_WMI_IDLE_STATES_EX(Structure):
     Type: UInt32
     Count: UInt32
     TargetState: UInt32
     OldState: UInt32
     TargetProcessors: VoidPtr
-    State: win32more.Windows.Win32.System.Power.PPM_WMI_IDLE_STATE * 1
+    State: FlexibleArray[win32more.Windows.Win32.System.Power.PPM_WMI_IDLE_STATE]
 class PPM_WMI_LEGACY_PERFSTATE(Structure):
     Frequency: UInt32
     Flags: UInt32
@@ -1000,7 +1066,7 @@ class PPM_WMI_PERF_STATES(Structure):
     FeedbackHandler: UInt32
     Reserved1: UInt32
     Reserved2: UInt64
-    State: win32more.Windows.Win32.System.Power.PPM_WMI_PERF_STATE * 1
+    State: FlexibleArray[win32more.Windows.Win32.System.Power.PPM_WMI_PERF_STATE]
 class PPM_WMI_PERF_STATES_EX(Structure):
     Count: UInt32
     MaxFrequency: UInt32
@@ -1022,7 +1088,7 @@ class PPM_WMI_PERF_STATES_EX(Structure):
     FeedbackHandler: UInt32
     Reserved1: UInt32
     Reserved2: UInt64
-    State: win32more.Windows.Win32.System.Power.PPM_WMI_PERF_STATE * 1
+    State: FlexibleArray[win32more.Windows.Win32.System.Power.PPM_WMI_PERF_STATE]
 class PROCESSOR_OBJECT_INFO(Structure):
     PhysicalID: UInt32
     PBlkAddress: UInt32
@@ -1043,8 +1109,8 @@ class PROCESSOR_POWER_POLICY(Structure):
     Revision: UInt32
     DynamicThrottle: Byte
     Spare: Byte * 3
-    DisableCStates: Annotated[UInt32, 1]
-    Reserved: Annotated[UInt32, 31]
+    DisableCStates: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(31)]
     PolicyCount: UInt32
     Policy: win32more.Windows.Win32.System.Power.PROCESSOR_POWER_POLICY_INFO * 3
 class PROCESSOR_POWER_POLICY_INFO(Structure):
@@ -1054,9 +1120,9 @@ class PROCESSOR_POWER_POLICY_INFO(Structure):
     DemotePercent: Byte
     PromotePercent: Byte
     Spare: Byte * 2
-    AllowDemotion: Annotated[UInt32, 1]
-    AllowPromotion: Annotated[UInt32, 1]
-    Reserved: Annotated[UInt32, 30]
+    AllowDemotion: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    AllowPromotion: Annotated[UInt32, NativeBitfieldAttribute(1)]
+    Reserved: Annotated[UInt32, NativeBitfieldAttribute(30)]
 @winfunctype_pointer
 def PWRSCHEMESENUMPROC(Index: UInt32, NameSize: UInt32, Name: win32more.Windows.Win32.Foundation.PWSTR, DescriptionSize: UInt32, Description: win32more.Windows.Win32.Foundation.PWSTR, Policy: POINTER(win32more.Windows.Win32.System.Power.POWER_POLICY), Context: win32more.Windows.Win32.Foundation.LPARAM) -> win32more.Windows.Win32.Foundation.BOOLEAN: ...
 @winfunctype_pointer
@@ -1070,7 +1136,7 @@ class SET_POWER_SETTING_VALUE(Structure):
     Guid: Guid
     PowerCondition: win32more.Windows.Win32.System.Power.SYSTEM_POWER_CONDITION
     DataLength: UInt32
-    Data: Byte * 1
+    Data: FlexibleArray[Byte]
 class SYSTEM_BATTERY_STATE(Structure):
     AcOnLine: win32more.Windows.Win32.Foundation.BOOLEAN
     BatteryPresent: win32more.Windows.Win32.Foundation.BOOLEAN

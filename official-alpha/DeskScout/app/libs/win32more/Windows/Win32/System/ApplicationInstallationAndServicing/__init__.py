@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security.Cryptography
 import win32more.Windows.Win32.System.ApplicationInstallationAndServicing
@@ -1571,6 +1571,7 @@ class DELTA_INPUT(Structure):
     Anonymous: _Anonymous_e__Union
     uSize: UIntPtr
     Editable: win32more.Windows.Win32.Foundation.BOOL
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         lpcStart: VoidPtr
         lpStart: VoidPtr
@@ -2591,7 +2592,7 @@ class PATCH_IGNORE_RANGE(Structure):
     LengthInBytes: UInt32
 class PATCH_INTERLEAVE_MAP(Structure):
     CountRanges: UInt32
-    Range: _Anonymous_e__Struct * 1
+    Range: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         OldOffset: UInt32
         OldLength: UInt32

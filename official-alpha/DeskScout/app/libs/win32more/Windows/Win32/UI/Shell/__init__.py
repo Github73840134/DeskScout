@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Data.Xml.MsXml
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.DirectComposition
@@ -28,7 +28,7 @@ import win32more.Windows.Win32.UI.WindowsAndMessaging
 class AASHELLMENUFILENAME(Structure):
     cbTotal: Int16
     rgbReserved: Byte * 12
-    szFileName: Char * 1
+    szFileName: FlexibleArray[Char]
 class AASHELLMENUITEM(Structure):
     lpReserved1: VoidPtr
     iReserved: Int32
@@ -692,6 +692,7 @@ FOLDERTYPEID_StorageProviderDocuments: Guid = Guid('{dd61bd66-70e8-48dd-9655-65c
 FOLDERTYPEID_StorageProviderPictures: Guid = Guid('{71d642a9-f2b1-42cd-ad92-eb9300c7cc0a}')
 FOLDERTYPEID_StorageProviderMusic: Guid = Guid('{672ecd7e-af04-4399-875c-0290845b6247}')
 FOLDERTYPEID_StorageProviderVideos: Guid = Guid('{51294da1-d7b1-485b-9e9a-17cffe33e187}')
+FOLDERTYPEID_VersionControl: Guid = Guid('{69f1e26b-ec64-4280-bc83-f1eb887ec35a}')
 SYNCMGR_OBJECTID_Icon: Guid = Guid('{6dbc85c3-5d07-4c72-a777-7fec78072c06}')
 SYNCMGR_OBJECTID_EventStore: Guid = Guid('{4bef34b9-a786-4075-ba88-0c2b9d89a98f}')
 SYNCMGR_OBJECTID_ConflictStore: Guid = Guid('{d78181f4-2389-47e4-a960-60bcc2ed930b}')
@@ -1761,6 +1762,7 @@ COPYENGINE_S_CLOSE_PROGRAM: win32more.Windows.Win32.Foundation.HRESULT = 2555917
 COPYENGINE_S_COLLISIONRESOLVED: win32more.Windows.Win32.Foundation.HRESULT = 2555918
 COPYENGINE_S_PROGRESS_PAUSE: win32more.Windows.Win32.Foundation.HRESULT = 2555919
 COPYENGINE_S_PENDING_DELETE: win32more.Windows.Win32.Foundation.HRESULT = 2555920
+COPYENGINE_S_PENDING_BATCH_COPY: win32more.Windows.Win32.Foundation.HRESULT = 2555921
 COPYENGINE_E_USER_CANCELLED: win32more.Windows.Win32.Foundation.HRESULT = -2144927744
 COPYENGINE_E_CANCELLED: win32more.Windows.Win32.Foundation.HRESULT = -2144927743
 COPYENGINE_E_REQUIRES_ELEVATION: win32more.Windows.Win32.Foundation.HRESULT = -2144927742
@@ -1838,6 +1840,7 @@ COPYENGINE_E_RMS_BLOCKED_BY_EDP_FOR_REMOVABLE_DRIVE: win32more.Windows.Win32.Fou
 COPYENGINE_E_WARNED_BY_DLP_POLICY: win32more.Windows.Win32.Foundation.HRESULT = -2144927667
 COPYENGINE_E_BLOCKED_BY_DLP_POLICY: win32more.Windows.Win32.Foundation.HRESULT = -2144927666
 COPYENGINE_E_SILENT_FAIL_BY_DLP_POLICY: win32more.Windows.Win32.Foundation.HRESULT = -2144927665
+COPYENGINE_E_SUPPRESS_DIALOG: win32more.Windows.Win32.Foundation.HRESULT = -2144927664
 NETCACHE_E_NEGATIVE_CACHE: win32more.Windows.Win32.Foundation.HRESULT = -2144927488
 EXECUTE_E_LAUNCH_APPLICATION: win32more.Windows.Win32.Foundation.HRESULT = -2144927487
 SHELL_E_WRONG_BITDEPTH: win32more.Windows.Win32.Foundation.HRESULT = -2144927486
@@ -3518,7 +3521,7 @@ class BASEBROWSERDATALH(Structure):
     _pautoEDS: win32more.Windows.Win32.UI.Shell.IExpDispSupport
     _pautoSS: win32more.Windows.Win32.UI.Shell.IShellService
     _eSecureLockIcon: Int32
-    _fCreatingViewWindow: Annotated[UInt32, 1]
+    _fCreatingViewWindow: Annotated[UInt32, NativeBitfieldAttribute(1)]
     _uActivateState: UInt32
     _pidlViewState: POINTER(win32more.Windows.Win32.UI.Shell.Common.ITEMIDLIST)
     _pctView: win32more.Windows.Win32.System.Ole.IOleCommandTarget
@@ -3546,7 +3549,7 @@ class BASEBROWSERDATAXP(Structure):
     _pautoEDS: win32more.Windows.Win32.UI.Shell.IExpDispSupportXP
     _pautoSS: win32more.Windows.Win32.UI.Shell.IShellService
     _eSecureLockIcon: Int32
-    _fCreatingViewWindow: Annotated[UInt32, 1]
+    _fCreatingViewWindow: Annotated[UInt32, NativeBitfieldAttribute(1)]
     _uActivateState: UInt32
     _pidlViewState: POINTER(win32more.Windows.Win32.UI.Shell.Common.ITEMIDLIST)
     _pctView: win32more.Windows.Win32.System.Ole.IOleCommandTarget
@@ -3626,16 +3629,16 @@ navReserved7: win32more.Windows.Win32.UI.Shell.BrowserNavConstants = -2147483648
 class CABINETSTATE(Structure):
     cLength: UInt16
     nVersion: UInt16
-    fFullPathTitle: Annotated[Int32, 1]
-    fSaveLocalView: Annotated[Int32, 1]
-    fNotShell: Annotated[Int32, 1]
-    fSimpleDefault: Annotated[Int32, 1]
-    fDontShowDescBar: Annotated[Int32, 1]
-    fNewWindowMode: Annotated[Int32, 1]
-    fShowCompColor: Annotated[Int32, 1]
-    fDontPrettyNames: Annotated[Int32, 1]
-    fAdminsCreateCommonGroups: Annotated[Int32, 1]
-    fUnusedFlags: Annotated[Int32, 7]
+    fFullPathTitle: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fSaveLocalView: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNotShell: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fSimpleDefault: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDontShowDescBar: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNewWindowMode: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowCompColor: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDontPrettyNames: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fAdminsCreateCommonGroups: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fUnusedFlags: Annotated[Int32, NativeBitfieldAttribute(7)]
     fMenuEnumFilter: UInt32
     _pack_ = 1
 CATEGORYINFO_FLAGS = Int32
@@ -3667,7 +3670,7 @@ CDCS_VISIBLE: win32more.Windows.Win32.UI.Shell.CDCONTROLSTATEF = 2
 CDCS_ENABLEDVISIBLE: win32more.Windows.Win32.UI.Shell.CDCONTROLSTATEF = 3
 class CIDA(Structure):
     cidl: UInt32
-    aoffset: UInt32 * 1
+    aoffset: FlexibleArray[UInt32]
     _pack_ = 1
 class CIE4ConnectionPoint(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IConnectionPoint
@@ -3881,7 +3884,7 @@ class DELEGATEITEMID(Structure):
     cbSize: UInt16
     wOuter: UInt16
     cbInner: UInt16
-    rgb: Byte * 1
+    rgb: FlexibleArray[Byte]
     _pack_ = 1
 DESKBANDCID = Int32
 DBID_BANDINFOCHANGED: win32more.Windows.Win32.UI.Shell.DESKBANDCID = 0
@@ -4059,6 +4062,7 @@ DefFolderMenu = Guid('{c63382be-7933-48d0-9ac8-85fb46be2fdd}')
 DesktopGadget = Guid('{924ccc1b-6562-4c85-8657-d177925222b6}')
 DesktopWallpaper = Guid('{c2cf3110-460e-4fc1-b9d0-8a1c0c9cc4bd}')
 DestinationList = Guid('{77f10cf0-3db5-4966-b520-b7c54fd35ed6}')
+DestinationListBoth = Guid('{38fe0cf4-6a59-4729-8e4a-2d580059ede4}')
 DocPropShellExtension = Guid('{883373c3-bf89-11d1-be35-080036b11a03}')
 DriveSizeCategorizer = Guid('{94357b53-ca29-4b78-83ae-e8fe7409134f}')
 DriveTypeCategorizer = Guid('{b0a8f3cf-4333-4bab-8873-1ccb1cada48b}')
@@ -4092,7 +4096,7 @@ class EXP_DARWIN_LINK(Structure):
 class EXP_PROPERTYSTORAGE(Structure):
     cbSize: UInt32
     dwSignature: UInt32
-    abPropertyStorage: Byte * 1
+    abPropertyStorage: FlexibleArray[Byte]
     _pack_ = 1
 class EXP_SPECIAL_FOLDER(Structure):
     cbSize: UInt32
@@ -4168,11 +4172,11 @@ class FILEDESCRIPTORW(Structure):
 FILEDESCRIPTOR = UnicodeAlias('FILEDESCRIPTORW')
 class FILEGROUPDESCRIPTORA(Structure):
     cItems: UInt32
-    fgd: win32more.Windows.Win32.UI.Shell.FILEDESCRIPTORA * 1
+    fgd: FlexibleArray[win32more.Windows.Win32.UI.Shell.FILEDESCRIPTORA]
     _pack_ = 1
 class FILEGROUPDESCRIPTORW(Structure):
     cItems: UInt32
-    fgd: win32more.Windows.Win32.UI.Shell.FILEDESCRIPTORW * 1
+    fgd: FlexibleArray[win32more.Windows.Win32.UI.Shell.FILEDESCRIPTORW]
     _pack_ = 1
 FILEGROUPDESCRIPTOR = UnicodeAlias('FILEGROUPDESCRIPTORW')
 FILEOPENDIALOGOPTIONS = UInt32
@@ -4259,7 +4263,7 @@ class FILE_ATTRIBUTES_ARRAY(Structure):
     cItems: UInt32
     dwSumFileAttributes: UInt32
     dwProductFileAttributes: UInt32
-    rgdwFileAttributes: UInt32 * 1
+    rgdwFileAttributes: FlexibleArray[UInt32]
     _pack_ = 1
 FILE_OPERATION_FLAGS2 = Int32
 FOF2_NONE: win32more.Windows.Win32.UI.Shell.FILE_OPERATION_FLAGS2 = 0
@@ -4832,6 +4836,13 @@ class IAttachmentExecute(ComPtr):
     def SaveWithUI(self, hwnd: win32more.Windows.Win32.Foundation.HWND) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(14)
     def ClearClientState(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IAttachmentExecute2(ComPtr):
+    extends: win32more.Windows.Win32.UI.Shell.IAttachmentExecute
+    _iid_ = Guid('{4f2b781f-a608-4543-abf0-49c246ebbba9}')
+    @commethod(15)
+    def SaveNoVirusCheck(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    @commethod(16)
+    def SaveWithUINoVirusCheck(self, hwnd: win32more.Windows.Win32.Foundation.HWND) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IAutoComplete(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{00bb2762-6a77-11d0-a535-00c04fd7d062}')
@@ -7042,6 +7053,11 @@ class IObjectWithFolderEnumMode(ComPtr):
     def SetMode(self, feMode: win32more.Windows.Win32.UI.Shell.FOLDER_ENUM_MODE) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
     def GetMode(self, pfeMode: POINTER(win32more.Windows.Win32.UI.Shell.FOLDER_ENUM_MODE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IObjectWithPackageFullName(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{ed2aa515-602f-469c-a130-ce69fd0fa878}')
+    @commethod(3)
+    def GetPackageFullName(self, packageFullName: POINTER(win32more.Windows.Win32.Foundation.PWSTR)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IObjectWithProgID(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{71e806fb-8dee-46fc-bf8c-7748a8a1ae13}')
@@ -8605,6 +8621,11 @@ class IStartMenuPinnedList(ComPtr):
     _iid_ = Guid('{4cd19ada-25a5-4a32-b3b7-347bee5be36b}')
     @commethod(3)
     def RemoveFromList(self, pitem: win32more.Windows.Win32.UI.Shell.IShellItem) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+class IStaticVerbProvider(ComPtr):
+    extends: win32more.Windows.Win32.System.Com.IUnknown
+    _iid_ = Guid('{4b770da6-d111-4015-96fd-8c1c56f06c55}')
+    @commethod(3)
+    def IsVerbSupported(self, verbName: win32more.Windows.Win32.Foundation.PWSTR, result: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
 class IStorageProviderBanners(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{5efb46d7-47c0-4b68-acda-ded47c90ec91}')
@@ -9669,11 +9690,11 @@ MAV_APP_VISIBLE: win32more.Windows.Win32.UI.Shell.MONITOR_APP_VISIBILITY = 2
 class MULTIKEYHELPA(Structure):
     mkSize: UInt32
     mkKeylist: win32more.Windows.Win32.Foundation.CHAR
-    szKeyphrase: win32more.Windows.Win32.Foundation.CHAR * 1
+    szKeyphrase: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 class MULTIKEYHELPW(Structure):
     mkSize: UInt32
     mkKeylist: Char
-    szKeyphrase: Char * 1
+    szKeyphrase: FlexibleArray[Char]
 MULTIKEYHELP = UnicodeAlias('MULTIKEYHELPW')
 MailRecipient = Guid('{9e56be60-c50f-11cf-9a2c-00a0c90a90ce}')
 MergedCategorizer = Guid('{8e827c11-33e7-4bc1-b242-8cd9a1c2b304}')
@@ -9740,6 +9761,7 @@ if ARCH in 'X64,ARM64':
         dwInfoFlags: win32more.Windows.Win32.UI.Shell.NOTIFY_ICON_INFOTIP_FLAGS
         guidItem: Guid
         hBalloonIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             uTimeout: UInt32
             uVersion: UInt32
@@ -9760,6 +9782,7 @@ elif ARCH in 'X86':
         dwInfoFlags: win32more.Windows.Win32.UI.Shell.NOTIFY_ICON_INFOTIP_FLAGS
         guidItem: Guid
         hBalloonIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Union(Union):
             uTimeout: UInt32
@@ -9782,6 +9805,7 @@ if ARCH in 'X64,ARM64':
         dwInfoFlags: win32more.Windows.Win32.UI.Shell.NOTIFY_ICON_INFOTIP_FLAGS
         guidItem: Guid
         hBalloonIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             uTimeout: UInt32
             uVersion: UInt32
@@ -9802,6 +9826,7 @@ elif ARCH in 'X86':
         dwInfoFlags: win32more.Windows.Win32.UI.Shell.NOTIFY_ICON_INFOTIP_FLAGS
         guidItem: Guid
         hBalloonIcon: win32more.Windows.Win32.UI.WindowsAndMessaging.HICON
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Union(Union):
             uTimeout: UInt32
@@ -9855,7 +9880,7 @@ NIS_SHAREDICON: win32more.Windows.Win32.UI.Shell.NOTIFY_ICON_STATE = 2
 NPCredentialProvider = Guid('{3dd6bec0-8193-4ffe-ae25-e08e39ea4063}')
 class NRESARRAY(Structure):
     cItems: UInt32
-    nr: win32more.Windows.Win32.NetworkManagement.WNet.NETRESOURCEA * 1
+    nr: FlexibleArray[win32more.Windows.Win32.NetworkManagement.WNet.NETRESOURCEA]
 class NSTCCUSTOMDRAW(Structure):
     psi: win32more.Windows.Win32.UI.Shell.IShellItem
     uItemState: UInt32
@@ -10184,7 +10209,7 @@ class QCMINFO(Structure):
     pIdMap: POINTER(win32more.Windows.Win32.UI.Shell.QCMINFO_IDMAP)
 class QCMINFO_IDMAP(Structure):
     nMaxIds: UInt32
-    pIdList: win32more.Windows.Win32.UI.Shell.QCMINFO_IDMAP_PLACEMENT * 1
+    pIdList: FlexibleArray[win32more.Windows.Win32.UI.Shell.QCMINFO_IDMAP_PLACEMENT]
 class QCMINFO_IDMAP_PLACEMENT(Structure):
     id: UInt32
     fFlags: UInt32
@@ -10655,6 +10680,7 @@ if ARCH in 'X64,ARM64':
         dwHotKey: UInt32
         Anonymous: _Anonymous_e__Union
         hProcess: win32more.Windows.Win32.Foundation.HANDLE
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             hIcon: win32more.Windows.Win32.Foundation.HANDLE
             hMonitor: win32more.Windows.Win32.Foundation.HANDLE
@@ -10675,6 +10701,7 @@ elif ARCH in 'X86':
         dwHotKey: UInt32
         Anonymous: _Anonymous_e__Union
         hProcess: win32more.Windows.Win32.Foundation.HANDLE
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Union(Union):
             hIcon: win32more.Windows.Win32.Foundation.HANDLE
@@ -10697,6 +10724,7 @@ if ARCH in 'X64,ARM64':
         dwHotKey: UInt32
         Anonymous: _Anonymous_e__Union
         hProcess: win32more.Windows.Win32.Foundation.HANDLE
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Union(Union):
             hIcon: win32more.Windows.Win32.Foundation.HANDLE
             hMonitor: win32more.Windows.Win32.Foundation.HANDLE
@@ -10717,6 +10745,7 @@ elif ARCH in 'X86':
         dwHotKey: UInt32
         Anonymous: _Anonymous_e__Union
         hProcess: win32more.Windows.Win32.Foundation.HANDLE
+        _anonymous_ = ('Anonymous',)
         _pack_ = 1
         class _Anonymous_e__Union(Union):
             hIcon: win32more.Windows.Win32.Foundation.HANDLE
@@ -10727,88 +10756,88 @@ if ARCH in 'X64,ARM64':
 elif ARCH in 'X86':
     SHELLEXECUTEINFO = UnicodeAlias('SHELLEXECUTEINFOW')
 class SHELLFLAGSTATE(Structure):
-    fShowAllObjects: Annotated[Int32, 1]
-    fShowExtensions: Annotated[Int32, 1]
-    fNoConfirmRecycle: Annotated[Int32, 1]
-    fShowSysFiles: Annotated[Int32, 1]
-    fShowCompColor: Annotated[Int32, 1]
-    fDoubleClickInWebView: Annotated[Int32, 1]
-    fDesktopHTML: Annotated[Int32, 1]
-    fWin95Classic: Annotated[Int32, 1]
-    fDontPrettyPath: Annotated[Int32, 1]
-    fShowAttribCol: Annotated[Int32, 1]
-    fMapNetDrvBtn: Annotated[Int32, 1]
-    fShowInfoTip: Annotated[Int32, 1]
-    fHideIcons: Annotated[Int32, 1]
-    fAutoCheckSelect: Annotated[Int32, 1]
-    fIconsOnly: Annotated[Int32, 1]
-    fRestFlags: Annotated[Int32, 1]
+    fShowAllObjects: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowExtensions: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNoConfirmRecycle: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowSysFiles: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowCompColor: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDoubleClickInWebView: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDesktopHTML: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fWin95Classic: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDontPrettyPath: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowAttribCol: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fMapNetDrvBtn: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowInfoTip: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fHideIcons: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fAutoCheckSelect: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fIconsOnly: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fRestFlags: Annotated[Int32, NativeBitfieldAttribute(1)]
     _pack_ = 1
 class SHELLSTATEA(Structure):
-    fShowAllObjects: Annotated[Int32, 1]
-    fShowExtensions: Annotated[Int32, 1]
-    fNoConfirmRecycle: Annotated[Int32, 1]
-    fShowSysFiles: Annotated[Int32, 1]
-    fShowCompColor: Annotated[Int32, 1]
-    fDoubleClickInWebView: Annotated[Int32, 1]
-    fDesktopHTML: Annotated[Int32, 1]
-    fWin95Classic: Annotated[Int32, 1]
-    fDontPrettyPath: Annotated[Int32, 1]
-    fShowAttribCol: Annotated[Int32, 1]
-    fMapNetDrvBtn: Annotated[Int32, 1]
-    fShowInfoTip: Annotated[Int32, 1]
-    fHideIcons: Annotated[Int32, 1]
-    fWebView: Annotated[Int32, 1]
-    fFilter: Annotated[Int32, 1]
-    fShowSuperHidden: Annotated[Int32, 1]
-    fNoNetCrawling: Annotated[Int32, 1]
+    fShowAllObjects: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowExtensions: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNoConfirmRecycle: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowSysFiles: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowCompColor: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDoubleClickInWebView: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDesktopHTML: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fWin95Classic: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDontPrettyPath: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowAttribCol: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fMapNetDrvBtn: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowInfoTip: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fHideIcons: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fWebView: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fFilter: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowSuperHidden: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNoNetCrawling: Annotated[Int32, NativeBitfieldAttribute(1)]
     dwWin95Unused: UInt32
     uWin95Unused: UInt32
     lParamSort: Int32
     iSortDirection: Int32
     version: UInt32
     uNotUsed: UInt32
-    fSepProcess: Annotated[Int32, 1]
-    fStartPanelOn: Annotated[Int32, 1]
-    fShowStartPage: Annotated[Int32, 1]
-    fAutoCheckSelect: Annotated[Int32, 1]
-    fIconsOnly: Annotated[Int32, 1]
-    fShowTypeOverlay: Annotated[Int32, 1]
-    fShowStatusBar: Annotated[Int32, 1]
-    fSpareFlags: Annotated[Int32, 9]
+    fSepProcess: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fStartPanelOn: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowStartPage: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fAutoCheckSelect: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fIconsOnly: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowTypeOverlay: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowStatusBar: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fSpareFlags: Annotated[Int32, NativeBitfieldAttribute(9)]
     _pack_ = 1
 class SHELLSTATEW(Structure):
-    fShowAllObjects: Annotated[Int32, 1]
-    fShowExtensions: Annotated[Int32, 1]
-    fNoConfirmRecycle: Annotated[Int32, 1]
-    fShowSysFiles: Annotated[Int32, 1]
-    fShowCompColor: Annotated[Int32, 1]
-    fDoubleClickInWebView: Annotated[Int32, 1]
-    fDesktopHTML: Annotated[Int32, 1]
-    fWin95Classic: Annotated[Int32, 1]
-    fDontPrettyPath: Annotated[Int32, 1]
-    fShowAttribCol: Annotated[Int32, 1]
-    fMapNetDrvBtn: Annotated[Int32, 1]
-    fShowInfoTip: Annotated[Int32, 1]
-    fHideIcons: Annotated[Int32, 1]
-    fWebView: Annotated[Int32, 1]
-    fFilter: Annotated[Int32, 1]
-    fShowSuperHidden: Annotated[Int32, 1]
-    fNoNetCrawling: Annotated[Int32, 1]
+    fShowAllObjects: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowExtensions: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNoConfirmRecycle: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowSysFiles: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowCompColor: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDoubleClickInWebView: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDesktopHTML: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fWin95Classic: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fDontPrettyPath: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowAttribCol: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fMapNetDrvBtn: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowInfoTip: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fHideIcons: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fWebView: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fFilter: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowSuperHidden: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fNoNetCrawling: Annotated[Int32, NativeBitfieldAttribute(1)]
     dwWin95Unused: UInt32
     uWin95Unused: UInt32
     lParamSort: Int32
     iSortDirection: Int32
     version: UInt32
     uNotUsed: UInt32
-    fSepProcess: Annotated[Int32, 1]
-    fStartPanelOn: Annotated[Int32, 1]
-    fShowStartPage: Annotated[Int32, 1]
-    fAutoCheckSelect: Annotated[Int32, 1]
-    fIconsOnly: Annotated[Int32, 1]
-    fShowTypeOverlay: Annotated[Int32, 1]
-    fShowStatusBar: Annotated[Int32, 1]
-    fSpareFlags: Annotated[Int32, 9]
+    fSepProcess: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fStartPanelOn: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowStartPage: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fAutoCheckSelect: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fIconsOnly: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowTypeOverlay: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fShowStatusBar: Annotated[Int32, NativeBitfieldAttribute(1)]
+    fSpareFlags: Annotated[Int32, NativeBitfieldAttribute(9)]
     _pack_ = 1
 SHELLSTATE = UnicodeAlias('SHELLSTATEW')
 SHELL_AUTOCOMPLETE_FLAGS = UInt32

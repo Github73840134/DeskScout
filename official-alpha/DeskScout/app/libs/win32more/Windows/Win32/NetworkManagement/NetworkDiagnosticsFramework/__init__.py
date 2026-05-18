@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.NetworkDiagnosticsFramework
 import win32more.Windows.Win32.Networking.WinSock
@@ -100,6 +100,7 @@ class HELPER_ATTRIBUTE(Structure):
     pwszName: win32more.Windows.Win32.Foundation.PWSTR
     type: win32more.Windows.Win32.NetworkManagement.NetworkDiagnosticsFramework.ATTRIBUTE_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Boolean: win32more.Windows.Win32.Foundation.BOOL
         Char: Byte
@@ -254,6 +255,7 @@ UIT_DUI: win32more.Windows.Win32.NetworkManagement.NetworkDiagnosticsFramework.U
 class UiInfo(Structure):
     type: win32more.Windows.Win32.NetworkManagement.NetworkDiagnosticsFramework.UI_INFO_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         pwzNull: win32more.Windows.Win32.Foundation.PWSTR
         ShellInfo: win32more.Windows.Win32.NetworkManagement.NetworkDiagnosticsFramework.ShellCommandInfo

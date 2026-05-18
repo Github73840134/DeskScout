@@ -55,7 +55,7 @@ sys.path.append(os.path.join(os.getcwd(), "mods"))
 boot.info("Starting imports")
 import requests
 boot.debug("Importing the hellscape that is win32more")
-from win32more.xaml import XamlApplication
+from win32more.winui3 import XamlApplication
 from win32more.Microsoft.UI.Xaml import Window, FrameworkElement
 from win32more.Microsoft.UI.Xaml.Media import MicaBackdrop,Imaging,FontFamily,CompositionTarget,VisualTreeHelper
 from win32more.Microsoft.UI.Xaml.Markup import XamlReader

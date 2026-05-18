@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Graphics.Gdi
 import win32more.Windows.Win32.Media
@@ -4788,7 +4788,7 @@ mciGetErrorString = UnicodeAlias('mciGetErrorStringW')
 @winfunctype('WINMM.dll')
 def mciSetYieldProc(mciId: UInt32, fpYieldProc: win32more.Windows.Win32.Media.Multimedia.YIELDPROC, dwYieldData: UInt32) -> win32more.Windows.Win32.Foundation.BOOL: ...
 @winfunctype('WINMM.dll')
-def mciGetCreatorTask(mciId: UInt32) -> win32more.Windows.Win32.Media.HTASK: ...
+def mciGetCreatorTask(mciId: UInt32) -> win32more.Windows.Win32.Foundation.HTASK: ...
 @winfunctype('WINMM.dll')
 def mciGetYieldProc(mciId: UInt32, pdwYieldData: POINTER(UInt32)) -> win32more.Windows.Win32.Media.Multimedia.YIELDPROC: ...
 @winfunctype('WINMM.dll')
@@ -6234,7 +6234,7 @@ class MMIOINFO(Structure):
     fccIOProc: UInt32
     pIOProc: win32more.Windows.Win32.Media.Multimedia.LPMMIOPROC
     wErrorRet: UInt32
-    htask: win32more.Windows.Win32.Media.HTASK
+    htask: win32more.Windows.Win32.Foundation.HTASK
     cchBuffer: Int32
     pchBuffer: POINTER(SByte)
     pchNext: POINTER(SByte)

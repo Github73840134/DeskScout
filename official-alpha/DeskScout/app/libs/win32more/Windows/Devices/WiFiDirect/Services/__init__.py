@@ -1,6 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
-from win32more._winrt import AwaitableProtocol, ContextManagerProtocol, FillArray, Generic, IterableProtocol, K, MappingProtocol, MulticastDelegate, PassArray, ReceiveArray, SequenceProtocol, T, TProgress, TResult, TSender, Tuple, V, WinRT_String, event, winrt_activatemethod, winrt_classmethod, winrt_commethod, winrt_factorymethod, winrt_mixinmethod, winrt_overload
+from win32more._prelude import *
 import win32more.Windows.Devices.Enumeration
 import win32more.Windows.Devices.WiFiDirect.Services
 import win32more.Windows.Foundation
@@ -8,9 +7,8 @@ import win32more.Windows.Foundation.Collections
 import win32more.Windows.Networking
 import win32more.Windows.Networking.Sockets
 import win32more.Windows.Storage.Streams
-import win32more.Windows.Win32.System.WinRT
 class IWiFiDirectService(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectService'
     _iid_ = Guid('{50aabbb8-5f71-45ec-84f1-a1e4fc7879a3}')
     @winrt_commethod(6)
@@ -36,21 +34,21 @@ class IWiFiDirectService(ComPtr):
     @winrt_commethod(16)
     def ConnectAsync(self) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_commethod(17)
-    def ConnectAsyncWithPin(self, pin: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
+    def ConnectAsyncWithPin(self, pin: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     PreferGroupOwnerMode = property(get_PreferGroupOwnerMode, put_PreferGroupOwnerMode)
     RemoteServiceInfo = property(get_RemoteServiceInfo, None)
     ServiceError = property(get_ServiceError, None)
     SessionInfo = property(get_SessionInfo, put_SessionInfo)
     SupportedConfigurationMethods = property(get_SupportedConfigurationMethods, None)
-    SessionDeferred = event()
+    SessionDeferred = event(add_SessionDeferred, remove_SessionDeferred)
 class IWiFiDirectServiceAdvertiser(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser'
     _iid_ = Guid('{a4aa1ee1-9d8f-4f4f-93ee-7ddea2e37f46}')
     @winrt_commethod(6)
-    def get_ServiceName(self) -> WinRT_String: ...
+    def get_ServiceName(self) -> hstr: ...
     @winrt_commethod(7)
-    def get_ServiceNamePrefixes(self) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
+    def get_ServiceNamePrefixes(self) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
     @winrt_commethod(8)
     def get_ServiceInfo(self) -> win32more.Windows.Storage.Streams.IBuffer: ...
     @winrt_commethod(9)
@@ -90,13 +88,13 @@ class IWiFiDirectServiceAdvertiser(ComPtr):
     @winrt_commethod(26)
     def remove_AutoAcceptSessionConnected(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(27)
-    def add_AdvertisementStatusChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AdvertisementStatusChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(28)
     def remove_AdvertisementStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(29)
     def ConnectAsync(self, deviceInfo: win32more.Windows.Devices.Enumeration.DeviceInformation) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_commethod(30)
-    def ConnectAsyncWithPin(self, deviceInfo: win32more.Windows.Devices.Enumeration.DeviceInformation, pin: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
+    def ConnectAsyncWithPin(self, deviceInfo: win32more.Windows.Devices.Enumeration.DeviceInformation, pin: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_commethod(31)
     def Start(self) -> Void: ...
     @winrt_commethod(32)
@@ -112,17 +110,17 @@ class IWiFiDirectServiceAdvertiser(ComPtr):
     ServiceName = property(get_ServiceName, None)
     ServiceNamePrefixes = property(get_ServiceNamePrefixes, None)
     ServiceStatus = property(get_ServiceStatus, put_ServiceStatus)
-    SessionRequested = event()
-    AutoAcceptSessionConnected = event()
-    AdvertisementStatusChanged = event()
+    AdvertisementStatusChanged = event(add_AdvertisementStatusChanged, remove_AdvertisementStatusChanged)
+    AutoAcceptSessionConnected = event(add_AutoAcceptSessionConnected, remove_AutoAcceptSessionConnected)
+    SessionRequested = event(add_SessionRequested, remove_SessionRequested)
 class IWiFiDirectServiceAdvertiserFactory(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiserFactory'
     _iid_ = Guid('{3106ac0d-b446-4f13-9f9a-8ae925feba2b}')
     @winrt_commethod(6)
-    def CreateWiFiDirectServiceAdvertiser(self, serviceName: WinRT_String) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser: ...
+    def CreateWiFiDirectServiceAdvertiser(self, serviceName: hstr) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser: ...
 class IWiFiDirectServiceAutoAcceptSessionConnectedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAutoAcceptSessionConnectedEventArgs'
     _iid_ = Guid('{dcd9e01e-83df-43e5-8f43-cbe8479e84eb}')
     @winrt_commethod(6)
@@ -132,7 +130,7 @@ class IWiFiDirectServiceAutoAcceptSessionConnectedEventArgs(ComPtr):
     Session = property(get_Session, None)
     SessionInfo = property(get_SessionInfo, None)
 class IWiFiDirectServiceProvisioningInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceProvisioningInfo'
     _iid_ = Guid('{8bdb7cfe-97d9-45a2-8e99-db50910fb6a6}')
     @winrt_commethod(6)
@@ -142,7 +140,7 @@ class IWiFiDirectServiceProvisioningInfo(ComPtr):
     IsGroupFormationNeeded = property(get_IsGroupFormationNeeded, None)
     SelectedConfigurationMethod = property(get_SelectedConfigurationMethod, None)
 class IWiFiDirectServiceRemotePortAddedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceRemotePortAddedEventArgs'
     _iid_ = Guid('{d4cebac1-3fd3-4f0e-b7bd-782906f44411}')
     @winrt_commethod(6)
@@ -152,12 +150,12 @@ class IWiFiDirectServiceRemotePortAddedEventArgs(ComPtr):
     EndpointPairs = property(get_EndpointPairs, None)
     Protocol = property(get_Protocol, None)
 class IWiFiDirectServiceSession(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession'
     _iid_ = Guid('{81142163-e426-47cb-8640-e1b3588bf26f}')
     @winrt_commethod(6)
-    def get_ServiceName(self) -> WinRT_String: ...
+    def get_ServiceName(self) -> hstr: ...
     @winrt_commethod(7)
     def get_Status(self) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionStatus: ...
     @winrt_commethod(8)
@@ -167,13 +165,13 @@ class IWiFiDirectServiceSession(ComPtr):
     @winrt_commethod(10)
     def get_AdvertisementId(self) -> UInt32: ...
     @winrt_commethod(11)
-    def get_ServiceAddress(self) -> WinRT_String: ...
+    def get_ServiceAddress(self) -> hstr: ...
     @winrt_commethod(12)
-    def get_SessionAddress(self) -> WinRT_String: ...
+    def get_SessionAddress(self) -> hstr: ...
     @winrt_commethod(13)
     def GetConnectionEndpointPairs(self) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Networking.EndpointPair]: ...
     @winrt_commethod(14)
-    def add_SessionStatusChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_SessionStatusChanged(self, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_commethod(15)
     def remove_SessionStatusChanged(self, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_commethod(16)
@@ -191,17 +189,17 @@ class IWiFiDirectServiceSession(ComPtr):
     SessionAddress = property(get_SessionAddress, None)
     SessionId = property(get_SessionId, None)
     Status = property(get_Status, None)
-    SessionStatusChanged = event()
-    RemotePortAdded = event()
+    RemotePortAdded = event(add_RemotePortAdded, remove_RemotePortAdded)
+    SessionStatusChanged = event(add_SessionStatusChanged, remove_SessionStatusChanged)
 class IWiFiDirectServiceSessionDeferredEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionDeferredEventArgs'
     _iid_ = Guid('{8dfc197f-1201-4f1f-b6f4-5df1b7b9fb2e}')
     @winrt_commethod(6)
     def get_DeferredSessionInfo(self) -> win32more.Windows.Storage.Streams.IBuffer: ...
     DeferredSessionInfo = property(get_DeferredSessionInfo, None)
 class IWiFiDirectServiceSessionRequest(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionRequest'
     _iid_ = Guid('{a0e27c8b-50cb-4a58-9bcf-e472b99fba04}')
@@ -215,23 +213,23 @@ class IWiFiDirectServiceSessionRequest(ComPtr):
     ProvisioningInfo = property(get_ProvisioningInfo, None)
     SessionInfo = property(get_SessionInfo, None)
 class IWiFiDirectServiceSessionRequestedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionRequestedEventArgs'
     _iid_ = Guid('{74bdcc11-53d6-4999-b4f8-6c8ecc1771e7}')
     @winrt_commethod(6)
     def GetSessionRequest(self) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionRequest: ...
 class IWiFiDirectServiceStatics(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     _classid_ = 'Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics'
     _iid_ = Guid('{7db40045-fd74-4688-b725-5dce86acf233}')
     @winrt_commethod(6)
-    def GetSelector(self, serviceName: WinRT_String) -> WinRT_String: ...
+    def GetSelector(self, serviceName: hstr) -> hstr: ...
     @winrt_commethod(7)
-    def GetSelectorWithFilter(self, serviceName: WinRT_String, serviceInfoFilter: win32more.Windows.Storage.Streams.IBuffer) -> WinRT_String: ...
+    def GetSelectorWithFilter(self, serviceName: hstr, serviceInfoFilter: win32more.Windows.Storage.Streams.IBuffer) -> hstr: ...
     @winrt_commethod(8)
-    def FromIdAsync(self, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectService]: ...
+    def FromIdAsync(self, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectService]: ...
 class WiFiDirectService(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectService
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectService'
     @winrt_mixinmethod
@@ -257,26 +255,27 @@ class WiFiDirectService(ComPtr):
     @winrt_mixinmethod
     def ConnectAsync(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectService) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_mixinmethod
-    def ConnectAsyncWithPin(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectService, pin: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
+    def ConnectAsyncWithPin(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectService, pin: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_classmethod
-    def GetSelector(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics, serviceName: WinRT_String) -> WinRT_String: ...
+    def GetSelector(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics, serviceName: hstr) -> hstr: ...
     @winrt_classmethod
-    def GetSelectorWithFilter(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics, serviceName: WinRT_String, serviceInfoFilter: win32more.Windows.Storage.Streams.IBuffer) -> WinRT_String: ...
+    def GetSelectorWithFilter(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics, serviceName: hstr, serviceInfoFilter: win32more.Windows.Storage.Streams.IBuffer) -> hstr: ...
     @winrt_classmethod
-    def FromIdAsync(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics, deviceId: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectService]: ...
+    def FromIdAsync(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceStatics, deviceId: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectService]: ...
     PreferGroupOwnerMode = property(get_PreferGroupOwnerMode, put_PreferGroupOwnerMode)
     RemoteServiceInfo = property(get_RemoteServiceInfo, None)
     ServiceError = property(get_ServiceError, None)
     SessionInfo = property(get_SessionInfo, put_SessionInfo)
     SupportedConfigurationMethods = property(get_SupportedConfigurationMethods, None)
-    SessionDeferred = event()
+    SessionDeferred = event(add_SessionDeferred, remove_SessionDeferred)
 class WiFiDirectServiceAdvertisementStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertisementStatus'
     Created = 0
     Started = 1
     Stopped = 2
     Aborted = 3
 class WiFiDirectServiceAdvertiser(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser'
     def __init__(self, *args, **kwargs):
@@ -287,11 +286,11 @@ class WiFiDirectServiceAdvertiser(ComPtr):
         else:
             raise ValueError('no matched constructor')
     @winrt_factorymethod
-    def CreateWiFiDirectServiceAdvertiser(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiserFactory, serviceName: WinRT_String) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser: ...
+    def CreateWiFiDirectServiceAdvertiser(cls: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiserFactory, serviceName: hstr) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser: ...
     @winrt_mixinmethod
-    def get_ServiceName(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser) -> WinRT_String: ...
+    def get_ServiceName(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser) -> hstr: ...
     @winrt_mixinmethod
-    def get_ServiceNamePrefixes(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser) -> win32more.Windows.Foundation.Collections.IVector[WinRT_String]: ...
+    def get_ServiceNamePrefixes(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser) -> win32more.Windows.Foundation.Collections.IVector[hstr]: ...
     @winrt_mixinmethod
     def get_ServiceInfo(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser) -> win32more.Windows.Storage.Streams.IBuffer: ...
     @winrt_mixinmethod
@@ -331,13 +330,13 @@ class WiFiDirectServiceAdvertiser(ComPtr):
     @winrt_mixinmethod
     def remove_AutoAcceptSessionConnected(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
-    def add_AdvertisementStatusChanged(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_AdvertisementStatusChanged(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAdvertiser, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_AdvertisementStatusChanged(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
     def ConnectAsync(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, deviceInfo: win32more.Windows.Devices.Enumeration.DeviceInformation) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_mixinmethod
-    def ConnectAsyncWithPin(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, deviceInfo: win32more.Windows.Devices.Enumeration.DeviceInformation, pin: WinRT_String) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
+    def ConnectAsyncWithPin(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser, deviceInfo: win32more.Windows.Devices.Enumeration.DeviceInformation, pin: hstr) -> win32more.Windows.Foundation.IAsyncOperation[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession]: ...
     @winrt_mixinmethod
     def Start(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAdvertiser) -> Void: ...
     @winrt_mixinmethod
@@ -353,11 +352,11 @@ class WiFiDirectServiceAdvertiser(ComPtr):
     ServiceName = property(get_ServiceName, None)
     ServiceNamePrefixes = property(get_ServiceNamePrefixes, None)
     ServiceStatus = property(get_ServiceStatus, put_ServiceStatus)
-    SessionRequested = event()
-    AutoAcceptSessionConnected = event()
-    AdvertisementStatusChanged = event()
+    AdvertisementStatusChanged = event(add_AdvertisementStatusChanged, remove_AdvertisementStatusChanged)
+    AutoAcceptSessionConnected = event(add_AutoAcceptSessionConnected, remove_AutoAcceptSessionConnected)
+    SessionRequested = event(add_SessionRequested, remove_SessionRequested)
 class WiFiDirectServiceAutoAcceptSessionConnectedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceAutoAcceptSessionConnectedEventArgs
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceAutoAcceptSessionConnectedEventArgs'
     @winrt_mixinmethod
@@ -367,20 +366,23 @@ class WiFiDirectServiceAutoAcceptSessionConnectedEventArgs(ComPtr):
     Session = property(get_Session, None)
     SessionInfo = property(get_SessionInfo, None)
 class WiFiDirectServiceConfigurationMethod(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceConfigurationMethod'
     Default = 0
     PinDisplay = 1
     PinEntry = 2
 class WiFiDirectServiceError(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceError'
     Success = 0
     RadioNotAvailable = 1
     ResourceInUse = 2
     UnsupportedHardware = 3
     NoHardware = 4
 class WiFiDirectServiceIPProtocol(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceIPProtocol'
     Tcp = 6
     Udp = 17
 class WiFiDirectServiceProvisioningInfo(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceProvisioningInfo
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceProvisioningInfo'
     @winrt_mixinmethod
@@ -390,7 +392,7 @@ class WiFiDirectServiceProvisioningInfo(ComPtr):
     IsGroupFormationNeeded = property(get_IsGroupFormationNeeded, None)
     SelectedConfigurationMethod = property(get_SelectedConfigurationMethod, None)
 class WiFiDirectServiceRemotePortAddedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceRemotePortAddedEventArgs
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceRemotePortAddedEventArgs'
     @winrt_mixinmethod
@@ -400,12 +402,12 @@ class WiFiDirectServiceRemotePortAddedEventArgs(ComPtr):
     EndpointPairs = property(get_EndpointPairs, None)
     Protocol = property(get_Protocol, None)
 class WiFiDirectServiceSession(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession'
     @winrt_mixinmethod
-    def get_ServiceName(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> WinRT_String: ...
+    def get_ServiceName(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> hstr: ...
     @winrt_mixinmethod
     def get_Status(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionStatus: ...
     @winrt_mixinmethod
@@ -415,13 +417,13 @@ class WiFiDirectServiceSession(ComPtr):
     @winrt_mixinmethod
     def get_AdvertisementId(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> UInt32: ...
     @winrt_mixinmethod
-    def get_ServiceAddress(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> WinRT_String: ...
+    def get_ServiceAddress(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> hstr: ...
     @winrt_mixinmethod
-    def get_SessionAddress(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> WinRT_String: ...
+    def get_SessionAddress(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> hstr: ...
     @winrt_mixinmethod
     def GetConnectionEndpointPairs(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession) -> win32more.Windows.Foundation.Collections.IVectorView[win32more.Windows.Networking.EndpointPair]: ...
     @winrt_mixinmethod
-    def add_SessionStatusChanged(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession, win32more.Windows.Win32.System.WinRT.IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
+    def add_SessionStatusChanged(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession, handler: win32more.Windows.Foundation.TypedEventHandler[win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSession, IInspectable]) -> win32more.Windows.Foundation.EventRegistrationToken: ...
     @winrt_mixinmethod
     def remove_SessionStatusChanged(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSession, token: win32more.Windows.Foundation.EventRegistrationToken) -> Void: ...
     @winrt_mixinmethod
@@ -441,16 +443,17 @@ class WiFiDirectServiceSession(ComPtr):
     SessionAddress = property(get_SessionAddress, None)
     SessionId = property(get_SessionId, None)
     Status = property(get_Status, None)
-    SessionStatusChanged = event()
-    RemotePortAdded = event()
+    RemotePortAdded = event(add_RemotePortAdded, remove_RemotePortAdded)
+    SessionStatusChanged = event(add_SessionStatusChanged, remove_SessionStatusChanged)
 class WiFiDirectServiceSessionDeferredEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionDeferredEventArgs
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionDeferredEventArgs'
     @winrt_mixinmethod
     def get_DeferredSessionInfo(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionDeferredEventArgs) -> win32more.Windows.Storage.Streams.IBuffer: ...
     DeferredSessionInfo = property(get_DeferredSessionInfo, None)
 class WiFiDirectServiceSessionErrorStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionErrorStatus'
     Ok = 0
     Disassociated = 1
     LocalClose = 2
@@ -458,7 +461,7 @@ class WiFiDirectServiceSessionErrorStatus(Enum, Int32):
     SystemFailure = 4
     NoResponseFromRemote = 5
 class WiFiDirectServiceSessionRequest(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     implements: Tuple[ContextManagerProtocol]
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionRequest
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionRequest'
@@ -474,17 +477,19 @@ class WiFiDirectServiceSessionRequest(ComPtr):
     ProvisioningInfo = property(get_ProvisioningInfo, None)
     SessionInfo = property(get_SessionInfo, None)
 class WiFiDirectServiceSessionRequestedEventArgs(ComPtr):
-    extends: win32more.Windows.Win32.System.WinRT.IInspectable
+    extends: IInspectable
     default_interface: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionRequestedEventArgs
     _classid_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionRequestedEventArgs'
     @winrt_mixinmethod
     def GetSessionRequest(self: win32more.Windows.Devices.WiFiDirect.Services.IWiFiDirectServiceSessionRequestedEventArgs) -> win32more.Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionRequest: ...
 class WiFiDirectServiceSessionStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceSessionStatus'
     Closed = 0
     Initiated = 1
     Requested = 2
     Open = 3
 class WiFiDirectServiceStatus(Enum, Int32):
+    _name_ = 'Windows.Devices.WiFiDirect.Services.WiFiDirectServiceStatus'
     Available = 0
     Busy = 1
     Custom = 2

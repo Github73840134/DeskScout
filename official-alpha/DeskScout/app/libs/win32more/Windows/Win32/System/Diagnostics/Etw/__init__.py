@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.Security
 import win32more.Windows.Win32.System.Com
@@ -92,6 +92,7 @@ SystemAlpcProviderGuid: Guid = Guid('{fcb9baaf-e529-4980-92e9-ced1a6aadfdf}')
 SystemSyscallProviderGuid: Guid = Guid('{434286f7-6f1b-45bb-b37e-95f623046c7c}')
 SystemInterruptProviderGuid: Guid = Guid('{d4bbee17-b545-4888-858b-744169015b25}')
 SystemTimerProviderGuid: Guid = Guid('{4f061568-e215-499f-ab2e-eda0ae890a5b}')
+LastBranchRecordProviderGuid: Guid = Guid('{99134383-5248-43fc-834b-529454e75df3}')
 KERNEL_LOGGER_NAMEW: String = 'NT Kernel Logger'
 GLOBAL_LOGGER_NAMEW: String = 'GlobalLogger'
 EVENT_LOGGER_NAMEW: String = 'EventLog'
@@ -278,6 +279,7 @@ SYSTEM_CONFIG_KW_OPTICAL: UInt64 = 64
 SYSTEM_CPU_KW_CONFIG: UInt64 = 1
 SYSTEM_CPU_KW_CACHE_FLUSH: UInt64 = 2
 SYSTEM_CPU_KW_SPEC_CONTROL: UInt64 = 4
+SYSTEM_CPU_KW_DOMAIN_CHANGE: UInt64 = 8
 SYSTEM_HYPERVISOR_KW_PROFILE: UInt64 = 1
 SYSTEM_HYPERVISOR_KW_CALLOUTS: UInt64 = 2
 SYSTEM_HYPERVISOR_KW_VTL_CHANGE: UInt64 = 4
@@ -298,6 +300,8 @@ SYSTEM_IO_KW_OPTICAL_INIT: UInt64 = 64
 SYSTEM_IO_KW_DRIVERS: UInt64 = 128
 SYSTEM_IO_KW_CC: UInt64 = 256
 SYSTEM_IO_KW_NETWORK: UInt64 = 512
+SYSTEM_IO_KW_FILE_INIT: UInt64 = 1024
+SYSTEM_IO_KW_TIMER: UInt64 = 2048
 SYSTEM_IOFILTER_KW_GENERAL: UInt64 = 1
 SYSTEM_IOFILTER_KW_INIT: UInt64 = 2
 SYSTEM_IOFILTER_KW_FASTIO: UInt64 = 4
@@ -357,10 +361,17 @@ SYSTEM_SCHEDULER_KW_PRIORITY: UInt64 = 128
 SYSTEM_SCHEDULER_KW_IDEAL_PROCESSOR: UInt64 = 256
 SYSTEM_SCHEDULER_KW_CONTEXT_SWITCH: UInt64 = 512
 SYSTEM_SCHEDULER_KW_COMPACT_CSWITCH: UInt64 = 1024
+SYSTEM_SCHEDULER_KW_SCHEDULE_THREAD: UInt64 = 2048
+SYSTEM_SCHEDULER_KW_READY_QUEUE: UInt64 = 4096
+SYSTEM_SCHEDULER_KW_CPU_PARTITION: UInt64 = 8192
+SYSTEM_SCHEDULER_KW_THREAD_FEEDBACK_READ: UInt64 = 16384
+SYSTEM_SCHEDULER_KW_WORKLOAD_CLASS_UPDATE: UInt64 = 32768
+SYSTEM_SCHEDULER_KW_AUTOBOOST: UInt64 = 65536
 SYSTEM_SYSCALL_KW_GENERAL: UInt64 = 1
 SYSTEM_TIMER_KW_GENERAL: UInt64 = 1
 SYSTEM_TIMER_KW_CLOCK_TIMER: UInt64 = 2
 SYSTEM_MEMORY_POOL_FILTER_ID: UInt32 = 1
+_typedef_TRACELOGGER_HANDLE: UInt32 = 1
 ETW_NULL_TYPE_VALUE: UInt32 = 0
 ETW_OBJECT_TYPE_VALUE: UInt32 = 1
 ETW_STRING_TYPE_VALUE: UInt32 = 2
@@ -399,6 +410,8 @@ ETW_DATETIME_TYPE_VALUE: UInt32 = 119
 ETW_REFRENCE_TYPE_VALUE: UInt32 = 120
 TRACE_PROVIDER_FLAG_LEGACY: UInt32 = 1
 TRACE_PROVIDER_FLAG_PRE_ENABLE: UInt32 = 2
+TRACE_LBR_EVENT_OPCODE: UInt32 = 32
+TRACE_LBR_MAXIMUM_EVENTS: UInt32 = 4
 KERNEL_LOGGER_NAME: String = 'NT Kernel Logger'
 GLOBAL_LOGGER_NAME: String = 'GlobalLogger'
 EVENT_LOGGER_NAME: String = 'EventLog'
@@ -489,52 +502,54 @@ PROCESS_TRACE_MODE_RAW_TIMESTAMP: UInt32 = 4096
 PROCESS_TRACE_MODE_EVENT_RECORD: UInt32 = 268435456
 CLSID_TraceRelogger: Guid = Guid('{7b40792d-05ff-44c4-9058-f440c71f17d4}')
 @winfunctype('ADVAPI32.dll')
-def StartTraceW(TraceHandle: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE), InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def StartTraceW(TraceId: POINTER(UInt64), InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 StartTrace = UnicodeAlias('StartTraceW')
 @winfunctype('ADVAPI32.dll')
-def StartTraceA(TraceHandle: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE), InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def StartTraceA(TraceId: POINTER(UInt64), InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def StopTraceW(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def StopTraceW(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 StopTrace = UnicodeAlias('StopTraceW')
 @winfunctype('ADVAPI32.dll')
-def StopTraceA(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def StopTraceA(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def QueryTraceW(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def QueryTraceW(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 QueryTrace = UnicodeAlias('QueryTraceW')
 @winfunctype('ADVAPI32.dll')
-def QueryTraceA(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def QueryTraceA(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def UpdateTraceW(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def UpdateTraceW(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 UpdateTrace = UnicodeAlias('UpdateTraceW')
 @winfunctype('ADVAPI32.dll')
-def UpdateTraceA(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def UpdateTraceA(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def FlushTraceW(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def FlushTraceW(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 FlushTrace = UnicodeAlias('FlushTraceW')
 @winfunctype('ADVAPI32.dll')
-def FlushTraceA(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def FlushTraceA(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def ControlTraceW(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES), ControlCode: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_CONTROL) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def ControlTraceW(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PWSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES), ControlCode: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_CONTROL) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 ControlTrace = UnicodeAlias('ControlTraceW')
 @winfunctype('ADVAPI32.dll')
-def ControlTraceA(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES), ControlCode: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_CONTROL) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def ControlTraceA(TraceId: UInt64, InstanceName: win32more.Windows.Win32.Foundation.PSTR, Properties: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES), ControlCode: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_CONTROL) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
 def QueryAllTracesW(PropertyArray: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)), PropertyArrayCount: UInt32, LoggerCount: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 QueryAllTraces = UnicodeAlias('QueryAllTracesW')
 @winfunctype('ADVAPI32.dll')
 def QueryAllTracesA(PropertyArray: POINTER(POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_TRACE_PROPERTIES)), PropertyArrayCount: UInt32, LoggerCount: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def EnableTrace(Enable: UInt32, EnableFlag: UInt32, EnableLevel: UInt32, ControlGuid: POINTER(Guid), TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def EnableTrace(Enable: UInt32, EnableFlag: UInt32, EnableLevel: UInt32, ControlGuid: POINTER(Guid), TraceId: UInt64) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def EnableTraceEx(ProviderId: POINTER(Guid), SourceId: POINTER(Guid), TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, IsEnabled: UInt32, Level: Byte, MatchAnyKeyword: UInt64, MatchAllKeyword: UInt64, EnableProperty: UInt32, EnableFilterDesc: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_FILTER_DESCRIPTOR)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def EnableTraceEx(ProviderId: POINTER(Guid), SourceId: POINTER(Guid), TraceId: UInt64, IsEnabled: UInt32, Level: Byte, MatchAnyKeyword: UInt64, MatchAllKeyword: UInt64, EnableProperty: UInt32, EnableFilterDesc: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_FILTER_DESCRIPTOR)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def EnableTraceEx2(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, ProviderId: POINTER(Guid), ControlCode: UInt32, Level: Byte, MatchAnyKeyword: UInt64, MatchAllKeyword: UInt64, Timeout: UInt32, EnableParameters: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ENABLE_TRACE_PARAMETERS)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def EnableTraceEx2(TraceId: UInt64, ProviderId: POINTER(Guid), ControlCode: UInt32, Level: Byte, MatchAnyKeyword: UInt64, MatchAllKeyword: UInt64, Timeout: UInt32, EnableParameters: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ENABLE_TRACE_PARAMETERS)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
 def EnumerateTraceGuidsEx(TraceQueryInfoClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS, InBuffer: VoidPtr, InBufferSize: UInt32, OutBuffer: VoidPtr, OutBufferSize: UInt32, ReturnLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def TraceSetInformation(SessionHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InformationClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS, TraceInformation: VoidPtr, InformationLength: UInt32) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def TraceSetInformation(TraceId: UInt64, InformationClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS, TraceInformation: VoidPtr, InformationLength: UInt32) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def TraceQueryInformation(SessionHandle: win32more.Windows.Win32.System.Diagnostics.Etw.CONTROLTRACE_HANDLE, InformationClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS, TraceInformation: VoidPtr, InformationLength: UInt32, ReturnLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+def TraceQueryInformation(TraceId: UInt64, InformationClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS, TraceInformation: VoidPtr, InformationLength: UInt32, ReturnLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
+@winfunctype('ADVAPI32.dll')
+def TraceConfigureLastBranchRecord(TraceId: UInt64, LbrConfiguration: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION, Events: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.CLASSIC_EVENT_ID), EventCount: UInt32) -> UInt32: ...
 @winfunctype('ADVAPI32.dll')
 def CreateTraceInstanceId(RegHandle: win32more.Windows.Win32.Foundation.HANDLE, InstInfo: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_INSTANCE_INFO)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
@@ -564,19 +579,19 @@ def ProcessTrace(HandleArray: POINTER(win32more.Windows.Win32.System.Diagnostics
 @winfunctype('ADVAPI32.dll')
 def CloseTrace(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
-def OpenTraceFromBufferStream(Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), BufferCompletionCallback: win32more.Windows.Win32.System.Diagnostics.Etw.PETW_BUFFER_COMPLETION_CALLBACK, BufferCompletionContext: VoidPtr) -> UInt64: ...
+def OpenTraceFromBufferStream(Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), BufferCompletionCallback: win32more.Windows.Win32.System.Diagnostics.Etw.PETW_BUFFER_COMPLETION_CALLBACK, BufferCompletionContext: VoidPtr) -> win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE: ...
 @winfunctype('ADVAPI32.dll')
-def OpenTraceFromRealTimeLogger(LoggerName: win32more.Windows.Win32.Foundation.PWSTR, Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), LogFileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)) -> UInt64: ...
+def OpenTraceFromRealTimeLogger(LoggerName: win32more.Windows.Win32.Foundation.PWSTR, Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), LogFileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)) -> win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE: ...
 @winfunctype('ADVAPI32.dll')
-def OpenTraceFromRealTimeLoggerWithAllocationOptions(LoggerName: win32more.Windows.Win32.Foundation.PWSTR, Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), AllocationSize: UIntPtr, MemoryPartitionHandle: win32more.Windows.Win32.Foundation.HANDLE, LogFileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)) -> UInt64: ...
+def OpenTraceFromRealTimeLoggerWithAllocationOptions(LoggerName: win32more.Windows.Win32.Foundation.PWSTR, Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), AllocationSize: UIntPtr, MemoryPartitionHandle: win32more.Windows.Win32.Foundation.HANDLE, LogFileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)) -> win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE: ...
 @winfunctype('ADVAPI32.dll')
-def OpenTraceFromFile(LogFileName: win32more.Windows.Win32.Foundation.PWSTR, Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), LogFileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)) -> UInt64: ...
+def OpenTraceFromFile(LogFileName: win32more.Windows.Win32.Foundation.PWSTR, Options: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_OPEN_TRACE_OPTIONS), LogFileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)) -> win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE: ...
 @winfunctype('ADVAPI32.dll')
-def ProcessTraceBufferIncrementReference(TraceHandle: UInt64, Buffer: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_HEADER)) -> UInt32: ...
+def ProcessTraceBufferIncrementReference(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE, Buffer: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_HEADER)) -> UInt32: ...
 @winfunctype('ADVAPI32.dll')
 def ProcessTraceBufferDecrementReference(Buffer: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_HEADER)) -> UInt32: ...
 @winfunctype('ADVAPI32.dll')
-def ProcessTraceAddBufferToBufferStream(TraceHandle: UInt64, Buffer: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_HEADER), BufferSize: UInt32) -> UInt32: ...
+def ProcessTraceAddBufferToBufferStream(TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE, Buffer: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_HEADER), BufferSize: UInt32) -> UInt32: ...
 @winfunctype('ADVAPI32.dll')
 def QueryTraceProcessingHandle(ProcessingHandle: win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE, InformationClass: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_PROCESS_HANDLE_INFO_TYPE, InBuffer: VoidPtr, InBufferSize: UInt32, OutBuffer: VoidPtr, OutBufferSize: UInt32, ReturnLength: POINTER(UInt32)) -> win32more.Windows.Win32.Foundation.WIN32_ERROR: ...
 @winfunctype('ADVAPI32.dll')
@@ -702,15 +717,17 @@ class ENABLE_TRACE_PARAMETERS_V1(Structure):
     SourceId: Guid
     EnableFilterDesc: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_FILTER_DESCRIPTOR)
 class ETW_BUFFER_CALLBACK_INFORMATION(Structure):
-    TraceHandle: UInt64
+    TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.PROCESSTRACE_HANDLE
     LogfileHeader: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LOGFILE_HEADER)
     BuffersRead: UInt32
 class ETW_BUFFER_CONTEXT(Structure):
     Anonymous: _Anonymous_e__Union
     LoggerId: UInt16
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         ProcessorIndex: UInt16
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             ProcessorNumber: Byte
             Alignment: Byte
@@ -726,6 +743,10 @@ ETW_COMPRESSION_RESUMPTION_MODE = Int32
 EtwCompressionModeRestart: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_COMPRESSION_RESUMPTION_MODE = 0
 EtwCompressionModeNoDisable: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_COMPRESSION_RESUMPTION_MODE = 1
 EtwCompressionModeNoRestart: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_COMPRESSION_RESUMPTION_MODE = 2
+ETW_CONTEXT_REGISTER_TYPES = Int32
+EtwContextRegisterTypeNone: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_CONTEXT_REGISTER_TYPES = 0
+EtwContextRegisterTypeControl: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_CONTEXT_REGISTER_TYPES = 1
+EtwContextRegisterTypeInteger: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_CONTEXT_REGISTER_TYPES = 2
 class ETW_OPEN_TRACE_OPTIONS(Structure):
     ProcessTraceModes: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_PROCESS_TRACE_MODES
     EventCallback: win32more.Windows.Win32.System.Diagnostics.Etw.PEVENT_RECORD_CALLBACK
@@ -739,7 +760,7 @@ class ETW_PMC_COUNTER_OWNER(Structure):
 class ETW_PMC_COUNTER_OWNERSHIP_STATUS(Structure):
     ProcessorNumber: UInt32
     NumberOfCounters: UInt32
-    CounterOwners: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_PMC_COUNTER_OWNER * 1
+    CounterOwners: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.ETW_PMC_COUNTER_OWNER]
 ETW_PMC_COUNTER_OWNER_TYPE = Int32
 EtwPmcOwnerFree: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_PMC_COUNTER_OWNER_TYPE = 0
 EtwPmcOwnerUntagged: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_PMC_COUNTER_OWNER_TYPE = 1
@@ -784,9 +805,11 @@ class EVENT_DATA_DESCRIPTOR(Structure):
     Ptr: UInt64
     Size: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Reserved: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Type: Byte
             Reserved1: Byte
@@ -808,7 +831,7 @@ class EVENT_EXTENDED_ITEM_INSTANCE(Structure):
 class EVENT_EXTENDED_ITEM_PEBS_INDEX(Structure):
     PebsIndex: UInt64
 class EVENT_EXTENDED_ITEM_PMC_COUNTERS(Structure):
-    Counter: UInt64 * 1
+    Counter: FlexibleArray[UInt64]
 class EVENT_EXTENDED_ITEM_PROCESS_START_KEY(Structure):
     ProcessStartKey: UInt64
 class EVENT_EXTENDED_ITEM_RELATED_ACTIVITYID(Structure):
@@ -822,10 +845,10 @@ class EVENT_EXTENDED_ITEM_STACK_KEY64(Structure):
     StackKey: UInt64
 class EVENT_EXTENDED_ITEM_STACK_TRACE32(Structure):
     MatchId: UInt64
-    Address: UInt32 * 1
+    Address: FlexibleArray[UInt32]
 class EVENT_EXTENDED_ITEM_STACK_TRACE64(Structure):
     MatchId: UInt64
-    Address: UInt64 * 1
+    Address: FlexibleArray[UInt64]
 class EVENT_EXTENDED_ITEM_TS_ID(Structure):
     SessionId: UInt32
 EVENT_FIELD_TYPE = Int32
@@ -843,14 +866,14 @@ class EVENT_FILTER_EVENT_ID(Structure):
     FilterIn: win32more.Windows.Win32.Foundation.BOOLEAN
     Reserved: Byte
     Count: UInt16
-    Events: UInt16 * 1
+    Events: FlexibleArray[UInt16]
 class EVENT_FILTER_EVENT_NAME(Structure):
     MatchAnyKeyword: UInt64
     MatchAllKeyword: UInt64
     Level: Byte
     FilterIn: win32more.Windows.Win32.Foundation.BOOLEAN
     NameCount: UInt16
-    Names: Byte * 1
+    Names: FlexibleArray[Byte]
 class EVENT_FILTER_HEADER(Structure):
     Id: UInt16
     Version: Byte
@@ -875,9 +898,11 @@ class EVENT_HEADER(Structure):
     EventDescriptor: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_DESCRIPTOR
     Anonymous: _Anonymous_e__Union
     ActivityId: Guid
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         ProcessorTime: UInt64
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             KernelTime: UInt32
             UserTime: UInt32
@@ -887,9 +912,10 @@ class EVENT_HEADER_EXTENDED_DATA_ITEM(Structure):
     Anonymous: _Anonymous_e__Struct
     DataSize: UInt16
     DataPtr: UInt64
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Struct(Structure):
-        Linkage: Annotated[UInt16, 1]
-        Reserved2: Annotated[UInt16, 15]
+        Linkage: Annotated[UInt16, NativeBitfieldAttribute(1)]
+        Reserved2: Annotated[UInt16, NativeBitfieldAttribute(15)]
 EVENT_INFO_CLASS = Int32
 EventProviderBinaryTrackInfo: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_INFO_CLASS = 0
 EventProviderSetReserved1: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_INFO_CLASS = 1
@@ -908,9 +934,11 @@ class EVENT_INSTANCE_HEADER(Structure):
     ParentInstanceId: UInt32
     Anonymous3: _Anonymous3_e__Union
     ParentRegHandle: UInt64
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         FieldTypeFlags: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             HeaderType: Byte
             MarkerFlags: Byte
@@ -925,6 +953,7 @@ class EVENT_INSTANCE_HEADER(Structure):
         Anonymous1: _Anonymous1_e__Struct
         ProcessorTime: UInt64
         Anonymous2: _Anonymous2_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             KernelTime: UInt32
             UserTime: UInt32
@@ -937,6 +966,7 @@ class EVENT_INSTANCE_INFO(Structure):
 class EVENT_MAP_ENTRY(Structure):
     OutputOffset: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Value: UInt32
         InputOffset: UInt32
@@ -945,7 +975,8 @@ class EVENT_MAP_INFO(Structure):
     Flag: win32more.Windows.Win32.System.Diagnostics.Etw.MAP_FLAGS
     EntryCount: UInt32
     Anonymous: _Anonymous_e__Union
-    MapEntryArray: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_MAP_ENTRY * 1
+    MapEntryArray: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_MAP_ENTRY]
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         MapEntryValueType: win32more.Windows.Win32.System.Diagnostics.Etw.MAP_VALUETYPE
         FormatStringOffset: UInt32
@@ -956,6 +987,7 @@ class EVENT_PROPERTY_INFO(Structure):
     Anonymous2: _Anonymous2_e__Union
     Anonymous3: _Anonymous3_e__Union
     Anonymous4: _Anonymous4_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3', 'Anonymous4')
     class _Anonymous1_e__Union(Union):
         nonStructType: _nonStructType
         structType: _structType
@@ -981,8 +1013,9 @@ class EVENT_PROPERTY_INFO(Structure):
     class _Anonymous4_e__Union(Union):
         Reserved: UInt32
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Tags: Annotated[UInt32, 28]
+            Tags: Annotated[UInt32, NativeBitfieldAttribute(28)]
 class EVENT_RECORD(Structure):
     EventHeader: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_HEADER
     BufferContext: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_CONTEXT
@@ -999,6 +1032,7 @@ class EVENT_TRACE(Structure):
     MofData: VoidPtr
     MofLength: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ClientContext: UInt32
         BufferContext: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_BUFFER_CONTEXT
@@ -1044,9 +1078,11 @@ class EVENT_TRACE_HEADER(Structure):
     TimeStamp: Int64
     Anonymous3: _Anonymous3_e__Union
     Anonymous4: _Anonymous4_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3', 'Anonymous4')
     class _Anonymous1_e__Union(Union):
         FieldTypeFlags: UInt16
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             HeaderType: Byte
             MarkerFlags: Byte
@@ -1064,6 +1100,7 @@ class EVENT_TRACE_HEADER(Structure):
         Anonymous1: _Anonymous1_e__Struct
         ProcessorTime: UInt64
         Anonymous2: _Anonymous2_e__Struct
+        _anonymous_ = ('Anonymous1', 'Anonymous2')
         class _Anonymous1_e__Struct(Structure):
             KernelTime: UInt32
             UserTime: UInt32
@@ -1085,6 +1122,7 @@ class EVENT_TRACE_LOGFILEA(Structure):
     Anonymous2: _Anonymous2_e__Union
     IsKernelTrace: UInt32
     Context: VoidPtr
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         LogFileMode: UInt32
         ProcessTraceMode: UInt32
@@ -1106,6 +1144,7 @@ class EVENT_TRACE_LOGFILEW(Structure):
     Anonymous2: _Anonymous2_e__Union
     IsKernelTrace: UInt32
     Context: VoidPtr
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         LogFileMode: UInt32
         ProcessTraceMode: UInt32
@@ -1132,6 +1171,7 @@ class EVENT_TRACE_PROPERTIES(Structure):
     LoggerThreadId: win32more.Windows.Win32.Foundation.HANDLE
     LogFileNameOffset: UInt32
     LoggerNameOffset: UInt32
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         AgeLimit: Int32
         FlushThreshold: Int32
@@ -1158,22 +1198,25 @@ class EVENT_TRACE_PROPERTIES_V2(Structure):
     FilterDescCount: UInt32
     FilterDesc: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_FILTER_DESCRIPTOR)
     Anonymous3: _Anonymous3_e__Union
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         AgeLimit: Int32
         FlushThreshold: Int32
     class _Anonymous2_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         V2Control: UInt32
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            VersionNumber: Annotated[UInt32, 8]
+            VersionNumber: Annotated[UInt32, NativeBitfieldAttribute(8)]
     class _Anonymous3_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         V2Options: UInt64
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Wow: Annotated[UInt32, 1]
-            QpcDeltaTracking: Annotated[UInt32, 1]
-            LargeMdlPages: Annotated[UInt32, 1]
-            ExcludeKernelStack: Annotated[UInt32, 1]
+            Wow: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            QpcDeltaTracking: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            LargeMdlPages: Annotated[UInt32, NativeBitfieldAttribute(1)]
+            ExcludeKernelStack: Annotated[UInt32, NativeBitfieldAttribute(1)]
 class ITraceEvent(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{8cc97f40-9028-4ff3-9b62-7d1f79ca7bcb}')
@@ -1214,15 +1257,15 @@ class ITraceRelogger(ComPtr):
     extends: win32more.Windows.Win32.System.Com.IUnknown
     _iid_ = Guid('{f754ad43-3bcc-4286-8009-9c5da214e84e}')
     @commethod(3)
-    def AddLogfileTraceStream(self, LogfileName: win32more.Windows.Win32.Foundation.BSTR, UserContext: VoidPtr, TraceHandle: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.RELOGSTREAM_HANDLE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    def AddLogfileTraceStream(self, LogfileName: win32more.Windows.Win32.Foundation.BSTR, UserContext: VoidPtr, TraceStreamId: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(4)
-    def AddRealtimeTraceStream(self, LoggerName: win32more.Windows.Win32.Foundation.BSTR, UserContext: VoidPtr, TraceHandle: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.RELOGSTREAM_HANDLE)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    def AddRealtimeTraceStream(self, LoggerName: win32more.Windows.Win32.Foundation.BSTR, UserContext: VoidPtr, TraceStreamId: POINTER(UInt64)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(5)
     def RegisterCallback(self, Callback: win32more.Windows.Win32.System.Diagnostics.Etw.ITraceEventCallback) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(6)
     def Inject(self, Event: win32more.Windows.Win32.System.Diagnostics.Etw.ITraceEvent) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(7)
-    def CreateEventInstance(self, TraceHandle: win32more.Windows.Win32.System.Diagnostics.Etw.RELOGSTREAM_HANDLE, Flags: UInt32, Event: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ITraceEvent)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
+    def CreateEventInstance(self, TraceStreamId: UInt64, Flags: UInt32, Event: POINTER(win32more.Windows.Win32.System.Diagnostics.Etw.ITraceEvent)) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(8)
     def ProcessTrace(self) -> win32more.Windows.Win32.Foundation.HRESULT: ...
     @commethod(9)
@@ -1291,7 +1334,7 @@ class PROFILE_SOURCE_INFO(Structure):
     MinInterval: UInt32
     MaxInterval: UInt32
     Reserved: UInt64
-    Description: Char * 1
+    Description: FlexibleArray[Char]
 class PROPERTY_DATA_DESCRIPTOR(Structure):
     PropertyName: UInt64
     ArrayIndex: UInt32
@@ -1308,11 +1351,11 @@ PropertyHasCustomSchema: win32more.Windows.Win32.System.Diagnostics.Etw.PROPERTY
 class PROVIDER_ENUMERATION_INFO(Structure):
     NumberOfProviders: UInt32
     Reserved: UInt32
-    TraceProviderInfoArray: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_PROVIDER_INFO * 1
+    TraceProviderInfoArray: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_PROVIDER_INFO]
 class PROVIDER_EVENT_INFO(Structure):
     NumberOfEvents: UInt32
     Reserved: UInt32
-    EventDescriptorsArray: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_DESCRIPTOR * 1
+    EventDescriptorsArray: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_DESCRIPTOR]
 class PROVIDER_FIELD_INFO(Structure):
     NameOffset: UInt32
     DescriptionOffset: UInt32
@@ -1320,14 +1363,14 @@ class PROVIDER_FIELD_INFO(Structure):
 class PROVIDER_FIELD_INFOARRAY(Structure):
     NumberOfElements: UInt32
     FieldType: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_FIELD_TYPE
-    FieldInfoArray: win32more.Windows.Win32.System.Diagnostics.Etw.PROVIDER_FIELD_INFO * 1
+    FieldInfoArray: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.PROVIDER_FIELD_INFO]
 class PROVIDER_FILTER_INFO(Structure):
     Id: Byte
     Version: Byte
     MessageOffset: UInt32
     Reserved: UInt32
     PropertyCount: UInt32
-    EventPropertyInfoArray: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_PROPERTY_INFO * 1
+    EventPropertyInfoArray: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_PROPERTY_INFO]
 REGHANDLE = Int64
 class RELOGSTREAM_HANDLE(Structure):
     Value: UInt64
@@ -1347,6 +1390,9 @@ TEMPLATE_FLAGS = Int32
 TEMPLATE_EVENT_DATA: win32more.Windows.Win32.System.Diagnostics.Etw.TEMPLATE_FLAGS = 1
 TEMPLATE_USER_DATA: win32more.Windows.Win32.System.Diagnostics.Etw.TEMPLATE_FLAGS = 2
 TEMPLATE_CONTROL_GUID: win32more.Windows.Win32.System.Diagnostics.Etw.TEMPLATE_FLAGS = 4
+class TRACE_CONTEXT_REGISTER_INFO(Structure):
+    RegisterTypes: win32more.Windows.Win32.System.Diagnostics.Etw.ETW_CONTEXT_REGISTER_TYPES
+    Reserved: UInt32
 class TRACE_ENABLE_INFO(Structure):
     IsEnabled: UInt32
     Level: Byte
@@ -1376,7 +1422,8 @@ class TRACE_EVENT_INFO(Structure):
     PropertyCount: UInt32
     TopLevelPropertyCount: UInt32
     Anonymous3: _Anonymous3_e__Union
-    EventPropertyInfoArray: win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_PROPERTY_INFO * 1
+    EventPropertyInfoArray: FlexibleArray[win32more.Windows.Win32.System.Diagnostics.Etw.EVENT_PROPERTY_INFO]
+    _anonymous_ = ('Anonymous1', 'Anonymous2', 'Anonymous3')
     class _Anonymous1_e__Union(Union):
         EventNameOffset: UInt32
         ActivityIDNameOffset: UInt32
@@ -1386,9 +1433,10 @@ class TRACE_EVENT_INFO(Structure):
     class _Anonymous3_e__Union(Union):
         Flags: win32more.Windows.Win32.System.Diagnostics.Etw.TEMPLATE_FLAGS
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
-            Reserved: Annotated[UInt32, 4]
-            Tags: Annotated[UInt32, 28]
+            Reserved: Annotated[UInt32, NativeBitfieldAttribute(4)]
+            Tags: Annotated[UInt32, NativeBitfieldAttribute(28)]
 class TRACE_GUID_INFO(Structure):
     InstanceCount: UInt32
     Reserved: UInt32
@@ -1402,6 +1450,19 @@ class TRACE_GUID_PROPERTIES(Structure):
 class TRACE_GUID_REGISTRATION(Structure):
     Guid: POINTER(Guid)
     RegHandle: win32more.Windows.Win32.Foundation.HANDLE
+TRACE_LBR_CONFIGURATION = Int32
+TRACE_LBR_CONFIGURATION_NONE: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 0
+TRACE_LBR_CONFIGURATION_EXCLUDE_KERNEL: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 1
+TRACE_LBR_CONFIGURATION_EXCLUDE_USER: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 2
+TRACE_LBR_CONFIGURATION_EXCLUDE_JCC: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 4
+TRACE_LBR_CONFIGURATION_EXCLUDE_NEAR_REL_CALL: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 8
+TRACE_LBR_CONFIGURATION_EXCLUDE_NEAR_IND_CALL: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 16
+TRACE_LBR_CONFIGURATION_EXCLUDE_NEAR_RET: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 32
+TRACE_LBR_CONFIGURATION_EXCLUDE_NEAR_IND_JMP: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 64
+TRACE_LBR_CONFIGURATION_EXCLUDE_NEAR_REL_JMP: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 128
+TRACE_LBR_CONFIGURATION_EXCLUDE_FAR_BRANCH: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 256
+TRACE_LBR_CONFIGURATION_CALLSTACK_ENABLE: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 512
+TRACE_LBR_CONFIGURATION_SAMPLED: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_LBR_CONFIGURATION = 1024
 class TRACE_LOGFILE_HEADER(Structure):
     BufferSize: UInt32
     Anonymous1: _Anonymous1_e__Union
@@ -1421,6 +1482,7 @@ class TRACE_LOGFILE_HEADER(Structure):
     StartTime: Int64
     ReservedFlags: UInt32
     BuffersLost: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Version: UInt32
         VersionDetail: _VersionDetail_e__Struct
@@ -1432,6 +1494,7 @@ class TRACE_LOGFILE_HEADER(Structure):
     class _Anonymous2_e__Union(Union):
         LogInstanceGuid: Guid
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             StartBuffers: UInt32
             PointerSize: UInt32
@@ -1456,6 +1519,7 @@ class TRACE_LOGFILE_HEADER32(Structure):
     StartTime: Int64
     ReservedFlags: UInt32
     BuffersLost: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Version: UInt32
         VersionDetail: _VersionDetail_e__Struct
@@ -1467,6 +1531,7 @@ class TRACE_LOGFILE_HEADER32(Structure):
     class _Anonymous2_e__Union(Union):
         LogInstanceGuid: Guid
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             StartBuffers: UInt32
             PointerSize: UInt32
@@ -1491,6 +1556,7 @@ class TRACE_LOGFILE_HEADER64(Structure):
     StartTime: Int64
     ReservedFlags: UInt32
     BuffersLost: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         Version: UInt32
         VersionDetail: _VersionDetail_e__Struct
@@ -1502,6 +1568,7 @@ class TRACE_LOGFILE_HEADER64(Structure):
     class _Anonymous2_e__Union(Union):
         LogInstanceGuid: Guid
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             StartBuffers: UInt32
             PointerSize: UInt32
@@ -1558,7 +1625,8 @@ TraceStackCachingInfo: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUER
 TracePmcCounterOwners: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS = 25
 TraceUnifiedStackCachingInfo: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS = 26
 TracePmcSessionInformation: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS = 27
-MaxTraceSetInfoClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS = 28
+TraceContextRegisterInfo: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS = 28
+MaxTraceSetInfoClass: win32more.Windows.Win32.System.Diagnostics.Etw.TRACE_QUERY_INFO_CLASS = 29
 class TRACE_STACK_CACHING_INFO(Structure):
     Enabled: win32more.Windows.Win32.Foundation.BOOLEAN
     CacheSize: UInt32
@@ -1585,6 +1653,7 @@ class WMIREGGUIDW(Structure):
     Flags: UInt32
     InstanceCount: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         InstanceNameList: UInt32
         BaseNameOffset: UInt32
@@ -1603,6 +1672,7 @@ class WNODE_ALL_DATA(Structure):
     InstanceCount: UInt32
     OffsetInstanceNameOffsets: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         FixedInstanceSize: UInt32
         OffsetInstanceDataAndLength: win32more.Windows.Win32.System.Diagnostics.Etw.OFFSETINSTANCEDATAANDLENGTH * 1
@@ -1613,6 +1683,7 @@ class WNODE_EVENT_REFERENCE(Structure):
     TargetGuid: Guid
     TargetDataBlockSize: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         TargetInstanceIndex: UInt32
         TargetInstanceName: Char * 1
@@ -1624,9 +1695,11 @@ class WNODE_HEADER(Structure):
     Guid: Guid
     ClientContext: UInt32
     Flags: UInt32
+    _anonymous_ = ('Anonymous1', 'Anonymous2')
     class _Anonymous1_e__Union(Union):
         HistoricalContext: UInt64
         Anonymous: _Anonymous_e__Struct
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             Version: UInt32
             Linkage: UInt32

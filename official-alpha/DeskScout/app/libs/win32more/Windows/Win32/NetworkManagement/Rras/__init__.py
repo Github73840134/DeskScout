@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.IpHelper
 import win32more.Windows.Win32.NetworkManagement.Rras
@@ -11,7 +11,7 @@ class AUTH_VALIDATION_EX(Structure):
     wszUserName: Char * 257
     wszLogonDomain: Char * 16
     AuthInfoSize: UInt32
-    AuthInfo: Byte * 1
+    AuthInfo: FlexibleArray[Byte]
 RASNAP_ProbationTime: UInt32 = 1
 RASTUNNELENDPOINT_UNKNOWN: UInt32 = 0
 RASTUNNELENDPOINT_IPv4: UInt32 = 1
@@ -731,7 +731,8 @@ ERROR_SSO_CERT_MISSING: UInt32 = 874
 ERROR_DEVICE_COMPLIANCE: UInt32 = 875
 ERROR_PLUGIN_NOT_INSTALLED: UInt32 = 876
 ERROR_ACTION_REQUIRED: UInt32 = 877
-RASBASEEND: UInt32 = 877
+ERROR_WINHTTP_AUTO_PROXY_SERVICE: UInt32 = 878
+RASBASEEND: UInt32 = 878
 @winfunctype('RASAPI32.dll')
 def RasDialA(param0: POINTER(win32more.Windows.Win32.NetworkManagement.Rras.RASDIALEXTENSIONS), param1: win32more.Windows.Win32.Foundation.PSTR, param2: POINTER(win32more.Windows.Win32.NetworkManagement.Rras.RASDIALPARAMSA), param3: UInt32, param4: VoidPtr, param5: POINTER(win32more.Windows.Win32.NetworkManagement.Rras.HRASCONN)) -> UInt32: ...
 @winfunctype('RASAPI32.dll')
@@ -1909,12 +1910,14 @@ class PPTP_CONFIG_PARAMS(Structure):
 class PROJECTION_INFO(Structure):
     projectionInfoType: Byte
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PppProjectionInfo: win32more.Windows.Win32.NetworkManagement.Rras.PPP_PROJECTION_INFO
         Ikev2ProjectionInfo: win32more.Windows.Win32.NetworkManagement.Rras.IKEV2_PROJECTION_INFO
 class PROJECTION_INFO2(Structure):
     projectionInfoType: Byte
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         PppProjectionInfo: win32more.Windows.Win32.NetworkManagement.Rras.PPP_PROJECTION_INFO2
         Ikev2ProjectionInfo: win32more.Windows.Win32.NetworkManagement.Rras.IKEV2_PROJECTION_INFO2
@@ -2213,11 +2216,11 @@ class RASEAPINFO(Structure):
 class RASEAPUSERIDENTITYA(Structure):
     szUserName: win32more.Windows.Win32.Foundation.CHAR * 257
     dwSizeofEapInfo: UInt32
-    pbEapInfo: Byte * 1
+    pbEapInfo: FlexibleArray[Byte]
 class RASEAPUSERIDENTITYW(Structure):
     szUserName: Char * 257
     dwSizeofEapInfo: UInt32
-    pbEapInfo: Byte * 1
+    pbEapInfo: FlexibleArray[Byte]
 RASEAPUSERIDENTITY = UnicodeAlias('RASEAPUSERIDENTITYW')
 class RASENTRYA(Structure):
     dwSize: UInt32
@@ -2675,6 +2678,7 @@ RASSUBENTRY = UnicodeAlias('RASSUBENTRYW')
 class RASTUNNELENDPOINT(Structure):
     dwType: UInt32
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ipv4: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
         ipv6: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR
@@ -2865,6 +2869,7 @@ class RAS_PROJECTION_INFO(Structure):
     version: win32more.Windows.Win32.NetworkManagement.Rras.RASAPIVERSION
     type: win32more.Windows.Win32.NetworkManagement.Rras.RASPROJECTION_INFO_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         ppp: win32more.Windows.Win32.NetworkManagement.Rras.RASPPP_PROJECTION_INFO
         ikev2: win32more.Windows.Win32.NetworkManagement.Rras.RASIKEV2_PROJECTION_INFO
@@ -2963,7 +2968,7 @@ class RTM_DEST_INFO(Structure):
     LastChanged: win32more.Windows.Win32.Foundation.FILETIME
     BelongsToViews: UInt32
     NumberOfViews: UInt32
-    ViewInfo: _Anonymous_e__Struct * 1
+    ViewInfo: FlexibleArray[_Anonymous_e__Struct]
     class _Anonymous_e__Struct(Structure):
         ViewId: Int32
         NumRoutes: UInt32
@@ -2975,12 +2980,14 @@ class RTM_DEST_INFO(Structure):
 def RTM_ENTITY_EXPORT_METHOD(CallerHandle: IntPtr, CalleeHandle: IntPtr, Input: POINTER(win32more.Windows.Win32.NetworkManagement.Rras.RTM_ENTITY_METHOD_INPUT), Output: POINTER(win32more.Windows.Win32.NetworkManagement.Rras.RTM_ENTITY_METHOD_OUTPUT)) -> Void: ...
 class RTM_ENTITY_EXPORT_METHODS(Structure):
     NumMethods: UInt32
-    Methods: win32more.Windows.Win32.NetworkManagement.Rras.RTM_ENTITY_EXPORT_METHOD * 1
+    Methods: FlexibleArray[win32more.Windows.Win32.NetworkManagement.Rras.RTM_ENTITY_EXPORT_METHOD]
 class RTM_ENTITY_ID(Structure):
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         Anonymous: _Anonymous_e__Struct
         EntityId: UInt64
+        _anonymous_ = ('Anonymous',)
         class _Anonymous_e__Struct(Structure):
             EntityProtocolId: UInt32
             EntityInstanceId: UInt32
@@ -2991,12 +2998,12 @@ class RTM_ENTITY_INFO(Structure):
 class RTM_ENTITY_METHOD_INPUT(Structure):
     MethodType: UInt32
     InputSize: UInt32
-    InputData: Byte * 1
+    InputData: FlexibleArray[Byte]
 class RTM_ENTITY_METHOD_OUTPUT(Structure):
     MethodType: UInt32
     MethodStatus: UInt32
     OutputSize: UInt32
-    OutputData: Byte * 1
+    OutputData: FlexibleArray[Byte]
 @winfunctype_pointer
 def RTM_EVENT_CALLBACK(RtmRegHandle: IntPtr, EventType: win32more.Windows.Win32.NetworkManagement.Rras.RTM_EVENT_TYPE, Context1: VoidPtr, Context2: VoidPtr) -> UInt32: ...
 RTM_EVENT_TYPE = Int32
@@ -3018,7 +3025,7 @@ class RTM_NEXTHOP_INFO(Structure):
     RemoteNextHop: IntPtr
 class RTM_NEXTHOP_LIST(Structure):
     NumNextHops: UInt16
-    NextHops: IntPtr * 1
+    NextHops: FlexibleArray[IntPtr]
 class RTM_PREF_INFO(Structure):
     Metric: UInt32
     Preference: UInt32
@@ -3077,6 +3084,7 @@ class SSTP_CONFIG_PARAMS(Structure):
 class VPN_TS_IP_ADDRESS(Structure):
     Type: UInt16
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         v4: win32more.Windows.Win32.Networking.WinSock.IN_ADDR
         v6: win32more.Windows.Win32.Networking.WinSock.IN6_ADDR

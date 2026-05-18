@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Data.Xml.MsXml
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.NetManagement
@@ -182,6 +182,7 @@ LM20_QNLEN: UInt32 = 12
 ALERTSZ: UInt32 = 128
 NETBIOS_NAME_LEN: UInt32 = 16
 MAX_PREFERRED_LENGTH: UInt32 = 4294967295
+LM_DNS_MAX_NAME_LENGTH: UInt32 = 255
 CRYPT_KEY_LEN: UInt32 = 7
 CRYPT_TXT_LEN: UInt32 = 8
 ENCRYPTED_PWLEN: UInt32 = 16
@@ -666,6 +667,7 @@ NETLOGON_DNS_UPDATE_FAILURE: UInt32 = 64
 NETLOGON_VERIFY_STATUS_RETURNED: UInt32 = 128
 SERVICE_ACCOUNT_PASSWORD: String = '_SA_{262E99C9-6160-4871-ACEC-4E61736B6F21}'
 SERVICE_ACCOUNT_SECRET_PREFIX: String = '_SC_{262E99C9-6160-4871-ACEC-4E61736B6F21}_'
+DELEGATED_MANAGED_SERVICE_ACCOUNT_PASSWORD: String = '_SA_{F8262F4C-499B-4770-88B4-A75C91D0D8E9}'
 ServiceAccountPasswordGUID: Guid = Guid('{262e99c9-6160-4871-acec-4e61736b6f21}')
 SERVICE_ACCOUNT_FLAG_LINK_TO_HOST_ONLY: Int32 = 1
 SERVICE_ACCOUNT_FLAG_ADD_AGAINST_RODC: Int32 = 2
@@ -1035,10 +1037,6 @@ NETLOG_PassThruFilterError_Request_AdminOverride: UInt32 = 5834
 NETLOG_PassThruFilterError_Request_Blocked: UInt32 = 5835
 NETLOG_NetlogonRpcBacklogLimitSet: UInt32 = 5836
 NETLOG_NetlogonRpcBacklogLimitFailure: UInt32 = 5837
-NETLOG_NetlogonRpcSigningClient: UInt32 = 5838
-NETLOG_NetlogonRpcSigningTrust: UInt32 = 5839
-NETLOG_NetlogonRc4Allowed: UInt32 = 5840
-NETLOG_NetlogonRc4Denied: UInt32 = 5841
 NETSETUP_ACCT_DELETE: UInt32 = 4
 NETSETUP_DNS_NAME_CHANGES_ONLY: UInt32 = 4096
 NETSETUP_INSTALL_INVOCATION: UInt32 = 262144
@@ -1517,7 +1515,7 @@ EVENT_NBT_CREATE_ADDRESS: Int32 = -1073737517
 EVENT_NBT_CREATE_CONNECTION: Int32 = -1073737516
 EVENT_NBT_NON_OS_INIT: Int32 = -1073737515
 EVENT_NBT_TIMERS: Int32 = -1073737514
-EVENT_NBT_CREATE_DEVICE: Int32 = -1073737513
+EVENT_NBT_CREATE_DEVICE: Int32 = 1073746135
 EVENT_NBT_NO_DEVICES: Int32 = -2147479336
 EVENT_NBT_OPEN_REG_LINKAGE: Int32 = -1073737511
 EVENT_NBT_READ_BIND: Int32 = -1073737510
@@ -1650,6 +1648,10 @@ EVENT_BROWSER_ELECTION_SENT_LANMAN_NT_STOPPED: Int32 = 1073749857
 EVENT_BROWSER_GETBLIST_RECEIVED_NOT_MASTER: Int32 = -1073733790
 EVENT_BROWSER_ELECTION_SENT_ROLE_CHANGED: Int32 = 1073749859
 EVENT_BROWSER_NOT_STARTED_IPX_CONFIG_MISMATCH: Int32 = -1073733788
+EVENT_BROWSER_REMOTE_MAILSLOTS_ENABLED: Int32 = -2147475611
+EVENT_BROWSER_REMOTE_MAILSLOTS_DISABLED: Int32 = 1073749862
+EVENT_BROWSER_REMOTE_MAILSLOTS_ENABLED_BY_POLICY: Int32 = -2147475609
+EVENT_BROWSER_REMOTE_MAILSLOTS_DISABLED_BY_POLICY: Int32 = 1073749864
 NWSAP_EVENT_KEY_NOT_FOUND: Int32 = -1073733324
 NWSAP_EVENT_WSASTARTUP_FAILED: Int32 = -1073733323
 NWSAP_EVENT_SOCKET_FAILED: Int32 = -1073733322
@@ -2078,6 +2080,8 @@ SERVICE_W32TIME: String = 'w32time'
 SERVCE_LM20_W32TIME: String = 'w32time'
 SERVICE_KDC: String = 'kdc'
 SERVICE_LM20_KDC: String = 'kdc'
+SERVICE_LOCALKDC: String = 'localkdc'
+SERVICE_LM20_LOCALKDC: String = 'localkdc'
 SERVICE_RPCLOCATOR: String = 'RPCLOCATOR'
 SERVICE_LM20_RPCLOCATOR: String = 'RPCLOCATOR'
 SERVICE_TRKSVR: String = 'TrkSvr'
@@ -2329,6 +2333,8 @@ def NetRemoveServiceAccount(ServerName: win32more.Windows.Win32.Foundation.PWSTR
 def NetEnumerateServiceAccounts(ServerName: win32more.Windows.Win32.Foundation.PWSTR, Flags: UInt32, AccountsCount: POINTER(UInt32), Accounts: POINTER(POINTER(POINTER(UInt16)))) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype('NETAPI32.dll')
 def NetIsServiceAccount(ServerName: win32more.Windows.Win32.Foundation.PWSTR, AccountName: win32more.Windows.Win32.Foundation.PWSTR, IsService: POINTER(win32more.Windows.Win32.Foundation.BOOL)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
+@winfunctype('NETAPI32.dll')
+def NetIsServiceAccount2(ServerName: win32more.Windows.Win32.Foundation.PWSTR, AccountName: win32more.Windows.Win32.Foundation.PWSTR, IsService: POINTER(win32more.Windows.Win32.Foundation.BOOL), AccountType: POINTER(win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_ACCOUNT_TYPE)) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype('NETAPI32.dll')
 def NetQueryServiceAccount(ServerName: win32more.Windows.Win32.Foundation.PWSTR, AccountName: win32more.Windows.Win32.Foundation.PWSTR, InfoLevel: UInt32, Buffer: POINTER(POINTER(Byte))) -> win32more.Windows.Win32.Foundation.NTSTATUS: ...
 @winfunctype('NETAPI32.dll')
@@ -2614,6 +2620,11 @@ NCN_NET: win32more.Windows.Win32.NetworkManagement.NetManagement.BIND_FLAGS1 = 6
 NCN_NETTRANS: win32more.Windows.Win32.NetworkManagement.NetManagement.BIND_FLAGS1 = 131072
 NCN_NETCLIENT: win32more.Windows.Win32.NetworkManagement.NetManagement.BIND_FLAGS1 = 262144
 NCN_NETSERVICE: win32more.Windows.Win32.NetworkManagement.NetManagement.BIND_FLAGS1 = 524288
+class BLOCK_NTLM_INFO(Structure):
+    BlockNTLM: win32more.Windows.Win32.Foundation.BOOLEAN
+    Reserved1: Byte
+    Reserved2: UInt16
+    Reserved3: UInt32
 COMPONENT_CHARACTERISTICS = Int32
 NCF_VIRTUAL: win32more.Windows.Win32.NetworkManagement.NetManagement.COMPONENT_CHARACTERISTICS = 1
 NCF_SOFTWARE_ENUMERATED: win32more.Windows.Win32.NetworkManagement.NetManagement.COMPONENT_CHARACTERISTICS = 2
@@ -2675,7 +2686,7 @@ class ERROR_LOG(Structure):
 class FLAT_STRING(Structure):
     MaximumLength: Int16
     Length: Int16
-    Buffer: win32more.Windows.Win32.Foundation.CHAR * 1
+    Buffer: FlexibleArray[win32more.Windows.Win32.Foundation.CHAR]
 FORCE_LEVEL_FLAGS = UInt32
 USE_NOFORCE: win32more.Windows.Win32.NetworkManagement.NetManagement.FORCE_LEVEL_FLAGS = 0
 USE_FORCE: win32more.Windows.Win32.NetworkManagement.NetManagement.FORCE_LEVEL_FLAGS = 1
@@ -3001,9 +3012,18 @@ class MPR_PROTOCOL_0(Structure):
     wszDLLName: Char * 49
 class MSA_INFO_0(Structure):
     State: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_STATE
+class MSA_INFO_1(Structure):
+    State: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_STATE
+    AccountType: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_ACCOUNT_TYPE
+MSA_INFO_ACCOUNT_TYPE = Int32
+MsaAccountFalse: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_ACCOUNT_TYPE = 0
+StandAloneManagedServiceAccount: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_ACCOUNT_TYPE = 1
+GroupManagedServiceAccount: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_ACCOUNT_TYPE = 2
+DelegatedManagedServiceAccount: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_ACCOUNT_TYPE = 3
 MSA_INFO_LEVEL = Int32
 MsaInfoLevel0: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_LEVEL = 0
-MsaInfoLevelMax: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_LEVEL = 1
+MsaInfoLevel1: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_LEVEL = 1
+MsaInfoLevelMax: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_LEVEL = 2
 MSA_INFO_STATE = Int32
 MsaInfoNotExist: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_STATE = 1
 MsaInfoNotService: win32more.Windows.Win32.NetworkManagement.NetManagement.MSA_INFO_STATE = 2
@@ -3309,7 +3329,7 @@ class RTR_INFO_BLOCK_HEADER(Structure):
     Version: UInt32
     Size: UInt32
     TocEntriesCount: UInt32
-    TocEntry: win32more.Windows.Win32.NetworkManagement.NetManagement.RTR_TOC_ENTRY * 1
+    TocEntry: FlexibleArray[win32more.Windows.Win32.NetworkManagement.NetManagement.RTR_TOC_ENTRY]
 class RTR_TOC_ENTRY(Structure):
     InfoType: UInt32
     InfoSize: UInt32
@@ -3861,6 +3881,15 @@ class TIME_OF_DAY_INFO(Structure):
 class TRANSPORT_INFO(Structure):
     Type: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_TYPE
     SkipCertificateCheck: win32more.Windows.Win32.Foundation.BOOLEAN
+    TcpPort: UInt16
+    QuicPort: UInt16
+    RdmaPort: UInt16
+    Flags: UInt32
+TRANSPORT_INFO_FLAG = Int32
+NoneFlag: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_INFO_FLAG = 0
+TcpPortSetFlag: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_INFO_FLAG = 1
+QuicPortSetFlag: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_INFO_FLAG = 2
+RdmaPortSetFlag: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_INFO_FLAG = 4
 TRANSPORT_TYPE = Int32
 UseTransportType_None: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_TYPE = 0
 UseTransportType_Wsk: win32more.Windows.Win32.NetworkManagement.NetManagement.TRANSPORT_TYPE = 1
@@ -4172,6 +4201,10 @@ USE_WILDCARD: win32more.Windows.Win32.NetworkManagement.NetManagement.USE_INFO_A
 USE_DISKDEV: win32more.Windows.Win32.NetworkManagement.NetManagement.USE_INFO_ASG_TYPE = 0
 USE_SPOOLDEV: win32more.Windows.Win32.NetworkManagement.NetManagement.USE_INFO_ASG_TYPE = 1
 USE_IPC: win32more.Windows.Win32.NetworkManagement.NetManagement.USE_INFO_ASG_TYPE = 3
+class USE_OPTION_BLOCK_NTLM_PARAMETERS(Structure):
+    Tag: UInt32
+    Length: UInt16
+    Reserved: UInt16
 class USE_OPTION_DEFERRED_CONNECTION_PARAMETERS(Structure):
     Tag: UInt32
     Length: UInt16

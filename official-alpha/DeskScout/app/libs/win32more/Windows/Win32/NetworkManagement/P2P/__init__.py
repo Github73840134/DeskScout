@@ -1,5 +1,5 @@
 from __future__ import annotations
-from win32more import ARCH, Annotated, Boolean, Byte, Bytes, Char, ComPtr, ConstantLazyLoader, Double, Enum, FAILED, Guid, Int16, Int32, Int64, IntPtr, POINTER, SByte, SUCCEEDED, Single, String, Structure, UInt16, UInt32, UInt64, UIntPtr, UnicodeAlias, Union, Void, VoidPtr, cfunctype, cfunctype_pointer, commethod, make_ready, winfunctype, winfunctype_pointer
+from win32more._prelude import *
 import win32more.Windows.Win32.Foundation
 import win32more.Windows.Win32.NetworkManagement.P2P
 import win32more.Windows.Win32.Networking.WinSock
@@ -514,7 +514,7 @@ DRT_ADDRESS_FLAG_SUSPECT_UNREGISTERED_ID: win32more.Windows.Win32.NetworkManagem
 DRT_ADDRESS_FLAG_INQUIRE: win32more.Windows.Win32.NetworkManagement.P2P.DRT_ADDRESS_FLAGS = 128
 class DRT_ADDRESS_LIST(Structure):
     AddressCount: UInt32
-    AddressList: win32more.Windows.Win32.NetworkManagement.P2P.DRT_ADDRESS * 1
+    AddressList: FlexibleArray[win32more.Windows.Win32.NetworkManagement.P2P.DRT_ADDRESS]
 class DRT_BOOTSTRAP_PROVIDER(Structure):
     pvContext: VoidPtr
     Attach: IntPtr
@@ -534,6 +534,7 @@ class DRT_EVENT_DATA(Structure):
     hr: win32more.Windows.Win32.Foundation.HRESULT
     pvContext: VoidPtr
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         leafsetKeyChange: _leafsetKeyChange_e__Struct
         registrationStateChange: _registrationStateChange_e__Struct
@@ -673,6 +674,7 @@ PEER_CHANGE_UPDATED: win32more.Windows.Win32.NetworkManagement.P2P.PEER_CHANGE_T
 class PEER_COLLAB_EVENT_DATA(Structure):
     eventType: win32more.Windows.Win32.NetworkManagement.P2P.PEER_COLLAB_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         watchListChangedData: win32more.Windows.Win32.NetworkManagement.P2P.PEER_EVENT_WATCHLIST_CHANGED_DATA
         presenceChangedData: win32more.Windows.Win32.NetworkManagement.P2P.PEER_EVENT_PRESENCE_CHANGED_DATA
@@ -794,6 +796,7 @@ class PEER_EVENT_WATCHLIST_CHANGED_DATA(Structure):
 class PEER_GRAPH_EVENT_DATA(Structure):
     eventType: win32more.Windows.Win32.NetworkManagement.P2P.PEER_GRAPH_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwStatus: win32more.Windows.Win32.NetworkManagement.P2P.PEER_GRAPH_STATUS_FLAGS
         incomingData: win32more.Windows.Win32.NetworkManagement.P2P.PEER_EVENT_INCOMING_DATA
@@ -844,6 +847,7 @@ PEER_GROUP_PASSWORD_AUTHENTICATION: win32more.Windows.Win32.NetworkManagement.P2
 class PEER_GROUP_EVENT_DATA(Structure):
     eventType: win32more.Windows.Win32.NetworkManagement.P2P.PEER_GROUP_EVENT_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         dwStatus: win32more.Windows.Win32.NetworkManagement.P2P.PEER_GROUP_STATUS
         incomingData: win32more.Windows.Win32.NetworkManagement.P2P.PEER_EVENT_INCOMING_DATA
@@ -1074,6 +1078,7 @@ class PNRPINFO_V2(Structure):
     enNameState: win32more.Windows.Win32.NetworkManagement.P2P.PNRP_REGISTERED_ID_STATE
     enExtendedPayloadType: win32more.Windows.Win32.NetworkManagement.P2P.PNRP_EXTENDED_PAYLOAD_TYPE
     Anonymous: _Anonymous_e__Union
+    _anonymous_ = ('Anonymous',)
     class _Anonymous_e__Union(Union):
         blobPayload: win32more.Windows.Win32.System.Com.BLOB
         pwszPayload: win32more.Windows.Win32.Foundation.PWSTR
