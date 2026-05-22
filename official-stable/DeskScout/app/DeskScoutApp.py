@@ -3,7 +3,7 @@
 # horrible slogan, it will be changed
 # Anyways
 __version__ = "1.2.3"
-__build__ = "30"
+__build__ = "31"
 supported_service = ["22","23","24","25","26"]
 from tkinter import messagebox
 
@@ -1444,7 +1444,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 			# General Alarms
 			self.lsc = -1
-			self.changeSetting("autostart",not Settings.general.autostart.IsChecked)
+			self.changeSetting("autostart",Settings.general.autostart.IsChecked)
 			self.changeSetting("useMGDL",not Settings.display.units.IsChecked)
 			self.changeSetting("enableNotify",Settings.enable_alarms.IsChecked)
 			# Urgent Low

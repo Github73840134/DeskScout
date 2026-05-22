@@ -19,6 +19,7 @@ del(vinfo)
 sys.path.insert(0,os.path.join(os.getcwd(), "libs"))
 sys.path.append(os.path.join(os.getcwd(), "mods"))
 import PySimpleGUI as sg
+sg.theme('SystemDefault')
 import requests
 import psutil
 parser = argparse.ArgumentParser("resetApp.py")

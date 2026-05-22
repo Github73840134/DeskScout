@@ -8,7 +8,7 @@
 
 # Requirements
 Python 3.12.2 or later
-Microsoft Windows App Runtime 1.7 (I have not tested 1.8)
+Microsoft Windows App Runtime 2.0 or later
 
 # What works
 - Urgent low glucose alerts
