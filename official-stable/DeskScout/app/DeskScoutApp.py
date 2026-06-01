@@ -549,14 +549,15 @@ class App(XamlApplication):
 					os.remove(os.path.join(os.getcwd(),"updatemanifest.json"))
 					self.goHome()
 				self.document.Content.as_(FrameworkElement).FindName("uc.next").as_(Button).Click += complete
+		else:
+			self.goHome()
 		import argparse
 		parser = argparse.ArgumentParser()
 		parser.add_argument("-intent",required=False,default="")
 		print(sys.argv)
 		args = parser.parse_args(sys.argv[1:])
 		self.runIntent(args.intent)
-		if not args.intent:
-			self.goHome()
+
 		
 
 	def runIntent(self,intent):
