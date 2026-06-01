@@ -80,11 +80,11 @@ import argparse
 import winreg
 import sys
 
-APP_NAME = "DeskScout Service"
+APP_NAME = "DeskScout Service (Stable)"
 
 python_exe = os.path.join(os.path.dirname(os.path.dirname(__file__)),"core","pythonw.exe")
 script_path = os.path.join(os.path.dirname(__file__),"autostart.py")
-
+print(python_exe,script_path)
 command = f'"{python_exe}" "{script_path}"'
 
 key = winreg.OpenKey(

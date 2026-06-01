@@ -1,5 +1,7 @@
 <Page  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-    <Frame>
+    <Frame Background="Black">
+        <Grid>
+        <Image Opacity="0.25" Name="Background" Stretch="UniformToFill" Source="../assets/background.png"/>
         <StackPanel Orientation="Vertical">
             <TextBlock Text="Home" FontSize="48" />
             <Border  BorderThickness="1" Height="64" />
@@ -21,9 +23,9 @@
             </StackPanel>
 
             <StackPanel Height="120" Orientation="Horizontal" >
-                <TextBlock  Name="reading" Text="---" FontSize="48" VerticalAlignment="Center" />
-                <TextBlock  Name="reading.red" Text="" FontSize="48" VerticalAlignment="Center" Foreground="Red"  Visibility="Collapsed" />
-                <TextBlock  Name="reading.yellow" Text="" FontSize="48" VerticalAlignment="Center" Foreground="Yellow" Visibility="Collapsed" />
+                <TextBlock  Name="reading" Text="---" FontSize="64" VerticalAlignment="Center" />
+                <TextBlock  Name="reading.red" Text="" FontSize="64" VerticalAlignment="Center" Foreground="Red"  Visibility="Collapsed" />
+                <TextBlock  Name="reading.yellow" Text="" FontSize="64" VerticalAlignment="Center" Foreground="Yellow" Visibility="Collapsed" />
 
 
                 <TextBlock Name="units" Text="mg/dl" FontSize="14" VerticalAlignment="Center" />
@@ -33,5 +35,6 @@
             <TextBlock Name="last_update" Text="Last Synced Reading:" FontSize="14"/>
             
         </StackPanel>
+        </Grid>
     </Frame>
 </Page>

@@ -2,8 +2,8 @@
 # Putting you in glucose
 # horrible slogan, it will be changed
 # Anyways
-__version__ = "1.2.4"
-__build__ = "31"
+__version__ = "1.2.5"
+__build__ = "32"
 supported_service = ["22","23","24","25","26"]
 from tkinter import messagebox
 
@@ -555,6 +555,8 @@ class App(XamlApplication):
 		print(sys.argv)
 		args = parser.parse_args(sys.argv[1:])
 		self.runIntent(args.intent)
+		if not args.intent:
+			self.goHome()
 		
 
 	def runIntent(self,intent):
@@ -716,6 +718,11 @@ class App(XamlApplication):
 			_thread.start_new_thread(self.dataFetch,()) # Start the fetcher
 		self.document.Content = XamlReader().Load(open("../assets/ui/home.xaml", "r", encoding='utf-8').read()) # Load the home screen
 		self.page = "home"
+		uri = Uri.CreateUri(os.path.abspath(os.path.join(os.getcwd(),"../","assets",'pride_flag.png')))
+		img = self.document.Content.as_(FrameworkElement).FindName("Background").as_(Image)
+		bitmap = Imaging.BitmapImage()
+		bitmap.UriSource = uri
+		img.Source = bitmap
 	def showSignIn(self,onFinish=None):
 		# Starts the sign-in flow
 		from win32more.Windows.Win32.UI.WindowsAndMessaging import (
@@ -1289,7 +1296,7 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 
 
 		}
-		self.changeSetting(f"notify/{translate[st]}/sound",'"'+path+'"')
+		self.changeSetting(f"notify/{translate[st]}/sound",'"'+path.replace('\\','/')+'"')
 		self.transitionElementContent(root,XamlReader().Load(open("../assets/ui/settings/sounds.xaml", "r", encoding='utf-8').read()),lambda: self.initAlarmSoundSettings(root))
 
 
@@ -2391,7 +2398,16 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 				self.page = "settings"
 				self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/settings.xaml", "r", encoding='utf-8').read()),self.initSettingsPage)
 			elif item.Tag.as_(str) == "App.Home":
-				self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/home.xaml", "r", encoding='utf-8').read()),lambda a=self:exec('a.page = "home"\na.lsc = -1'))
+				self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/home.xaml", "r", encoding='utf-8').read()),lambda a=self:exec("""
+a.page = "home"
+a.lsc = -1
+uri = Uri.CreateUri(os.path.abspath(os.path.join(os.getcwd(),"../","assets",'pride_flag.png')))
+img = a.document.Content.as_(FrameworkElement).FindName("Background").as_(Image)
+bitmap = Imaging.BitmapImage()
+bitmap.UriSource = uri
+img.Source = bitmap
+																																				   
+"""))
 			elif item.Tag.as_(str) == "App.Historical":
 				self.transitionElementContent(self.document,XamlReader().Load(open("../assets/ui/loading.xaml", "r", encoding='utf-8').read()),lambda a=self:exec('a.page = ""\na.lsc = -1\na.initHistoryPage()'))
 
